@@ -1,0 +1,20 @@
+{
+  "crons": [
+    {
+      "path": "/api/sync?type=realtime",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/sync?type=daily",
+      "schedule": "5 0 * * *"
+    },
+    {
+      "path": "/api/sync?type=monthly",
+      "schedule": "10 0 1 * *"
+    },
+    {
+      "path": "/api/sync?type=yearly",
+      "schedule": "15 0 1 1 *"
+    }
+  ]
+}

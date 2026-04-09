@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-npm)",
+      "Bash(cp -r /c/Users/kristina/Desktop/zis-solar-crm/* /c/Users/kristina/Desktop/ZisSolarCRM/)",
+      "Bash(cp -r /c/Users/kristina/Desktop/zis-solar-crm/.* /c/Users/kristina/Desktop/ZisSolarCRM/)",
+      "Bash(rm -rf /c/Users/kristina/Desktop/zis-solar-crm)",
+      "Bash(cp /c/Users/kristina/Desktop/zis-solar-crm/package.json /c/Users/kristina/Desktop/ZisSolarCRM/)",
+      "Bash(cp /c/Users/kristina/Desktop/zis-solar-crm/package-lock.json /c/Users/kristina/Desktop/ZisSolarCRM/)",
+      "Bash(cp /c/Users/kristina/Desktop/zis-solar-crm/postcss.config.mjs /c/Users/kristina/Desktop/ZisSolarCRM/)",
+      "Bash(cp /c/Users/kristina/Desktop/zis-solar-crm/tsconfig.json /c/Users/kristina/Desktop/ZisSolarCRM/)",
+      "Bash(cp -r /c/Users/kristina/Desktop/zis-solar-crm/src /c/Users/kristina/Desktop/ZisSolarCRM/)",
+      "Bash(npm install:*)",
+      "Bash(npx shadcn@latest init -d)",
+      "Bash(npx shadcn@latest add card table input label dialog select dropdown-menu avatar separator badge tabs sheet sidebar-07 -y)",
+      "Bash(npx tsc:*)",
+      "Bash(ls /c/Users/kristina/Downloads/*zis* /c/Users/kristina/Downloads/*solar* /c/Users/kristina/Downloads/*logo* /c/Users/kristina/Downloads/*ZIS* /c/Users/kristina/Downloads/*Solar* /c/Users/kristina/Downloads/*Logo*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}
