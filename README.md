@@ -55,3 +55,15 @@ start,production_kwh,export_kwh
 WebMCP: `read_solar_balance` е опционална, само за читање, поврзана со истиот заштитен API. Регистрацијата се проверува по достапност на `document.modelContext`. Во оваа околина немаше поддржан контекст за извршна WebMCP проверка; не е тврдено дека е проверена. Не е правена браузерска визуелна QA.
 
 Извор на цени: https://dam-data.memo.mk/index.php?action=auction-by-hour&lang=en
+
+## Huawei FusionSolar — избрана централа
+
+Сопственикот достави портал линк за `NE=252974614` на `uni004eu5.fusionsolar.huawei.com`. Во браузерот линкот пренасочи на најава на `eu5.fusionsolar.huawei.com`. Не е добиен API токен и не е потврден API `stationCode`. Не се извлекуваат browser cookies како замена за овластен Northbound API пристап.
+
+Следниот чекор е најава на Huawei страницата и проверка на Northbound Management/API овластувањата за оваа централа. Официјалната Huawei документација опишува посебен API login со `userName` и `systemCode`, кој враќа XSRF-TOKEN; неговата важност е 30 минути. Не испробувајте обична web лозинка без потврда дека профилот е овластен за API. API најавата е ограничена, а повторени погрешни лозинки може да го заклучат профилот.
+
+Референци:
+- https://info.support.huawei.com/enterprise/en/doc/EDOC1100307213/9e1a18d2/login-interface
+- https://info.support.huawei.com/DpinfoAppDoc/pro_erp_slice001/doc/fusion_solar/faq/installer/en/en-us_topic_0000001867081537.html?styleType=white
+
+Оригиналното лого од сопственикот е зачувано во `public/zis-solar-logo.png`. Во заглавието е прикажано со CSS рамка што го скрива надворешниот бел простор; самата PNG датотека не е изменета.
