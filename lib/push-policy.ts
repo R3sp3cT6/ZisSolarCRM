@@ -17,3 +17,5 @@ export function validSubscription(value:unknown):value is {endpoint:string;keys:
  return u.protocol==='https:'&&!u.username&&!u.password&&!u.port&&!u.hash&&hosts.some(h=>u.hostname===h||u.hostname.endsWith('.'+h))&&/^[\w-]{87}=?$/.test(s.keys.p256dh)&&/^[\w-]{22}={0,2}$/.test(s.keys.auth);
  }catch{return false;}
 }
+
+export function reportTime(now=new Date()){return new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Skopje',hour:'2-digit',hourCycle:'h23'}).format(now)==='21';}

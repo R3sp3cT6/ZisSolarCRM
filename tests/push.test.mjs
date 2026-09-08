@@ -15,3 +15,5 @@ test('push endpoints reject private hosts, credentials and misleading domain suf
  for(const endpoint of ['http://fcm.googleapis.com/a','https://localhost/a','https://127.0.0.1/a','https://fcm.googleapis.com.evil.com/a','https://u:p@fcm.googleapis.com/a','https://fcm.googleapis.com:8080/a'])assert.equal(validSubscription({endpoint,keys}),false);
  assert.equal(validSubscription({endpoint:'https://fcm.googleapis.com/a',keys:{p256dh:'x',auth:'y'}}),false);
 });
+
+test('21:00 schedule follows summer and winter time',async()=>{const {reportTime}=await import('../lib/push-policy.ts');for(const d of ['2026-09-08T19:00:00Z','2026-12-08T20:00:00Z'])assert.equal(reportTime(new Date(d)),true);for(const d of ['2026-09-08T20:00:00Z','2026-12-08T19:00:00Z','2026-09-08T18:59:00Z'])assert.equal(reportTime(new Date(d)),false);});

@@ -11,7 +11,7 @@
     },
     {
       "path": "/api/push/check",
-      "schedule": "*/15 14-22 * * *"
+      "schedule": "0 19,20 * * *"
     }
   ]
 }

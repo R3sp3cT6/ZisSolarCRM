@@ -3,12 +3,12 @@ import webpush from 'web-push';
 import {db} from '../db/index';
 import {getDashboard} from './solar-server';
 import {localDate} from './energy';
-import {dayEnded} from './push-policy';
+import {reportTime} from './push-policy';
 import type {parseFusionLive} from './fusionsolar';
 export async function sendDailyPush(owner:string){
  const state=await db().prepare('SELECT state FROM fusion_state WHERE owner=?').bind(owner).first<{state:string}>();
  const live=state?(JSON.parse(state.state).live as ReturnType<typeof parseFusionLive>):null;
- if(!dayEnded(live))return {sent:0,reason:'awaiting-evening-zero'};
+ if(!reportTime())return {sent:0,reason:'awaiting-21-local'};
  if(!process.env.VAPID_PUBLIC_KEY||!process.env.VAPID_PRIVATE_KEY)return {sent:0,reason:'not-configured'};
  const day=localDate();
  const subscriptions=await db().prepare("SELECT s.* FROM push_subscriptions s JOIN users u ON u.id=s.user_id WHERE u.active=true AND u.plant_owner=?").bind(owner).all<{id:string;endpoint:string;p256dh:string;auth:string;language:'mk'|'en'}>();
