@@ -345,5 +345,7 @@
   "Тековната лозинка не е точна.": "The current password is incorrect.",
   "Новата лозинка треба да содржи од 12 до 128 знаци.": "The new password must contain 12 to 128 characters.",
   "Лозинката не е променета. Обидете се повторно.": "Password was not changed. Try again.",
-  "Huawei не го исполни барањето (код": "Huawei could not complete the request (code"
+  "Huawei не го исполни барањето (код": "Huawei could not complete the request (code",
+  "Делумен приход": "Partial revenue",
+  "Дневен приход · EUR. ≈ означува делумна сума.": "Daily revenue · EUR. ≈ indicates a partial total."
 }

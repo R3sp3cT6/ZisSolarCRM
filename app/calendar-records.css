@@ -1,4 +1,14 @@
 /* Keep confirmed zero income readable without competing with earning hours. */
+.solar-date-popover:has(.solar-calendar-revenue) { width: 420px; }
+.solar-date-popover .solar-calendar-revenue .rdp-day button { height: 56px; gap: 5px; }
+.solar-date-popover .solar-calendar-revenue .calendar-day-number { font-size: 13px; opacity: 1; }
+.solar-date-popover .calendar-day-revenue { font-size: 10px; line-height: 1; font-weight: 500; letter-spacing: -.3px; color: var(--muted-foreground); white-space: nowrap; }
+.solar-date-popover .rdp-day button[data-selected-single=true] .calendar-day-revenue { color: inherit; }
+.solar-date-popover .calendar-revenue-negative { color: #da7777; }
+.solar-date-popover .solar-calendar-revenue .solar-production-day button:before { width: 3px; height: 3px; bottom: 2px; left: calc(50% - 1.5px); }
+.calendar-revenue-legend { font-size: 11px; line-height: 1.5; margin: 0; padding: 0 18px 12px; color: var(--muted-foreground); }
+@media(max-width:400px) { .solar-date-popover .calendar-day-revenue { font-size: 8px; letter-spacing: -.4px; } }
+
 .sync-popup {
   position: fixed;
   right: 24px;

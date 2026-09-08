@@ -1,5 +1,5 @@
 'use client';
-import {t} from '@/lib/language';
+import {t,getLocale} from '@/lib/language';
 import {useLanguage} from '@/components/language-switch';
 
 
@@ -8,7 +8,7 @@ import {addDays, addMonths, addYears, format, subDays} from 'date-fns';
 import {mk} from 'date-fns/locale/mk';
 import {enGB} from 'date-fns/locale/en-GB';
 import {CalendarDays, ChevronDown, ChevronLeft, ChevronRight, Check} from 'lucide-react';
-import {Calendar} from '@/components/ui/calendar';
+import {Calendar,CalendarDayButton} from '@/components/ui/calendar';
 import {Popover, PopoverContent, PopoverDescription, PopoverTitle, PopoverTrigger} from '@/components/ui/popover';
 import {localDate} from '@/lib/energy';
 
@@ -18,15 +18,18 @@ function calendarDate(value: string) {
   return new Date(year, month - 1, day, 12);
 }
 
-export function SolarDatePicker({value, onChange, max, productionDays, step = 'day', label = t("Датум за преглед")}: {
+export function SolarDatePicker({value, onChange, max, productionDays, dailyRevenue, step = 'day', label = t("Датум за преглед")}: {
   value: string;
   onChange: (value: string) => void;
   max?: string;
   productionDays?: string[];
+  dailyRevenue?: {day:string;revenue:number|null;partial:boolean}[];
   step?: 'day' | 'month' | 'year';
   label?: string;
 }) {const language=useLanguage();
   const calendarLocale=language==='en'?enGB:mk;
+  const revenueByDay=new Map(dailyRevenue?.map(row=>[row.day,row]));
+  const money=(amount:number)=>new Intl.NumberFormat(getLocale(),{minimumFractionDigits:2,maximumFractionDigits:2,useGrouping:false}).format(amount)+' €';
   const selected = calendarDate(value);
   const today = calendarDate(localDate());
   const yesterday = subDays(today, 1);
@@ -73,7 +76,16 @@ export function SolarDatePicker({value, onChange, max, productionDays, step = 'd
         ))}
       </div>
       <Calendar
-        className="solar-calendar"
+        className={'solar-calendar'+(dailyRevenue?' solar-calendar-revenue':'')}
+        components={{DayButton: props=>{
+          const row=revenueByDay.get(format(props.day.date,'yyyy-MM-dd'));
+          const amount=row?.revenue;
+          const description=amount!=null?`${money(amount)}${row?.partial?' · '+t('Делумен приход'):''}`:'';
+          return <CalendarDayButton {...props} locale={calendarLocale} title={description||undefined} aria-label={`${props['aria-label']??''}${description?', '+description:''}`}>
+            <span className="calendar-day-number">{props.day.date.getDate()}</span>
+            {dailyRevenue&&<small className={'calendar-day-revenue'+(amount!=null&&amount<0?' calendar-revenue-negative':'')}>{amount!=null?`${row?.partial?'≈':''}${money(amount)}`:props.day.date>today?'':'—'}</small>}
+          </CalendarDayButton>;
+        }}}
         mode="single"
         required
         modifiers={{production: (date: Date) => productionDays?.includes(format(date, 'yyyy-MM-dd')) ?? false}}
@@ -104,6 +116,7 @@ export function SolarDatePicker({value, onChange, max, productionDays, step = 'd
           formatWeekdayName: date => [t("Нед"), t("Пон"), t("Вто"), t("Сре"), t("Чет"), t("Пет"), t("Саб")][date.getDay()],
         }}
       />
+      {dailyRevenue&&<p className="calendar-revenue-legend">{t("Дневен приход · EUR. ≈ означува делумна сума.")}</p>}
       <div className="solar-date-footer"><span className="solar-today-marker"/>{t("Денес")}{t(productionDays !== undefined && <><i className="solar-production-marker"/>{t("Производство")}</>)}</div>{t(productionDays !== undefined && <p className="solar-calendar-note">{t("Без ознака: нема потврдено производство во преземените податоци.")}</p>)}
     </PopoverContent>
     </Popover>
