@@ -33,22 +33,22 @@
 
 :root.dark {
   color-scheme: dark;
-  --background: #0d151c;
-  --foreground: #e5edf1;
-  --card: #151f29;
-  --sidebar: #111b24;
-  --secondary: #1c2a35;
-  --accent: #193b32;
-  --primary: #64d6b0;
-  --primary-foreground: #082b21;
-  --border: #2b3c47;
-  --muted-foreground: #a2b4bf;
-  --chart-grid: #2b3c47;
-  --chart-label: #a2b4bf;
-  --chart-green: #64d6b0;
-  --chart-blue: #8caeff;
-  --chart-bar: #387b68;
-  --chart-zero: #738d87;
+  --background: #111e30;
+  --foreground: #f0f6ff;
+  --card: #1b2d44;
+  --sidebar: #15253a;
+  --secondary: #243a54;
+  --accent: #174b4d;
+  --primary: #4de0bc;
+  --primary-foreground: #092d2b;
+  --border: #344e69;
+  --muted-foreground: #b1c5dc;
+  --chart-grid: #344e69;
+  --chart-label: #b1c5dc;
+  --chart-green: #43e3b5;
+  --chart-blue: #6cc4ff;
+  --chart-bar: #25bba6;
+  --chart-zero: #91abc5;
 }
 
 .dark :is(.topbar, .metric, .panel, .balance-strip, .user-role-cards article,
@@ -59,8 +59,9 @@
   color: var(--foreground);
 }
 .dark :is(.login-page) { background: var(--background); }
-.dark .login-art { background: linear-gradient(145deg, #101f31, #104152); }
-.dark .solar-orbit { background: linear-gradient(130deg, #eda52c, #da682b); }
+.dark .login-art { background: linear-gradient(145deg, #193457, #106777); }
+.dark .solar-orbit { background: linear-gradient(130deg, #ffc45c, #ff824c); }
+.dark :is(.panel, .metric, .user-role-cards article) { box-shadow: 0 8px 26px #07132220; }
 
 /* Keep the supplied black wordmark readable without altering the logo artwork. */
 .dark .brand-logo { background: #f5f7f6; padding: 10px; border-radius: 14px; }
@@ -89,52 +90,53 @@
 }
 .dark .nav-item[data-active=true] { background: var(--accent)!important; color: var(--primary)!important; }
 .dark .button { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); }
-.dark .button:hover { background: #83e4c3; }
+.dark .button:hover { background: #7bedd0; }
 .dark .secondary { background: var(--card); color: var(--foreground); border-color: var(--border); }
 .dark :is(.secondary:hover, .icon-button:hover) { background: var(--secondary); }
-.dark .notice { background: #142e3e; border-color: #2b4c60; color: #a9cddd; }
+.dark .notice { background: #193e59; border-color: #386889; color: #c3e8ff; }
 .dark .period-tabs { background: var(--secondary)!important; }
 .dark .period-tabs button { color: var(--muted-foreground); }
-.dark .period-tabs button[data-active] { background: #30463f!important; color: #a0efd2!important; }
-.dark .metric.metric-primary { background: #145a48; border-color: #25765f; color: #fff; }
-.dark .metric.metric-primary :is(.metric-title, .metric-title svg, .metric-value span, .metric-bottom) { color: #caeee1; }
+.dark .period-tabs button[data-active] { background: var(--primary)!important; color: var(--primary-foreground)!important; }
+.dark .metric.metric-primary { background: linear-gradient(125deg, #117568, #15556e); border-color: #2b9d99; color: #fff; }
+.dark .metric.metric-primary :is(.metric-title, .metric-title svg, .metric-value span, .metric-bottom) { color: #defff4; }
+.dark .metric-primary .metric-badge { background: #ffffff18; }
 .dark :is(.records-panel th, th) { background: var(--secondary); color: var(--muted-foreground); }
 .dark .contract-steps { border-color: var(--border); }
-.dark .status-tag { background: #193c2e; color: #8bddb6; }
-.dark .status-tag.warning { background: #3a301b; color: #efcb80; }
-.dark .negative { color: #ff9b96!important; }
-.dark .coverage-note { color: #d7bc83; }
-.dark .subtle-note.warning { background: #302a1e; border-color: #51462d; color: #e1c78e; }
+.dark .status-tag { background: #175249; color: #8af2cc; }
+.dark .status-tag.warning { background: #453b2b; color: #ffdc94; }
+.dark .negative { color: #ffaaa7!important; }
+.dark .coverage-note { color: #edcf99; }
+.dark .subtle-note.warning { background: #383429; border-color: #67593d; color: #f3d9a4; }
 .dark .solar-form :is(input, [data-slot=select-trigger]), .dark .user-editor select {
-  background: #101a23;
+  background: #14243a;
   border-color: var(--border);
   color: var(--foreground);
 }
-.dark input::placeholder { color: #80939f; }
+.dark input::placeholder { color: #93acc5; }
 .dark .hour-picker { background: var(--card)!important; }
-.dark :is(.upload-zone, .import-preview) { background: #142c25; border-color: #355e4b; color: #9addb9; }
-.dark .form-feedback.error { background: #382322; border-color: #67403b; color: #ffb3a9; }
-.dark .form-feedback.success { background: #18372a; border-color: #345e47; color: #a1e2b6; }
-.dark .empty-message { background: radial-gradient(ellipse, var(--card) 30%, #151f29c0 56%, #151f2900 77%); }
+.dark :is(.upload-zone, .import-preview) { background: #193f3e; border-color: #34756c; color: #a4f1d7; }
+.dark .form-feedback.error { background: #462c38; border-color: #84505a; color: #ffc1ba; }
+.dark .form-feedback.success { background: #1a4740; border-color: #347568; color: #a1f3d1; }
+.dark .empty-message { background: radial-gradient(ellipse, var(--card) 30%, #1b2d44c0 56%, #1b2d4400 77%); }
 .dark .grid-lines div { border-color: var(--border); }
 .dark [data-slot=dialog-overlay] { background: #0008; }
 
 /* Calendar popovers are portalled; the root class covers them on every page. */
-.dark .solar-date-heading { background: linear-gradient(135deg, #1b342d, var(--card)); }
+.dark .solar-date-heading { background: linear-gradient(135deg, #1a4b4f, var(--card)); }
 .dark .solar-date-heading [data-slot=popover-description] { color: var(--muted-foreground); }
 .dark .solar-date-shortcuts { border-color: var(--border); }
 .dark :is(.solar-date-icon, .role-icon) { background: var(--accent); color: var(--primary); }
 .dark .solar-date-shortcuts button:hover,
-.dark .solar-date-shortcuts button[data-selected=true] { background: var(--accent); color: var(--primary); border-color: #3b7060; }
+.dark .solar-date-shortcuts button[data-selected=true] { background: var(--accent); color: var(--primary); border-color: #368b80; }
 .dark .solar-calendar :is(.rdp-button_previous, .rdp-button_next, .rdp-weekday) { color: var(--muted-foreground); }
 .dark .solar-calendar :is(.rdp-button_previous:hover, .rdp-button_next:hover, .rdp-dropdown_root:hover) { background: var(--secondary); color: var(--foreground); }
 .dark .solar-calendar .rdp-day button { color: var(--foreground); }
 .dark .solar-calendar .rdp-day button:hover { background: var(--accent); color: var(--primary); }
-.dark .solar-calendar .rdp-outside button { color: #81939d; }
+.dark .solar-calendar .rdp-outside button { color: #96abc1; }
 .dark .solar-calendar .rdp-day button[data-selected-single=true] { background: var(--primary); color: var(--primary-foreground); }
 .dark .solar-calendar .rdp-today button:after, .dark .solar-today-marker { background: var(--primary); }
 .dark .solar-calendar .rdp-today button[data-selected-single=true]:after { background: var(--primary-foreground); }
-.dark .solar-calendar .rdp-disabled button { color: #667a86; }
+.dark .solar-calendar .rdp-disabled button { color: #71879e; }
 
 @media(max-width:767px) {
   .theme-toggle { top: 12px; right: 16px; width: 36px; height: 36px; }
