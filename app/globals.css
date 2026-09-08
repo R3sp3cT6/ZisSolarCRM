@@ -104,3 +104,7 @@
 
 .sync-progress{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:var(--card);color:var(--muted-foreground);font-size:13px}
 .sync-progress progress{width:100px;max-width:30%;height:5px;margin-left:auto;accent-color:var(--chart-green)}
+
+/* Keep pointer interaction free of the browser's chart outline. */
+.live-chart .recharts-surface:focus,.live-chart .recharts-wrapper:focus{outline:none}
+.live-chart .recharts-surface:focus-visible,.live-chart .recharts-wrapper:focus-visible{outline:1px solid var(--chart-green);outline-offset:3px;border-radius:4px}
