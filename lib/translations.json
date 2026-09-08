@@ -347,5 +347,6 @@
   "Лозинката не е променета. Обидете се повторно.": "Password was not changed. Try again.",
   "Huawei не го исполни барањето (код": "Huawei could not complete the request (code",
   "Делумен приход": "Partial revenue",
-  "Дневен приход · EUR. ≈ означува делумна сума.": "Daily revenue · EUR. ≈ indicates a partial total."
+  "Дневен приход · EUR. ≈ означува делумна сума.": "Daily revenue · EUR. ≈ indicates a partial total.",
+  "Курс за приказ": "Display exchange rate"
 }

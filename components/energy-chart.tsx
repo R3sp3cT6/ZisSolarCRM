@@ -1,4 +1,6 @@
 'use client';
+import {convertMoney,getCurrency,currencySymbol,EUR_MKD} from '@/lib/currency';
+import {useCurrency,CurrencySwitch} from '@/components/currency-switch';
 import {t,getLocale} from '@/lib/language';
 import {useLanguage} from '@/components/language-switch';
 
@@ -16,7 +18,7 @@ const formatValue = (value: number) => new Intl.NumberFormat(getLocale(), {minim
 const preferenceKey = 'zis-solar-energy-chart';
 const tooltipStyle = {borderRadius: 10, borderColor: 'var(--border)', backgroundColor: 'var(--card)', color: 'var(--foreground)', fontSize: 14};
 
-function EmptyChart({onConnect}: {onConnect?: () => void}) {useLanguage();
+function EmptyChart({onConnect}: {onConnect?: () => void}) {useLanguage();useCurrency();
   return <div className="empty-chart"><div className="grid-lines">{t([0, 1, 2, 3].map(i => <div key={i}/>))}</div>
     <div className="empty-message"><span className="empty-icon"><Activity size={25}/></span>
       <strong>{t("Вашиот енергетски преглед започнува тука")}</strong><p>{t("Графикот ќе се пополни со првите мерења.")}</p>
@@ -26,7 +28,7 @@ function EmptyChart({onConnect}: {onConnect?: () => void}) {useLanguage();
   </div>;
 }
 
-export function EnergyChart({data, period, onConnect}: {data: Data | null; period: Period; onConnect?: () => void}) {useLanguage();
+export function EnergyChart({data, period, onConnect}: {data: Data | null; period: Period; onConnect?: () => void}) {useLanguage();useCurrency();
   const [mode, setMode] = useState<ChartMode>('line');
   const gradientId = useId();
   useEffect(() => {
@@ -53,14 +55,14 @@ export function EnergyChart({data, period, onConnect}: {data: Data | null; perio
     <>
       <div className="chart-legend"><span><i className="legend-line green-line"/>{t("Производство · MWh")}</span><span><i className="legend-line blue-line"/>{t("Приход · EUR")}</span></div>
       {t(hasLine && data ? <div className="live-chart"><ResponsiveContainer width="100%" height="100%">
-        <ComposedChart data={data.chart.map(point => ({...point, productionMwh: toMwh(point.productionKwh)}))} margin={{top: 24, right: 0, bottom: 10, left: 0}} barGap={2} barCategoryGap="16%">
+        <ComposedChart data={data.chart.map(point => ({...point, revenue:convertMoney(point.revenue), productionMwh: toMwh(point.productionKwh)}))} margin={{top: 24, right: 0, bottom: 10, left: 0}} barGap={2} barCategoryGap="16%">
           <defs><linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="var(--chart-green)" stopOpacity={0.18}/><stop offset="100%" stopColor="var(--chart-green)" stopOpacity={0}/></linearGradient>
             {(['green','blue'] as const).map(color=><linearGradient key={color} id={`${gradientId}-${color}-bar`} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={`var(--chart-${color})`} stopOpacity={1}/><stop offset="100%" stopColor={`var(--chart-${color})`} stopOpacity={0.62}/></linearGradient>)}
           </defs>
           <CartesianGrid stroke="var(--chart-grid)" strokeDasharray="3 5" vertical={false}/>
           <XAxis dataKey="label" tickFormatter={value => String(value).split(' ')[0]} tick={{fontSize: 12, fill: 'var(--chart-label)'}} axisLine={false} tickLine={false} minTickGap={30}/>
           <YAxis yAxisId="energy" label={{value:'MWh',position:'top',offset:10,fill:'var(--chart-green)',fontSize:11,fontWeight:600}} tickFormatter={value => formatValue(Number(value))} tick={{fontSize: 12, fill: 'var(--chart-label)'}} axisLine={false} tickLine={false} width={60}/>
-          <YAxis yAxisId="money" label={{value:'EUR',position:'top',offset:10,fill:'var(--chart-blue)',fontSize:11,fontWeight:600}} orientation="right" tick={{fontSize: 12, fill: 'var(--chart-blue)'}} axisLine={false} tickLine={false} width={48}/>
+          <YAxis yAxisId="money" label={{value:getCurrency(),position:'top',offset:10,fill:'var(--chart-blue)',fontSize:11,fontWeight:600}} orientation="right" tick={{fontSize: 12, fill: 'var(--chart-blue)'}} axisLine={false} tickLine={false} width={getCurrency()==='MKD'?68:48}/>
           <Tooltip formatter={(value, name) => [formatValue(Number(value)), name === 'productionMwh' ? t("Производство (MWh)") : t("Приход (EUR)")]} contentStyle={tooltipStyle}/>
           {t(mode === 'line' ? <>
             <Area yAxisId="energy" dataKey="productionMwh" type="monotone" stroke="var(--chart-green)" strokeWidth={2} fill={`url(#${gradientId})`} dot={false} activeDot={{r: 4}} connectNulls={false}/>

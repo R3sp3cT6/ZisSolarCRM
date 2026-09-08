@@ -1,4 +1,6 @@
 'use client';
+import {convertMoney,getCurrency,currencySymbol,EUR_MKD} from '@/lib/currency';
+import {useCurrency,CurrencySwitch} from '@/components/currency-switch';
 import {t,getLocale} from '@/lib/language';
 import {useLanguage} from '@/components/language-switch';
 
@@ -26,10 +28,10 @@ export function SolarDatePicker({value, onChange, max, productionDays, dailyReve
   dailyRevenue?: {day:string;revenue:number|null;partial:boolean}[];
   step?: 'day' | 'month' | 'year';
   label?: string;
-}) {const language=useLanguage();
+}) {const language=useLanguage();useCurrency();
   const calendarLocale=language==='en'?enGB:mk;
   const revenueByDay=new Map(dailyRevenue?.map(row=>[row.day,row]));
-  const money=(amount:number)=>new Intl.NumberFormat(getLocale(),{minimumFractionDigits:0,maximumFractionDigits:0,useGrouping:false}).format(amount)+' €';
+  const money=(amount:number)=>new Intl.NumberFormat(getLocale(),{minimumFractionDigits:0,maximumFractionDigits:0,useGrouping:false}).format(convertMoney(amount)!)+' '+currencySymbol();
   const selected = calendarDate(value);
   const today = calendarDate(localDate());
   const yesterday = subDays(today, 1);

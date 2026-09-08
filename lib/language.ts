@@ -1,4 +1,5 @@
 import translations from './translations.json' with {type:'json'};
+import {currencyText} from './currency';
 export type Language = 'mk' | 'en';
 export const LANGUAGE_KEY = 'zis-solar-language';
 let language: Language = 'mk';
@@ -25,4 +26,4 @@ export function translate(value: string, lang: Language): string {
   // Handles server messages and labels containing dynamic counts or timestamps.
   return value.replace(phrases, match => dictionary[match]);
 }
-export function t<T>(value: T): T { return (typeof value === 'string' ? translate(value, language) : value) as T; }
+export function t<T>(value: T): T { return (typeof value === 'string' ? currencyText(translate(value, language)) : value) as T; }

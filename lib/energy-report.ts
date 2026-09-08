@@ -1,4 +1,5 @@
 import {getLocale} from './language';
+import {convertMoney,getCurrency} from './currency';
 const energyFormat = () => new Intl.NumberFormat(getLocale(), {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
@@ -32,9 +33,9 @@ type ReportRow = {
 };
 
 export function energyReportCsv(rows: ReportRow[], contractVersion: string) {
-  const header = 'start_utc,production_mwh,export_mwh,memo_eur_mwh,sale_eur_mwh,revenue_eur,estimate_eur,contract_version,price_fetched_at';
+  const header = `start_utc,production_mwh,export_mwh,memo_${getCurrency().toLowerCase()}_mwh,sale_${getCurrency().toLowerCase()}_mwh,revenue_${getCurrency().toLowerCase()},estimate_${getCurrency().toLowerCase()},contract_version,price_fetched_at`;
   return [header, ...rows.map(row => [
     row.start, csvNumber(toMwh(row.productionKwh)), csvNumber(toMwh(row.exportKwh)),
-    csvNumber(row.memo), csvNumber(row.sale), row.revenue, row.estimate, contractVersion, row.priceFetchedAt,
+    csvNumber(convertMoney(row.memo)), csvNumber(convertMoney(row.sale)), convertMoney(row.revenue), convertMoney(row.estimate), contractVersion, row.priceFetchedAt,
   ].map(value => value ?? '').join(','))].join('\n');
 }

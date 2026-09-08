@@ -11,7 +11,7 @@
     "start": "next start",
     "lint": "oxlint",
     "format": "oxfmt",
-    "test": "node --experimental-strip-types --import ./tests/register-ts.mjs --test tests/energy.test.mjs tests/fusionsolar.test.mjs tests/auth.test.mjs tests/candles.test.mjs tests/security.test.mjs tests/history.test.mjs tests/language.test.mjs tests/push.test.mjs",
+    "test": "node --experimental-strip-types --import ./tests/register-ts.mjs --test tests/energy.test.mjs tests/fusionsolar.test.mjs tests/auth.test.mjs tests/candles.test.mjs tests/security.test.mjs tests/history.test.mjs tests/language.test.mjs tests/push.test.mjs tests/currency.test.mjs",
     "db:migrate": "node --env-file=.env.local scripts/migrate.mjs"
   },
   "dependencies": {
