@@ -15,3 +15,50 @@
 .brand-with-logo{padding:15px 0 23px;justify-content:center}.brand-logo{display:block;width:108px;max-width:100%;background:transparent}.brand-logo img{display:block;width:100%;height:auto;object-fit:contain}.brand-with-logo:focus-visible{outline-offset:-5px}
 .fusion-connection{margin-top:26px;padding-top:1px;border-top:1px solid var(--border)}.fusion-plant-id{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:15px;font-size:14px;color:#466678}.fusion-plant-id code{background:#eef4f7;border-radius:5px;padding:5px 9px;font-size:12px;color:#607f8e}.fusion-link{margin-top:17px}.fusion-link svg{flex-shrink:0}
 .login-page{min-height:100svh;display:grid;grid-template-columns:1fr 1fr;background:#f7f9fc}.login-card{width:min(440px,calc(100% - 48px));margin:auto;padding:56px 0}.login-card .brand{padding:0;margin-bottom:32px}.login-card .brand-logo{width:120px}.login-card h1{font-size:38px;margin:15px 0}.login-card>p{color:#62738a;line-height:1.65;margin-bottom:30px}.login-card .button{justify-content:space-between;padding:14px 18px}.login-footer{display:flex;align-items:center;gap:8px;font-size:12px;color:#77879b;margin-top:28px}.login-art{background:linear-gradient(145deg,#0c2f4e,#075c79);position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:64px;color:white}.login-art>span{font-size:clamp(28px,3.5vw,54px);font-weight:600;line-height:1.2;z-index:1}.solar-orbit{position:absolute;width:470px;height:470px;border-radius:50%;background:linear-gradient(130deg,#ffb131,#ff631b);top:10%;left:18%;box-shadow:0 0 0 50px #ffffff09,0 0 0 110px #ffffff05}.account-page{max-width:580px;margin:50px auto;padding:24px}.account-page .panel{padding:30px}.account-page h1{margin:25px 0}@media(max-width:760px){.login-page{grid-template-columns:1fr}.login-art{display:none}}
+
+/* Shared calendar for reports and manual readings. */
+.solar-date-trigger{display:inline-flex;align-items:center;justify-content:flex-start;gap:10px;min-height:44px;padding:5px 12px 5px 6px;border:1px solid #dce5e8;border-radius:10px;background:#fff;color:#294851;font-size:14px;font-weight:550;white-space:nowrap;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.solar-date-trigger:hover,.solar-date-trigger[data-popup-open]{border-color:#8dbdae;box-shadow:0 0 0 3px #087e6309}
+.solar-date-trigger:focus-visible{outline:3px solid #b4ddce;outline-offset:2px}
+.solar-date-icon{display:grid;place-items:center;width:30px;height:30px;border-radius:7px;background:#edf6f1;color:#087e63}
+.solar-date-chevron{margin-left:8px;color:#6f858c;transition:transform .15s}
+.solar-date-trigger[data-popup-open] .solar-date-chevron{transform:rotate(180deg)}
+.solar-date-popover{width:344px;max-width:calc(100vw - 24px);padding:0;gap:0;border:1px solid #dce7e4;border-radius:16px;background:#fff;color:#243d44;box-shadow:0 18px 55px #193c4224,0 3px 10px #193c4209;overflow:hidden;isolation:isolate}
+.solar-date-heading{padding:18px 20px 12px;background:linear-gradient(135deg,#f1f8f4,#fff)}
+.solar-date-heading [data-slot="popover-title"]{font-size:16px;font-weight:650;letter-spacing:-.2px;line-height:1.4}
+.solar-date-heading [data-slot="popover-description"]{margin-top:4px;font-size:12px;color:#6b8085;line-height:1.5}
+.solar-date-shortcuts{display:flex;gap:8px;padding:0 20px 14px;border-bottom:1px solid #edf1ef}
+.solar-date-shortcuts button{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:6px 13px;min-height:34px;border:1px solid #dde7e3;border-radius:8px;background:#fff;font-size:12px;font-weight:600;cursor:pointer}
+.solar-date-shortcuts button:hover,.solar-date-shortcuts button[data-selected="true"]{background:#eaf6ef;color:#087e63;border-color:#c4e3d5}
+.solar-date-shortcuts button:focus-visible{outline:2px solid #087e63;outline-offset:2px}
+.solar-date-shortcuts button:disabled{opacity:.4;cursor:not-allowed}
+.solar-calendar{--cell-size:clamp(34px,10vw,44px);width:100%;padding:12px 16px 14px;background:#fff}
+.solar-calendar .rdp-month{gap:12px}
+.solar-calendar .rdp-month_caption{padding-inline:36px;height:40px}
+.solar-calendar .rdp-button_previous,.solar-calendar .rdp-button_next{width:32px;height:40px;border-radius:8px;color:#57726f;cursor:pointer}
+.solar-calendar .rdp-button_previous:hover,.solar-calendar .rdp-button_next:hover{background:#edf6f1;color:#087e63}
+.solar-calendar .rdp-dropdowns{gap:8px}
+.solar-calendar .rdp-caption_label{font-size:13px;font-weight:650;text-transform:capitalize}
+.solar-calendar .rdp-dropdown_root{padding:4px 5px;border-radius:7px}
+.solar-calendar .rdp-dropdown_root:hover{background:#eff5f2}
+.solar-calendar .rdp-dropdown_root:focus-within{outline:2px solid #8dbdae;outline-offset:1px}
+.solar-calendar .rdp-dropdown{cursor:pointer}
+.solar-calendar .rdp-weekdays{padding-bottom:3px}
+.solar-calendar .rdp-weekday{height:26px;font-size:11px;font-weight:600;color:#849690;text-align:center}
+.solar-calendar .rdp-week{margin-top:3px}
+.solar-calendar td{border:0;padding:0}
+.solar-calendar .rdp-day button{min-width:var(--cell-size);height:var(--cell-size);border-radius:9px;font-size:13px;font-weight:500;color:#2c454a;box-shadow:none;cursor:pointer}
+.solar-calendar .rdp-day button:hover{background:#eaf5ee;color:#087e63}
+.solar-calendar .rdp-outside button{color:#a9b5b3}
+.solar-calendar .rdp-today{background:transparent}
+.solar-calendar .rdp-today button:after{content:'';position:absolute;bottom:5px;left:calc(50% - 2px);width:4px;height:4px;background:#087e63;border-radius:50%}
+.solar-calendar .rdp-day button[data-selected-single="true"]{background:#087e63;color:#fff;font-weight:650;box-shadow:0 3px 7px #087e6326}
+.solar-calendar .rdp-today button[data-selected-single="true"]:after{background:#fff}
+.solar-calendar .rdp-day button:focus-visible{outline:2px solid #087e63;outline-offset:2px;z-index:20}
+.solar-calendar .rdp-disabled button{color:#b5c0bb;cursor:not-allowed}
+.solar-date-footer{display:flex;align-items:center;gap:6px;padding:12px 16px;border-top:1px solid #edf1ef;background:#fafcfb;font-size:10px;color:#718781}
+.solar-date-footer>span:last-child{margin-left:auto;color:#8b9a96}
+.solar-today-marker{width:5px;height:5px;border-radius:50%;background:#087e63}
+.solar-form .solar-date-trigger{width:100%;font-weight:500}
+.solar-form .solar-date-chevron{margin-left:auto}
+@media(max-width:600px){.toolbar-right .solar-date-trigger{flex:1;justify-content:center}.solar-date-popover{border-radius:14px}.solar-date-heading{padding-inline:16px}.solar-date-shortcuts{padding-inline:16px}}
