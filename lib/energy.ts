@@ -26,7 +26,7 @@ export function rangeFor(day:string,period:Period,hour?:string){
 }
 export function salePrice(memo:number){return memo*CONTRACT.share-CONTRACT.fixedEurMwh;}
 export function revenue(kwh:number,memo:number){return kwh/1000*salePrice(memo);}
-export type ReadingInput={start:string;productionKwh:number;exportKwh:number|null;powerKw:number|null;observedAt:string};
+export type ReadingInput={start:string;productionKwh:number|null;exportKwh:number|null;powerKw:number|null;observedAt:string};
 export function validateReadings(input:unknown,now=new Date()):ReadingInput[]{
  if(!Array.isArray(input)||input.length===0||input.length>1000)throw new Error('Внесете од 1 до 1.000 часовни мерења.');
  const seen=new Set<string>();return input.map((raw,i)=>{const r=raw as Record<string,unknown>;const fail=(message:string):never=>{throw new Error(`Ред ${i+1}: ${message}`);};

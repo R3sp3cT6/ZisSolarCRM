@@ -1,6 +1,7 @@
 import {getChatGPTUser} from '@/app/chatgpt-auth';
 import {getDashboard,saveReadings,syncMemo,db,ensurePlant} from '@/lib/solar-server';
 import {localDate,validDate,validateReadings,type Period} from '@/lib/energy';
+import {syncFusion} from '@/lib/fusionsolar-server';
 export const dynamic='force-dynamic';
 function json(body:unknown,status=200){return Response.json(body,{status,headers:{'Cache-Control':'private, no-store'}});}
 export async function GET(request:Request){
@@ -14,6 +15,7 @@ export async function POST(request:Request){
  if(Number(request.headers.get('Content-Length')??0)>500000)return json({error:'Внесот е преголем.'},413);
  try{const raw=await request.text();if(raw.length>500000)return json({error:'Внесот е преголем.'},413);const body=JSON.parse(raw);
   if(body.action==='sync'){if(!validDate(body.date))return json({error:'Невалиден датум.'},400);return json(await syncMemo(body.date,body.force===true));}
+  if(body.action==='fusion'){return json(await syncFusion(user.userId,body.date??localDate()));}
   if(body.action==='import'){const readings=validateReadings(body.readings);const count=await saveReadings(user.userId,readings,body.source==='csv'?'CSV':'Рачен внес');return json({saved:count});}
   if(body.action==='plant'){if(typeof body.name!=='string'||!body.name.trim()||body.name.length>100)return json({error:'Внесете име до 100 знаци.'},400);const cap=body.capacityKw;if(cap!==null&&(typeof cap!=='number'||!Number.isFinite(cap)||cap<=0||cap>10000000))return json({error:'Внесете валидна инсталирана моќност.'},400);await ensurePlant(user.userId);await db().prepare('UPDATE plants SET name=?,capacity_kw=? WHERE owner=?').bind(body.name.trim(),cap,user.userId).run();return json({saved:true});}
   return json({error:'Непозната операција.'},400);

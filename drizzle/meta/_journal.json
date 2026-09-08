@@ -8,6 +8,20 @@
       "when": 1788870395681,
       "tag": "0000_red_giant_girl",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1788872722049,
+      "tag": "0001_special_gambit",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1788873134013,
+      "tag": "0002_narrow_lord_tyger",
+      "breakpoints": true
     }
   ]
 }
