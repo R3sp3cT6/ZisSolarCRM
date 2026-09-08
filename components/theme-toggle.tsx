@@ -1,10 +1,13 @@
 'use client';
+import {t} from '@/lib/language';
+import {useLanguage} from '@/components/language-switch';
+
 
 import {useEffect, useState} from 'react';
 import {Moon, Sun} from 'lucide-react';
 import {THEME_STORAGE_KEY} from '@/lib/theme';
 
-export function ThemeToggle() {
+export function ThemeToggle() {useLanguage();
   const [dark, setDark] = useState(false);
 
   useEffect(() => {
@@ -36,8 +39,8 @@ export function ThemeToggle() {
   }
 
   return <button type="button" className="theme-toggle" onClick={toggle}
-    aria-label="Темен режим" aria-pressed={dark}
-    title={dark ? 'Премини во светол режим' : 'Премини во темен режим'}>
+    aria-label={t("Темен режим")} aria-pressed={dark}
+    title={dark ? t("Премини во светол режим") : t("Премини во темен режим")}>
     <Moon className="theme-moon" size={19} aria-hidden="true"/>
     <Sun className="theme-sun" size={19} aria-hidden="true"/>
   </button>;

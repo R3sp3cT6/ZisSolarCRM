@@ -1,8 +1,12 @@
 'use client';
+import {t} from '@/lib/language';
+import {useLanguage} from '@/components/language-switch';
+
 
 import {useState} from 'react';
 import {addDays, addMonths, addYears, format, subDays} from 'date-fns';
 import {mk} from 'date-fns/locale/mk';
+import {enGB} from 'date-fns/locale/en-GB';
 import {CalendarDays, ChevronDown, ChevronLeft, ChevronRight, Check} from 'lucide-react';
 import {Calendar} from '@/components/ui/calendar';
 import {Popover, PopoverContent, PopoverDescription, PopoverTitle, PopoverTrigger} from '@/components/ui/popover';
@@ -14,14 +18,15 @@ function calendarDate(value: string) {
   return new Date(year, month - 1, day, 12);
 }
 
-export function SolarDatePicker({value, onChange, max, productionDays, step = 'day', label = 'Датум за преглед'}: {
+export function SolarDatePicker({value, onChange, max, productionDays, step = 'day', label = t("Датум за преглед")}: {
   value: string;
   onChange: (value: string) => void;
   max?: string;
   productionDays?: string[];
   step?: 'day' | 'month' | 'year';
   label?: string;
-}) {
+}) {const language=useLanguage();
+  const calendarLocale=language==='en'?enGB:mk;
   const selected = calendarDate(value);
   const today = calendarDate(localDate());
   const yesterday = subDays(today, 1);
@@ -30,8 +35,8 @@ export function SolarDatePicker({value, onChange, max, productionDays, step = 'd
   const moveDate = step === 'year' ? addYears : step === 'month' ? addMonths : addDays;
   const previous = moveDate(selected, -1);
   const next = moveDate(selected, 1);
-  const previousLabel = step === 'year' ? 'Претходна година' : step === 'month' ? 'Претходен месец' : 'Претходен ден';
-  const nextLabel = step === 'year' ? 'Следна година' : step === 'month' ? 'Следен месец' : 'Следен ден';
+  const previousLabel = step === 'year' ? t("Претходна година") : step === 'month' ? t("Претходен месец") : t("Претходен ден");
+  const nextLabel = step === 'year' ? t("Следна година") : step === 'month' ? t("Следен месец") : t("Следен ден");
   const displayFormat = step === 'year' ? 'yyyy' : step === 'month' ? 'MMM yyyy' : 'dd MMM yyyy';
   const [open, setOpen] = useState(false);
   const [month, setMonth] = useState(selected);
@@ -48,24 +53,24 @@ export function SolarDatePicker({value, onChange, max, productionDays, step = 'd
     if (next) setMonth(selected);
     setOpen(next);
   }}>
-    <PopoverTrigger className="solar-date-trigger" aria-label={`${label}: ${format(selected, 'd MMMM yyyy', {locale: mk})}`}>
+    <PopoverTrigger className="solar-date-trigger" aria-label={`${label}: ${format(selected, 'd MMMM yyyy', {locale: calendarLocale})}`}>
       <span className="solar-date-icon"><CalendarDays size={17}/></span>
-      <span className="solar-date-value" aria-live="polite" aria-atomic="true">{format(selected, displayFormat, {locale: mk})}</span>
+      <span className="solar-date-value" aria-live="polite" aria-atomic="true">{t(format(selected, displayFormat, {locale: calendarLocale}))}</span>
       <ChevronDown className="solar-date-chevron" size={15}/>
     </PopoverTrigger>
     <PopoverContent className="solar-date-popover" align="end" sideOffset={8}>
       <div className="solar-date-heading">
-        <PopoverTitle>Изберете датум</PopoverTitle>
-        <PopoverDescription>{format(selected, 'EEEE, d MMMM yyyy', {locale: mk})}</PopoverDescription>
+        <PopoverTitle>{t("Изберете датум")}</PopoverTitle>
+        <PopoverDescription>{t(format(selected, 'EEEE, d MMMM yyyy', {locale: calendarLocale}))}</PopoverDescription>
       </div>
       <div className="solar-date-shortcuts">
-        {[{date: today, title: 'Денес'}, {date: yesterday, title: 'Вчера'}].map(item =>
+        {t([{date: today, title: 'Денес'}, {date: yesterday, title: 'Вчера'}].map(item =>
           <button key={item.title} type="button" disabled={!!latest && item.date > latest}
             data-selected={value === format(item.date, 'yyyy-MM-dd')}
             onClick={() => choose(item.date)}>
-            {value === format(item.date, 'yyyy-MM-dd') && <Check size={14}/>}{item.title}
+            {t(value === format(item.date, 'yyyy-MM-dd') && <Check size={14}/>)}{t(item.title)}
           </button>
-        )}
+        ))}
       </div>
       <Calendar
         className="solar-calendar"
@@ -78,7 +83,7 @@ export function SolarDatePicker({value, onChange, max, productionDays, step = 'd
         month={month}
         onMonthChange={setMonth}
         today={today}
-        locale={mk}
+        locale={calendarLocale}
         weekStartsOn={1}
         fixedWeeks
         autoFocus
@@ -87,19 +92,19 @@ export function SolarDatePicker({value, onChange, max, productionDays, step = 'd
         endMonth={max ? latest : new Date(Math.min(2099, Math.max(today.getFullYear(), selected.getFullYear()) + 1), 11, 31)}
         disabled={{before: earliest, after: latest}}
         labels={{
-          labelPrevious: () => 'Претходен месец',
-          labelNext: () => 'Следен месец',
-          labelMonthDropdown: () => 'Избери месец',
-          labelYearDropdown: () => 'Избери година',
-          labelGrid: date => format(date, 'MMMM yyyy', {locale: mk}),
-          labelDayButton: (date, modifiers) => `${format(date, 'EEEE, d MMMM yyyy', {locale: mk})}${modifiers.production ? ', има забележано производство' : ''}${modifiers.today ? ', денес' : ''}${modifiers.selected ? ', избран датум' : ''}`,
+          labelPrevious: () => t("Претходен месец"),
+          labelNext: () => t("Следен месец"),
+          labelMonthDropdown: () => t("Избери месец"),
+          labelYearDropdown: () => t("Избери година"),
+          labelGrid: date => format(date, 'MMMM yyyy', {locale: calendarLocale}),
+          labelDayButton: (date, modifiers) => `${format(date, 'EEEE, d MMMM yyyy', {locale: calendarLocale})}${modifiers.production ? t(", има забележано производство") : ''}${modifiers.today ? t(", денес") : ''}${modifiers.selected ? t(", избран датум") : ''}`,
         }}
         formatters={{
-          formatMonthDropdown: date => format(date, 'MMMM', {locale: mk}),
-          formatWeekdayName: date => ['Нед', 'Пон', 'Вто', 'Сре', 'Чет', 'Пет', 'Саб'][date.getDay()],
+          formatMonthDropdown: date => format(date, 'MMMM', {locale: calendarLocale}),
+          formatWeekdayName: date => [t("Нед"), t("Пон"), t("Вто"), t("Сре"), t("Чет"), t("Пет"), t("Саб")][date.getDay()],
         }}
       />
-      <div className="solar-date-footer"><span className="solar-today-marker"/>Денес{productionDays !== undefined && <><i className="solar-production-marker"/>Производство</>}</div>{productionDays !== undefined && <p className="solar-calendar-note">Без ознака: нема потврдено производство во преземените податоци.</p>}
+      <div className="solar-date-footer"><span className="solar-today-marker"/>{t("Денес")}{t(productionDays !== undefined && <><i className="solar-production-marker"/>{t("Производство")}</>)}</div>{t(productionDays !== undefined && <p className="solar-calendar-note">{t("Без ознака: нема потврдено производство во преземените податоци.")}</p>)}
     </PopoverContent>
     </Popover>
     <button type="button" className="solar-date-step" aria-label={nextLabel} title={nextLabel}

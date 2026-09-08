@@ -1,4 +1,5 @@
-const energyFormat = new Intl.NumberFormat('mk-MK', {
+import {getLocale} from './language';
+const energyFormat = () => new Intl.NumberFormat(getLocale(), {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 });
@@ -16,7 +17,7 @@ export function toMwh(kwh: number | null | undefined) {
 
 export function formatMwh(kwh: number | null | undefined) {
   const mwh = toMwh(kwh);
-  return mwh === null ? '—' : energyFormat.format(mwh);
+  return mwh === null ? '—' : energyFormat().format(mwh);
 }
 
 type ReportRow = {
