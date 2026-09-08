@@ -21,3 +21,17 @@
  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:0ms!important;scroll-behavior:auto!important}
  :is(.button,.icon-button,.theme-toggle,.solar-date-trigger,.nav-item,.text-button):is(:hover,:active),.nav-item:hover .nav-chevron,.text-button:hover svg{transform:none!important}
 }
+/* Layered color wash animates only while a card is being explored. */
+:is(.metric,.sidebar-contract,.user-role-cards article,.contract-panel){position:relative;isolation:isolate}
+:is(.metric,.sidebar-contract,.user-role-cards article,.contract-panel)::after{content:'';position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,transparent 5%,color-mix(in srgb,var(--chart-green) 15%,transparent) 35%,color-mix(in srgb,var(--chart-blue) 17%,transparent) 65%,transparent 95%);background-size:240% 240%;opacity:0;transition:opacity 320ms var(--ux-ease)}
+.metric-primary{background-size:180% 180%!important}
+@keyframes card-gradient-drift{0%{background-position:0% 50%}100%{background-position:100% 50%}}
+@media(hover:hover) and (pointer:fine){
+ :is(.metric,.sidebar-contract,.user-role-cards article,.contract-panel):hover::after{opacity:1;animation:card-gradient-drift 3.2s ease-in-out infinite alternate}
+ .metric-primary:hover{animation:card-gradient-drift 3.2s ease-in-out infinite alternate}
+ .contract-panel:hover{border-color:color-mix(in srgb,var(--primary) 40%,var(--border))}
+}
+@media(prefers-reduced-motion:reduce){
+ :is(.metric,.sidebar-contract,.user-role-cards article,.contract-panel)::after{animation:none!important;transition:none!important}
+ .metric-primary:hover{animation:none!important}
+}
