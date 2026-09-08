@@ -1,0 +1,142 @@
+/* Shared chart colors also reach SVG attributes and Recharts tooltips. */
+:root {
+  --chart-grid: #e7edef;
+  --chart-label: #708a95;
+  --chart-green: #159c75;
+  --chart-blue: #588de3;
+  --chart-bar: #abdccd;
+  --chart-zero: #8ca09b;
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 18px;
+  right: 24px;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--card);
+  color: var(--foreground);
+  box-shadow: 0 2px 8px #00000008;
+}
+.theme-toggle:hover { background: var(--accent); color: var(--primary); }
+.theme-sun { display: none; }
+.dark .theme-sun { display: block; }
+.dark .theme-moon { display: none; }
+.topbar { padding-right: 84px; }
+.green-line { background: var(--chart-green); }
+.blue-line { background: var(--chart-blue); }
+
+:root.dark {
+  color-scheme: dark;
+  --background: #0d151c;
+  --foreground: #e5edf1;
+  --card: #151f29;
+  --sidebar: #111b24;
+  --secondary: #1c2a35;
+  --accent: #193b32;
+  --primary: #64d6b0;
+  --primary-foreground: #082b21;
+  --border: #2b3c47;
+  --muted-foreground: #a2b4bf;
+  --chart-grid: #2b3c47;
+  --chart-label: #a2b4bf;
+  --chart-green: #64d6b0;
+  --chart-blue: #8caeff;
+  --chart-bar: #387b68;
+  --chart-zero: #738d87;
+}
+
+.dark :is(.topbar, .metric, .panel, .balance-strip, .user-role-cards article,
+  .solar-date-trigger, .solar-date-popover, .solar-calendar, .solar-date-shortcuts button,
+  .icon-button, .date-picker) {
+  background: var(--card);
+  border-color: var(--border);
+  color: var(--foreground);
+}
+.dark :is(.login-page) { background: var(--background); }
+.dark .login-art { background: linear-gradient(145deg, #101f31, #104152); }
+.dark .solar-orbit { background: linear-gradient(130deg, #eda52c, #da682b); }
+
+/* Keep the supplied black wordmark readable without altering the logo artwork. */
+.dark .brand-logo { background: #f5f7f6; padding: 10px; border-radius: 14px; }
+.dark :is(.sidebar-contract, .small-pill, .revenue-formula, .csv-explanation code,
+  .fusion-plant-id code, .avatar, .member-avatar, .empty-icon, .solar-date-footer) {
+  background: var(--secondary);
+  border-color: var(--border);
+}
+.dark :is(p, .login-card > p, .nav-label, .nav-item, .sidebar-contract small,
+  .user-card small, .breadcrumb, .timezone, .metric-title, .metric-title svg,
+  .metric-value span, .metric-bottom, .small-pill, .chart-legend, .chart-axis,
+  .page-footer, .cell-note, .fine-print, .subtle-note, .market-day-label,
+  .solar-form label, .csv-explanation, .upload-zone span, .refresh-line,
+  .balance-strip > span, .fusion-plant-id, .fusion-plant-id code, .login-footer,
+  .solar-date-chevron, .solar-date-footer, .solar-date-footer > span:last-child,
+  .user-role-cards p, .member-identity small, .member-role, .protected-member,
+  .users-loading, .member-password button, .table-empty, .source-state,
+  .contract-steps > div, .contract-note, .formula-unit, .contract-label) {
+  color: var(--muted-foreground);
+}
+.dark :is(.breadcrumb strong, .table-empty h3) { color: var(--foreground); }
+.dark :is(.eyebrow, .text-button, .money-cell, .formula, .contract-steps strong,
+  .balance-strip strong, .account-role, .member-role.admin, .sidebar-contract > svg,
+  .contract-panel .panel-heading svg, .revenue-formula, .avatar, .member-avatar) {
+  color: var(--primary);
+}
+.dark .nav-item[data-active=true] { background: var(--accent)!important; color: var(--primary)!important; }
+.dark .button { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); }
+.dark .button:hover { background: #83e4c3; }
+.dark .secondary { background: var(--card); color: var(--foreground); border-color: var(--border); }
+.dark :is(.secondary:hover, .icon-button:hover) { background: var(--secondary); }
+.dark .notice { background: #142e3e; border-color: #2b4c60; color: #a9cddd; }
+.dark .period-tabs { background: var(--secondary)!important; }
+.dark .period-tabs button { color: var(--muted-foreground); }
+.dark .period-tabs button[data-active] { background: #30463f!important; color: #a0efd2!important; }
+.dark .metric.metric-primary { background: #145a48; border-color: #25765f; color: #fff; }
+.dark .metric.metric-primary :is(.metric-title, .metric-title svg, .metric-value span, .metric-bottom) { color: #caeee1; }
+.dark :is(.records-panel th, th) { background: var(--secondary); color: var(--muted-foreground); }
+.dark .contract-steps { border-color: var(--border); }
+.dark .status-tag { background: #193c2e; color: #8bddb6; }
+.dark .status-tag.warning { background: #3a301b; color: #efcb80; }
+.dark .negative { color: #ff9b96!important; }
+.dark .coverage-note { color: #d7bc83; }
+.dark .subtle-note.warning { background: #302a1e; border-color: #51462d; color: #e1c78e; }
+.dark .solar-form :is(input, [data-slot=select-trigger]), .dark .user-editor select {
+  background: #101a23;
+  border-color: var(--border);
+  color: var(--foreground);
+}
+.dark input::placeholder { color: #80939f; }
+.dark .hour-picker { background: var(--card)!important; }
+.dark :is(.upload-zone, .import-preview) { background: #142c25; border-color: #355e4b; color: #9addb9; }
+.dark .form-feedback.error { background: #382322; border-color: #67403b; color: #ffb3a9; }
+.dark .form-feedback.success { background: #18372a; border-color: #345e47; color: #a1e2b6; }
+.dark .empty-message { background: radial-gradient(ellipse, var(--card) 30%, #151f29c0 56%, #151f2900 77%); }
+.dark .grid-lines div { border-color: var(--border); }
+.dark [data-slot=dialog-overlay] { background: #0008; }
+
+/* Calendar popovers are portalled; the root class covers them on every page. */
+.dark .solar-date-heading { background: linear-gradient(135deg, #1b342d, var(--card)); }
+.dark .solar-date-heading [data-slot=popover-description] { color: var(--muted-foreground); }
+.dark .solar-date-shortcuts { border-color: var(--border); }
+.dark :is(.solar-date-icon, .role-icon) { background: var(--accent); color: var(--primary); }
+.dark .solar-date-shortcuts button:hover,
+.dark .solar-date-shortcuts button[data-selected=true] { background: var(--accent); color: var(--primary); border-color: #3b7060; }
+.dark .solar-calendar :is(.rdp-button_previous, .rdp-button_next, .rdp-weekday) { color: var(--muted-foreground); }
+.dark .solar-calendar :is(.rdp-button_previous:hover, .rdp-button_next:hover, .rdp-dropdown_root:hover) { background: var(--secondary); color: var(--foreground); }
+.dark .solar-calendar .rdp-day button { color: var(--foreground); }
+.dark .solar-calendar .rdp-day button:hover { background: var(--accent); color: var(--primary); }
+.dark .solar-calendar .rdp-outside button { color: #81939d; }
+.dark .solar-calendar .rdp-day button[data-selected-single=true] { background: var(--primary); color: var(--primary-foreground); }
+.dark .solar-calendar .rdp-today button:after, .dark .solar-today-marker { background: var(--primary); }
+.dark .solar-calendar .rdp-today button[data-selected-single=true]:after { background: var(--primary-foreground); }
+.dark .solar-calendar .rdp-disabled button { color: #667a86; }
+
+@media(max-width:767px) {
+  .theme-toggle { top: 12px; right: 16px; width: 36px; height: 36px; }
+  .topbar { padding-right: 68px; }
+}
