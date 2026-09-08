@@ -22,13 +22,17 @@ export async function syncMemo(day:string,force=false){
   await connection.prepare('UPDATE sync_runs SET succeeded_at=?,error=NULL WHERE market_date=?').bind(attempted,day).run();return {updated:points.length,error:null,cached:false};
  }catch(error){const message=error instanceof Error?error.message:'Неуспешно преземање на MEMO цени.';await connection.prepare('UPDATE sync_runs SET error=? WHERE market_date=?').bind(message,day).run();return {updated:0,error:message,cached:false};}
 }
-export async function saveReadings(owner:string,rows:ReadingInput[],source:string){
+export async function saveReadings(owner:string,rows:ReadingInput[],source:string,preserveMissing=false){
  await ensurePlant(owner);const connection=db();const now=new Date().toISOString();
  // One PostgreSQL transaction is atomic: an import either saves every row and its revision, or none.
  const payload=JSON.stringify(rows.map(r=>({...r,id:crypto.randomUUID(),source,contractVersion:CONTRACT.version})));
+ // An incomplete API response must not erase measured values imported from device exports.
+ const updates=preserveMissing
+  ? "production_kwh=COALESCE(excluded.production_kwh,readings.production_kwh),export_kwh=COALESCE(excluded.export_kwh,readings.export_kwh),power_kw=COALESCE(excluded.power_kw,readings.power_kw),observed_at=excluded.observed_at,source=CASE WHEN (excluded.production_kwh IS NULL AND readings.production_kwh IS NOT NULL) OR (excluded.export_kwh IS NULL AND readings.export_kwh IS NOT NULL) THEN readings.source ELSE excluded.source END,updated_at=excluded.updated_at"
+  : "production_kwh=excluded.production_kwh,export_kwh=excluded.export_kwh,power_kw=excluded.power_kw,observed_at=excluded.observed_at,source=excluded.source,updated_at=excluded.updated_at";
  const statements=[
  connection.prepare("INSERT INTO reading_revisions (id,owner,start,payload,created_at) SELECT value->>'id',?,value->>'start',value::text,? FROM jsonb_array_elements(?::jsonb)").bind(owner,now,payload),
- connection.prepare("INSERT INTO readings (owner,start,production_kwh,export_kwh,power_kw,observed_at,source,updated_at) SELECT ?,value->>'start',(value->>'productionKwh')::double precision,(value->>'exportKwh')::double precision,(value->>'powerKw')::double precision,value->>'observedAt',?,? FROM jsonb_array_elements(?::jsonb) ON CONFLICT(owner,start) DO UPDATE SET production_kwh=excluded.production_kwh,export_kwh=excluded.export_kwh,power_kw=excluded.power_kw,observed_at=excluded.observed_at,source=excluded.source,updated_at=excluded.updated_at").bind(owner,source,now,payload)
+ connection.prepare("INSERT INTO readings (owner,start,production_kwh,export_kwh,power_kw,observed_at,source,updated_at) SELECT ?,value->>'start',(value->>'productionKwh')::double precision,(value->>'exportKwh')::double precision,(value->>'powerKw')::double precision,value->>'observedAt',?,? FROM jsonb_array_elements(?::jsonb) ON CONFLICT(owner,start) DO UPDATE SET "+updates).bind(owner,source,now,payload)
  ];await connection.batch(statements);return rows.length;
 }
 type DbReading={start:string;production_kwh:number|null;export_kwh:number|null;power_kw:number|null;observed_at:string;source:string;updated_at:string};

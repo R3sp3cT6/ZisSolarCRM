@@ -56,7 +56,7 @@ export async function syncFusion(owner:string,requestedDay=localDate(),options:{
   if(prior&&Date.now()-Date.parse(prior.updated_at)<2*HOUR)return;
   if(!available('/thirdData/getKpiStationHour',60000,24))return;
   const values=await call('/thirdData/getKpiStationHour',{stationCodes:FUSION_STATION,collectTime:Date.parse(day+'T12:00:00Z')},60000,24);
-  const rows=parseFusionHours(values,day);if(rows.length)updated+=await saveReadings(owner,rows,'Huawei FusionSolar · часовен извештај');
+  const rows=parseFusionHours(values,day);if(rows.length)updated+=await saveReadings(owner,rows,'Huawei FusionSolar · часовен извештај',true);
   await connection.prepare("INSERT INTO fusion_reports (owner,kind,period,payload,updated_at) VALUES (?,'hour',?,?,?) ON CONFLICT(owner,kind,period) DO UPDATE SET payload=excluded.payload,updated_at=excluded.updated_at").bind(owner,day,JSON.stringify(hourlyReportCoverage(rows,day)),new Date().toISOString()).run();
   await syncMemo(day);
  }
