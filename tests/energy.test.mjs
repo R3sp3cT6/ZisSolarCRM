@@ -3,19 +3,19 @@ import assert from 'node:assert/strict';
 import {slotsForDay,rangeFor,validDate,salePrice,revenue,validateReadings,parseMemo,localDate} from '../lib/energy.ts';
 import {toMwh,formatMwh,energyReportCsv} from '../lib/energy-report.ts';
 
-test('MWh reports retain missing readings, zero and fractional kWh precision',()=>{
+test('MWh display uses two decimals while conversion retains source precision',()=>{
  assert.equal(toMwh(1000),1);assert.equal(toMwh(627.17),0.62717);
  assert.equal(toMwh(0),0);assert.equal(toMwh(null),null);assert.equal(toMwh(undefined),null);
- assert.equal(formatMwh(1000),'1,000');assert.equal(formatMwh(627.17),'0,62717');
- assert.equal(formatMwh(null),'—');assert.equal(formatMwh(0),'0,000');
+ assert.equal(formatMwh(1000),'1,00');assert.equal(formatMwh(627.17),'0,63');
+ assert.equal(formatMwh(null),'—');assert.equal(formatMwh(0),'0,00');
 });
 
-test('CSV converts energy to MWh once and leaves hourly prices and revenue intact',()=>{
+test('CSV formats MWh and EUR/MWh to two decimals without changing source values or revenue',()=>{
  const row={start:'2026-09-08T10:00:00.000Z',productionKwh:627.17,exportKwh:623,memo:100,sale:91.8,revenue:57.1914,estimate:null,priceFetchedAt:'2026-09-08T09:00:00.000Z'};
  const [header,measured,missing]=energyReportCsv([row,{...row,productionKwh:0,exportKwh:null,memo:0,sale:-2.2,revenue:null}], 'contract-v1').split('\n');
  assert.deepEqual(header.split(',').slice(1,3),['production_mwh','export_mwh']);
- assert.deepEqual(measured.split(','),[row.start,'0.62717','0.623','100','91.8','57.1914','','contract-v1',row.priceFetchedAt]);
- assert.deepEqual(missing.split(',').slice(1,7),['0','','0','-2.2','','']);
+ assert.deepEqual(measured.split(','),[row.start,'0.63','0.62','100.00','91.80','57.1914','','contract-v1',row.priceFetchedAt]);
+ assert.deepEqual(missing.split(',').slice(1,7),['0.00','','0.00','-2.20','','']);
  assert.equal(row.productionKwh,627.17);
 });
 test('contract uses MWh conversion and keeps zero and negative prices',()=>{
