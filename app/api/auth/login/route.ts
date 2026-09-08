@@ -8,7 +8,7 @@ export async function POST(request:Request){
  try {
   const body=await readJson(request,2048);
   const username=typeof body.username==='string'?body.username.trim().toLowerCase():'';
-  if(!/^[a-z0-9][a-z0-9._@+\-]{2,99}$/.test(username)||typeof body.password!=='string'||body.password.length>128)return Response.json({error:'Погрешно корисничко име или лозинка.'},{status:401});
+  if(!/^[a-z0-9][a-z0-9._+\-]*@[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?)+$/.test(username)||typeof body.password!=='string'||body.password.length>128)return Response.json({error:'Погрешна е-пошта или лозинка.'},{status:401});
   // Vercel overwrites this trusted header; never trust a caller's X-Forwarded-For.
   const ip=process.env.VERCEL?request.headers.get('x-vercel-forwarded-for')?.split(',')[0]?.trim()??'unknown':'local';
   const ipKey='login-ip:'+tokenHash(ip),accountKey='login-account:'+tokenHash(username);
@@ -16,7 +16,7 @@ export async function POST(request:Request){
   if(!await authLimit(accountKey,10))return Response.json({error:'Премногу обиди. Обидете се по 15 минути.'},{status:429,headers:{'Retry-After':'900'}});
   const row=await db().prepare('SELECT id,password_hash,active FROM users WHERE username=?').bind(username).first<{id:string;password_hash:string;active:boolean}>();
   const valid=await verifyPassword(body.password,row?.password_hash??('scrypt-v1:'+'0'.repeat(32)+':'+'0'.repeat(128)));
-  if(!row||!row.active||!valid)return Response.json({error:'Погрешно корисничко име или лозинка.'},{status:401});
+  if(!row||!row.active||!valid)return Response.json({error:'Погрешна е-пошта или лозинка.'},{status:401});
   await createSession(row.id,row.password_hash);
   await db().prepare('DELETE FROM auth_limits WHERE key=?').bind(accountKey).run();
   return Response.json({ok:true},{headers:{'Cache-Control':'no-store'}});

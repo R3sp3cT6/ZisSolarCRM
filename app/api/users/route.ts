@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     if (!body || !['create','update'].includes(body.action)) return json({error:'Невалидна операција.'},400);
     const username = typeof body.username === 'string' ? body.username.trim().toLowerCase() : '';
     const name = typeof body.displayName === 'string' ? body.displayName.trim() : '';
-    if (!/^[a-z0-9][a-z0-9._@+\-]{2,99}$/.test(username)) return json({error:'Корисничкото име треба да има 3–100 латинични букви, бројки или знаци . _ @ + -'},400);
+    if (!/^[a-z0-9][a-z0-9._+\-]*@[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?)+$/.test(username)) return json({error:'Внесете валидна е-пошта.'},400);
     if (!name || name.length > 100) return json({error:'Внесете име до 100 знаци.'},400);
     if (!['admin','viewer'].includes(body.role) || typeof body.active !== 'boolean') return json({error:'Изберете валидна улога и статус.'},400);
     const changingPassword = body.action === 'create' || (body.password !== undefined && body.password !== '');
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
     return json({ok:true});
   } catch (error) {
     if(error instanceof RequestError)return json({error:error.message},error.status);
-    if (error && typeof error === 'object' && 'code' in error && error.code === '23505') return json({error:'Ова корисничко име веќе се користи.'},409);
+    if (error && typeof error === 'object' && 'code' in error && error.code === '23505') return json({error:'Оваа е-пошта веќе се користи.'},409);
     return json({error:'Корисникот не е зачуван. Проверете го внесот и обидете се повторно.'},400);
   }
 }
