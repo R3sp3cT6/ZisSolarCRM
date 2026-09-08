@@ -108,3 +108,6 @@
 /* Keep pointer interaction free of the browser's chart outline. */
 .live-chart .recharts-surface:focus,.live-chart .recharts-wrapper:focus{outline:none}
 .live-chart .recharts-surface:focus-visible,.live-chart .recharts-wrapper:focus-visible{outline:1px solid var(--chart-green);outline-offset:3px;border-radius:4px}
+
+/* SVG series can receive focus independently of the chart surface. */
+.live-chart .recharts-wrapper *:focus,.live-chart .recharts-wrapper *:focus-visible{outline:none!important}
