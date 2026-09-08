@@ -1,0 +1,12 @@
+.git
+.openai
+.wrangler
+.env*
+work
+outputs
+legacy
+dist
+tests
+zissolarpass.txt
+*.tar.gz
+*.dpapi

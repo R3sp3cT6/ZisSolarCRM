@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS plants (owner text PRIMARY KEY, name text NOT NULL DEFAULT 'Мојата централа', capacity_kw double precision, created_at text NOT NULL);
+CREATE TABLE IF NOT EXISTS readings (owner text NOT NULL REFERENCES plants(owner), start text NOT NULL, production_kwh double precision CHECK (production_kwh >= 0), export_kwh double precision CHECK (export_kwh >= 0), power_kw double precision CHECK (power_kw >= 0), observed_at text NOT NULL, source text NOT NULL, updated_at text NOT NULL, PRIMARY KEY(owner,start));
+CREATE TABLE IF NOT EXISTS reading_revisions (id text PRIMARY KEY, owner text NOT NULL REFERENCES plants(owner), start text NOT NULL, payload text NOT NULL, created_at text NOT NULL);
+CREATE INDEX IF NOT EXISTS idx_reading_revisions_owner_start ON reading_revisions(owner,start);
+CREATE TABLE IF NOT EXISTS prices (start text PRIMARY KEY, market_date text NOT NULL, eur_cents integer NOT NULL, fetched_at text NOT NULL, source text NOT NULL);
+CREATE INDEX IF NOT EXISTS idx_prices_market_date ON prices(market_date);
+CREATE TABLE IF NOT EXISTS price_revisions (id text PRIMARY KEY, start text NOT NULL, eur_cents integer NOT NULL, fetched_at text NOT NULL);
+CREATE INDEX IF NOT EXISTS idx_price_revisions_start ON price_revisions(start);
+CREATE TABLE IF NOT EXISTS sync_runs (market_date text PRIMARY KEY, attempted_at text NOT NULL, succeeded_at text, error text);
+CREATE TABLE IF NOT EXISTS fusion_state (owner text PRIMARY KEY REFERENCES plants(owner), state text NOT NULL DEFAULT '{}', lock_token text, lock_until bigint NOT NULL DEFAULT 0);
+CREATE TABLE IF NOT EXISTS fusion_reports (owner text NOT NULL REFERENCES plants(owner), kind text NOT NULL, period text NOT NULL, payload text NOT NULL, updated_at text NOT NULL, PRIMARY KEY(owner,kind,period));
+CREATE TABLE IF NOT EXISTS users (id text PRIMARY KEY REFERENCES plants(owner), username text UNIQUE NOT NULL, display_name text NOT NULL, password_hash text NOT NULL, created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE IF NOT EXISTS sessions (token_hash text PRIMARY KEY, user_id text NOT NULL REFERENCES users(id), expires_at timestamptz NOT NULL, created_at timestamptz NOT NULL DEFAULT now());
+CREATE INDEX IF NOT EXISTS idx_sessions_expires ON sessions(expires_at);
+CREATE TABLE IF NOT EXISTS auth_limits (key text PRIMARY KEY, attempts integer NOT NULL, reset_at timestamptz NOT NULL);
+CREATE TABLE IF NOT EXISTS collector_runs (id text PRIMARY KEY, started_at timestamptz NOT NULL DEFAULT now(), completed_at timestamptz, status text NOT NULL, detail text);

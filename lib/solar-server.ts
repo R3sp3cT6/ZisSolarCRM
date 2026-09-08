@@ -1,7 +1,8 @@
-import {env} from 'cloudflare:workers';
+import {db} from '../db/index';
+export {db} from '../db/index';
+const env=process.env;
 import {CONTRACT,MEMO_URL,parseMemo,rangeFor,slotsForDay,localDate,hourLabel,salePrice,revenue,type Period,type ReadingInput} from './energy';
 import {FUSION_GRID_DATE,type parseFusionLive} from './fusionsolar';
-export function db(){if(!env.DB)throw new Error('Базата моментално не е достапна.');return env.DB;}
 export async function ensurePlant(owner:string){await db().prepare('INSERT INTO plants (owner, created_at) VALUES (?, ?) ON CONFLICT(owner) DO NOTHING').bind(owner,new Date().toISOString()).run();}
 export async function syncMemo(day:string,force=false){
  const connection=db();const previous=await connection.prepare('SELECT * FROM sync_runs WHERE market_date=?').bind(day).first<{attempted_at:string;succeeded_at:string|null;error:string|null}>();
@@ -21,11 +22,11 @@ export async function syncMemo(day:string,force=false){
 }
 export async function saveReadings(owner:string,rows:ReadingInput[],source:string){
  await ensurePlant(owner);const connection=db();const now=new Date().toISOString();
- // One D1 batch is atomic: an import either saves every row and its revision, or none.
+ // One PostgreSQL transaction is atomic: an import either saves every row and its revision, or none.
  const payload=JSON.stringify(rows.map(r=>({...r,id:crypto.randomUUID(),source,contractVersion:CONTRACT.version})));
  const statements=[
- connection.prepare("INSERT INTO reading_revisions (id,owner,start,payload,created_at) SELECT json_extract(value,'$.id'),?,json_extract(value,'$.start'),value,? FROM json_each(?)").bind(owner,now,payload),
- connection.prepare("INSERT INTO readings (owner,start,production_kwh,export_kwh,power_kw,observed_at,source,updated_at) SELECT ?,json_extract(value,'$.start'),json_extract(value,'$.productionKwh'),json_extract(value,'$.exportKwh'),json_extract(value,'$.powerKw'),json_extract(value,'$.observedAt'),?,? FROM json_each(?) WHERE 1 ON CONFLICT(owner,start) DO UPDATE SET production_kwh=excluded.production_kwh,export_kwh=excluded.export_kwh,power_kw=excluded.power_kw,observed_at=excluded.observed_at,source=excluded.source,updated_at=excluded.updated_at").bind(owner,source,now,payload)
+ connection.prepare("INSERT INTO reading_revisions (id,owner,start,payload,created_at) SELECT value->>'id',?,value->>'start',value::text,? FROM jsonb_array_elements(?::jsonb)").bind(owner,now,payload),
+ connection.prepare("INSERT INTO readings (owner,start,production_kwh,export_kwh,power_kw,observed_at,source,updated_at) SELECT ?,value->>'start',(value->>'productionKwh')::double precision,(value->>'exportKwh')::double precision,(value->>'powerKw')::double precision,value->>'observedAt',?,? FROM jsonb_array_elements(?::jsonb) ON CONFLICT(owner,start) DO UPDATE SET production_kwh=excluded.production_kwh,export_kwh=excluded.export_kwh,power_kw=excluded.power_kw,observed_at=excluded.observed_at,source=excluded.source,updated_at=excluded.updated_at").bind(owner,source,now,payload)
  ];await connection.batch(statements);return rows.length;
 }
 type DbReading={start:string;production_kwh:number|null;export_kwh:number|null;power_kw:number|null;observed_at:string;source:string;updated_at:string};
@@ -43,7 +44,7 @@ export async function getDashboard(owner:string,day:string,period:Period,hour?:s
  connection.prepare('SELECT attempted_at,succeeded_at,error FROM sync_runs WHERE market_date=?').bind(day).first(),
  connection.prepare('SELECT state FROM fusion_state WHERE owner=?').bind(owner).first<{state:string}>(),
  connection.prepare('SELECT payload FROM fusion_reports WHERE owner=? AND kind=? AND period=?').bind(owner,period==='year'?'month':'day',period==='year'?day.slice(0,4):day.slice(0,7)).first<{payload:string}>(),
- connection.prepare("SELECT count(*) AS count FROM fusion_reports WHERE owner=? AND kind='hour' AND json_extract(payload,'$.complete')=1").bind(owner).first<{count:number}>()
+ connection.prepare("SELECT count(*)::integer AS count FROM fusion_reports WHERE owner=? AND kind='hour' AND (payload::jsonb->>'complete')::boolean=true").bind(owner).first<{count:number}>()
  ]);
  const fusionState=fusionRecord?JSON.parse(fusionRecord.state) as {live?:ReturnType<typeof parseFusionLive>;lastSuccess?:string;error?:string}:{};
  const fusion={configured:!!(env.FUSIONSOLAR_PASSWORD&&env.FUSIONSOLAR_OWNER===owner),connected:!!fusionState.live,lastSuccess:fusionState.lastSuccess??null,error:fusionState.error??null,live:fusionState.live??null,archivedDays:archiveCount?.count??0,gridDate:FUSION_GRID_DATE};

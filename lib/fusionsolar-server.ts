@@ -1,4 +1,4 @@
-import {env} from 'cloudflare:workers';
+const env=process.env;
 import {db,ensurePlant,saveReadings,syncMemo} from './solar-server';
 import {localDate,validDate,slotsForDay} from './energy';
 import {FUSION_ORIGIN,FUSION_STATION,FUSION_GRID_DATE,parseFusionHours,parseFusionLive,parseFusionReport} from './fusionsolar';
