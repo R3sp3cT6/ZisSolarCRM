@@ -1,9 +1,9 @@
 'use client';
 
 import {useState} from 'react';
-import {format, subDays} from 'date-fns';
+import {addDays, addMonths, addYears, format, subDays} from 'date-fns';
 import {mk} from 'date-fns/locale/mk';
-import {CalendarDays, ChevronDown, Check} from 'lucide-react';
+import {CalendarDays, ChevronDown, ChevronLeft, ChevronRight, Check} from 'lucide-react';
 import {Calendar} from '@/components/ui/calendar';
 import {Popover, PopoverContent, PopoverDescription, PopoverTitle, PopoverTrigger} from '@/components/ui/popover';
 import {localDate} from '@/lib/energy';
@@ -14,31 +14,42 @@ function calendarDate(value: string) {
   return new Date(year, month - 1, day, 12);
 }
 
-export function SolarDatePicker({value, onChange, max, label = 'Датум за преглед'}: {
+export function SolarDatePicker({value, onChange, max, step = 'day', label = 'Датум за преглед'}: {
   value: string;
   onChange: (value: string) => void;
   max?: string;
+  step?: 'day' | 'month' | 'year';
   label?: string;
 }) {
   const selected = calendarDate(value);
   const today = calendarDate(localDate());
   const yesterday = subDays(today, 1);
-  const latest = max ? calendarDate(max) : undefined;
+  const earliest = calendarDate('2023-01-01');
+  const latest = calendarDate(max ?? '2099-12-31');
+  const moveDate = step === 'year' ? addYears : step === 'month' ? addMonths : addDays;
+  const previous = moveDate(selected, -1);
+  const next = moveDate(selected, 1);
+  const previousLabel = step === 'year' ? 'Претходна година' : step === 'month' ? 'Претходен месец' : 'Претходен ден';
+  const nextLabel = step === 'year' ? 'Следна година' : step === 'month' ? 'Следен месец' : 'Следен ден';
+  const displayFormat = step === 'year' ? 'yyyy' : step === 'month' ? 'MMM yyyy' : 'dd MMM yyyy';
   const [open, setOpen] = useState(false);
   const [month, setMonth] = useState(selected);
   const choose = (date: Date) => {
-    if (latest && date > latest) return;
+    if (date < earliest || date > latest) return;
     onChange(format(date, 'yyyy-MM-dd'));
     setOpen(false);
   };
 
-  return <Popover open={open} onOpenChange={next => {
+  return <span className="solar-date-navigation" role="group" aria-label={label}>
+    <button type="button" className="solar-date-step" aria-label={previousLabel} title={previousLabel}
+      disabled={previous < earliest} onClick={() => choose(previous)}><ChevronLeft size={18}/></button>
+    <Popover open={open} onOpenChange={next => {
     if (next) setMonth(selected);
     setOpen(next);
   }}>
     <PopoverTrigger className="solar-date-trigger" aria-label={`${label}: ${format(selected, 'd MMMM yyyy', {locale: mk})}`}>
       <span className="solar-date-icon"><CalendarDays size={17}/></span>
-      <span>{format(selected, 'dd MMM yyyy', {locale: mk})}</span>
+      <span className="solar-date-value" aria-live="polite" aria-atomic="true">{format(selected, displayFormat, {locale: mk})}</span>
       <ChevronDown className="solar-date-chevron" size={15}/>
     </PopoverTrigger>
     <PopoverContent className="solar-date-popover" align="end" sideOffset={8}>
@@ -69,9 +80,9 @@ export function SolarDatePicker({value, onChange, max, label = 'Датум за 
         fixedWeeks
         autoFocus
         captionLayout="dropdown"
-        startMonth={new Date(2023, 0, 1)}
-        endMonth={latest ?? new Date(Math.max(today.getFullYear(), selected.getFullYear()) + 1, 11, 31)}
-        disabled={latest ? {after: latest} : undefined}
+        startMonth={earliest}
+        endMonth={max ? latest : new Date(Math.min(2099, Math.max(today.getFullYear(), selected.getFullYear()) + 1), 11, 31)}
+        disabled={{before: earliest, after: latest}}
         labels={{
           labelPrevious: () => 'Претходен месец',
           labelNext: () => 'Следен месец',
@@ -87,5 +98,8 @@ export function SolarDatePicker({value, onChange, max, label = 'Датум за 
       />
       <div className="solar-date-footer"><span className="solar-today-marker"/>Денес<span>Изборот се применува веднаш</span></div>
     </PopoverContent>
-  </Popover>;
+    </Popover>
+    <button type="button" className="solar-date-step" aria-label={nextLabel} title={nextLabel}
+      disabled={next > latest} onClick={() => choose(next)}><ChevronRight size={18}/></button>
+  </span>;
 }

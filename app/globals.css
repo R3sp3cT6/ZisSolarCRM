@@ -17,6 +17,16 @@
 .login-page{min-height:100svh;display:grid;grid-template-columns:1fr 1fr;background:#f7f9fc}.login-card{width:min(440px,calc(100% - 48px));margin:auto;padding:56px 0}.login-card .brand{padding:0;margin-bottom:32px}.login-card .brand-logo{width:120px}.login-card h1{font-size:38px;margin:15px 0}.login-card>p{color:#62738a;line-height:1.65;margin-bottom:30px}.login-card .button{justify-content:space-between;padding:14px 18px}.login-footer{display:flex;align-items:center;gap:8px;font-size:12px;color:#77879b;margin-top:28px}.login-art{background:linear-gradient(145deg,#0c2f4e,#075c79);position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:64px;color:white}.login-art>span{font-size:clamp(28px,3.5vw,54px);font-weight:600;line-height:1.2;z-index:1}.solar-orbit{position:absolute;width:470px;height:470px;border-radius:50%;background:linear-gradient(130deg,#ffb131,#ff631b);top:10%;left:18%;box-shadow:0 0 0 50px #ffffff09,0 0 0 110px #ffffff05}.account-page{max-width:580px;margin:50px auto;padding:24px}.account-page .panel{padding:30px}.account-page h1{margin:25px 0}@media(max-width:760px){.login-page{grid-template-columns:1fr}.login-art{display:none}}
 
 /* Shared calendar for reports and manual readings. */
+.solar-date-navigation{display:inline-flex;align-items:center;gap:6px;max-width:100%;min-width:0}
+.solar-date-step{display:grid;place-items:center;flex:0 0 40px;width:40px;height:44px;border:1px solid var(--border);border-radius:10px;background:var(--card);color:var(--muted-foreground)}
+.solar-date-step:hover:not(:disabled){background:var(--accent);border-color:var(--primary);color:var(--primary)}
+.solar-date-step:disabled{opacity:.35;cursor:not-allowed}
+.solar-date-value{min-width:90px;text-align:center;font-variant-numeric:tabular-nums}
+.solar-form .solar-date-navigation{width:100%;gap:4px}
+.solar-form .solar-date-step{flex-basis:32px;width:32px}
+.solar-form .solar-date-navigation .solar-date-icon{display:none}
+.solar-form .solar-date-navigation .solar-date-trigger{flex:1;min-width:0;width:auto}
+@media(max-width:600px){.toolbar-right .solar-date-navigation{width:100%}.solar-date-navigation .solar-date-trigger{flex:1;min-width:0}.solar-date-navigation .solar-date-chevron{margin-left:auto}}
 .solar-date-trigger{display:inline-flex;align-items:center;justify-content:flex-start;gap:10px;min-height:44px;padding:5px 12px 5px 6px;border:1px solid #dce5e8;border-radius:10px;background:#fff;color:#294851;font-size:14px;font-weight:550;white-space:nowrap;cursor:pointer;transition:border-color .15s,box-shadow .15s}
 .solar-date-trigger:hover,.solar-date-trigger[data-popup-open]{border-color:#8dbdae;box-shadow:0 0 0 3px #087e6309}
 .solar-date-trigger:focus-visible{outline:3px solid #b4ddce;outline-offset:2px}
