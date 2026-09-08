@@ -62,9 +62,9 @@ export function EnergyChart({data, period, onConnect}: {data: Data | null; perio
     <>
       <div className="chart-legend"><span><i className="legend-line green-line"/>{t("Производство · MWh")}</span><span><i className="legend-line blue-line"/>{t("Приход · EUR")}</span></div>
       {t(hasLine && data ? <div className="live-chart"><ResponsiveContainer width="100%" height="100%">
-        <ComposedChart data={data.chart.map(point => ({...point, revenue:convertMoney(point.revenue), productionMwh: toMwh(point.productionKwh)}))} margin={{top: 24, right: 0, bottom: 10, left: 0}} barGap={2} barCategoryGap="16%">
+        <ComposedChart data={data.chart.map(point => ({...point, revenue:convertMoney(point.revenue), productionMwh: toMwh(point.productionKwh)}))} margin={{top: 24, right: 0, bottom: 10, left: 0}} barGap={2} barCategoryGap="20%">
           <defs><linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="var(--chart-green)" stopOpacity={0.18}/><stop offset="100%" stopColor="var(--chart-green)" stopOpacity={0}/></linearGradient>
-            {(['green','blue'] as const).map(color=><linearGradient key={color} id={`${gradientId}-${color}-bar`} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={`var(--chart-${color})`} stopOpacity={1}/><stop offset="100%" stopColor={`var(--chart-${color})`} stopOpacity={0.62}/></linearGradient>)}
+            {(['green','blue'] as const).map(color=><linearGradient key={color} id={`${gradientId}-${color}-bar`} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={`var(--chart-${color})`} stopOpacity={0.85}/><stop offset="45%" stopColor={`var(--column-${color}-mid)`}/><stop offset="100%" stopColor={`var(--column-${color}-base)`}/></linearGradient>)}
           </defs>
           <CartesianGrid stroke="var(--chart-grid)" strokeDasharray="3 5" vertical={false}/>
           <XAxis dataKey="label" tickFormatter={value => String(value).split(' ')[0]} tick={{fontSize: 12, fill: 'var(--chart-label)'}} axisLine={false} tickLine={false} minTickGap={30}/>
@@ -75,10 +75,10 @@ export function EnergyChart({data, period, onConnect}: {data: Data | null; perio
             <Area yAxisId="energy" dataKey="productionMwh" type="monotone" stroke="var(--chart-green)" strokeWidth={2} fill={`url(#${gradientId})`} dot={false} activeDot={{r: 4}} connectNulls={false}/>
             <Line yAxisId="money" dataKey="revenue" type="monotone" stroke="var(--chart-blue)" strokeWidth={2} dot={false} activeDot={{r: 4}} connectNulls={false}/>
           </> : <>
-            <Bar yAxisId="energy" dataKey="productionMwh" fill={`url(#${gradientId}-green-bar)`} fillOpacity={0.35} isAnimationActive={false}
-              shape={props=><Rectangle {...props} width={Number(props.width)*2+2} radius={[6,6,0,0]}/>}/>
-            <Bar yAxisId="money" dataKey="revenue" fill={`url(#${gradientId}-blue-bar)`} fillOpacity={0.9} isAnimationActive={false}
-              shape={props=><Rectangle {...props} x={Number(props.x)-Number(props.width)-2} width={Number(props.width)*2+2} radius={[6,6,0,0]}/>}/>
+            <Bar yAxisId="energy" dataKey="productionMwh" fill={`url(#${gradientId}-green-bar)`} fillOpacity={0.28} isAnimationActive={false}
+              shape={props=><Rectangle {...props} width={Number(props.width)*2+2} radius={[4,4,0,0]}/>}/>
+            <Bar yAxisId="money" dataKey="revenue" fill={`url(#${gradientId}-blue-bar)`} fillOpacity={1} isAnimationActive={false}
+              shape={props=><Rectangle {...props} x={Number(props.x)-Number(props.width)-2} width={Number(props.width)*2+2} radius={[4,4,0,0]}/>}/>
           </>)}
         </ComposedChart>
       </ResponsiveContainer></div> : <EmptyChart onConnect={onConnect}/>)}

@@ -152,3 +152,6 @@
   .theme-toggle { top: 12px; right: 16px; width: 36px; height: 36px; }
   .topbar { padding-right: 68px; }
 }
+
+:root{--column-blue-mid:#4679e0;--column-blue-base:#2453ba;--column-green-mid:#24b88d;--column-green-base:#08775b}
+:root.dark{--column-blue-mid:#438ee9;--column-blue-base:#285ac7;--column-green-mid:#29bb93;--column-green-base:#14836b}
