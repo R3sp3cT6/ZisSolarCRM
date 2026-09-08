@@ -1,0 +1,88 @@
+/* Keep confirmed zero income readable without competing with earning hours. */
+.records-panel .zero-revenue-row td,
+.records-panel .zero-revenue-row td :is(strong, small, span) {
+  color: #78838c !important;
+  font-weight: 400;
+}
+.records-panel .zero-revenue-row .status-tag { background: #edf0f2; }
+.dark .records-panel .zero-revenue-row td,
+.dark .records-panel .zero-revenue-row td :is(strong, small, span) { color: #92a0b0 !important; }
+.dark .records-panel .zero-revenue-row .status-tag { background: #2a3546; }
+
+.solar-date-popover {
+  width: 360px;
+  border-radius: 20px;
+  box-shadow: 0 18px 55px #102d3829;
+}
+.solar-date-popover .solar-date-heading {
+  padding: 20px 20px 10px;
+  background: var(--card);
+}
+.solar-date-popover .solar-date-shortcuts {
+  padding: 0 20px 16px;
+  gap: 8px;
+}
+.solar-date-popover .solar-date-shortcuts button {
+  border-radius: 10px;
+  min-height: 36px;
+  padding: 7px 15px;
+}
+.solar-date-popover .solar-calendar { padding: 14px 16px 16px; }
+.solar-date-popover .rdp-month { gap: 14px; }
+.solar-date-popover .rdp-month_caption { height: 42px; padding-inline: 42px; }
+.solar-date-popover :is(.rdp-button_previous, .rdp-button_next) {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: var(--secondary);
+  border: 1px solid var(--border);
+}
+.solar-date-popover .rdp-caption_label { font-size: 14px; }
+/* Override report-table header styling inside the date grid. */
+.solar-date-popover .rdp-weekday {
+  background: transparent !important;
+  border: 0;
+  border-radius: 0;
+  height: 28px;
+  padding: 3px 0;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+.solar-date-popover .rdp-week { margin-top: 4px; gap: 3px; }
+.solar-date-popover .rdp-day { min-width: 0; }
+.solar-date-popover .rdp-day button {
+  width: 100%;
+  min-width: 0;
+  height: 42px;
+  border-radius: 11px;
+  font-size: 13px;
+}
+.solar-date-popover .rdp-today button { box-shadow: inset 0 0 0 1px var(--primary); }
+.solar-date-popover .rdp-today button:after { display: none; }
+.solar-date-popover .solar-production-day button:before {
+  width: 5px;
+  height: 5px;
+  left: calc(50% - 2.5px);
+  bottom: 4px;
+  border-radius: 50%;
+}
+.solar-date-popover .rdp-outside button { opacity: .55; }
+.solar-date-popover .solar-date-footer {
+  gap: 7px;
+  padding: 13px 18px 8px;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+}
+.solar-date-popover .solar-today-marker {
+  width: 8px;
+  height: 8px;
+  background: transparent;
+  border: 1px solid var(--primary);
+}
+.solar-date-popover .solar-production-marker { width: 5px; height: 5px; border-radius: 50%; }
+.solar-date-popover .solar-calendar-note { padding: 0 18px 16px; font-size: 11px; line-height: 1.6; }
+@media (max-width: 400px) {
+  .solar-date-popover .solar-calendar { padding-inline: 12px; }
+  .solar-date-popover .rdp-week { gap: 2px; }
+}
