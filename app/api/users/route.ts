@@ -13,8 +13,8 @@ export async function GET() {
   const actor = await getUser();
   if (!actor) return json({error: 'Најавете се за пристап.'}, 401);
   if (!isAdmin(actor)) return json({error: 'Само администратор може да управува со корисници.'}, 403);
-  const result = await db().prepare('SELECT id,username,display_name,role,active,created_at FROM users WHERE plant_owner=? ORDER BY created_at,id').bind(actor.plantOwner).all<{id:string;username:string;display_name:string;role:string;active:boolean;created_at:string}>();
-  return json({users: result.results.map(row => ({id:row.id,username:row.username,displayName:row.display_name,role:row.role,active:row.active,createdAt:row.created_at,isPrimary:row.id === actor.plantOwner}))});
+  const result = await db().prepare('SELECT id,username,display_name,role,active,created_at,login_count FROM users WHERE plant_owner=? ORDER BY created_at,id').bind(actor.plantOwner).all<{id:string;username:string;display_name:string;role:string;active:boolean;created_at:string;login_count:number}>();
+  return json({users: result.results.map(row => ({id:row.id,username:row.username,displayName:row.display_name,role:row.role,active:row.active,createdAt:row.created_at,loginCount:row.login_count,isPrimary:row.id === actor.plantOwner}))});
 }
 
 export async function POST(request: Request) {

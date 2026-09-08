@@ -352,5 +352,7 @@
   "Е-пошта": "Email",
   "Погрешна е-пошта или лозинка.": "Incorrect email or password.",
   "Внесете валидна е-пошта.": "Enter a valid email address.",
-  "Оваа е-пошта веќе се користи.": "This email address is already in use."
+  "Оваа е-пошта веќе се користи.": "This email address is already in use.",
+  "Најавувања": "Logins",
+  "Број на успешни најавувања од воведувањето на евиденцијата. Освежувањето на страницата не се брои.": "Successful logins since tracking was introduced. Page refreshes are not counted."
 }
