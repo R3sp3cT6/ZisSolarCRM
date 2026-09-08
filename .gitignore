@@ -37,5 +37,7 @@ next-env.d.ts
 /outputs/
 /work/
 *.tsbuildinfo
+zissolarpass.txt
+*.dpapi
 .vercel
 .env*.local

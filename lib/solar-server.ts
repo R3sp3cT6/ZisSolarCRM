@@ -1,3 +1,4 @@
+import 'server-only';
 import {db} from '../db/index';
 export {db} from '../db/index';
 const env=process.env;

@@ -1,4 +1,5 @@
 import type {Metadata} from 'next';
+import {headers} from 'next/headers';
 import {ThemeToggle} from '@/components/theme-toggle';
 import {themeBootstrap} from '@/lib/theme';
 import './globals.css';
@@ -12,9 +13,10 @@ export const metadata: Metadata = {
     apple: {url: '/zis-solar-logo-transparent.png', type: 'image/png'},
   },
 };
-export default function Layout({children}:{children:React.ReactNode}) {
+export default async function Layout({children}:{children:React.ReactNode}) {
+  const nonce = (await headers()).get('x-nonce') ?? undefined;
   return <html lang="mk" suppressHydrationWarning>
-    <head><script dangerouslySetInnerHTML={{__html: themeBootstrap}}/></head>
+    <head><script nonce={nonce} dangerouslySetInnerHTML={{__html: themeBootstrap}}/></head>
     <body><ThemeToggle/>{children}</body>
   </html>;
 }

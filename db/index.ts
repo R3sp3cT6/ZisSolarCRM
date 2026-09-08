@@ -1,3 +1,4 @@
+import 'server-only';
 import {neon} from '@neondatabase/serverless';
 
 // Small parameterized query interface shared by the archive and collector.

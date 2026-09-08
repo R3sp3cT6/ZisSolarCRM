@@ -1,3 +1,4 @@
+import 'server-only';
 const env=process.env;
 import {db,ensurePlant,saveReadings,syncMemo} from './solar-server';
 import {localDate,validDate,slotsForDay} from './energy';

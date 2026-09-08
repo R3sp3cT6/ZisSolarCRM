@@ -13,6 +13,15 @@ try {
   const encoded=await hashPassword(password);
   for(const id of [owner,foreign])await sql.transaction([sql.query('INSERT INTO plants(owner,name,created_at) VALUES ($1,$2,$3)',[id,id,new Date().toISOString()]),sql.query("INSERT INTO users(id,username,display_name,password_hash,plant_owner,role) VALUES ($1,$1,$1,$2,$1,'admin')",[id,encoded])]);
   adminCookie=await login(owner);
+  const loginPage=await request('/login',undefined,'');
+  const csp=loginPage.response.headers.get('content-security-policy');
+  assert.ok(csp?.includes("'strict-dynamic'"));
+  const nonce=csp.match(/'nonce-([^']+)'/)[1];
+  assert.ok(loginPage.data.includes('nonce="'+nonce+'"'));
+  assert.ok(!loginPage.data.includes('DATABASE_URL'));
+  assert.equal((await request('/api/solar-sync',undefined,'')).status,401);
+  assert.equal((await request('/api/solar',undefined,'zis_session='+'a'.repeat(43))).status,401);
+  assert.equal((await request('/api/auth/password',{currentPassword:password,password:newPassword},adminCookie,'https://untrusted.example')).status,403);
   assert.equal((await request('/api/users',undefined,'')).status,401);
   const create={action:'create',username:viewerName,displayName:'Read only tester',password,role:'viewer',active:true,plantOwner:foreign};
   assert.equal((await request('/api/users',create,adminCookie,'https://untrusted.example')).status,403);
@@ -30,6 +39,8 @@ try {
   }
   for(const body of [{action:'plant',name:'Unauthorized',capacityKw:null},{action:'import',readings:[reading]},{action:'sync',date:'2026-09-07',force:true},{action:'fusion',date:'2026-09-07'}])assert.equal((await request('/api/solar',body,viewerCookie)).status,403);
   assert.equal((await request('/api/users',undefined,viewerCookie)).status,403);
+  const cached=await request('/api/solar?date=2026-09-07&period=day',undefined,viewerCookie);
+  assert.match(cached.response.headers.get('cache-control'),/no-store/);
   assert.equal((await request('/api/users',{...create,role:'admin'},viewerCookie)).status,403);
   assert.equal((await request('/api/users',update({role:'admin'}),viewerCookie)).status,403);
   assert.equal((await request('/api/auth/password',{currentPassword:password,password:newPassword},viewerCookie)).status,403);
@@ -55,11 +66,14 @@ try {
   assert.equal((await request('/api/users',undefined,viewerCookie)).status,401);
   viewerCookie=await login(viewerName,newPassword);
   assert.equal((await request('/api/users',undefined,viewerCookie)).status,403);
+  const logout=await request('/api/auth/logout',{},viewerCookie);
+  assert.equal(logout.status,303);
+  assert.equal((await request('/api/solar',undefined,viewerCookie)).status,401);
   console.log('PASS: admin creation/editing, shared data in every period, read-only UI, blocked mutations/escalation, tenant isolation, protected owner, password reset, role changes, disabled logins and immediate session revocation.');
 } finally {
   await sql.transaction([
     sql.query('DELETE FROM sessions WHERE user_id IN (SELECT id FROM users WHERE plant_owner=ANY($1::text[]))',[[owner,foreign]]),
-    sql.query("DELETE FROM auth_limits WHERE key IN (SELECT 'users:'||id FROM users WHERE plant_owner=ANY($1::text[])) OR key IN (SELECT 'password:'||id FROM users WHERE plant_owner=ANY($1::text[]))",[[owner,foreign]]),
+    sql.query("DELETE FROM auth_limits WHERE key IN (SELECT 'users:'||id FROM users WHERE plant_owner=ANY($1::text[])) OR key IN (SELECT 'password:'||id FROM users WHERE plant_owner=ANY($1::text[])) OR key IN (SELECT 'solar-write:'||id FROM users WHERE plant_owner=ANY($1::text[]))",[[owner,foreign]]),
     sql.query('DELETE FROM users WHERE plant_owner=ANY($1::text[])',[[owner,foreign]]),
     ...['readings','reading_revisions','fusion_reports','fusion_state','plants'].map(table=>sql.query('DELETE FROM '+table+' WHERE owner=ANY($1::text[])',[[owner,foreign]])),
   ]);

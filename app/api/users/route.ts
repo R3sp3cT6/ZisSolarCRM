@@ -1,3 +1,4 @@
+import {readJson,RequestError} from '@/lib/request-security';
 import {randomUUID} from 'node:crypto';
 import {getUser, sameOrigin, authLimit} from '@/lib/auth';
 import {isAdmin} from '@/lib/roles';
@@ -24,9 +25,7 @@ export async function POST(request: Request) {
   if (Number(request.headers.get('content-length')) > 4096) return json({error: 'Внесот е преголем.'}, 413);
   if (!await authLimit('users:'+actor.userId,60)) return json({error:'Премногу промени. Обидете се по 15 минути.'},429);
   try {
-    const raw = await request.text();
-    if (raw.length > 4096) return json({error: 'Внесот е преголем.'}, 413);
-    const body = JSON.parse(raw);
+    const body = await readJson(request,4096);
     if (!body || !['create','update'].includes(body.action)) return json({error:'Невалидна операција.'},400);
     const username = typeof body.username === 'string' ? body.username.trim().toLowerCase() : '';
     const name = typeof body.displayName === 'string' ? body.displayName.trim() : '';
@@ -53,6 +52,7 @@ export async function POST(request: Request) {
     ]);
     return json({ok:true});
   } catch (error) {
+    if(error instanceof RequestError)return json({error:error.message},error.status);
     if (error && typeof error === 'object' && 'code' in error && error.code === '23505') return json({error:'Ова корисничко име веќе се користи.'},409);
     return json({error:'Корисникот не е зачуван. Проверете го внесот и обидете се повторно.'},400);
   }
