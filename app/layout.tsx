@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description: 'Вашата соларна централа, MEMO цени и приход на едно место.',
   icons: {
     icon: {url: '/zis-solar-icon.svg', type: 'image/svg+xml', sizes: 'any'},
-    apple: {url: '/zis-solar-logo-transparent.png', type: 'image/png'},
+    apple: {url: '/zis-app-icon-180.png', type: 'image/png', sizes: '180x180'},
   },
 };
 export default async function Layout({children}:{children:React.ReactNode}) {
