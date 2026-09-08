@@ -77,4 +77,4 @@ start,production_kwh,export_kwh
 - Vercel Cron: https://vercel.com/docs/cron-jobs/manage-cron-jobs
 - Neon driver: https://neon.com/docs/serverless/serverless-driver
 
-Оригиналното лого е во `public/zis-solar-logo.png`, со CSS отсекување на белата рамка.
+Транспарентното лого од сопственикот е во `public/zis-solar-logo-transparent.png`. Во најавата и страничното мени се прикажува целосно, во оригиналните пропорции, без отсекување или бела подлога.
