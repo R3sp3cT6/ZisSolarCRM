@@ -29,7 +29,7 @@ export function SolarDatePicker({value, onChange, max, productionDays, dailyReve
 }) {const language=useLanguage();
   const calendarLocale=language==='en'?enGB:mk;
   const revenueByDay=new Map(dailyRevenue?.map(row=>[row.day,row]));
-  const money=(amount:number)=>new Intl.NumberFormat(getLocale(),{minimumFractionDigits:2,maximumFractionDigits:2,useGrouping:false}).format(amount)+' €';
+  const money=(amount:number)=>new Intl.NumberFormat(getLocale(),{minimumFractionDigits:0,maximumFractionDigits:0,useGrouping:false}).format(amount)+' €';
   const selected = calendarDate(value);
   const today = calendarDate(localDate());
   const yesterday = subDays(today, 1);
