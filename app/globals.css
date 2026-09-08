@@ -17,6 +17,25 @@
 .login-page{min-height:100svh;display:grid;grid-template-columns:1fr 1fr;background:#f7f9fc}.login-card{width:min(440px,calc(100% - 48px));margin:auto;padding:56px 0}.login-card .brand{padding:0;margin-bottom:32px}.login-card .brand-logo{width:120px}.login-card h1{font-size:38px;margin:15px 0}.login-card>p{color:#62738a;line-height:1.65;margin-bottom:30px}.login-card .button{justify-content:space-between;padding:14px 18px}.login-footer{display:flex;align-items:center;gap:8px;font-size:12px;color:#77879b;margin-top:28px}.login-art{background:linear-gradient(145deg,#0c2f4e,#075c79);position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:64px;color:white}.login-art>span{font-size:clamp(28px,3.5vw,54px);font-weight:600;line-height:1.2;z-index:1}.solar-orbit{position:absolute;width:470px;height:470px;border-radius:50%;background:linear-gradient(130deg,#ffb131,#ff631b);top:10%;left:18%;box-shadow:0 0 0 50px #ffffff09,0 0 0 110px #ffffff05}.account-page{max-width:580px;margin:50px auto;padding:24px}.account-page .panel{padding:30px}.account-page h1{margin:25px 0}@media(max-width:760px){.login-page{grid-template-columns:1fr}.login-art{display:none}}
 
 /* Shared calendar for reports and manual readings. */
+/* Production chart view controls and OHLC details. */
+.energy-chart-heading{flex-wrap:wrap;align-items:flex-start}
+.energy-chart-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.chart-view-switch{display:inline-flex;gap:3px;padding:4px;border:1px solid var(--border);background:var(--background);border-radius:10px}
+.chart-view-switch button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:32px;padding:6px 10px;border:0;border-radius:7px;font-size:12px;font-weight:600;color:var(--muted-foreground);white-space:nowrap}
+.chart-view-switch button:hover{background:var(--secondary);color:var(--foreground)}
+.chart-view-switch button[aria-pressed=true]{background:var(--accent);color:var(--primary)}
+.candle-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:22px}
+.candle-legend{display:flex;gap:14px;font-size:11px;color:var(--muted-foreground)}
+.candle-legend span{display:flex;align-items:center;gap:6px}.candle-legend i{width:8px;height:13px;border-radius:2px}
+:root{--candle-up:#11926e;--candle-down:#d35c67}
+:root.dark{--candle-up:#43e3b5;--candle-down:#ff8e9b}
+.candle-up{background:var(--candle-up)}.candle-down{background:var(--candle-down)}
+.candle-tooltip{min-width:195px;padding:14px 16px;background:var(--card);border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 26px #07132220;font-size:12px;color:var(--foreground)}
+.candle-tooltip strong{display:block;margin-bottom:12px;font-size:13px}.candle-tooltip dl{display:grid;gap:7px;margin:0}.candle-tooltip dl>div{display:flex;justify-content:space-between;gap:24px}.candle-tooltip dt{color:var(--muted-foreground)}.candle-tooltip dd{margin:0;font-variant-numeric:tabular-nums;font-weight:600}.candle-tooltip small{display:block;border-top:1px solid var(--border);padding-top:10px;margin-top:12px;color:var(--muted-foreground);font-size:11px}
+.candle-note{display:flex;align-items:flex-start;gap:8px;margin-top:15px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;line-height:1.65;color:var(--muted-foreground)}.candle-note svg{flex-shrink:0;margin-top:2px}.candle-note strong{font-weight:600;color:var(--foreground)}
+.candle-empty{min-height:260px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:13px;text-align:center;color:var(--muted-foreground)}.candle-empty strong{color:var(--foreground);font-size:14px}.candle-empty p{font-size:13px;margin:0}
+@media(max-width:600px){.energy-chart-actions{width:100%;justify-content:space-between}.chart-view-switch button{padding:6px 8px}.candle-toolbar{gap:14px}.candle-metric-switch{max-width:100%}.candle-metric-switch button{font-size:11px}.candle-note{font-size:11px}}
+
 .solar-date-navigation{display:inline-flex;align-items:center;gap:6px;max-width:100%;min-width:0}
 .solar-date-step{display:grid;place-items:center;flex:0 0 40px;width:40px;height:44px;border:1px solid var(--border);border-radius:10px;background:var(--card);color:var(--muted-foreground)}
 .solar-date-step:hover:not(:disabled){background:var(--accent);border-color:var(--primary);color:var(--primary)}
