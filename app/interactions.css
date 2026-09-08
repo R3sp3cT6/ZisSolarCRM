@@ -1,0 +1,23 @@
+/* Shared interaction motion; geometry stays stable while reading data. */
+:root{--ux-ease:cubic-bezier(.2,.7,.2,1);--ux-glow:color-mix(in srgb,var(--primary) 18%,transparent)}
+:is(.button,.icon-button,.text-button,.theme-toggle,.language-switch button,.currency-switch button,.chart-view-switch button,.period-tabs button,.solar-date-trigger,.solar-date-shortcuts button,.solar-calendar button,.nav-item){transition:background-color 180ms var(--ux-ease),color 180ms var(--ux-ease),border-color 180ms var(--ux-ease),box-shadow 200ms var(--ux-ease),transform 180ms var(--ux-ease)!important}
+:is(.metric,.sidebar-contract,.user-role-cards article){transition:border-color 220ms var(--ux-ease),box-shadow 220ms var(--ux-ease)}
+:is(.button,.text-button,.nav-item,.icon-button) svg{transition:transform 180ms var(--ux-ease)}
+.records-panel tbody tr,.users-panel tbody tr{transition:background-color 160ms var(--ux-ease)}
+.solar-form :is(input,select,textarea){transition:border-color 180ms var(--ux-ease),box-shadow 180ms var(--ux-ease)}
+.solar-form :is(input,select,textarea):focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--ux-glow)}
+@media(hover:hover) and (pointer:fine){
+ :is(.button,.icon-button,.theme-toggle,.solar-date-trigger):hover:not(:disabled){transform:translateY(-2px);box-shadow:0 4px 12px var(--ux-glow)}
+ :is(.language-switch button,.currency-switch button,.chart-view-switch button,.period-tabs button):hover:not(:disabled){box-shadow:inset 0 0 0 1px var(--ux-glow);filter:brightness(1.06)}
+ .nav-item:hover{background:var(--accent);color:var(--primary)}
+ .nav-item:hover .nav-chevron,.text-button:hover svg{transform:translateX(3px)}
+ .metric:hover,.sidebar-contract:hover,.user-role-cards article:hover{border-color:color-mix(in srgb,var(--primary) 45%,var(--border));box-shadow:0 5px 20px var(--ux-glow)}
+ .records-panel tbody tr:hover,.users-panel tbody tr:hover{background:color-mix(in srgb,var(--primary) 6%,transparent)}
+ .solar-calendar button:hover:not(:disabled){box-shadow:inset 0 0 0 1px var(--ux-glow)}
+}
+:is(.button,.icon-button,.theme-toggle,.solar-date-trigger):active:not(:disabled){transform:translateY(0) scale(.98)}
+:is(.language-switch button,.currency-switch button,.chart-view-switch button,.solar-calendar button):focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:0ms!important;scroll-behavior:auto!important}
+ :is(.button,.icon-button,.theme-toggle,.solar-date-trigger,.nav-item,.text-button):is(:hover,:active),.nav-item:hover .nav-chevron,.text-button:hover svg{transform:none!important}
+}
