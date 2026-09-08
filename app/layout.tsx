@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: 'ZIS Solar · Производство и приход',
   description: 'Вашата соларна централа, MEMO цени и приход на едно место.',
   icons: {
-    icon: {url: '/zis-solar-logo-transparent.png', type: 'image/png'},
+    icon: {url: '/zis-solar-icon.svg', type: 'image/svg+xml', sizes: 'any'},
     apple: {url: '/zis-solar-logo-transparent.png', type: 'image/png'},
   },
 };
