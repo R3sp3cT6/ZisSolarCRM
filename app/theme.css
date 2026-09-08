@@ -63,8 +63,18 @@
 .dark .solar-orbit { background: linear-gradient(130deg, #ffc45c, #ff824c); }
 .dark :is(.panel, .metric, .user-role-cards article) { box-shadow: 0 8px 26px #07132220; }
 
-/* Keep the supplied black wordmark readable without altering the logo artwork. */
-.dark .brand-logo { background: #f5f7f6; padding: 10px; border-radius: 14px; }
+/* The supplied PNG stays transparent. Theme only its lower wordmark; retain the emblem's original colors. */
+.dark .brand-logo { position: relative; }
+.dark .brand-logo img { clip-path: inset(0 0 30% 0); }
+.dark .brand-logo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--foreground);
+  mask: url('/zis-solar-logo-transparent.png') center / 100% 100% no-repeat;
+  clip-path: inset(70% 0 0 0);
+}
 .dark :is(.sidebar-contract, .small-pill, .revenue-formula, .csv-explanation code,
   .fusion-plant-id code, .avatar, .member-avatar, .empty-icon, .solar-date-footer) {
   background: var(--secondary);
