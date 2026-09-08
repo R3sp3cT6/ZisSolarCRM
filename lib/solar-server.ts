@@ -1,3 +1,4 @@
+import {summarizeHistory,type DayCoverage} from './history-coverage';
 import 'server-only';
 import {db} from '../db/index';
 export {db} from '../db/index';
@@ -35,7 +36,7 @@ type DbPrice={start:string;eur_cents:number;fetched_at:string};
 export async function getDashboard(owner:string,day:string,period:Period,hour?:string){
  const {from,to}=rangeFor(day,period,hour);const connection=db();await ensurePlant(owner);
  const currentStart=new Date(Math.floor(Date.now()/3600000)*3600000).toISOString();
- const [plant,readingsResult,pricesResult,dayPricesResult,latest,currentPrice,sync,fusionRecord,reportRecord,archiveCount]=await Promise.all([
+ const [plant,readingsResult,pricesResult,dayPricesResult,latest,currentPrice,sync,fusionRecord,reportRecord,archiveCount,historyGroups,dailyReports]=await Promise.all([
  connection.prepare('SELECT name,capacity_kw FROM plants WHERE owner=?').bind(owner).first(),
  connection.prepare('SELECT * FROM readings WHERE owner=? AND start>=? AND start<? ORDER BY start').bind(owner,from,to).all<DbReading>(),
  connection.prepare('SELECT start,eur_cents,fetched_at FROM prices WHERE start>=? AND start<? ORDER BY start').bind(from,to).all<DbPrice>(),
@@ -45,10 +46,13 @@ export async function getDashboard(owner:string,day:string,period:Period,hour?:s
  connection.prepare('SELECT attempted_at,succeeded_at,error FROM sync_runs WHERE market_date=?').bind(day).first(),
  connection.prepare('SELECT state FROM fusion_state WHERE owner=?').bind(owner).first<{state:string}>(),
  connection.prepare('SELECT payload FROM fusion_reports WHERE owner=? AND kind=? AND period=?').bind(owner,period==='year'?'month':'day',period==='year'?day.slice(0,4):day.slice(0,7)).first<{payload:string}>(),
- connection.prepare("SELECT count(*)::integer AS count FROM fusion_reports WHERE owner=? AND kind='hour' AND (payload::jsonb->>'complete')::boolean=true").bind(owner).first<{count:number}>()
+  connection.prepare("SELECT count(*)::integer AS count FROM fusion_reports WHERE owner=? AND kind='hour' AND (payload::jsonb->>'version')::integer=2 AND (payload::jsonb->>'complete')::boolean=true").bind(owner).first<{count:number}>(),
+ connection.prepare("SELECT (r.start::timestamptz AT TIME ZONE 'Europe/Skopje')::date::text AS day,count(*)::integer AS hours,count(r.production_kwh)::integer AS production,count(r.export_kwh)::integer AS exported,count(*) FILTER(WHERE r.export_kwh IS NOT NULL AND p.start IS NOT NULL)::integer AS priced FROM readings r LEFT JOIN prices p ON p.start=r.start WHERE r.owner=? GROUP BY 1").bind(owner).all<DayCoverage>(),
+ connection.prepare("SELECT payload FROM fusion_reports WHERE owner=? AND kind='day'").bind(owner).all<{payload:string}>()
  ]);
  const fusionState=fusionRecord?JSON.parse(fusionRecord.state) as {live?:ReturnType<typeof parseFusionLive>;lastSuccess?:string;error?:string}:{};
- const fusion={configured:!!(env.FUSIONSOLAR_PASSWORD&&env.FUSIONSOLAR_OWNER===owner),connected:!!fusionState.live,lastSuccess:fusionState.lastSuccess??null,error:fusionState.error??null,live:fusionState.live??null,archivedDays:archiveCount?.count??0,gridDate:FUSION_GRID_DATE};
+ const history=summarizeHistory(FUSION_GRID_DATE,localDate(),historyGroups.results,dailyReports.results.flatMap(r=>JSON.parse(r.payload).filter((v:{productionKwh:number|null;exportKwh:number|null})=>v.productionKwh!==null&&v.exportKwh!==null).map((v:{key:string})=>v.key)));
+ const fusion={history,configured:!!(env.FUSIONSOLAR_PASSWORD&&env.FUSIONSOLAR_OWNER===owner),connected:!!fusionState.live,lastSuccess:fusionState.lastSuccess??null,error:fusionState.error??null,live:fusionState.live??null,archivedDays:archiveCount?.count??0,gridDate:FUSION_GRID_DATE};
  const report=reportRecord?JSON.parse(reportRecord.payload) as {key:string;productionKwh:number|null;exportKwh:number|null}[]:[];
  const live=fusion.live;
  if(live&&period==='year'&&day.slice(0,4)===live.day.slice(0,4)){const month=report.find(r=>r.key===live.day.slice(0,7));if(month)month.productionKwh=live.monthProductionKwh;}

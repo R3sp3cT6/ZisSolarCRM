@@ -3,6 +3,13 @@ import {localDate, slotsForDay, type ReadingInput} from './energy';
 export const FUSION_ORIGIN='https://eu5.fusionsolar.huawei.com';
 export const FUSION_STATION='NE=252974614';
 export const FUSION_GRID_DATE='2026-04-03';
+
+export function hourlyReportCoverage(rows:ReadingInput[],day:string,now=new Date()){
+ const expected=slotsForDay(day).length;
+ const production=rows.filter(r=>r.productionKwh!==null).length;
+ const exported=rows.filter(r=>r.exportKwh!==null).length;
+ return {version:2,count:rows.length,expected,production,exported,complete:day<localDate(now)&&rows.length===expected&&production===expected&&exported===expected};
+}
 type Point={stationCode?:string;collectTime?:number;dataItemMap?:Record<string,unknown>};
 export function energyValue(value:unknown):number|null{
  return typeof value==='number'&&Number.isFinite(value)&&value>=0&&value<=100000000?value:null;

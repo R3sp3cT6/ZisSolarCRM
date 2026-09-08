@@ -89,3 +89,4 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+.history-status{margin:0 0 22px}.history-status>p{font-size:13px}.history-status progress{display:block;width:100%;height:10px;margin:18px 0;accent-color:var(--primary)}.history-counts{display:flex;gap:14px 28px;flex-wrap:wrap;font-size:12px;color:var(--muted-foreground)}.history-counts strong{display:block;color:var(--foreground);font-size:15px;margin-top:5px}.history-status details{margin-top:14px;font-size:12px;color:var(--muted-foreground)}.history-status summary{cursor:pointer;padding:8px 0}.history-missing{max-height:150px;overflow:auto;font-size:12px;line-height:1.8}

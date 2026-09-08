@@ -1,8 +1,9 @@
+import {historyDays,nextHistoryDay} from './history-coverage';
 import 'server-only';
 const env=process.env;
 import {db,ensurePlant,saveReadings,syncMemo} from './solar-server';
 import {localDate,validDate,slotsForDay} from './energy';
-import {FUSION_ORIGIN,FUSION_STATION,FUSION_GRID_DATE,parseFusionHours,parseFusionLive,parseFusionReport} from './fusionsolar';
+import {FUSION_ORIGIN,FUSION_STATION,FUSION_GRID_DATE,hourlyReportCoverage,parseFusionHours,parseFusionLive,parseFusionReport} from './fusionsolar';
 
 type State={calls?:Record<string,number[]>;session?:string;expires?:number;devices?:number[];devicesAt?:number;live?:ReturnType<typeof parseFusionLive>;lastSuccess?:string;error?:string|null;lastHour?:number;lastBackfill?:number;lastAttempt?:string};
 type Envelope={success:boolean;failCode:number;data:any;params?:Record<string,unknown>};
@@ -51,12 +52,12 @@ export async function syncFusion(owner:string,requestedDay=localDate()){
  async function attempt(work:()=>Promise<void>){try{await work();}catch(error){errors.push(error instanceof Error?error.message:'Неуспешно Huawei преземање.');}}
  async function hours(day:string){
   const prior=await connection.prepare("SELECT payload,updated_at FROM fusion_reports WHERE owner=? AND kind='hour' AND period=?").bind(owner,day).first<{payload:string;updated_at:string}>();
-  if(prior&&day<localDate()&&JSON.parse(prior.payload).complete)return;
+  if(prior&&day<localDate()&&JSON.parse(prior.payload).version===2&&JSON.parse(prior.payload).complete)return;
   if(prior&&Date.now()-Date.parse(prior.updated_at)<2*HOUR)return;
   if(!available('/thirdData/getKpiStationHour',60000,24))return;
   const values=await call('/thirdData/getKpiStationHour',{stationCodes:FUSION_STATION,collectTime:Date.parse(day+'T12:00:00Z')},60000,24);
   const rows=parseFusionHours(values,day);if(rows.length)updated+=await saveReadings(owner,rows,'Huawei FusionSolar · часовен извештај');
-  await connection.prepare("INSERT INTO fusion_reports (owner,kind,period,payload,updated_at) VALUES (?,'hour',?,?,?) ON CONFLICT(owner,kind,period) DO UPDATE SET payload=excluded.payload,updated_at=excluded.updated_at").bind(owner,day,JSON.stringify({count:rows.length,complete:day<localDate()&&values.length>0&&Date.now()-Date.parse(slotsForDay(day).at(-1)!.end)>HOUR}),new Date().toISOString()).run();
+  await connection.prepare("INSERT INTO fusion_reports (owner,kind,period,payload,updated_at) VALUES (?,'hour',?,?,?) ON CONFLICT(owner,kind,period) DO UPDATE SET payload=excluded.payload,updated_at=excluded.updated_at").bind(owner,day,JSON.stringify(hourlyReportCoverage(rows,day)),new Date().toISOString()).run();
   await syncMemo(day);
  }
  try{
@@ -89,18 +90,41 @@ export async function syncFusion(owner:string,requestedDay=localDate()){
    }
   });
   await attempt(async()=>{
+   if(!available('/thirdData/getKpiStationDay',60000,24))return;
+   const reports=await connection.prepare("SELECT period,payload,updated_at FROM fusion_reports WHERE owner=? AND kind='day'").bind(owner).all<{period:string;payload:string;updated_at:string}>();
+   const byMonth=new Map(reports.results.map(r=>[r.period,r]));
+   const days=historyDays(FUSION_GRID_DATE,localDate());
+   const months=[...new Set(days.map(day=>day.slice(0,7)))];
+   const missing=months.find(month=>!byMonth.has(month))??months.find(month=>{
+    const report=byMonth.get(month)!;
+    if(Date.now()-Date.parse(report.updated_at)<7*DAY)return false;
+    const valid=new Set(JSON.parse(report.payload).filter((r:{productionKwh:number|null;exportKwh:number|null})=>r.productionKwh!==null&&r.exportKwh!==null).map((r:{key:string})=>r.key));
+    return days.some(day=>day.startsWith(month)&&!valid.has(day));
+   });
+   if(!missing)return;
+   const date=missing+'-15';
+   const values=parseFusionReport(await call('/thirdData/getKpiStationDay',{stationCodes:FUSION_STATION,collectTime:Date.parse(date+'T12:00:00Z')},60000,24),'day',date);
+   await connection.prepare("INSERT INTO fusion_reports (owner,kind,period,payload,updated_at) VALUES (?,'day',?,?,?) ON CONFLICT(owner,kind,period) DO UPDATE SET payload=excluded.payload,updated_at=excluded.updated_at").bind(owner,missing,JSON.stringify(values),new Date().toISOString()).run();
+  });
+  await attempt(async()=>{
    if(!available('/thirdData/getKpiStationHour',60000,24))return;
    // Reserve at least twelve of the rolling daily calls for current production.
    if(state.lastBackfill&&Date.now()-state.lastBackfill<30*60000)return;
    const backfills=(state.calls!['backfill']??[]).filter(t=>t>Date.now()-DAY);state.calls!['backfill']=backfills;if(backfills.length>=10)return;
-   let day=requestedDay;
-   if(day===localDate()){
-    const reports=await connection.prepare("SELECT period,payload FROM fusion_reports WHERE owner=? AND kind='hour' ORDER BY period DESC").bind(owner).all<{period:string;payload:string}>();
-    const completed=new Set(reports.results.filter(r=>JSON.parse(r.payload).complete).map(r=>r.period));
-    let cursor=Date.parse(localDate()+'T12:00:00Z')-DAY;day=new Date(cursor).toISOString().slice(0,10);
-    while(day>=FUSION_GRID_DATE&&completed.has(day)){cursor-=DAY;day=new Date(cursor).toISOString().slice(0,10);}if(day<FUSION_GRID_DATE)return;
-   }
+   const reports=await connection.prepare("SELECT period,payload,updated_at FROM fusion_reports WHERE owner=? AND kind='hour'").bind(owner).all<{period:string;payload:string;updated_at:string}>();
+   const day=nextHistoryDay(FUSION_GRID_DATE,localDate(),reports.results);
+   if(!day)return;
    await hours(day);state.lastBackfill=Date.now();backfills.push(Date.now());
+  });
+  await attempt(async()=>{
+   const [prices,runs]=await Promise.all([
+    connection.prepare('SELECT market_date,count(*)::integer AS count FROM prices GROUP BY market_date').all<{market_date:string;count:number}>(),
+    connection.prepare('SELECT market_date,attempted_at FROM sync_runs').all<{market_date:string;attempted_at:string}>()
+   ]);
+   const counts=new Map(prices.results.map(r=>[r.market_date,r.count]));
+   const attempts=new Map(runs.results.map(r=>[r.market_date,Date.parse(r.attempted_at)]));
+   const missing=historyDays(FUSION_GRID_DATE,localDate()).reverse().find(day=>counts.get(day)!==slotsForDay(day).length&&Date.now()-(attempts.get(day)??0)>6*HOUR);
+   if(missing)await syncMemo(missing);
   });
   state.error=errors[0]??null;await persist();return {configured:true,updated,error:state.error,connected:!!state.live};
  }finally{
