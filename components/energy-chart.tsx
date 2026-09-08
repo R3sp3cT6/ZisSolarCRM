@@ -18,6 +18,13 @@ const formatValue = (value: number) => new Intl.NumberFormat(getLocale(), {minim
 const preferenceKey = 'zis-solar-energy-chart';
 const tooltipStyle = {borderRadius: 10, borderColor: 'var(--border)', backgroundColor: 'var(--card)', color: 'var(--foreground)', fontSize: 14};
 
+function UnitTick({x=0,y=0,payload,unit,energy=false}: {x?:number;y?:number;payload?:{value:number|string};unit:string;energy?:boolean}) {
+  const value=Number(payload?.value??0);
+  return <text x={x} y={y} dy={4} textAnchor={energy?'end':'start'} fill={energy?'var(--chart-label)':'var(--chart-blue)'} fontSize={11}>
+    <tspan>{energy?formatValue(value):new Intl.NumberFormat(getLocale(),{maximumFractionDigits:2}).format(value)}</tspan><tspan dx={3} fontSize={8} opacity={0.75}>{unit}</tspan>
+  </text>;
+}
+
 function EmptyChart({onConnect}: {onConnect?: () => void}) {useLanguage();useCurrency();
   return <div className="empty-chart"><div className="grid-lines">{t([0, 1, 2, 3].map(i => <div key={i}/>))}</div>
     <div className="empty-message"><span className="empty-icon"><Activity size={25}/></span>
@@ -61,8 +68,8 @@ export function EnergyChart({data, period, onConnect}: {data: Data | null; perio
           </defs>
           <CartesianGrid stroke="var(--chart-grid)" strokeDasharray="3 5" vertical={false}/>
           <XAxis dataKey="label" tickFormatter={value => String(value).split(' ')[0]} tick={{fontSize: 12, fill: 'var(--chart-label)'}} axisLine={false} tickLine={false} minTickGap={30}/>
-          <YAxis yAxisId="energy" label={{value:'MWh',position:'top',offset:10,fill:'var(--chart-green)',fontSize:11,fontWeight:600}} tickFormatter={value => formatValue(Number(value))} tick={{fontSize: 12, fill: 'var(--chart-label)'}} axisLine={false} tickLine={false} width={60}/>
-          <YAxis yAxisId="money" label={{value:getCurrency(),position:'top',offset:10,fill:'var(--chart-blue)',fontSize:11,fontWeight:600}} orientation="right" tick={{fontSize: 12, fill: 'var(--chart-blue)'}} axisLine={false} tickLine={false} width={getCurrency()==='MKD'?68:48}/>
+          <YAxis yAxisId="energy" tick={<UnitTick unit="MWh" energy/>} axisLine={false} tickLine={false} width={78}/>
+          <YAxis yAxisId="money" orientation="right" tick={<UnitTick unit={getCurrency()}/>} axisLine={false} tickLine={false} width={getCurrency()==='MKD'?88:66}/>
           <Tooltip formatter={(value, name) => [formatValue(Number(value)), name === 'productionMwh' ? t("Производство (MWh)") : t("Приход (EUR)")]} contentStyle={tooltipStyle}/>
           {t(mode === 'line' ? <>
             <Area yAxisId="energy" dataKey="productionMwh" type="monotone" stroke="var(--chart-green)" strokeWidth={2} fill={`url(#${gradientId})`} dot={false} activeDot={{r: 4}} connectNulls={false}/>
