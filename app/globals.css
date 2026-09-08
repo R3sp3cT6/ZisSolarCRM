@@ -101,3 +101,6 @@
 .solar-calendar .solar-production-day button[data-selected-single="true"]:before{background:var(--primary-foreground)}
 .solar-production-marker{display:inline-block;width:18px;height:3px;border-radius:3px;background:var(--chart-green);margin-left:12px}
 .solar-calendar-note{margin:0;padding:0 16px 12px;font-size:11px;line-height:1.5;color:var(--muted-foreground);background:var(--card)}
+
+.sync-progress{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding:10px 14px;border:1px solid var(--border);border-radius:10px;background:var(--card);color:var(--muted-foreground);font-size:13px}
+.sync-progress progress{width:100px;max-width:30%;height:5px;margin-left:auto;accent-color:var(--chart-green)}

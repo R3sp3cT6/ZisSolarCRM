@@ -19,13 +19,13 @@ async function unseal(value:string,owner:string){
 }
 async function secretKey(owner:string){return crypto.subtle.importKey('raw',await crypto.subtle.digest('SHA-256',new TextEncoder().encode(env.FUSIONSOLAR_PASSWORD+'\n'+owner)),{name:'AES-GCM'},false,['encrypt','decrypt']);}
 function apiError(code:number){return code===407?'Huawei го достигна ограничувањето за API повици. Следното преземање ќе се обиде подоцна.':code===20400?'Huawei ја одби API најавата. Проверете ја API сметката.':`Huawei не го исполни барањето (код ${code}).`;}
-export async function syncFusion(owner:string,requestedDay=localDate()){
+export async function syncFusion(owner:string,requestedDay=localDate(),options:{active?:boolean;daily?:boolean}={}){
  if(!fusionConfigured())return {configured:false,updated:0,error:null};
  if(owner!==fusionOwner())throw new Error('Оваа централа е поврзана со профилот на сопственикот.');
  if(!validDate(requestedDay)||requestedDay>localDate()||requestedDay<FUSION_GRID_DATE)throw new Error('Изберете датум од 03.04.2026 до денес.');
  const connection=db();await ensurePlant(owner);await connection.prepare('INSERT INTO fusion_state (owner) VALUES (?) ON CONFLICT(owner) DO NOTHING').bind(owner).run();
  const lock=crypto.randomUUID(),started=Date.now();
- const locked=await connection.prepare('UPDATE fusion_state SET lock_token=?,lock_until=? WHERE owner=? AND lock_until<? RETURNING state').bind(lock,started+240000,owner,started).first<{state:string}>();
+ const locked=await connection.prepare("UPDATE fusion_state SET lock_token=?,lock_until=? WHERE owner=? AND lock_until<? AND COALESCE((state::jsonb->>'lastAttempt')::timestamptz,'epoch'::timestamptz)<?::timestamptz RETURNING state").bind(lock,started+240000,owner,started,new Date(options.active?started-305000:started+1).toISOString()).first<{state:string}>();
  if(!locked)return {configured:true,updated:0,cached:true,error:null};
  const state:State=JSON.parse(locked.state);state.calls??={};state.lastAttempt=new Date(started).toISOString();let updated=0;const errors:string[]=[];
  const persist=()=>connection.prepare('UPDATE fusion_state SET state=? WHERE owner=? AND lock_token=?').bind(JSON.stringify(state),owner,lock).run();
@@ -61,6 +61,7 @@ export async function syncFusion(owner:string,requestedDay=localDate()){
   await syncMemo(day);
  }
  try{
+  if(options.active||options.daily)await attempt(async()=>{const result=await syncMemo(localDate());if(result.error)throw new Error(result.error);});
   await attempt(async()=>{
    if(state.devices&&state.devicesAt&&Date.now()-state.devicesAt<DAY)return;
    const devices=await call('/thirdData/getDevList',{stationCodes:FUSION_STATION},HOUR,20);
@@ -74,7 +75,7 @@ export async function syncFusion(owner:string,requestedDay=localDate()){
    const devices=await call('/thirdData/getDevRealKpi',{devIds:state.devices.join(','),devTypeId:1},305000,288);
    state.live=parseFusionLive(plant,devices,state.devices);state.lastSuccess=new Date().toISOString();
   });
-  await attempt(async()=>{if(!state.lastHour||Date.now()-state.lastHour>=2*HOUR){await hours(localDate());state.lastHour=Date.now();}});
+  await attempt(async()=>{if(!options.daily&&(!state.lastHour||Date.now()-state.lastHour>=2*HOUR)){await hours(localDate());state.lastHour=Date.now();}});
   await attempt(async()=>{
    const period=requestedDay.slice(0,7);const stored=await connection.prepare("SELECT updated_at FROM fusion_reports WHERE owner=? AND kind='day' AND period=?").bind(owner,period).first<{updated_at:string}>();
    if(!stored||Date.now()-Date.parse(stored.updated_at)>(period===localDate().slice(0,7)?6*HOUR:30*DAY)){

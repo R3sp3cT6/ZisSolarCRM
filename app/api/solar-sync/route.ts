@@ -11,7 +11,7 @@ export async function GET(request:Request){
  const id=crypto.randomUUID();
  try{
   await db().prepare("INSERT INTO collector_runs(id,status) VALUES (?,'running')").bind(id).run();
-  const memo=await syncMemo(localDate());const fusion=await syncFusion(fusionOwner()!,localDate());
+  const memo=await syncMemo(localDate());const fusion=await syncFusion(fusionOwner()!,localDate(),{daily:true});
   const status=memo.error||fusion.error?'partial':'success';
   await db().prepare('UPDATE collector_runs SET status=?,completed_at=now(),detail=? WHERE id=?').bind(status,JSON.stringify({memo,fusion}),id).run();
   await db().batch([db().prepare("DELETE FROM collector_runs WHERE started_at<now()-interval '30 days'"),db().prepare('DELETE FROM auth_limits WHERE reset_at<now()'),db().prepare('DELETE FROM sessions WHERE expires_at<now()')]);

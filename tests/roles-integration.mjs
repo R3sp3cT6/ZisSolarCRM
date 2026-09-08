@@ -33,6 +33,11 @@ try {
   const reading={start:'2026-09-07T10:00:00.000Z',productionKwh:1200,exportKwh:1100};
   assert.equal((await request('/api/solar',{action:'import',readings:[reading]})).status,200);
   viewerCookie=await login(viewerName);
+  assert.equal((await request('/api/solar-refresh',{},'')).status,401);
+  assert.equal((await request('/api/solar-refresh',{},viewerCookie,'https://untrusted.example')).status,403);
+  const refresh=await request('/api/solar-refresh',{},viewerCookie);
+  assert.equal(refresh.status,200,JSON.stringify(refresh.data));
+  assert.equal(refresh.data.configured,false);
   for(const period of ['hour','day','month','year']){
     const data=await request('/api/solar?date=2026-09-07&period='+period+'&hour='+encodeURIComponent(reading.start)+'&owner='+foreign,undefined,viewerCookie);
     assert.equal(data.status,200);assert.equal(data.data.plant.name,owner);assert.equal(data.data.totals.productionKwh,1200);assert.equal(data.data.totals.exportKwh,1100);
