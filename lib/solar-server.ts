@@ -47,7 +47,7 @@ export async function getDashboard(owner:string,day:string,period:Period,hour?:s
  connection.prepare('SELECT state FROM fusion_state WHERE owner=?').bind(owner).first<{state:string}>(),
  connection.prepare('SELECT payload FROM fusion_reports WHERE owner=? AND kind=? AND period=?').bind(owner,period==='year'?'month':'day',period==='year'?day.slice(0,4):day.slice(0,7)).first<{payload:string}>(),
   connection.prepare("SELECT count(*)::integer AS count FROM fusion_reports WHERE owner=? AND kind='hour' AND (payload::jsonb->>'version')::integer=2 AND (payload::jsonb->>'complete')::boolean=true").bind(owner).first<{count:number}>(),
- connection.prepare("SELECT (r.start::timestamptz AT TIME ZONE 'Europe/Skopje')::date::text AS day,count(*)::integer AS hours,count(r.production_kwh)::integer AS production,count(r.export_kwh)::integer AS exported,count(*) FILTER(WHERE r.export_kwh IS NOT NULL AND p.start IS NOT NULL)::integer AS priced FROM readings r LEFT JOIN prices p ON p.start=r.start WHERE r.owner=? GROUP BY 1").bind(owner).all<DayCoverage>(),
+ connection.prepare("SELECT (r.start::timestamptz AT TIME ZONE 'Europe/Skopje')::date::text AS day,count(*)::integer AS hours,count(r.production_kwh)::integer AS production,bool_or(r.production_kwh>0) AS has_production,count(r.export_kwh)::integer AS exported,count(*) FILTER(WHERE r.export_kwh IS NOT NULL AND p.start IS NOT NULL)::integer AS priced FROM readings r LEFT JOIN prices p ON p.start=r.start WHERE r.owner=? GROUP BY 1").bind(owner).all<DayCoverage & {has_production:boolean}>(),
  connection.prepare("SELECT payload FROM fusion_reports WHERE owner=? AND kind='day'").bind(owner).all<{payload:string}>()
  ]);
  const fusionState=fusionRecord?JSON.parse(fusionRecord.state) as {live?:ReturnType<typeof parseFusionLive>;lastSuccess?:string;error?:string}:{};
@@ -55,6 +55,11 @@ export async function getDashboard(owner:string,day:string,period:Period,hour?:s
  const fusion={history,configured:!!(env.FUSIONSOLAR_PASSWORD&&env.FUSIONSOLAR_OWNER===owner),connected:!!fusionState.live,lastSuccess:fusionState.lastSuccess??null,error:fusionState.error??null,live:fusionState.live??null,archivedDays:archiveCount?.count??0,gridDate:FUSION_GRID_DATE};
  const report=reportRecord?JSON.parse(reportRecord.payload) as {key:string;productionKwh:number|null;exportKwh:number|null}[]:[];
  const live=fusion.live;
+ const productionDays=[...new Set([
+  ...historyGroups.results.filter(r=>r.has_production).map(r=>r.day),
+  ...dailyReports.results.flatMap(r=>(JSON.parse(r.payload) as {key:string;productionKwh:number|null}[]).filter(v=>v.productionKwh!==null&&v.productionKwh>0).map(v=>v.key)),
+  ...(live&&live.dayProductionKwh!==null&&live.dayProductionKwh>0?[live.day]:[])
+ ])].sort();
  if(live&&period==='year'&&day.slice(0,4)===live.day.slice(0,4)){const month=report.find(r=>r.key===live.day.slice(0,7));if(month)month.productionKwh=live.monthProductionKwh;}
  if(live&&['day','month'].includes(period)&&day.slice(0,7)===live.day.slice(0,7)){const today=report.find(r=>r.key===live.day);if(today){today.productionKwh=live.dayProductionKwh;today.exportKwh=live.dayExportKwh;}}
  const readingMap=new Map(readingsResult.results.map(r=>[r.start,r]));const priceMap=new Map(pricesResult.results.map(r=>[r.start,r]));
@@ -71,7 +76,7 @@ export async function getDashboard(owner:string,day:string,period:Period,hour?:s
  if(row.productionKwh!==null)g.productionKwh=(g.productionKwh??0)+row.productionKwh;if(row.exportKwh!==null)g.exportKwh=(g.exportKwh??0)+row.exportKwh;if(row.revenue!==null)g.revenue=(g.revenue??0)+row.revenue;if(row.exportKwh!==null&&row.memo===null)g.missingPrice=true;groups.set(key,g);}
  for(const r of periodReport){if(!['year','month'].includes(period))continue;const key=r.key;const g=groups.get(key)??{label:period==='year'?key.slice(5,7):key.slice(8,10),productionKwh:null,exportKwh:null,revenue:null,missingPrice:false};g.productionKwh=r.productionKwh;g.exportKwh=r.exportKwh;groups.set(key,g);}
  const currentPower=live?.powerKw!=null?{kw:live.powerKw,observedAt:live.retrievedAt,stale:Date.now()-Date.parse(live.retrievedAt)>900000}:latest?{kw:latest.power_kw,observedAt:latest.observed_at,stale:Date.now()-Date.parse(latest.observed_at)>600000}:null;
- return {plant,day,period,range:{from,to},slots:slotsForDay(day),totals,rows,productionSource,fusion,chart:[...groups.entries()].sort(([a],[b])=>a.localeCompare(b)).map(([,g])=>({...g,revenue:g.missingPrice?null:g.revenue})),market:dayPricesResult.results.map(p=>({start:p.start,label:hourLabel(p.start),memo:p.eur_cents/100,sale:salePrice(p.eur_cents/100)})),currentPrice:currentPrice?{memo:currentPrice.eur_cents/100,sale:salePrice(currentPrice.eur_cents/100),fetchedAt:currentPrice.fetched_at}:null,power:currentPower,sync,contract:CONTRACT,generatedAt:new Date().toISOString()};
+ return {plant,day,period,productionDays,range:{from,to},slots:slotsForDay(day),totals,rows,productionSource,fusion,chart:[...groups.entries()].sort(([a],[b])=>a.localeCompare(b)).map(([,g])=>({...g,revenue:g.missingPrice?null:g.revenue})),market:dayPricesResult.results.map(p=>({start:p.start,label:hourLabel(p.start),memo:p.eur_cents/100,sale:salePrice(p.eur_cents/100)})),currentPrice:currentPrice?{memo:currentPrice.eur_cents/100,sale:salePrice(currentPrice.eur_cents/100),fetchedAt:currentPrice.fetched_at}:null,power:currentPower,sync,contract:CONTRACT,generatedAt:new Date().toISOString()};
 }
 
 

@@ -14,10 +14,11 @@ function calendarDate(value: string) {
   return new Date(year, month - 1, day, 12);
 }
 
-export function SolarDatePicker({value, onChange, max, step = 'day', label = 'Датум за преглед'}: {
+export function SolarDatePicker({value, onChange, max, productionDays, step = 'day', label = 'Датум за преглед'}: {
   value: string;
   onChange: (value: string) => void;
   max?: string;
+  productionDays?: string[];
   step?: 'day' | 'month' | 'year';
   label?: string;
 }) {
@@ -70,6 +71,8 @@ export function SolarDatePicker({value, onChange, max, step = 'day', label = 'Д
         className="solar-calendar"
         mode="single"
         required
+        modifiers={{production: (date: Date) => productionDays?.includes(format(date, 'yyyy-MM-dd')) ?? false}}
+        modifiersClassNames={{production: 'solar-production-day'}}
         selected={selected}
         onSelect={choose}
         month={month}
@@ -89,14 +92,14 @@ export function SolarDatePicker({value, onChange, max, step = 'day', label = 'Д
           labelMonthDropdown: () => 'Избери месец',
           labelYearDropdown: () => 'Избери година',
           labelGrid: date => format(date, 'MMMM yyyy', {locale: mk}),
-          labelDayButton: (date, modifiers) => `${format(date, 'EEEE, d MMMM yyyy', {locale: mk})}${modifiers.today ? ', денес' : ''}${modifiers.selected ? ', избран датум' : ''}`,
+          labelDayButton: (date, modifiers) => `${format(date, 'EEEE, d MMMM yyyy', {locale: mk})}${modifiers.production ? ', има забележано производство' : ''}${modifiers.today ? ', денес' : ''}${modifiers.selected ? ', избран датум' : ''}`,
         }}
         formatters={{
           formatMonthDropdown: date => format(date, 'MMMM', {locale: mk}),
           formatWeekdayName: date => ['Нед', 'Пон', 'Вто', 'Сре', 'Чет', 'Пет', 'Саб'][date.getDay()],
         }}
       />
-      <div className="solar-date-footer"><span className="solar-today-marker"/>Денес<span>Изборот се применува веднаш</span></div>
+      <div className="solar-date-footer"><span className="solar-today-marker"/>Денес{productionDays !== undefined && <><i className="solar-production-marker"/>Производство</>}</div>{productionDays !== undefined && <p className="solar-calendar-note">Без ознака: нема потврдено производство во преземените податоци.</p>}
     </PopoverContent>
     </Popover>
     <button type="button" className="solar-date-step" aria-label={nextLabel} title={nextLabel}
