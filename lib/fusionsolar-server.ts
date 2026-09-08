@@ -19,7 +19,7 @@ async function unseal(value:string,owner:string){
 }
 async function secretKey(owner:string){return crypto.subtle.importKey('raw',await crypto.subtle.digest('SHA-256',new TextEncoder().encode(env.FUSIONSOLAR_PASSWORD+'\n'+owner)),{name:'AES-GCM'},false,['encrypt','decrypt']);}
 function apiError(code:number){return code===407?'Huawei го достигна ограничувањето за API повици. Следното преземање ќе се обиде подоцна.':code===20400?'Huawei ја одби API најавата. Проверете ја API сметката.':`Huawei не го исполни барањето (код ${code}).`;}
-export async function syncFusion(owner:string,requestedDay=localDate(),options:{active?:boolean;daily?:boolean}={}){
+export async function syncFusion(owner:string,requestedDay=localDate(),options:{active?:boolean;daily?:boolean;evening?:boolean}={}){
  if(!fusionConfigured())return {configured:false,updated:0,error:null};
  if(owner!==fusionOwner())throw new Error('Оваа централа е поврзана со профилот на сопственикот.');
  if(!validDate(requestedDay)||requestedDay>localDate()||requestedDay<FUSION_GRID_DATE)throw new Error('Изберете датум од 03.04.2026 до денес.');
@@ -76,6 +76,7 @@ export async function syncFusion(owner:string,requestedDay=localDate(),options:{
    state.live=parseFusionLive(plant,devices,state.devices);state.lastSuccess=new Date().toISOString();
   });
   await attempt(async()=>{if(!options.daily&&(!state.lastHour||Date.now()-state.lastHour>=2*HOUR)){await hours(localDate());state.lastHour=Date.now();}});
+  if(options.evening){state.error=errors[0]??null;return {configured:true,updated,error:state.error,connected:!!state.live};}
   await attempt(async()=>{
    const period=requestedDay.slice(0,7);const stored=await connection.prepare("SELECT updated_at FROM fusion_reports WHERE owner=? AND kind='day' AND period=?").bind(owner,period).first<{updated_at:string}>();
    if(!stored||Date.now()-Date.parse(stored.updated_at)>(period===localDate().slice(0,7)?6*HOUR:30*DAY)){

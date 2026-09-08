@@ -7,3 +7,5 @@ GRANT SELECT,INSERT ON reading_revisions,price_revisions TO zis_app_runtime;
 GRANT SELECT,INSERT,UPDATE,DELETE ON sessions,auth_limits,collector_runs TO zis_app_runtime;
 ALTER ROLE zis_app_runtime SET statement_timeout='25s';
 ALTER ROLE zis_app_runtime SET idle_in_transaction_session_timeout='10s';
+
+GRANT SELECT,INSERT,UPDATE,DELETE ON push_subscriptions,push_deliveries TO zis_app_runtime;
