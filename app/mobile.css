@@ -1,0 +1,91 @@
+/* Keep scrolling inside data tables, rather than expanding the page grid. */
+.panel, .setup-grid > *, .user-management, .form-row > * { min-width: 0; }
+[data-slot=table-container] { max-width: 100%; overscroll-behavior-x: contain; }
+.chart-legend { flex-wrap: wrap; row-gap: 10px; }
+.table-scroll-hint { display: none; }
+
+@media (max-width: 767px) {
+  .topbar { position: sticky; top: 0; z-index: 30; height: 64px; padding: 0 68px 0 12px; }
+  .breadcrumb { min-width: 0; gap: 8px; font-size: 12px; }
+  .breadcrumb strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .breadcrumb > svg, .breadcrumb > span { flex-shrink: 0; }
+  .theme-toggle { width: 44px; height: 44px; top: 10px; right: 12px; }
+  [data-slot=sidebar-trigger], .icon-button, [data-slot=sheet-close] { min-width: 44px; min-height: 44px; }
+  .solar-sidebar[data-mobile=true] { width: min(320px, calc(100vw - 32px)); height: 100dvh; }
+  .solar-sidebar[data-mobile=true] > div { min-height: 0; }
+  .solar-sidebar .brand-with-logo { padding: 16px 0 12px; }
+  .solar-sidebar .brand-logo { width: 70px; }
+  .solar-sidebar .sidebar-contract { margin-top: 20px; }
+  .solar-sidebar [data-slot=sidebar-content] { overscroll-behavior-y: contain; }
+  .page-content { padding: 22px 16px; }
+  .page-heading { position: relative; gap: 12px; margin-bottom: 20px; }
+  .page-heading:has(.heading-actions) h1 { padding-right: 50px; }
+  .heading-actions { position: absolute; right: 0; top: 25px; width: auto; }
+  .page-heading > div:first-child { width: 100%; }
+  .page-heading p { font-size: 14px; }
+  .eyebrow { font-size: 10px; letter-spacing: .8px; }
+  .toolbar > [data-slot=tabs] { width: 100%; min-width: 0; }
+  .period-tabs { display: flex !important; width: 100%; height: 52px !important; }
+  .period-tabs button { min-width: 0; flex: 1; min-height: 44px; padding: 6px 8px !important; }
+  .button, .chart-view-switch button, .solar-date-shortcuts button { min-height: 44px; }
+  .solar-date-step, .solar-form .solar-date-step { flex-basis: 44px; width: 44px; }
+  .solar-date-trigger { gap: 5px; padding-right: 8px; }
+  .solar-date-value { min-width: 0; }
+  .solar-date-chevron { flex-shrink: 0; }
+  .solar-date-popover { max-height: min(calc(100dvh - 20px), var(--available-height, 100dvh)); overflow-y: auto; }
+  .solar-date-popover > * { flex-shrink: 0; }
+  .solar-calendar .rdp-weekday { padding: 4px 0; min-width: 0; }
+  .solar-calendar .rdp-button_previous, .solar-calendar .rdp-button_next { width: 44px; height: 44px; }
+  .solar-calendar .rdp-month_caption { padding-inline: 44px; height: 44px; }
+  .solar-calendar .rdp-dropdowns { gap: 3px; }
+  .solar-date-footer { flex-wrap: wrap; }
+  .metric { padding: 16px; }
+  .metric-value { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px; line-height: 1.2; overflow-wrap: anywhere; }
+  .metric-bottom { flex-wrap: wrap; line-height: 1.5; }
+  .metric-primary .metric-bottom > span:last-child { display: inline; }
+  .balance-strip { padding: 14px; }
+  .balance-strip > span { width: 100%; justify-content: space-between; }
+  .balance-strip strong { white-space: nowrap; }
+  .panel-heading { flex-wrap: wrap; }
+  .chart-legend { gap: 10px 16px; font-size: 11px; }
+  .live-chart { height: 280px; margin-inline: -8px; width: calc(100% + 16px); }
+  .candle-metric-switch { width: 100%; }
+  .candle-metric-switch button { flex: 1; padding-inline: 5px; }
+  .candle-tooltip { min-width: 0; width: 200px; max-width: calc(100vw - 64px); }
+  .recharts-default-tooltip { max-width: calc(100vw - 64px); font-size: 12px !important; white-space: normal !important; }
+  .formula { font-size: clamp(21px, 6.4vw, 28px); }
+  .contract-steps > div { flex-wrap: wrap; }
+  .market-summary .metric { flex-wrap: wrap; gap: 12px; }
+  .market-summary .metric-value { font-size: 26px; }
+  .table-scroll-hint { display: block; font-size: 11px; color: var(--muted-foreground); margin: 14px 0 6px; }
+  [data-slot=table-container] { border-radius: 6px; }
+  .records-panel table { margin-top: 0; }
+  .records-panel td, .records-panel th { padding: 12px 10px; }
+  .solar-form input, .solar-form select, .solar-form [data-slot=select-trigger] { font-size: 16px; min-height: 44px; }
+  .user-editor { padding: 20px 16px; }
+  .user-editor-close { top: 8px; right: 8px; }
+  .user-editor [data-slot=dialog-title] { padding-right: 44px; }
+  .member-password button { right: 0; width: 44px; height: 44px; }
+  .login-card { width: min(440px, calc(100% - 40px)); padding: 64px 0 28px; }
+  .login-card .brand { margin-bottom: 20px; }
+  .login-card .brand-logo { width: 80px; }
+  .login-card h1 { font-size: 30px; }
+  .login-card > p { font-size: 14px; margin-bottom: 20px; }
+  .login-card .button { width: 100%; }
+  .account-page { margin: 45px auto 0; padding: 20px 16px; }
+  .account-page .panel { padding: 20px 16px; }
+}
+
+@media (max-width: 420px) {
+  .metrics { grid-template-columns: minmax(0, 1fr); }
+  .metric-value { font-size: 32px; margin: 12px 0; }
+  .metric-title { font-size: 13px; }
+  .metric-value span { font-size: 14px; }
+  .solar-date-navigation .solar-date-icon { display: none; }
+  .chart-view-switch button { font-size: 12px; }
+  .candle-metric-switch button { font-size: 11px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

@@ -6,8 +6,13 @@ import { cn } from '@/lib/utils';
 
 function Table({ className, ...props }: React.ComponentProps<'table'>) {
   return (
+    <>
+    <p className="table-scroll-hint">Повлечете лево / десно за сите колони ↔</p>
     <div
       data-slot="table-container"
+      tabIndex={0}
+      role="region"
+      aria-label="Табела со податоци, лизгање лево и десно"
       className="relative w-full overflow-x-auto"
     >
       <table
@@ -16,6 +21,7 @@ function Table({ className, ...props }: React.ComponentProps<'table'>) {
         {...props}
       />
     </div>
+    </>
   );
 }
 
