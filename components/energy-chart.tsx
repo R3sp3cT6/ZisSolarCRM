@@ -5,7 +5,7 @@ import {useLanguage} from '@/components/language-switch';
 
 import {useEffect, useId, useState} from 'react';
 import {Activity, ArrowUpRight, ChartColumn, ChartLine} from 'lucide-react';
-import {Area, Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
+import {Area, Bar, CartesianGrid, ComposedChart, Line, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
 import {toMwh} from '@/lib/energy-report';
 import type {Period} from '@/lib/energy';
 import type {getDashboard} from '@/lib/solar-server';
@@ -66,8 +66,10 @@ export function EnergyChart({data, period, onConnect}: {data: Data | null; perio
             <Area yAxisId="energy" dataKey="productionMwh" type="monotone" stroke="var(--chart-green)" strokeWidth={2} fill={`url(#${gradientId})`} dot={false} activeDot={{r: 4}} connectNulls={false}/>
             <Line yAxisId="money" dataKey="revenue" type="monotone" stroke="var(--chart-blue)" strokeWidth={2} dot={false} activeDot={{r: 4}} connectNulls={false}/>
           </> : <>
-            <Bar yAxisId="energy" dataKey="productionMwh" fill={`url(#${gradientId}-green-bar)`} radius={[6,6,0,0]} maxBarSize={30} isAnimationActive={false}/>
-            <Bar yAxisId="money" dataKey="revenue" fill={`url(#${gradientId}-blue-bar)`} radius={[6,6,0,0]} maxBarSize={30} isAnimationActive={false}/>
+            <Bar yAxisId="energy" dataKey="productionMwh" fill={`url(#${gradientId}-green-bar)`} fillOpacity={0.35} isAnimationActive={false}
+              shape={props=><Rectangle {...props} width={Number(props.width)*2+2} radius={[6,6,0,0]}/>}/>
+            <Bar yAxisId="money" dataKey="revenue" fill={`url(#${gradientId}-blue-bar)`} fillOpacity={0.9} isAnimationActive={false}
+              shape={props=><Rectangle {...props} x={Number(props.x)-Number(props.width)-2} width={Number(props.width)*2+2} radius={[6,6,0,0]}/>}/>
           </>)}
         </ComposedChart>
       </ResponsiveContainer></div> : <EmptyChart onConnect={onConnect}/>)}
