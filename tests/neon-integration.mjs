@@ -7,7 +7,7 @@ const sql=neon(process.env.DATABASE_URL),owner='test-'+randomUUID(),username=own
 let cookie='';
 async function request(path,body,origin=base,session=cookie){const r=await fetch(base+path,{method:body?'POST':'GET',headers:{...(session?{cookie:session}:{}),...(body?{Origin:origin,'Content-Type':'application/json'}:{})},body:body?JSON.stringify(body):undefined,redirect:'manual'});let data;try{data=await r.json();}catch{data={};}return {status:r.status,data,r};}
 try{
- await sql.transaction([sql.query('INSERT INTO plants(owner,created_at) VALUES ($1,$2)',[owner,new Date().toISOString()]),sql.query('INSERT INTO users(id,username,display_name,password_hash) VALUES ($1,$2,$3,$4)',[owner,username,'Integration test',await hashPassword(password)])]);
+ await sql.transaction([sql.query('INSERT INTO plants(owner,created_at) VALUES ($1,$2)',[owner,new Date().toISOString()]),sql.query("INSERT INTO users(id,username,display_name,password_hash,plant_owner,role) VALUES ($1,$2,$3,$4,$1,'admin')",[owner,username,'Integration test',await hashPassword(password)])]);
  assert.equal((await request('/api/solar')).status,401);
  assert.equal((await fetch(base+'/api/solar',{headers:{'oai-authenticated-user-id':owner,'oai-authenticated-user-email':'fake@example.com'}})).status,401);
  assert.equal((await request('/api/solar-sync')).status,401);

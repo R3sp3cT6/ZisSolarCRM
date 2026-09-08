@@ -4,6 +4,6 @@ if(!process.env.DATABASE_URL||!process.env.FUSIONSOLAR_OWNER||!process.env.ADMIN
 const sql=neon(process.env.DATABASE_URL),owner=process.env.FUSIONSOLAR_OWNER;
 await sql.transaction([
  sql.query('INSERT INTO plants(owner,name,created_at) VALUES ($1,$2,$3) ON CONFLICT DO NOTHING',[owner,'ZIS Solar',new Date().toISOString()]),
- sql.query('INSERT INTO users(id,username,display_name,password_hash) VALUES ($1,$2,$3,$4) ON CONFLICT DO NOTHING',[owner,'admin','ZIS Solar',await hashPassword(process.env.ADMIN_PASSWORD)])
+ sql.query('INSERT INTO users(id,username,display_name,password_hash,plant_owner,role) VALUES ($1,$2,$3,$4,$1,'admin') ON CONFLICT DO NOTHING',[owner,'admin','ZIS Solar',await hashPassword(process.env.ADMIN_PASSWORD)])
 ]);
 console.log('Owner account initialized. Existing passwords were preserved.');
