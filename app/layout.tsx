@@ -5,6 +5,7 @@ import {themeBootstrap} from '@/lib/theme';
 import './globals.css';
 import './theme.css';
 import './mobile.css';
+import './period-tabs.css';
 export const metadata: Metadata = {
   title: 'ZIS Solar · Производство и приход',
   description: 'Вашата соларна централа, MEMO цени и приход на едно место.',
