@@ -354,5 +354,7 @@
   "Внесете валидна е-пошта.": "Enter a valid email address.",
   "Оваа е-пошта веќе се користи.": "This email address is already in use.",
   "Најавувања": "Logins",
-  "Број на успешни најавувања од воведувањето на евиденцијата. Освежувањето на страницата не се брои.": "Successful logins since tracking was introduced. Page refreshes are not counted."
+  "Број на успешни најавувања од воведувањето на евиденцијата. Освежувањето на страницата не се брои.": "Successful logins since tracking was introduced. Page refreshes are not counted.",
+  "Посети": "Visits",
+  "Нова посета се брои при враќање по најмалку 30 минути. Важи и ако корисникот останал најавен.": "A new visit is counted on return after at least 30 minutes, even when still signed in."
 }
