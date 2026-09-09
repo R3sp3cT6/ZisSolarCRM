@@ -10,6 +10,10 @@
       "schedule": "15 4 * * *"
     },
     {
+      "path": "/api/memo-sync",
+      "schedule": "5 9,10,11 * * *"
+    },
+    {
       "path": "/api/push/check",
       "schedule": "0 19,20 * * *"
     }
