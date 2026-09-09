@@ -72,7 +72,7 @@ export function EnergyChart({data, period, onConnect}: {data: Data | null; perio
           <XAxis dataKey="label" tickFormatter={value => String(value).split(' ')[0]} tick={{fontSize: 12, fill: 'var(--chart-label)'}} axisLine={false} tickLine={false} minTickGap={30}/>
           <YAxis yAxisId="energy" tick={<UnitTick unit="MWh" energy/>} axisLine={false} tickLine={false} width={mobile?64:78} tickCount={mobile?4:5}/>
           <YAxis yAxisId="money" orientation="right" tick={<UnitTick unit={getCurrency()}/>} axisLine={false} tickLine={false} width={getCurrency()==='MKD'?80:mobile?56:66} tickCount={mobile?4:5}/>
-          <Tooltip formatter={(value, name) => [formatValue(Number(value)), name === 'productionMwh' ? t("Производство (MWh)") : t("Приход (EUR)")]} contentStyle={tooltipStyle}/>
+          <Tooltip labelFormatter={(label,items)=>`${label}${items[0]?.payload?.partial?' · '+t(period==='day'||period==='hour'?"Тековен час":"Делумен период"):''}`} formatter={(value, name) => [formatValue(Number(value)), name === 'productionMwh' ? t("Производство (MWh)") : t("Приход (EUR)")]} contentStyle={tooltipStyle}/>
           {t(mode === 'line' ? <>
             <Area yAxisId="energy" dataKey="productionMwh" type="monotone" stroke="var(--chart-green)" strokeWidth={2} fill={`url(#${gradientId})`} dot={false} activeDot={{r: 4}} connectNulls={false}/>
             <Line yAxisId="money" dataKey="revenue" type="monotone" stroke="var(--chart-blue)" strokeWidth={2} dot={false} activeDot={{r: 4}} connectNulls={false}/>

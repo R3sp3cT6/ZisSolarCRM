@@ -61,3 +61,19 @@ test('cached projections calculate production, income, calendar and missing hour
  }
  assert.equal(buildDashboard(base,day,'day',undefined,now).totals.missing,23);
 });
+
+test('fresh current-hour production fills an existing export row without waiting for a database flush',()=>{
+ const base=snapshot(),day='2026-09-09',start='2026-09-09T08:00:00.000Z',now=Date.parse('2026-09-09T08:45:00Z');
+ base.readings=[{start,production_kwh:null,export_kwh:10,power_kw:null,observed_at:'2026-09-09T08:10:00Z',updated_at:start,source:'earlier reading'}];
+ base.prices=[{start,market_date:day,eur_cents:10000,fetched_at:start}];
+ base.fusionState={liveHour:{start,productionKwh:35,exportKwh:30,observedAt:'2026-09-09T08:44:00Z'}};
+ const data=buildDashboard(base,day,'day',undefined,now);
+ assert.equal(data.rows[0].productionKwh,35);assert.equal(data.rows[0].exportKwh,30);
+ assert.equal(data.chart[0].productionKwh,35);assert.equal(data.chart[0].partial,true);
+ assert.equal(data.totals.partial,true);
+ assert.equal(base.readings[0].production_kwh,null,'overlay does not mutate archive');
+ for(const invalid of [{...base.fusionState.liveHour,observedAt:'2026-09-09T08:05:00Z'},{...base.fusionState.liveHour,start:'2026-09-09T07:00:00.000Z'}]){
+  const result=buildDashboard({...base,fusionState:{liveHour:invalid}},day,'day',undefined,now);
+  assert.equal(result.rows[0].productionKwh,null);assert.equal(result.rows[0].exportKwh,10);
+ }
+});

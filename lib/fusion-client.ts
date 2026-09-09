@@ -43,20 +43,23 @@ export function fusionClient(owner:string,state:FusionState,persist:()=>Promise<
 export async function collectTelemetry(state:FusionState,api:ReturnType<typeof fusionClient>,save:(rows:ReadingInput[])=>Promise<number>,daily=false){
  const {available,reserve,call}=api;let updated=0;const errors:string[]=[];
  async function attempt(work:()=>Promise<void>){try{await work();}catch(error){errors.push(error instanceof Error?error.message:'Неуспешно Huawei преземање.');}}
-  // History has a shared daily quota. One meter batch per daylight hour and at
-  // most eight inverter batches leave capacity within the verified 26/day limit.
-  // Fetch only one batch per refresh, respecting the endpoint's minute interval.
+  // Both series need a boundary for the current hour. Share the 26/day quota
+  // equally and fetch the oldest eligible series, one batch per refresh.
+  // An arbitrary two-hour inverter delay leaves production blank on alternate hours.
   await attempt(async()=>{
    const now=Date.now(),start=new Date(Math.floor(now/HOUR)*HOUR).toISOString();
    const localHour=Number(new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Skopje',hour:'2-digit',hourCycle:'h23'}).format(now));
    if(!daily&&(localHour<6||localHour>21||now%HOUR<300000))return;
    const path='/thirdData/getDevHistoryKpi';if(!available(path,60000,26))return;
-   const kind=state.meters?.length===1&&available('meter-history',HOUR-60000,16)&&(!state.historyAt?.export||state.historyAt.export<Date.parse(start))?'export':state.devices?.length&&state.devices.length<=10&&available('inverter-history',2*HOUR-60000,8)?'production':null;
+   const kind=(['production','export'] as const).filter(kind=>{
+    const supported=kind==='export'?state.meters?.length===1:!!state.devices?.length&&state.devices.length<=10;
+    return supported&&(!state.historyAt?.[kind]||state.historyAt[kind]!<Date.parse(start))&&available(kind==='export'?'meter-history':'inverter-history',HOUR-60000,13);
+   }).sort((a,b)=>(state.historyAt?.[a]??0)-(state.historyAt?.[b]??0))[0];
    if(!kind)return;
    const ids=kind==='export'?state.meters!:state.devices!;
    const previous=localDate(new Date(Date.parse(slotsForDay(localDate())[0].start)-HOUR));
    const from=Date.parse(slotsForDay(previous)[0].start);
-   await reserve(kind==='export'?'meter-history':'inverter-history',kind==='export'?HOUR-60000:2*HOUR-60000,kind==='export'?16:8);
+   await reserve(kind==='export'?'meter-history':'inverter-history',HOUR-60000,13);
    const values=await call(path,{devIds:ids.join(','),devTypeId:kind==='export'?17:1,startTime:from,endTime:now},60000,26);
    const samples=parseCounterHistory(values,ids,kind==='export'?GRID_EXPORT_COUNTER:'total_cap',from,now);
    const rows=[previous,localDate()].flatMap(day=>counterHours(samples,ids,day,kind));
