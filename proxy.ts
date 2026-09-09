@@ -15,4 +15,4 @@ export function proxy(request: NextRequest) {
   return response;
 }
 
-export const config = {matcher: ['/', '/login', '/account', '/api/:path*']};
+export const config = {matcher: ['/', '/login', '/account', '/settings', '/api/:path*']};

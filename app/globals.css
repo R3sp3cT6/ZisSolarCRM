@@ -115,3 +115,5 @@
 .push-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}.push-actions .button{min-height:44px}
 
 .push-device-note{margin-top:18px;padding:14px 16px;border:1px solid var(--border);border-radius:12px;background:var(--muted)}.push-device-note p{margin:6px 0 0;line-height:1.6}
+
+.settings-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px;align-items:start;max-width:1200px}.settings-grid .panel{min-width:0}.settings-profile{display:grid;gap:24px}.settings-details{display:grid;gap:18px;margin:24px 0 0}.settings-details dt{font-size:13px;color:var(--muted-foreground);margin-bottom:5px}.settings-details dd{margin:0;font-size:15px;overflow-wrap:anywhere}.settings-grid #notifications,.settings-grid #profile{scroll-margin-top:100px}@media(max-width:1000px){.settings-grid{grid-template-columns:minmax(0,1fr);max-width:720px}.settings-grid,.settings-profile{gap:18px}}

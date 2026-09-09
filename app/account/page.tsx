@@ -1,8 +1,4 @@
-import {PushSettings} from '@/components/push-settings';
-import {ViewerProfile} from './viewer-profile';
 import {getUser} from '@/lib/auth';
 import {redirect} from 'next/navigation';
-import PasswordForm from './password-form';
-import {isAdmin,roleLabels} from '@/lib/roles';
 export const dynamic='force-dynamic';
-export default async function Account(){const user=await getUser();if(!user)redirect('/login');if(isAdmin(user))return <><PasswordForm/><PushSettings/></>;return <><ViewerProfile name={user.displayName} email={user.email} role={roleLabels[user.role]}/><PushSettings/></>;}
+export default async function Account(){if(!await getUser())redirect('/login');redirect('/settings#notifications');}
