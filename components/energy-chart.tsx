@@ -3,6 +3,7 @@ import {convertMoney,getCurrency,currencySymbol,EUR_MKD} from '@/lib/currency';
 import {useCurrency,CurrencySwitch} from '@/components/currency-switch';
 import {t,getLocale} from '@/lib/language';
 import {useLanguage} from '@/components/language-switch';
+import {useIsMobile} from '@/hooks/use-mobile';
 
 
 import {useEffect, useId, useState} from 'react';
@@ -37,6 +38,7 @@ function EmptyChart({onConnect}: {onConnect?: () => void}) {useLanguage();useCur
 
 export function EnergyChart({data, period, onConnect}: {data: Data | null; period: Period; onConnect?: () => void}) {useLanguage();useCurrency();
   const [mode, setMode] = useState<ChartMode>('line');
+  const mobile = useIsMobile();
   const gradientId = useId();
   useEffect(() => {
     try { if (['column', 'candle'].includes(localStorage.getItem(preferenceKey) ?? '')) setMode('column'); } catch {}
@@ -68,8 +70,8 @@ export function EnergyChart({data, period, onConnect}: {data: Data | null; perio
           </defs>
           <CartesianGrid stroke="var(--chart-grid)" strokeDasharray="3 5" vertical={false}/>
           <XAxis dataKey="label" tickFormatter={value => String(value).split(' ')[0]} tick={{fontSize: 12, fill: 'var(--chart-label)'}} axisLine={false} tickLine={false} minTickGap={30}/>
-          <YAxis yAxisId="energy" tick={<UnitTick unit="MWh" energy/>} axisLine={false} tickLine={false} width={78}/>
-          <YAxis yAxisId="money" orientation="right" tick={<UnitTick unit={getCurrency()}/>} axisLine={false} tickLine={false} width={getCurrency()==='MKD'?88:66}/>
+          <YAxis yAxisId="energy" tick={<UnitTick unit="MWh" energy/>} axisLine={false} tickLine={false} width={mobile?64:78} tickCount={mobile?4:5}/>
+          <YAxis yAxisId="money" orientation="right" tick={<UnitTick unit={getCurrency()}/>} axisLine={false} tickLine={false} width={getCurrency()==='MKD'?80:mobile?56:66} tickCount={mobile?4:5}/>
           <Tooltip formatter={(value, name) => [formatValue(Number(value)), name === 'productionMwh' ? t("Производство (MWh)") : t("Приход (EUR)")]} contentStyle={tooltipStyle}/>
           {t(mode === 'line' ? <>
             <Area yAxisId="energy" dataKey="productionMwh" type="monotone" stroke="var(--chart-green)" strokeWidth={2} fill={`url(#${gradientId})`} dot={false} activeDot={{r: 4}} connectNulls={false}/>

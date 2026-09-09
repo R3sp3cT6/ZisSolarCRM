@@ -356,5 +356,11 @@
   "Најавувања": "Logins",
   "Број на успешни најавувања од воведувањето на евиденцијата. Освежувањето на страницата не се брои.": "Successful logins since tracking was introduced. Page refreshes are not counted.",
   "Посети": "Visits",
-  "Нова посета се брои при враќање по најмалку 30 минути. Важи и ако корисникот останал најавен.": "A new visit is counted on return after at least 30 minutes, even when still signed in."
+  "Нова посета се брои при враќање по најмалку 30 минути. Важи и ако корисникот останал најавен.": "A new visit is counted on return after at least 30 minutes, even when still signed in.",
+  "Повлечете лево / десно за сите колони ↔": "Swipe left / right to see all columns ↔",
+  "Табела со податоци": "Data table",
+  "Производство, приход, MEMO цени и архива. Без преземање, поставки и измени.": "Production, revenue, MEMO prices and archive. No downloads, settings or editing.",
+  "Надомест": "Fee",
+  "Страници и кориснички профил.": "Pages and user profile.",
+  "Затвори мени": "Close menu"
 }

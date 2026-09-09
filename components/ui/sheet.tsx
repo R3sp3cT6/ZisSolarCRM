@@ -4,6 +4,8 @@ import * as React from 'react';
 import { Dialog as SheetPrimitive } from '@base-ui/react/dialog';
 
 import { cn } from '@/lib/utils';
+import {t} from '@/lib/language';
+import {useLanguage} from '@/components/language-switch';
 import { Button } from '@/components/ui/button';
 import { XIcon } from 'lucide-react';
 
@@ -46,6 +48,7 @@ function SheetContent({
   side?: 'top' | 'right' | 'bottom' | 'left';
   showCloseButton?: boolean;
 }) {
+  useLanguage();
   return (
     <SheetPortal>
       <SheetOverlay />
@@ -71,7 +74,7 @@ function SheetContent({
             }
           >
             <XIcon />
-            <span className="sr-only">Затвори мени</span>
+            <span className="sr-only">{t('Затвори мени')}</span>
           </SheetPrimitive.Close>
         )}
       </SheetPrimitive.Popup>

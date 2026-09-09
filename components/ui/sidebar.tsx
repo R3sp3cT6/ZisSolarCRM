@@ -6,6 +6,8 @@ import { useRender } from '@base-ui/react/use-render';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { useIsMobile } from '@/hooks/use-mobile';
+import {t} from '@/lib/language';
+import {useLanguage} from '@/components/language-switch';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -163,6 +165,7 @@ function Sidebar({
   collapsible?: 'offcanvas' | 'icon' | 'none';
 }) {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+  useLanguage();
 
   if (collapsible === 'none') {
     return (
@@ -196,8 +199,8 @@ function Sidebar({
           side={side}
         >
           <SheetHeader className="sr-only">
-            <SheetTitle>Мени</SheetTitle>
-            <SheetDescription>Страници и кориснички профил.</SheetDescription>
+            <SheetTitle>{t('Мени')}</SheetTitle>
+            <SheetDescription>{t('Страници и кориснички профил.')}</SheetDescription>
           </SheetHeader>
           <div className="flex h-full w-full flex-col">{children}</div>
         </SheetContent>

@@ -3,17 +3,20 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import {t} from '@/lib/language';
+import {useLanguage} from '@/components/language-switch';
 
-function Table({ className, ...props }: React.ComponentProps<'table'>) {
+function Table({ className, mobileCards = false, ...props }: React.ComponentProps<'table'> & {mobileCards?: boolean}) {
+  useLanguage();
   return (
     <>
-    <p className="table-scroll-hint">Повлечете лево / десно за сите колони ↔</p>
+    {!mobileCards && <p className="table-scroll-hint">{t('Повлечете лево / десно за сите колони ↔')}</p>}
     <div
       data-slot="table-container"
       tabIndex={0}
       role="region"
-      aria-label="Табела со податоци, лизгање лево и десно"
-      className="relative w-full overflow-x-auto"
+      aria-label={t('Табела со податоци')}
+      className={cn('relative w-full overflow-x-auto', mobileCards && 'mobile-card-table')}
     >
       <table
         data-slot="table"

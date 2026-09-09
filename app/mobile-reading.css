@@ -1,4 +1,5 @@
 /* Comfortable mobile reading and stable tabular alignment. */
+.calendar-mobile-close{display:none}
 @media(max-width:767px){
  .page-content{padding:24px 16px 32px}
  .page-heading h1{font-size:27px;line-height:1.2;letter-spacing:-.6px}
@@ -14,12 +15,6 @@
  .energy-chart-heading{gap:16px}
  .energy-chart-actions{width:100%;justify-content:space-between;gap:8px}
  .chart-legend{font-size:12px;line-height:1.6}
- .records-panel table,.users-panel table{min-width:720px;border-collapse:separate;border-spacing:0}
- .records-panel td,.users-panel td{padding:16px 12px;font-size:14px;line-height:1.5;font-variant-numeric:tabular-nums;border-bottom:1px solid var(--border)}
- .records-panel th,.users-panel th{padding:14px 12px;font-size:12px;line-height:1.5}
- .records-panel td:first-child,.records-panel th:first-child{position:sticky;left:0;z-index:1;background:var(--card);min-width:170px;max-width:190px;white-space:normal;box-shadow:5px 0 9px #00000008}
- .records-panel th:first-child{background:var(--secondary)}
- .records-panel .cell-note{font-size:11px;line-height:1.5;margin-top:5px;max-width:165px;overflow-wrap:anywhere}
  .table-scroll-hint{font-size:12px;line-height:1.5;padding:8px 0}
  .status-tag{white-space:nowrap;font-size:12px;padding:6px 9px}
  .contract-steps{font-size:14px;line-height:1.6}
@@ -30,4 +25,84 @@
  .solar-form input,.solar-form select{min-height:48px}
  .history-counts{display:grid;grid-template-columns:1fr;gap:14px;font-size:13px}
  .history-counts strong{font-size:17px}
+}
+
+/* Each mobile record keeps its labels, units and values together. */
+@media(max-width:767px){
+ .mobile-card-table{overflow:visible;border-radius:0;margin-top:16px}
+ .mobile-card-table:focus{outline:none}
+ .mobile-card-table:focus-visible{outline:2px solid var(--primary);outline-offset:4px}
+ .mobile-card-table table,.mobile-card-table tbody{display:block;width:100%;min-width:0;margin:0}
+ .mobile-card-table thead{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+ .mobile-card-table tbody{display:grid;gap:12px}
+ .mobile-card-table tbody tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 16px;padding:16px;border:1px solid var(--border);border-radius:12px;background:var(--card)}
+ .mobile-card-table tbody tr:last-child{border:1px solid var(--border)}
+ .mobile-card-table td{display:block;min-width:0;padding:0;border:0;white-space:normal;text-align:left;font-size:15px;line-height:1.5;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+ .mobile-card-table td[data-label]::before{content:attr(data-label);display:block;margin-bottom:4px;color:var(--muted-foreground);font-size:11px;line-height:1.5;font-weight:400}
+ .mobile-card-table .record-time,.mobile-card-table .member-name{grid-column:1/-1;padding-bottom:12px;border-bottom:1px solid var(--border)}
+ .mobile-card-table .record-time strong{font-size:14px;font-weight:600}
+ .mobile-card-table .record-time .cell-note{max-width:none;font-size:11px;line-height:1.5;margin-top:5px}
+ .mobile-card-table .money-cell{font-size:18px}
+ .mobile-card-table .record-status{align-self:end;justify-self:end;padding-bottom:2px}
+ .mobile-card-table .status-tag{max-width:100%;white-space:normal;font-size:11px;line-height:1.5}
+ .mobile-card-table .member-identity{align-items:flex-start;gap:10px}
+ .mobile-card-table .member-avatar{display:grid}
+ .mobile-card-table .member-identity>div{min-width:0}
+ .mobile-card-table .member-identity small{font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+ .mobile-card-table .member-role{font-size:12px;line-height:1.5}
+ .mobile-card-table .member-role svg{flex-shrink:0}
+ .mobile-card-table .member-visits strong{font-size:20px}
+ .mobile-card-table .member-actions{align-self:end;justify-self:end}
+ .mobile-card-table .protected-member{line-height:1.5;text-align:right;font-size:11px}
+ .mobile-card-table .protected-member svg{flex-shrink:0}
+ .mobile-card-table .member-edit{min-height:44px;padding:10px 14px;font-size:13px}
+ .mobile-card-table .market-hour{font-weight:600}
+ .users-panel .panel-heading>.button,.show-more{width:100%;justify-content:center}
+ .user-editor-actions{display:grid;grid-template-columns:1fr 1fr;width:100%}
+ .user-editor-actions .button{align-self:stretch;justify-content:center;padding-inline:10px;white-space:normal}
+ .user-role-cards article{padding:18px 16px}
+ .metric-title{font-size:14px}
+ .metric-value{overflow-wrap:normal}
+ .page-footer,.refresh-line{font-size:12px;line-height:1.7}
+ .refresh-line{align-items:flex-start}
+
+ /* Equal columns prevent square day buttons from widening the whole calendar. */
+ [data-slot=popover-positioner]:has(>.solar-date-popover){position:fixed!important;inset:auto 8px max(8px,env(safe-area-inset-bottom))!important;transform:none!important;width:auto!important;display:flex;justify-content:center}
+ .solar-date-popover{max-width:calc(100vw - 32px);max-height:calc(100dvh - 80px);overscroll-behavior:contain}
+ .solar-date-popover .solar-date-heading{position:relative;padding-right:60px}
+ .solar-date-popover .calendar-mobile-close{display:grid;position:absolute;top:12px;right:12px}
+ .solar-date-popover .solar-calendar{padding:12px 8px;min-width:0}
+ .solar-date-popover .rdp-month_grid,.solar-date-popover .rdp-month_grid thead,.solar-date-popover .rdp-month_grid tbody{display:block;width:100%;min-width:0}
+ .solar-date-popover .rdp-weekdays,.solar-date-popover .rdp-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));width:100%;gap:1px}
+ .solar-date-popover .rdp-day,.solar-date-popover .rdp-day button{aspect-ratio:auto;min-width:0;width:100%}
+ .solar-date-popover .solar-calendar-revenue .rdp-day button{height:50px;gap:5px;border-radius:9px}
+ .solar-date-popover .solar-calendar-revenue .calendar-day-number{font-size:14px}
+ .solar-date-popover .solar-calendar-revenue .calendar-day-revenue{font-size:10px;letter-spacing:-.25px}
+ .solar-date-popover .calendar-day-revenue[data-currency=MKD] .calendar-day-currency{display:none}
+ .solar-date-popover .solar-date-shortcuts{order:1}
+ .solar-date-popover .calendar-revenue-legend{order:2}
+ .solar-date-popover .solar-calendar{order:3}
+ .solar-date-popover .solar-date-footer{order:4}
+ .solar-date-popover .solar-calendar-note{order:5}
+ .solar-date-popover .solar-date-heading{padding:16px 60px 10px 16px}
+ .solar-date-popover .solar-date-shortcuts{padding:0 16px 12px}
+ .solar-date-popover .solar-date-shortcuts button{min-height:44px}
+ .solar-date-popover .solar-calendar-note,.solar-date-popover .calendar-revenue-legend{font-size:12px;line-height:1.5;padding-inline:14px}
+ .solar-date-popover .solar-date-footer{font-size:12px;padding-inline:14px}
+}
+
+@media(max-width:600px){
+ .metrics{grid-template-columns:minmax(0,1fr)}
+ .metric-value{font-size:32px;margin:12px 0}
+ .metric-value span{font-size:14px}
+}
+
+@media(max-width:359px){
+ .page-content{padding-inline:12px}
+ .panel{padding-inline:12px}
+ .mobile-card-table tbody tr{padding:12px;gap:12px}
+ .mobile-card-table td[data-label]::before{font-size:10px}
+ .solar-date-popover .solar-calendar-revenue .calendar-day-revenue{font-size:9px}
+ .currency-switch{right:151px}
+ .currency-switch button{padding-inline:5px}
 }

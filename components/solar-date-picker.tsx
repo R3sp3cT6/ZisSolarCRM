@@ -9,7 +9,7 @@ import {useState} from 'react';
 import {addDays, addMonths, addYears, format, subDays} from 'date-fns';
 import {mk} from 'date-fns/locale/mk';
 import {enGB} from 'date-fns/locale/en-GB';
-import {CalendarDays, ChevronDown, ChevronLeft, ChevronRight, Check} from 'lucide-react';
+import {CalendarDays, ChevronDown, ChevronLeft, ChevronRight, Check, X} from 'lucide-react';
 import {Calendar,CalendarDayButton} from '@/components/ui/calendar';
 import {Popover, PopoverContent, PopoverDescription, PopoverTitle, PopoverTrigger} from '@/components/ui/popover';
 import {localDate} from '@/lib/energy';
@@ -31,7 +31,8 @@ export function SolarDatePicker({value, onChange, max, productionDays, dailyReve
 }) {const language=useLanguage();useCurrency();
   const calendarLocale=language==='en'?enGB:mk;
   const revenueByDay=new Map(dailyRevenue?.map(row=>[row.day,row]));
-  const money=(amount:number)=>new Intl.NumberFormat(getLocale(),{minimumFractionDigits:0,maximumFractionDigits:0,useGrouping:false}).format(convertMoney(amount)!)+' '+currencySymbol();
+  const moneyNumber=(amount:number)=>new Intl.NumberFormat(getLocale(),{minimumFractionDigits:0,maximumFractionDigits:0,useGrouping:false}).format(convertMoney(amount)!);
+  const money=(amount:number)=>moneyNumber(amount)+' '+currencySymbol();
   const selected = calendarDate(value);
   const today = calendarDate(localDate());
   const yesterday = subDays(today, 1);
@@ -65,6 +66,7 @@ export function SolarDatePicker({value, onChange, max, productionDays, dailyReve
     </PopoverTrigger>
     <PopoverContent className="solar-date-popover" align="end" sideOffset={8}>
       <div className="solar-date-heading">
+        <button type="button" className="icon-button calendar-mobile-close" aria-label={t('Затвори')} onClick={()=>setOpen(false)}><X size={18}/></button>
         <PopoverTitle>{t("Изберете датум")}</PopoverTitle>
         <PopoverDescription>{t(format(selected, 'EEEE, d MMMM yyyy', {locale: calendarLocale}))}</PopoverDescription>
       </div>
@@ -85,7 +87,7 @@ export function SolarDatePicker({value, onChange, max, productionDays, dailyReve
           const description=amount!=null?`${money(amount)}${row?.partial?' · '+t('Делумен приход'):''}`:'';
           return <CalendarDayButton {...props} locale={calendarLocale} title={description||undefined} aria-label={`${props['aria-label']??''}${description?', '+description:''}`}>
             <span className="calendar-day-number">{props.day.date.getDate()}</span>
-            {dailyRevenue&&<small className={'calendar-day-revenue'+(amount!=null&&amount<0?' calendar-revenue-negative':'')}>{amount!=null?`${row?.partial?'≈':''}${money(amount)}`:props.day.date>today?'':'—'}</small>}
+            {dailyRevenue&&<small data-currency={getCurrency()} className={'calendar-day-revenue'+(amount!=null&&amount<0?' calendar-revenue-negative':'')}>{amount!=null?<>{row?.partial?'≈':''}{moneyNumber(amount)}<span className="calendar-day-currency"> {currencySymbol()}</span></>:props.day.date>today?'':'—'}</small>}
           </CalendarDayButton>;
         }}}
         mode="single"
