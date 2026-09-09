@@ -1,12 +1,10 @@
-import {summarizeHistory,type DayCoverage} from './history-coverage';
+import {buildDashboard,type DashboardSnapshot,type DbReading,type DbPrice} from './dashboard';
 import 'server-only';
 import {db} from '../db/index';
 export {db} from '../db/index';
 const env=process.env;
-import {CONTRACT,MEMO_URL,parseMemo,rangeFor,slotsForDay,localDate,hourLabel,salePrice,revenue,type Period,type ReadingInput} from './energy';
-import {FUSION_GRID_DATE,type parseFusionLive} from './fusionsolar';
-import {readingCoverage,type LiveHour} from './fusion-telemetry';
-export async function ensurePlant(owner:string){await db().prepare('INSERT INTO plants (owner, created_at) VALUES (?, ?) ON CONFLICT(owner) DO NOTHING').bind(owner,new Date().toISOString()).run();}
+import {CONTRACT,MEMO_URL,parseMemo,localDate,type Period,type ReadingInput} from './energy';
+export async function ensurePlant(owner:string){if(!owner)throw Error('Недостасува сопственикот на централата.');await db().prepare('INSERT INTO plants (owner, created_at) VALUES (?, ?) ON CONFLICT(owner) DO NOTHING').bind(owner,new Date().toISOString()).run();}
 export async function syncMemo(day:string,force=false){
  const connection=db();const previous=await connection.prepare('SELECT * FROM sync_runs WHERE market_date=?').bind(day).first<{attempted_at:string;succeeded_at:string|null;error:string|null}>();
  if(previous&&Date.now()-Date.parse(previous.attempted_at)<(force?60000:previous.succeeded_at&&!previous.error&&day<localDate()?86400000:300000))return {updated:0,error:previous.error,cached:true};
@@ -44,57 +42,19 @@ export async function saveReadings(owner:string,rows:ReadingInput[],source:strin
  connection.prepare("INSERT INTO readings (owner,start,production_kwh,export_kwh,power_kw,observed_at,source,updated_at) SELECT ?,value->>'start',(value->>'productionKwh')::double precision,(value->>'exportKwh')::double precision,(value->>'powerKw')::double precision,value->>'observedAt',?,? FROM jsonb_array_elements(?::jsonb) ON CONFLICT(owner,start) DO UPDATE SET "+updates).bind(owner,source,now,payload)
  ];await connection.batch(statements);return rows.length;
 }
-type DbReading={start:string;production_kwh:number|null;export_kwh:number|null;power_kw:number|null;observed_at:string;source:string;updated_at:string};
-type DbPrice={start:string;eur_cents:number;fetched_at:string};
-export async function getDashboard(owner:string,day:string,period:Period,hour?:string){
- const {from,to}=rangeFor(day,period,hour);const connection=db();await ensurePlant(owner);
- const currentStart=new Date(Math.floor(Date.now()/3600000)*3600000).toISOString();
- const [plant,readingsResult,pricesResult,dayPricesResult,latest,currentPrice,sync,fusionRecord,reportRecord,archiveCount,historyGroups,dailyReports]=await Promise.all([
- connection.prepare('SELECT name,capacity_kw FROM plants WHERE owner=?').bind(owner).first(),
- connection.prepare('SELECT * FROM readings WHERE owner=? AND start>=? AND start<? ORDER BY start').bind(owner,from,to).all<DbReading>(),
- connection.prepare('SELECT start,eur_cents,fetched_at FROM prices WHERE start>=? AND start<? ORDER BY start').bind(from,to).all<DbPrice>(),
- connection.prepare('SELECT start,eur_cents,fetched_at FROM prices WHERE market_date=? ORDER BY start').bind(day).all<DbPrice>(),
- connection.prepare('SELECT power_kw,observed_at FROM readings WHERE owner=? AND power_kw IS NOT NULL ORDER BY observed_at DESC LIMIT 1').bind(owner).first<{power_kw:number;observed_at:string}>(),
- connection.prepare('SELECT eur_cents,fetched_at FROM prices WHERE start=?').bind(currentStart).first<{eur_cents:number;fetched_at:string}>(),
- connection.prepare('SELECT attempted_at,succeeded_at,error FROM sync_runs WHERE market_date=?').bind(day).first(),
- connection.prepare('SELECT state FROM fusion_state WHERE owner=?').bind(owner).first<{state:string}>(),
- connection.prepare('SELECT payload FROM fusion_reports WHERE owner=? AND kind=? AND period=?').bind(owner,period==='year'?'month':'day',period==='year'?day.slice(0,4):day.slice(0,7)).first<{payload:string}>(),
-  connection.prepare("SELECT count(*)::integer AS count FROM fusion_reports WHERE owner=? AND kind='hour' AND (payload::jsonb->>'version')::integer=2 AND (payload::jsonb->>'complete')::boolean=true").bind(owner).first<{count:number}>(),
- connection.prepare("SELECT (r.start::timestamptz AT TIME ZONE 'Europe/Skopje')::date::text AS day,count(*)::integer AS hours,count(r.production_kwh)::integer AS production,bool_or(r.production_kwh>0) AS has_production,count(r.export_kwh)::integer AS exported,count(*) FILTER(WHERE r.export_kwh IS NOT NULL AND p.start IS NOT NULL)::integer AS priced,sum(r.export_kwh / 1000.0 * (p.eur_cents / 100.0 * ? - ?)) AS revenue FROM readings r LEFT JOIN prices p ON p.start=r.start WHERE r.owner=? GROUP BY 1").bind(CONTRACT.share,CONTRACT.fixedEurMwh,owner).all<DayCoverage & {has_production:boolean;revenue:number|null}>(),
- connection.prepare("SELECT payload FROM fusion_reports WHERE owner=? AND kind='day'").bind(owner).all<{payload:string}>()
+export async function loadDashboardSnapshot(owner:string):Promise<DashboardSnapshot>{
+ const connection=db();await ensurePlant(owner);
+ const [plant,readings,prices,reports,syncs,fusion]=await Promise.all([
+  connection.prepare('SELECT name,capacity_kw FROM plants WHERE owner=?').bind(owner).first<DashboardSnapshot['plant']>(),
+  connection.prepare('SELECT * FROM readings WHERE owner=? ORDER BY start').bind(owner).all<DbReading>(),
+  connection.prepare('SELECT start,market_date,eur_cents,fetched_at FROM prices ORDER BY start').all<DbPrice>(),
+  connection.prepare('SELECT kind,period,payload,updated_at FROM fusion_reports WHERE owner=?').bind(owner).all<DashboardSnapshot['reports'][number]>(),
+  connection.prepare('SELECT market_date,attempted_at,succeeded_at,error FROM sync_runs').all<DashboardSnapshot['syncs'][number]>(),
+  connection.prepare('SELECT state FROM fusion_state WHERE owner=?').bind(owner).first<{state:string}>(),
  ]);
- const fusionState=fusionRecord?JSON.parse(fusionRecord.state) as {live?:ReturnType<typeof parseFusionLive>;liveHour?:LiveHour;lastSuccess?:string;error?:string}:{};
- const history=summarizeHistory(FUSION_GRID_DATE,localDate(),historyGroups.results,dailyReports.results.flatMap(r=>JSON.parse(r.payload).filter((v:{productionKwh:number|null;exportKwh:number|null})=>v.productionKwh!==null&&v.exportKwh!==null).map((v:{key:string})=>v.key)));
- const fusion={history,configured:!!(env.FUSIONSOLAR_PASSWORD&&env.FUSIONSOLAR_OWNER===owner),connected:!!fusionState.live,lastSuccess:fusionState.lastSuccess??null,error:fusionState.error??null,live:fusionState.live??null,archivedDays:archiveCount?.count??0,gridDate:FUSION_GRID_DATE};
- const report=reportRecord?JSON.parse(reportRecord.payload) as {key:string;productionKwh:number|null;exportKwh:number|null}[]:[];
- const live=fusion.live;
- const productionDays=[...new Set([
-  ...historyGroups.results.filter(r=>r.has_production).map(r=>r.day),
-  ...dailyReports.results.flatMap(r=>(JSON.parse(r.payload) as {key:string;productionKwh:number|null}[]).filter(v=>v.productionKwh!==null&&v.productionKwh>0).map(v=>v.key)),
-  ...(live&&live.dayProductionKwh!==null&&live.dayProductionKwh>0?[live.day]:[])
- ])].sort();
- if(live&&period==='year'&&day.slice(0,4)===live.day.slice(0,4)){const month=report.find(r=>r.key===live.day.slice(0,7));if(month)month.productionKwh=live.monthProductionKwh;}
- if(live&&['day','month'].includes(period)&&day.slice(0,7)===live.day.slice(0,7)){const today=report.find(r=>r.key===live.day);if(today){today.productionKwh=live.dayProductionKwh;today.exportKwh=live.dayExportKwh;}}
- const readingMap=new Map(readingsResult.results.map(r=>[r.start,r]));const priceMap=new Map(pricesResult.results.map(r=>[r.start,r]));
- // The unfinished hour is an ephemeral view, never an archived full-hour reading.
- const liveHour=fusionState.liveHour;
- if(liveHour?.start===currentStart&&currentStart>=from&&currentStart<to&&Date.now()-Date.parse(liveHour.observedAt)<900000&&(liveHour.exportKwh!==null||liveHour.productionKwh!==null)&&!readingMap.has(currentStart)){
-  readingMap.set(currentStart,{start:currentStart,production_kwh:liveHour.productionKwh,export_kwh:liveHour.exportKwh,power_kw:null,observed_at:liveHour.observedAt,source:'Huawei FusionSolar · live counters',updated_at:liveHour.observedAt});
- }
- const allStarts=[...new Set([...readingMap.keys(),...priceMap.keys()])].sort();
- const rows=allStarts.map(start=>{const r=readingMap.get(start);const p=priceMap.get(start);const memo=p?p.eur_cents/100:null;return {start,productionKwh:r?.production_kwh??null,exportKwh:r?.export_kwh??null,memo,sale:memo===null?null:salePrice(memo),revenue:r?.export_kwh!=null&&memo!==null?revenue(r.export_kwh,memo):null,estimate:r&&r.production_kwh!==null&&r.export_kwh===null&&memo!==null?revenue(r.production_kwh,memo):null,source:r?.source??null,observedAt:r?.observed_at??null,priceFetchedAt:p?.fetched_at??null,partial:start===currentStart};});
- const actual=rows.filter(r=>r.source!==null);const priced=actual.filter(r=>r.revenue!==null);const expectedFrom=fusion.configured?Math.max(Date.parse(from),Date.parse(slotsForDay(FUSION_GRID_DATE)[0].start)):Date.parse(from);const coverage=readingCoverage(actual.map(r=>r.start),new Date(expectedFrom).toISOString(),to);const expected=coverage.expected;
- const totals={productionKwh:actual.some(r=>r.productionKwh!==null)?actual.reduce((s,r)=>s+(r.productionKwh??0),0):null,exportKwh:actual.some(r=>r.exportKwh!==null)?actual.reduce((s,r)=>s+(r.exportKwh??0),0):null,revenue:priced.length?priced.reduce((s,r)=>s+r.revenue!,0):null,estimate:actual.some(r=>r.estimate!==null)?actual.reduce((s,r)=>s+(r.estimate??0),0):null,readings:actual.length,priced:priced.length,expected,missing:coverage.missing,partial:actual.some(r=>r.partial),unpriced:actual.filter(r=>r.exportKwh!==null&&r.memo===null).length,unmetered:actual.filter(r=>r.exportKwh===null).length};
- let productionSource='Часовна архива';
- const periodReport=report.filter(r=>period==='day'?r.key===day:period==='hour'?false:true);
- if(periodReport.some(r=>r.productionKwh!==null)){totals.productionKwh=periodReport.reduce((s,r)=>s+(r.productionKwh??0),0);if(periodReport.some(r=>r.exportKwh!==null))totals.exportKwh=periodReport.reduce((s,r)=>s+(r.exportKwh??0),0);productionSource='Huawei извештај';}
- if(period==='day'&&live?.day===day){totals.productionKwh=live.dayProductionKwh;totals.exportKwh=live.dayExportKwh;productionSource='Huawei · тековен ден';}
- const groups=new Map<string,{label:string;productionKwh:number|null;exportKwh:number|null;revenue:number|null;missingPrice:boolean}>();
- for(const row of rows){const date=localDate(row.start);const key=period==='year'?date.slice(0,7):period==='month'?date:row.start;const label=period==='year'?date.slice(5,7):period==='month'?date.slice(8,10):hourLabel(row.start);const g=groups.get(key)??{label,productionKwh:null,exportKwh:null,revenue:null,missingPrice:false};
- if(row.productionKwh!==null)g.productionKwh=(g.productionKwh??0)+row.productionKwh;if(row.exportKwh!==null)g.exportKwh=(g.exportKwh??0)+row.exportKwh;if(row.revenue!==null)g.revenue=(g.revenue??0)+row.revenue;if(row.exportKwh!==null&&row.memo===null)g.missingPrice=true;groups.set(key,g);}
- for(const r of periodReport){if(!['year','month'].includes(period))continue;const key=r.key;const g=groups.get(key)??{label:period==='year'?key.slice(5,7):key.slice(8,10),productionKwh:null,exportKwh:null,revenue:null,missingPrice:false};g.productionKwh=r.productionKwh;g.exportKwh=r.exportKwh;groups.set(key,g);}
- const currentPower=live?.powerKw!=null?{kw:live.powerKw,observedAt:live.retrievedAt,stale:Date.now()-Date.parse(live.retrievedAt)>900000}:latest?{kw:latest.power_kw,observedAt:latest.observed_at,stale:Date.now()-Date.parse(latest.observed_at)>600000}:null;
- return {plant,day,period,productionDays,dailyRevenue:historyGroups.results.map(r=>({day:r.day,revenue:r.revenue===null?null:Number(r.revenue),partial:r.day>=localDate()||Number(r.priced)<slotsForDay(r.day).length})),range:{from,to},slots:slotsForDay(day),totals,rows,productionSource,fusion,chart:[...groups.entries()].sort(([a],[b])=>a.localeCompare(b)).map(([,g])=>({...g,revenue:g.missingPrice?null:g.revenue})),market:dayPricesResult.results.map(p=>({start:p.start,label:hourLabel(p.start),memo:p.eur_cents/100,sale:salePrice(p.eur_cents/100)})),currentPrice:currentPrice?{memo:currentPrice.eur_cents/100,sale:salePrice(currentPrice.eur_cents/100),fetchedAt:currentPrice.fetched_at}:null,power:currentPower,sync,contract:CONTRACT,generatedAt:new Date().toISOString()};
+ const state=fusion?JSON.parse(fusion.state):{};
+ return {owner,plant,readings:readings.results,prices:prices.results,reports:reports.results,syncs:syncs.results,
+  fusionState:{live:state.live,liveHour:state.liveHour,lastSuccess:state.lastSuccess,error:state.error},
+  configured:!!(env.FUSIONSOLAR_PASSWORD&&env.FUSIONSOLAR_OWNER===owner),savedAt:new Date().toISOString()};
 }
-
-
+export async function getDashboard(owner:string,day:string,period:Period,hour?:string){return buildDashboard(await loadDashboardSnapshot(owner),day,period,hour);}

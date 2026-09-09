@@ -1,3 +1,4 @@
+import {withSessionRevocation} from '@/lib/session-cache';
 import {readJson,RequestError} from '@/lib/request-security';
 import {randomUUID} from 'node:crypto';
 import {getUser, sameOrigin, authLimit} from '@/lib/auth';
@@ -10,7 +11,7 @@ export const dynamic = 'force-dynamic';
 const json = (body: unknown, status = 200) => Response.json(body, {status, headers: {'Cache-Control': 'private, no-store'}});
 
 export async function GET() {
-  const actor = await getUser();
+  const actor = await getUser(true);
   if (!actor) return json({error: 'Најавете се за пристап.'}, 401);
   if (!isAdmin(actor)) return json({error: 'Само администратор може да управува со корисници.'}, 403);
   const result = await db().prepare('SELECT id,username,display_name,role,active,created_at,visit_count FROM users WHERE plant_owner=? ORDER BY created_at,id').bind(actor.plantOwner).all<{id:string;username:string;display_name:string;role:string;active:boolean;created_at:string;visit_count:number}>();
@@ -18,7 +19,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const actor = await getUser();
+  const actor = await getUser(true);
   if (!actor) return json({error: 'Најавете се за пристап.'}, 401);
   if (!isAdmin(actor)) return json({error: 'Само администратор може да управува со корисници.'}, 403);
   if (!sameOrigin(request)) return json({error: 'Невалидно потекло на барањето.'}, 403);
@@ -46,10 +47,10 @@ export async function POST(request: Request) {
     // The original owner always remains an active administrator. Self-service password changes use /account.
     if (target.id === actor.plantOwner || target.id === actor.userId) return json({error:'Оваа администраторска сметка е заштитена. Својата лозинка сменете ја во „Мој профил“.'},403);
     const passwordHash = changingPassword ? await hashPassword(body.password) : null;
-    await connection.batch([
+    await withSessionRevocation(target.id,()=>connection.batch([
       connection.prepare('UPDATE users SET username=?,display_name=?,role=?,active=?,password_hash=COALESCE(?,password_hash) WHERE id=? AND plant_owner=?').bind(username,name,body.role,body.active,passwordHash,target.id,actor.plantOwner),
       connection.prepare('DELETE FROM sessions WHERE user_id IN (SELECT id FROM users WHERE id=? AND plant_owner=?)').bind(target.id,actor.plantOwner),
-    ]);
+    ]));
     return json({ok:true});
   } catch (error) {
     if(error instanceof RequestError)return json({error:error.message},error.status);

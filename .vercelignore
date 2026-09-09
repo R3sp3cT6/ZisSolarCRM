@@ -1,5 +1,7 @@
 .git
 .openai
+.agents
+skills-lock.json
 .wrangler
 .env*
 work

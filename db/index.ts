@@ -1,5 +1,6 @@
 import 'server-only';
 import {neon} from '@neondatabase/serverless';
+import {countDatabaseQuery} from '../lib/database-usage';
 
 // Small parameterized query interface shared by the archive and collector.
 // Queries use PostgreSQL syntax. Values are always sent separately from SQL.
@@ -11,7 +12,7 @@ function client(){
 class Statement {
  constructor(readonly sql:string,readonly params:unknown[]=[]){ }
  bind(...params:unknown[]){return new Statement(this.sql,params);}
- query(){let index=0;const sql=this.sql.replace(/\?/g,()=>'$'+(++index));if(index!==this.params.length)throw new Error('SQL parameter count mismatch');return client().query(sql,this.params);}
+ query(){let index=0;const sql=this.sql.replace(/\?/g,()=>'$'+(++index));if(index!==this.params.length)throw new Error('SQL parameter count mismatch');countDatabaseQuery();return client().query(sql,this.params);}
  async first<T=Record<string,unknown>>():Promise<T|null>{return ((await this.query())[0] as T)??null;}
  async all<T=Record<string,unknown>>(){return {results:await this.query() as T[]};}
  async run(){return this.query();}

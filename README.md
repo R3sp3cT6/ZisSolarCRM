@@ -99,4 +99,17 @@ start,production_kwh,export_kwh
 
 Непреземените денови имаат предност. Нецелосните извештаи и старите маркери `complete` без `version:2` повторно се проверуваат по 7 дена, за еден ден со трајни null вредности да не ја блокира целата редица. Комплетноста се пресметува од зачуваните мерења и цени, а не само од API статусот на одговорот. Повторувањето не гарантира дека Huawei ќе врати податок што недостасува кај изворот.
 
-Освежување при активен корисник: POST /api/solar-refresh е достапен за најавени администратори и viewers; нема параметри за промена на податоци. Проверува Origin, има ограничување по корисник и заеднички lock/cooldown по централа. UI освежува на 6 минути додека е видлив и имало активност во последните 10 минути. Нема минутно polling на базата. Дневниот collector ги прескокнува тековните часови за да преземе недостасувачки историски ден. Лимитот до 10 стари денови дневно е максимум, не гарантиран број; без активни корисници дневниот повик обработува најмногу еден стар ден.
+Освежување при активен корисник: POST /api/solar-refresh е достапен за најавени администратори и viewers; нема параметри за промена на податоци. Проверува Origin, има ограничување по корисник и заеднички lock/cooldown по централа. UI освежува на 310 секунди додека е видлив и имало активност во последните 10 минути. Нема минутно polling на базата. Дневниот collector ги прескокнува тековните часови за да преземе недостасувачки историски ден. Лимитот до 10 стари денови дневно е максимум, не гарантиран број; без активни корисници дневниот повик обработува најмногу еден стар ден.
+
+
+## Shared cache and batched archiving
+
+Production uses the private Upstash Redis resource `zis-solar-cache` in Frankfurt, Free plan, with automatic upgrades and eviction disabled. Server-only `KV_REST_API_URL` and `KV_REST_API_TOKEN` are supplied by the Vercel integration. No browser receives a Redis credential, Huawei token, or a publicly cacheable financial response.
+
+Authenticated dashboard reads build day/month/year views from one snapshot per plant. Huawei telemetry is refreshed at most once per 310 seconds across all users. API reservations, encrypted Huawei sessions, live counters and pending completed-hour readings are durable in Redis. Incomplete intervals remain incomplete; only confirmed counter boundaries become hourly rows.
+
+The first active visit after a 10-minute gap flushes pending readings, fetches available Huawei reports, and refreshes the database snapshot. Continuous activity flushes at most hourly; simultaneous visitors share a 260-second plant lease. A database transaction is acknowledged in Redis only after success, and fill-only upserts permit replay without duplicate readings or revisions. The daily collector and the existing 21:00 push pass also flush the queue. There is no new background timer or cron. A cold cache or actual login/admin action can still wake Neon.
+
+Cached sessions retain their original expiry. Logout uses a tombstone, while role/password changes fence all of a user's cached sessions with a revocation version before updating the database. Cache fills revalidate within a stable version. Missing cache configuration uses the original database path; a configured but unavailable cache fails closed instead of silently bypassing revocations or discarding queued readings. Focus/visit events inside the existing 30-minute visit window update Redis only.
+
+For manual imports outside the application's API, call `rebuildSnapshot(owner)` from `lib/solar-cache.ts` after the transaction. API imports and scheduled synchronizations update it automatically. `X-ZIS-Database-Queries` on dashboard/refresh responses counts SQL statements including authentication, so a warm cache response can be verified as zero.
