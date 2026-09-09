@@ -5,6 +5,22 @@ import {getDashboard} from './solar-server';
 import {localDate} from './energy';
 import {reportTime} from './push-policy';
 import type {parseFusionLive} from './fusionsolar';
+export async function sendTestPush(userId:string,subscriptionId:string,language:'mk'|'en'){
+ const subscription=await db().prepare('SELECT endpoint,p256dh,auth FROM push_subscriptions WHERE id=? AND user_id=?').bind(subscriptionId,userId).first<{endpoint:string;p256dh:string;auth:string}>();
+ if(!subscription)return {sent:false,reason:'not-subscribed' as const};
+ if(!process.env.VAPID_PUBLIC_KEY||!process.env.VAPID_PRIVATE_KEY)return {sent:false,reason:'not-configured' as const};
+ const en=language==='en';
+ try{
+  await webpush.sendNotification({endpoint:subscription.endpoint,keys:{p256dh:subscription.p256dh,auth:subscription.auth}},JSON.stringify({title:en?'ZIS Solar · Test notification':'ZIS Solar · Тест известување',body:en?'Notifications work on this device. Your daily solar report is scheduled for 21:00 Resen time.':'Известувањата работат на овој уред. Дневниот соларен извештај е закажан за 21:00 часот по време во Ресен.',tag:'zis-test',url:'/account#notifications'}),{TTL:300,urgency:'high',timeout:10000,vapidDetails:{subject:'https://zissolar.vercel.app',publicKey:process.env.VAPID_PUBLIC_KEY,privateKey:process.env.VAPID_PRIVATE_KEY}});
+  // A provider acknowledgement is not proof that the phone displayed it. Tests
+  // do not claim the daily delivery slot or send to the user's other devices.
+  return {sent:true};
+ }catch(error){
+  const status=(error as {statusCode?:number}).statusCode;
+  if(status===404||status===410){await db().prepare('DELETE FROM push_subscriptions WHERE id=? AND user_id=?').bind(subscriptionId,userId).run();return {sent:false,reason:'expired' as const};}
+  return {sent:false,reason:'provider-error' as const};
+ }
+}
 export async function sendDailyPush(owner:string){
  const state=await db().prepare('SELECT state FROM fusion_state WHERE owner=?').bind(owner).first<{state:string}>();
  const live=state?(JSON.parse(state.state).live as ReturnType<typeof parseFusionLive>):null;

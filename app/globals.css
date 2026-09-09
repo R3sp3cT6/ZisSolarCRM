@@ -111,3 +111,5 @@
 
 /* SVG series can receive focus independently of the chart surface. */
 .live-chart .recharts-wrapper *:focus,.live-chart .recharts-wrapper *:focus-visible{outline:none!important}
+
+.push-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}.push-actions .button{min-height:44px}

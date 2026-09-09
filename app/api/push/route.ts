@@ -3,6 +3,7 @@ import {getUser,authLimit,sameOrigin} from '@/lib/auth';
 import {db} from '@/db';
 import {readJson,RequestError} from '@/lib/request-security';
 import {validSubscription} from '@/lib/push-policy';
+import {sendTestPush} from '@/lib/push-server';
 export const dynamic='force-dynamic';
 export async function GET(){const user=await getUser();if(!user)return new Response('Unauthorized',{status:401});const subscriptions=await db().prepare('SELECT id FROM push_subscriptions WHERE user_id=?').bind(user.userId).all<{id:string}>();return Response.json({publicKey:process.env.VAPID_PUBLIC_KEY??null,subscriptionIds:subscriptions.results.map(s=>s.id)},{headers:{'Cache-Control':'private, no-store'}});}
 export async function POST(request:Request){
@@ -11,8 +12,13 @@ export async function POST(request:Request){
  if(!await authLimit('push:'+user.userId,20))return new Response('Too many requests',{status:429});
  try{
   const body=await readJson(request,5000);
-  if(!validSubscription(body.subscription)||!['subscribe','unsubscribe'].includes(body.action)||!['mk','en'].includes(body.language))return new Response('Invalid subscription',{status:400});
+  if(!validSubscription(body.subscription)||!['subscribe','unsubscribe','test'].includes(body.action)||!['mk','en'].includes(body.language))return new Response('Invalid subscription',{status:400});
   const s=body.subscription,id=createHash('sha256').update(s.endpoint).digest('hex');
+  if(body.action==='test'){
+   if(!await authLimit('push-test:'+user.userId,3))return Response.json({sent:false,reason:'rate-limit'},{status:429});
+   const result=await sendTestPush(user.userId,id,body.language);
+   return Response.json(result,{status:result.sent?200:result.reason==='not-subscribed'||result.reason==='expired'?409:503});
+  }
   if(body.action==='unsubscribe'){await db().prepare('DELETE FROM push_subscriptions WHERE id=? AND user_id=?').bind(id,user.userId).run();return Response.json({ok:true});}
   if(!process.env.VAPID_PRIVATE_KEY||!process.env.VAPID_PUBLIC_KEY)return new Response('Push unavailable',{status:503});
   await db().prepare('INSERT INTO push_subscriptions(id,user_id,endpoint,p256dh,auth,language) VALUES(?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET user_id=excluded.user_id,p256dh=excluded.p256dh,auth=excluded.auth,language=excluded.language').bind(id,user.userId,s.endpoint,s.keys.p256dh,s.keys.auth,body.language).run();
