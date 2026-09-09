@@ -10,6 +10,7 @@ import './period-tabs.css';
 import './calendar-records.css';
 import './language.css';
 import './interactions.css';
+import './mobile-reading.css';
 export const metadata: Metadata = {
   title: 'ZIS Solar · Производство и приход',
   description: 'Вашата соларна централа, MEMO цени и приход на едно место.',
