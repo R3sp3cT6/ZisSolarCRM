@@ -362,5 +362,7 @@
   "Производство, приход, MEMO цени и архива. Без преземање, поставки и измени.": "Production, revenue, MEMO prices and archive. No downloads, settings or editing.",
   "Надомест": "Fee",
   "Страници и кориснички профил.": "Pages and user profile.",
-  "Затвори мени": "Close menu"
+  "Затвори мени": "Close menu",
+  "Huawei се освежува на околу 5 минути додека ја користите страницата и еднаш дневно автоматски. По 10 минути неактивност, освежувањето мирува. Часовите се дополнуваат од извештаите и бројачите на уредите, во рамки на Huawei API лимитот. Тековниот час е делумен (≈).": "Huawei refreshes about every 5 minutes while you use the page, plus once daily automatically. Refresh pauses after 10 minutes of inactivity. Hours are filled from reports and device counters within Huawei API limits. The current hour is partial (≈).",
+  "≈ Вклучен е тековниот час до последното Huawei мерење. Износот се дополнува при освежување.": "≈ Includes the current hour up to the latest Huawei reading. The amount updates on refresh."
 }

@@ -21,11 +21,13 @@ export function parseFusionHours(input:unknown,day:string,now=new Date()):Readin
   if(point.stationCode!==FUSION_STATION)throw new Error('Huawei врати податоци за друга централа.');
   if(typeof point.collectTime!=='number'||!Number.isFinite(point.collectTime)||point.collectTime%3600000!==0)throw new Error('Huawei врати невалидно време на мерење.');
   const start=new Date(point.collectTime).toISOString();if(!allowed.has(start)||seen.has(start))throw new Error('Huawei врати неусогласени часови.');seen.add(start);
-  // Huawei can return a zero placeholder for the latest hour while its report is still being calculated.
-  if(point.collectTime+7200000>now.getTime())continue;
+  // An unfinished hour is never archived as a complete hourly reading.
+  if(point.collectTime+3600000>now.getTime())continue;
   const map=point.dataItemMap??{};
   const production=energyValue(Object.hasOwn(map,'PVYield')?map.PVYield:map.inverter_power);
   const exported=energyValue(map.ongrid_power);if(production===null&&exported===null)continue;
+  // Recent zero placeholders need one more hour; positive returned measurements do not.
+  if(point.collectTime+7200000>now.getTime()&&!(production!==null&&production>0)&&!(exported!==null&&exported>0))continue;
   rows.push({start,productionKwh:production,exportKwh:exported,powerKw:null,observedAt:now.toISOString()});
  }
  return rows.sort((a,b)=>a.start.localeCompare(b.start));

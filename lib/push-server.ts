@@ -19,7 +19,7 @@ export async function sendDailyPush(owner:string){
   const claim=await db().prepare("INSERT INTO push_deliveries(subscription_id,day,status) VALUES(?,?,'sending') ON CONFLICT(subscription_id,day) DO UPDATE SET status='sending',attempts=push_deliveries.attempts+1,updated_at=now() WHERE push_deliveries.status!='sent' AND push_deliveries.attempts<3 AND push_deliveries.updated_at<now()-interval '10 minutes' RETURNING day").bind(s.id,day).first();
   if(!claim)continue;
   const en=s.language==='en',fmt=(v:number|null)=>v===null?'—':new Intl.NumberFormat(en?'en-GB':'mk-MK',{minimumFractionDigits:2,maximumFractionDigits:2}).format(v);
-  const partial=(data:typeof daily)=>data.totals.missing>0||data.totals.unpriced>0||data.totals.unmetered>0;
+  const partial=(data:typeof daily)=>data.totals.partial||data.totals.missing>0||data.totals.unpriced>0||data.totals.unmetered>0;
   const income=(data:typeof daily)=>(partial(data)?'≈':'')+fmt(data.totals.revenue)+' €';
   const body=`${en?'Today':'Денес'}: ${fmt(daily.totals.productionKwh===null?null:daily.totals.productionKwh/1000)} MWh · ${income(daily)}\n${en?'This month':'Овој месец'}: ${fmt((live?.monthProductionKwh??monthly.totals.productionKwh)===null?null:(live?.monthProductionKwh??monthly.totals.productionKwh)!/1000)} MWh · ${income(monthly)}${partial(daily)||partial(monthly)?'\n'+(en?'≈ Partial revenue':'≈ Делумен приход'):''}`;
   try{
