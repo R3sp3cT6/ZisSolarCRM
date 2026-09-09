@@ -113,3 +113,5 @@
 .live-chart .recharts-wrapper *:focus,.live-chart .recharts-wrapper *:focus-visible{outline:none!important}
 
 .push-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}.push-actions .button{min-height:44px}
+
+.push-device-note{margin-top:18px;padding:14px 16px;border:1px solid var(--border);border-radius:12px;background:var(--muted)}.push-device-note p{margin:6px 0 0;line-height:1.6}

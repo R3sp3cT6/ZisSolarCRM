@@ -9,6 +9,8 @@ export async function sendTestPush(userId:string,subscriptionId:string,language:
  const subscription=await db().prepare('SELECT endpoint,p256dh,auth FROM push_subscriptions WHERE id=? AND user_id=?').bind(subscriptionId,userId).first<{endpoint:string;p256dh:string;auth:string}>();
  if(!subscription)return {sent:false,reason:'not-subscribed' as const};
  if(!process.env.VAPID_PUBLIC_KEY||!process.env.VAPID_PRIVATE_KEY)return {sent:false,reason:'not-configured' as const};
+ const reserved=await db().prepare("INSERT INTO auth_limits(key,attempts,reset_at) VALUES (?,1,now()+interval '15 seconds') ON CONFLICT(key) DO UPDATE SET attempts=1,reset_at=excluded.reset_at WHERE auth_limits.reset_at<=now() RETURNING key").bind('push-device-test:'+userId+':'+subscriptionId).first();
+ if(!reserved)return {sent:false,reason:'rate-limit' as const};
  const en=language==='en';
  try{
   await webpush.sendNotification({endpoint:subscription.endpoint,keys:{p256dh:subscription.p256dh,auth:subscription.auth}},JSON.stringify({title:en?'ZIS Solar · Test notification':'ZIS Solar · Тест известување',body:en?'Notifications work on this device. Your daily solar report is scheduled for 21:00 Resen time.':'Известувањата работат на овој уред. Дневниот соларен извештај е закажан за 21:00 часот по време во Ресен.',tag:'zis-test',url:'/account#notifications'}),{TTL:300,urgency:'high',timeout:10000,vapidDetails:{subject:'https://zissolar.vercel.app',publicKey:process.env.VAPID_PUBLIC_KEY,privateKey:process.env.VAPID_PRIVATE_KEY}});
