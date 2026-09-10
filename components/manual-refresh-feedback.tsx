@@ -1,6 +1,9 @@
 'use client';
 import {CheckCircle2,Info,AlertCircle,X} from 'lucide-react';
-import {t,getLocale} from '@/lib/language';
+import {t} from '@/lib/language';
+import {format} from 'date-fns';
+import {mk} from 'date-fns/locale/mk';
+import {enGB} from 'date-fns/locale/en-GB';
 import {useLanguage} from '@/components/language-switch';
 import type {ManualRefreshResult,RefreshItem} from '@/lib/manual-refresh-result';
 
@@ -15,13 +18,13 @@ function message(item:RefreshItem){
  }
 }
 export function ManualRefreshFeedback({result,onDismiss}:{result:ManualRefreshResult;onDismiss:()=>void}){
- useLanguage();
+ const language=useLanguage();
  return <section className="manual-refresh-feedback" role="status" aria-live="polite" aria-atomic="true">
   <div className="manual-refresh-feedback-heading"><strong>{t('Резултат од освежувањето')}</strong><button className="icon-button" type="button" onClick={onDismiss} aria-label={t('Затвори')}><X size={15}/></button></div>
   <ul>{result.items.map(item=>{
    const Icon=item.status==='updated'?CheckCircle2:item.status==='error'||item.status==='unconfigured'?AlertCircle:Info;
    return <li key={item.source+item.day} className={'refresh-result-'+item.status}>
-    <Icon size={17}/><div><strong>{item.source} · {new Intl.DateTimeFormat(getLocale(),{day:'numeric',month:'short'}).format(new Date(item.day+'T12:00:00Z'))}</strong><span>{message(item)}</span></div>
+    <Icon size={17}/><div><strong>{item.source} · {format(new Date(item.day+'T12:00:00Z'),'d MMM yyyy',{locale:language==='en'?enGB:mk})}</strong><span>{message(item)}</span></div>
    </li>;
   })}</ul>
  </section>;
