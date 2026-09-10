@@ -45,7 +45,7 @@ export async function mutateAndCache<T>(owner:string,work:()=>Promise<T>){
  if(result.busy)throw Error('Податоците веќе се дополнуваат. Обидете се повторно.');
  return result.value;
 }
-async function archive(owner:string,day:string,options:{active?:boolean;daily?:boolean;evening?:boolean}){
+async function archive(owner:string,day:string,options:{active?:boolean;daily?:boolean;evening?:boolean;manual?:boolean}){
  const queued=await flushPending(owner);
  const result=await syncFusionDirect(owner,day,options);
  await rebuildSnapshot(owner);
@@ -53,7 +53,7 @@ async function archive(owner:string,day:string,options:{active?:boolean;daily?:b
  await cacheWrite('activity:'+owner,{lastActive:previous?.lastActive??0,lastArchived:Date.now()});
  return {...result,updated:result.updated+queued,storage:'database' as const};
 }
-export async function syncAndCache(owner:string,day:string,options:{active?:boolean;daily?:boolean;evening?:boolean}={}){
+export async function syncAndCache(owner:string,day:string,options:{active?:boolean;daily?:boolean;evening?:boolean;manual?:boolean}={}){
  if(!sharedCache())return syncFusionDirect(owner,day,options);
  const result=await withCacheLock('plant:'+owner,()=>archive(owner,day,options));
  return result.busy?{configured:fusionConfigured(),updated:0,cached:true,busy:true,error:null}:result.value;

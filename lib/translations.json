@@ -369,5 +369,20 @@
   "Поставки": "Settings",
   "Известувања и поставки за вашиот профил.": "Notifications and settings for your profile.",
   "За промена на пристапот или лозинката обратете се кај администраторот.": "Contact your administrator to change your access or password.",
-  "· Освежување при активна страница": "· Updates while the page is active"
+  "· Освежување при активна страница": "· Updates while the page is active",
+  "Освежи податоци": "Refresh data",
+  "Освежи MEMO": "Refresh MEMO",
+  "Се освежува…": "Refreshing…",
+  "Преземи MEMO цени за избраниот ден и за утре": "Fetch MEMO prices for the selected day and tomorrow",
+  "Преземи ги најновите податоци од Huawei и MEMO": "Fetch the latest data from Huawei and MEMO",
+  "Се проверуваат MEMO цените…": "Checking MEMO prices…",
+  "Се преземаат Huawei и MEMO податоци…": "Fetching Huawei and MEMO data…",
+  "Резултат од освежувањето": "Refresh results",
+  "Податоците се преземени и зачувани.": "Data retrieved and saved.",
+  "Нема ново мерење. Huawei го ограничува освежувањето на околу 5 минути.": "No new reading. Huawei limits refreshes to approximately every 5 minutes.",
+  "Цените се неодамна проверени.": "Prices were checked recently.",
+  "Цените сè уште не се објавени.": "Prices have not been published yet.",
+  "Веќе се преземаат податоци. Обидете се повторно наскоро.": "Data is already being retrieved. Try again shortly.",
+  "Huawei поврзувањето не е конфигурирано.": "The Huawei connection is not configured.",
+  "Преземањето не заврши целосно. Обидете се повторно.": "The download did not fully complete. Try again."
 }

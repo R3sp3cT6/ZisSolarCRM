@@ -10,7 +10,7 @@ import {cacheRead,cacheWrite} from './shared-cache';
 const HOUR=3600000,DAY=24*HOUR;
 export function fusionConfigured(){return !!(env.FUSIONSOLAR_USERNAME&&env.FUSIONSOLAR_PASSWORD&&env.FUSIONSOLAR_OWNER);}
 export function fusionOwner(){return env.FUSIONSOLAR_OWNER;}
-export async function syncFusionDirect(owner:string,requestedDay=localDate(),options:{active?:boolean;daily?:boolean;evening?:boolean}={}){
+export async function syncFusionDirect(owner:string,requestedDay=localDate(),options:{active?:boolean;daily?:boolean;evening?:boolean;manual?:boolean}={}){
  if(!fusionConfigured())return {configured:false,updated:0,error:null};
  if(owner!==fusionOwner())throw new Error('Оваа централа е поврзана со профилот на сопственикот.');
  if(!validDate(requestedDay)||requestedDay>localDate()||requestedDay<FUSION_GRID_DATE)throw new Error('Изберете датум од 03.04.2026 до денес.');
@@ -26,13 +26,14 @@ export async function syncFusionDirect(owner:string,requestedDay=localDate(),opt
  }
  const storedState:State=JSON.parse(locked.state),cachedState=await cacheRead<State>('fusion:'+owner);
  const state:State=cachedState&&Date.parse(cachedState.lastAttempt??'')>=Date.parse(storedState.lastAttempt??'1970-01-01')?cachedState:storedState;state.calls??={};state.lastAttempt=new Date(started).toISOString();let updated=0;const errors:string[]=[];
+ const previousSuccess=state.lastSuccess;
  const persist=async()=>{await cacheWrite('fusion:'+owner,state);return connection.prepare('UPDATE fusion_state SET state=? WHERE owner=? AND lock_token=?').bind(JSON.stringify(state),owner,lock).run();};
  const api=fusionClient(owner,state,persist);const {available,reserve,call}=api;
  async function attempt(work:()=>Promise<void>){try{await work();}catch(error){errors.push(error instanceof Error?error.message:'Неуспешно Huawei преземање.');}}
  async function hours(day:string){
   const prior=await connection.prepare("SELECT payload,updated_at FROM fusion_reports WHERE owner=? AND kind='hour' AND period=?").bind(owner,day).first<{payload:string;updated_at:string}>();
   if(prior&&day<localDate()&&JSON.parse(prior.payload).version===2&&JSON.parse(prior.payload).complete)return;
-  if(prior&&Date.now()-Date.parse(prior.updated_at)<(day===localDate()?HOUR:2*HOUR))return;
+  if(prior&&Date.now()-Date.parse(prior.updated_at)<(options.manual?60000:day===localDate()?HOUR:2*HOUR))return;
   if(!available('/thirdData/getKpiStationHour',60000,24))return;
   const values=await call('/thirdData/getKpiStationHour',{stationCodes:FUSION_STATION,collectTime:Date.parse(day+'T12:00:00Z')},60000,24);
   const rows=parseFusionHours(values,day);if(rows.length)updated+=await saveReadings(owner,rows,'Huawei FusionSolar · часовен извештај',true);
@@ -53,7 +54,7 @@ export async function syncFusionDirect(owner:string,requestedDay=localDate(),opt
   updated+=telemetry.updated;if(telemetry.error)errors.push(telemetry.error);
   // The daily pass closes yesterday first; active visits refresh today's report.
   await attempt(async()=>{await hours(options.daily?localDate(new Date(Date.parse(slotsForDay(localDate())[0].start)-HOUR)):localDate());});
-  if(options.evening){state.error=errors[0]??null;return {configured:true,updated,error:state.error,connected:!!state.live};}
+  if(options.evening){state.error=errors[0]??null;return {configured:true,updated,error:state.error,connected:!!state.live,liveUpdated:state.lastSuccess!==previousSuccess,lastSuccess:state.lastSuccess??null};}
   await attempt(async()=>{
    const period=requestedDay.slice(0,7);const stored=await connection.prepare("SELECT updated_at FROM fusion_reports WHERE owner=? AND kind='day' AND period=?").bind(owner,period).first<{updated_at:string}>();
    if(!stored||Date.now()-Date.parse(stored.updated_at)>(period===localDate().slice(0,7)?6*HOUR:30*DAY)){
@@ -106,12 +107,12 @@ export async function syncFusionDirect(owner:string,requestedDay=localDate(),opt
    const missing=historyDays(FUSION_GRID_DATE,localDate()).reverse().find(day=>counts.get(day)!==slotsForDay(day).length&&Date.now()-(attempts.get(day)??0)>6*HOUR);
    if(missing)await syncMemo(missing);
   });
-  state.error=errors[0]??null;await persist();return {configured:true,updated,error:state.error,connected:!!state.live};
+  state.error=errors[0]??null;await persist();return {configured:true,updated,error:state.error,connected:!!state.live,liveUpdated:state.lastSuccess!==previousSuccess,lastSuccess:state.lastSuccess??null};
  }finally{
   await persist();await connection.prepare('UPDATE fusion_state SET lock_until=0,lock_token=NULL WHERE owner=? AND lock_token=?').bind(owner,lock).run();
  }
 }
 
-export async function syncFusion(owner:string,requestedDay=localDate(),options:{active?:boolean;daily?:boolean;evening?:boolean}={}){
+export async function syncFusion(owner:string,requestedDay=localDate(),options:{active?:boolean;daily?:boolean;evening?:boolean;manual?:boolean}={}){
  const {syncAndCache}=await import('./solar-cache');return syncAndCache(owner,requestedDay,options);
 }
