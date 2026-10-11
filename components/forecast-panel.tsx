@@ -399,7 +399,7 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
             <span>
               {l('Пресметано', 'Calculated')}: {time(forecast.issuedAt)}
             </span>
-            <span>{l('Време: Скопје', 'Time: Skopje')}</span>
+            <span>{l('Локално време · Ресен', 'Local time · Resen')}</span>
             <span>
               {l(
                 'Автоматски: 08:20 · 12:20 · 18:20',
