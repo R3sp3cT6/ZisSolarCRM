@@ -16,6 +16,10 @@
     {
       "path": "/api/push/check",
       "schedule": "0 19,20 * * *"
+    },
+    {
+      "path": "/api/forecast-sync",
+      "schedule": "20 6,7,10,11,16,17 * * *"
     }
   ]
 }

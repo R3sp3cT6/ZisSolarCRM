@@ -11,10 +11,11 @@
     "start": "next start",
     "lint": "oxlint",
     "format": "oxfmt",
-    "test": "node --experimental-strip-types --import ./tests/register-ts.mjs --test tests/energy.test.mjs tests/fusionsolar.test.mjs tests/auth.test.mjs tests/candles.test.mjs tests/security.test.mjs tests/history.test.mjs tests/language.test.mjs tests/push.test.mjs tests/currency.test.mjs tests/fusion-telemetry.test.mjs && npm run test:push && npm run test:cache",
+    "test": "node --experimental-strip-types --import ./tests/register-ts.mjs --test tests/energy.test.mjs tests/fusionsolar.test.mjs tests/auth.test.mjs tests/candles.test.mjs tests/security.test.mjs tests/history.test.mjs tests/language.test.mjs tests/push.test.mjs tests/currency.test.mjs tests/fusion-telemetry.test.mjs && npm run test:push && npm run test:cache && npm run test:forecast",
     "db:migrate": "node --env-file=.env.local scripts/migrate.mjs",
     "test:push": "node --conditions=react-server --experimental-transform-types --experimental-test-module-mocks --import ./tests/register-ts.mjs --test tests/push-delivery.test.mjs",
-    "test:cache": "node --conditions=react-server --experimental-transform-types --experimental-test-module-mocks --import ./tests/register-ts.mjs --test tests/cache.test.mjs tests/session-cache.test.mjs tests/fusion-client.test.mjs tests/memo-sync.test.mjs tests/manual-refresh.test.mjs"
+    "test:cache": "node --conditions=react-server --experimental-transform-types --experimental-test-module-mocks --import ./tests/register-ts.mjs --test tests/cache.test.mjs tests/session-cache.test.mjs tests/fusion-client.test.mjs tests/memo-sync.test.mjs tests/manual-refresh.test.mjs",
+    "test:forecast": "node --conditions=react-server --experimental-transform-types --experimental-test-module-mocks --import ./tests/register-ts.mjs --test tests/forecast-model.test.mjs tests/forecast-server.test.mjs"
   },
   "dependencies": {
     "@base-ui/react": "1.7.0",

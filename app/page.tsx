@@ -7,7 +7,7 @@ export default async function Home({searchParams}:{searchParams:Promise<{view?:s
  const user = await getUser();
  if(!user)redirect('/login');
  const {view}=await searchParams;
- const initialPage=view&&['overview','market','archive','connect','users'].includes(view)?view:'overview';
+ const initialPage=view&&['overview','market','archive','forecast','connect','users'].includes(view)?view:'overview';
  return <><VisitTracker/><Dashboard initialPage={initialPage} user={{id:user.userId,name:user.displayName,email:user.email,role:user.role}} /></>;
 }
 

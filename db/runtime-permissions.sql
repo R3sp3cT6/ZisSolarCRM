@@ -9,3 +9,6 @@ ALTER ROLE zis_app_runtime SET statement_timeout='25s';
 ALTER ROLE zis_app_runtime SET idle_in_transaction_session_timeout='10s';
 
 GRANT SELECT,INSERT,UPDATE,DELETE ON push_subscriptions,push_deliveries TO zis_app_runtime;
+
+GRANT SELECT,INSERT,UPDATE ON forecast_settings TO zis_app_runtime;
+GRANT SELECT,INSERT ON forecast_runs TO zis_app_runtime;

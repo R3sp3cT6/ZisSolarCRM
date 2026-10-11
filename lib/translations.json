@@ -384,5 +384,7 @@
   "Цените сè уште не се објавени.": "Prices have not been published yet.",
   "Веќе се преземаат податоци. Обидете се повторно наскоро.": "Data is already being retrieved. Try again shortly.",
   "Huawei поврзувањето не е конфигурирано.": "The Huawei connection is not configured.",
-  "Преземањето не заврши целосно. Обидете се повторно.": "The download did not fully complete. Try again."
+  "Преземањето не заврши целосно. Обидете се повторно.": "The download did not fully complete. Try again.",
+  "Прогноза": "Forecast",
+  "Проценка на производство, MEMO цени и приход за следните 7 дена.": "Estimated production, MEMO prices and revenue for the next 7 days."
 }

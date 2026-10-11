@@ -1,0 +1,381 @@
+.forecast-page {
+  display: grid;
+  gap: 22px;
+  min-width: 0;
+}
+.forecast-toolbar,
+.forecast-meta,
+.forecast-chart-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.forecast-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 650;
+}
+.forecast-meta {
+  justify-content: flex-start;
+  font-size: 12px;
+  color: var(--muted-foreground);
+  gap: 10px 24px;
+}
+.forecast-days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 10px;
+}
+.forecast-day {
+  display: grid;
+  gap: 12px;
+  text-align: left;
+  padding: 18px 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--card);
+  color: var(--foreground);
+  transition:
+    border-color 0.18s,
+    background 0.18s,
+    transform 0.18s;
+  min-width: 0;
+}
+.forecast-day:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+.forecast-day.selected {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 13%, var(--card));
+}
+.forecast-day > span {
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.forecast-day > strong {
+  font-size: 24px;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.forecast-day small {
+  font-size: 10px;
+  color: var(--muted-foreground);
+  font-weight: 500;
+}
+.forecast-approx {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+.forecast-day .forecast-official {
+  color: var(--primary);
+}
+.forecast-notice {
+  display: flex;
+  gap: 12px;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--chart-blue) 5%, var(--card));
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--muted-foreground);
+}
+.forecast-notice svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.forecast-notice strong {
+  color: var(--foreground);
+}
+.forecast-notice p {
+  margin: 3px 0 0;
+}
+.forecast-notice.warning {
+  border-color: #ad824d;
+  color: var(--foreground);
+}
+.forecast-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  padding: 8px 0 24px;
+  border-bottom: 1px solid var(--border);
+}
+.forecast-metrics > div {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+.forecast-metrics span {
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.forecast-metrics strong {
+  font-size: 25px;
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.forecast-metrics small {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+.forecast-chart-title {
+  margin: 24px 0 12px;
+}
+.forecast-chart-title h3 {
+  font-size: 14px;
+}
+.forecast-chart-title span {
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+.forecast-chart {
+  height: 290px;
+  min-width: 0;
+}
+.forecast-price-chart {
+  height: 200px;
+}
+.forecast-chart :is(svg, [tabindex]):focus {
+  outline: none;
+}
+.forecast-chart :is(svg, [tabindex]):focus-visible {
+  outline: 1px dashed var(--primary);
+  outline-offset: 4px;
+}
+.forecast-fine {
+  font-size: 12px;
+  line-height: 1.75;
+  color: var(--muted-foreground);
+  margin-top: 16px;
+}
+.forecast-page summary {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+.forecast-settings > summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.forecast-table-wrap {
+  overflow-x: auto;
+  margin-top: 16px;
+}
+.forecast-page table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.forecast-page th,
+.forecast-page td {
+  padding: 13px 12px;
+  text-align: right;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.forecast-page th:first-child {
+  text-align: left;
+}
+.forecast-page thead {
+  color: var(--muted-foreground);
+}
+.forecast-page th small {
+  display: block;
+  font-size: 9px;
+  color: var(--muted-foreground);
+  font-weight: 400;
+}
+.forecast-validation-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin: 8px 0 22px;
+}
+.forecast-validation-grid span {
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.forecast-validation-grid strong {
+  display: block;
+  font-size: 27px;
+  margin: 12px 0;
+}
+.forecast-validation-grid strong small {
+  font-size: 12px;
+  font-weight: 500;
+}
+.forecast-validation-grid p {
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--muted-foreground);
+}
+.forecast-sources dl {
+  margin-top: 16px;
+  display: grid;
+  gap: 0;
+}
+.forecast-sources dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+.forecast-sources dt {
+  color: var(--muted-foreground);
+}
+.forecast-sources dd {
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+.forecast-sources a {
+  color: var(--primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.forecast-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 20px;
+}
+.forecast-form-grid label {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.forecast-form-grid input {
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  color: var(--foreground);
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+}
+.forecast-settings > p {
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--muted-foreground);
+  margin-top: 18px;
+}
+.forecast-settings .button {
+  margin-top: 16px;
+}
+.forecast-empty {
+  text-align: center;
+  padding: 50px 24px;
+}
+.forecast-empty svg {
+  margin: 0 auto 16px;
+  color: var(--primary);
+}
+.forecast-empty p {
+  max-width: 520px;
+  margin: 15px auto;
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--muted-foreground);
+}
+@media (max-width: 1200px) {
+  .forecast-days {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .forecast-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .forecast-page {
+    gap: 16px;
+  }
+  .forecast-toolbar .button {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+  }
+  .forecast-days {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .forecast-day {
+    padding: 15px;
+    gap: 10px;
+  }
+  .forecast-day:last-child {
+    grid-column: 1/-1;
+    grid-template-columns: 1fr 1fr;
+  }
+  .forecast-day > strong {
+    font-size: 23px;
+  }
+  .forecast-metrics {
+    gap: 22px 12px;
+  }
+  .forecast-metrics strong {
+    font-size: 22px;
+  }
+  .forecast-metrics small {
+    display: block;
+    margin-top: 3px;
+  }
+  .forecast-validation-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .forecast-form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 12px;
+  }
+  .forecast-notice {
+    padding: 15px;
+  }
+  .forecast-meta {
+    font-size: 11px;
+    gap: 8px 14px;
+  }
+  .forecast-chart {
+    height: 250px;
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+  .forecast-price-chart {
+    height: 175px;
+  }
+  .forecast-sources dl > div {
+    gap: 10px;
+  }
+  .forecast-sources dd {
+    max-width: 65%;
+  }
+  .forecast-settings .button {
+    width: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .forecast-day {
+    transition: none;
+  }
+  .forecast-day:hover {
+    transform: none;
+  }
+}
