@@ -1,0 +1,61 @@
+{
+  "checkedAt": "2026-10-11T19:29:33.405Z",
+  "code": "f0ea188",
+  "api": {
+    "anonymous": 401,
+    "admin": 200
+  },
+  "trial": {
+    "id": "f8af4999-01b3-4a42-9d32-a1e7ca73ee3d",
+    "issuedAt": "2026-10-11T19:29:33.477Z",
+    "version": "weather-solar-v3.3-shadow",
+    "hours": 24,
+    "iconRun": "2026-10-11T12:00:00.000Z",
+    "iconKwh": 2866.8365505105075,
+    "baselineKwh": 2740.325901253747
+  },
+  "satellite": {
+    "status": "ready",
+    "fetchedAt": "2026-10-11T19:29:23.616Z",
+    "points": [
+      {
+        "slotTime": "2026-10-11T18:45:00.000Z",
+        "createdAt": "2026-10-11T19:02:27Z",
+        "receivedAt": "2026-10-11T19:29:23.614Z",
+        "latitude": 41.050003,
+        "longitude": 21.050003,
+        "ghi": 0,
+        "diffuseFraction": null,
+        "qualityFlag": 173,
+        "quality": "night",
+        "cloudMask": 3,
+        "url": "https://thredds.lsasvcs.ipma.pt/thredds/dodsC/MSG/MDSSFTD/NETCDF/2026/10/11/NETCDF4_LSASAF_MSG_MDSSFTD_MSG-Disk_202610111845.nc",
+        "sha256": "3d0eb5225894e6a0338810235e866b5b57235aa1a20b4f255ebb1696630657ac"
+      },
+      {
+        "slotTime": "2026-10-11T19:00:00.000Z",
+        "createdAt": "2026-10-11T19:17:55Z",
+        "receivedAt": "2026-10-11T19:29:23.616Z",
+        "latitude": 41.050003,
+        "longitude": 21.050003,
+        "ghi": 0,
+        "diffuseFraction": null,
+        "qualityFlag": 173,
+        "quality": "night",
+        "cloudMask": 3,
+        "url": "https://thredds.lsasvcs.ipma.pt/thredds/dodsC/MSG/MDSSFTD/NETCDF/2026/10/11/NETCDF4_LSASAF_MSG_MDSSFTD_MSG-Disk_202610111900.nc",
+        "sha256": "28bad454335e5c3456ed28d0801de7ddb44af15e069e8260ec1eec5a75191a68"
+      }
+    ]
+  },
+  "persistedSatelliteSlots": 2,
+  "officialModelUnchanged": "weather-solar-v3.2",
+  "scores": [
+    {
+      "kind": "day-ahead",
+      "hours": 0,
+      "baselineWape": null,
+      "candidateWape": null
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # ZIS Solar — контекст за продолжување на работата
 
-Последно проверено: **11.10.2026** — v3.2, јасно одделување на збирна разлика и часовен WAPE. Ова е состојба на проектот на тој датум; тековните податоци се читаат од базата.
+Последно проверено: **11.10.2026, 21:31 Ресен** — официјален v3.2 + одделна ICON-EU/Huawei проба v3.3-shadow и активна LSA SAF интеграција. Ова е состојба на проектот на тој датум; тековните податоци се читаат од базата.
 
 ## Дијагностика на големиот WAPE — 11.10.2026, по v3.2
 
@@ -12,8 +12,10 @@
 - **Сателитот се презема и архивира за валидација; сè уште НЕ е gain во прогнозата и НЕ е optical-flow следење на облаци/сенки.** Ова е видливо и во UI. Нема нов доказ за подобар WAPE сè додека не пристигнат подоцнежните мерења.
 - Миграции 009/010 се применети прво на изолираната Neon гранка, потоа на продукција. Нови append-only табели: `forecast_trials`, `forecast_observations`, `forecast_satellites`, runtime SELECT/INSERT. Постојните мерења/приходи/историски симулации не се препишуваат. Влезови, timestamps, изворни точки и checksum се зачувуваат.
 - Branch live проба `3eab08e9-a9c5-4777-8343-23e0fafc3e67`: за 12 октомври 24 часа, ICON-EU 2.866837 MWh vs v3.2 2.740326 MWh. Ова не е оценка на точност. SQL readback успешен; три сателитски термини зачувани во branch при првиот тест.
-- Постојниот forecast cron и active-user Huawei refresh го движат тестот. Нема нов 24/7 collector. Топол trial read без SQL е проверен во тестови; реалниот production audit се додава при објавување. Кратките мерења/сателитите од active flow одат во Redis редица и SQL при постојно архивирање. Реална краткорочна прогноза чека две свежи целосни дневни Huawei мерења.
-- 13 нови тестови: ICON енергетска конверзија, свежина, look-ahead, недостасувачки инвертори, counter reset, AC cap, сателитски единици/quality, admin/origin, owner isolation, queue retry/0 SQL. Desktop/MK/EN и 390 px UI проверени, без хоризонтално прелевање или console errors. Завршниот deployment receipt следува подолу.
+- Постојниот forecast cron и active-user Huawei refresh го движат тестот. Нема нов 24/7 collector. Кратките мерења/сателитите од active flow одат во Redis редица и SQL при постојно архивирање. Реална краткорочна прогноза чека две свежи целосни дневни Huawei мерења.
+- 13 нови тестови: ICON енергетска конверзија, свежина, look-ahead, недостасувачки инвертори, counter reset, AC cap, сателитски единици/quality, admin/origin, owner isolation, queue retry/0 SQL. Вкупно **151 тест**, TypeScript, production build и насочен lint успешни. Desktop/MK/EN и 390 px UI проверени, без хоризонтално прелевање или console errors.
+- **Објавено:** код `f0ea188`, deployment `dpl_2qWsqxjFmc9xVMcU2KnYdPxt9sND`, READY на https://zissolar.vercel.app. Продукциски POST `/api/forecast-trial` HTTP 200, trial **`f8af4999-01b3-4a42-9d32-a1e7ca73ee3d`**, 24 часа за 12 октомври. ICON-EU 2.866837 MWh vs официјален v3.2 2.740326 MWh; WAPE сè уште нема спарени исходи. [Production API + SQL receipt](docs/production-trial-satellite-receipt.json): зачувани два сателитски термини (18:45 и 19:00 UTC), валидна ноќ, сурови OpenDAP подмножества/атрибути потврдени во SQL. Дневниот 12 UTC пример е посебен тест на изворот, не тековно зрачење.
+- [Production release/cache audit](docs/production-trial-release.json): `zis_app_runtime`, топли **getCachedDashboard + readForecast + readTrial = 0 SQL queries**, `/login` 200, анонимен trial 401. Официјалниот модел останува v3.2. Привремените production/branch тест-сесии се истечени; preview процесите и табот се затворени, привремените DB/env и token датотеки се избришани. Приватната LSA SAF env датотека останува надвор од проектот. Проверен UI приказ: `outputs/forecast-satellite-trial.jpg` (изолирана гранка со реални извори).
 
 - Корисникот нагласува дека тричасовните податоци не се решение и бара како реално да се намали часовната грешка. Потврдено: само премин на почести GFS податоци не е доволен.
 - Направен read-only тест со оригинални **часовни** NOAA GRIB DSWRF вредности од истиот претходен run (10 октомври 12 UTC). Исти калибрациски коефициенти, температура/ветер и 13 реални часа за 11 октомври. WAPE **39,4855% → 53,0020%**, MAE 53,55 → 71,88 kWh. Новата варијанта е полоша и **не е активирана**. Ова е еден избран тежок ден, не вкупна независна валидација.
@@ -104,8 +106,8 @@
 | Работна гранка | `codex/energy-forecast`, upstream `origin/master` |
 | Продукциска апликација | https://zissolar.vercel.app |
 | Прогноза | https://zissolar.vercel.app/?view=forecast |
-| Последна објавена кодна промена | `f3c0722` — модел v3.1, дневна калибрација и GFS зрачење |
-| Vercel deployment | `dpl_4Q266aph2fGymFJf1ynogZkoMwUc`, проверено `READY`; `/login` HTTP 200 |
+| Последна објавена кодна промена | `f0ea188` — официјален v3.2 + ICON-EU/Huawei проба и LSA SAF |
+| Vercel deployment | `dpl_2qWsqxjFmc9xVMcU2KnYdPxt9sND`, проверено `READY`; `/login` HTTP 200 |
 | Framework / runtime | Next.js 16.3.4, React 19, Node.js 24, TypeScript |
 | База | PostgreSQL во Neon; проект `shy-cloud-43336984`, production branch `br-orange-shape-b1h87mhs` |
 | Кеш | Upstash Redis, серверски пристап; нема клуч во browser |
@@ -120,7 +122,7 @@
 - **875 kW AC** е лимит на моделот според збирот на номиналните инвертерски моќности. Не е потврден лимит за мрежна испорака или гаранција за расположливост.
 - DC kWp, наклон и азимут **не се потврдени** и остануваат `null`. Не ги измислувај и не изедначувај DC kWp со AC kW.
 - Поставки: NOCT 45°C, gamma −0.004/°C, системски загуби 14%, инвертерска ефикасност 0.96. Тоа се општи претпоставки за физичкиот модел; емпирискиот одзив веќе ги содржи статичките загуби.
-- Верзија на поставките: `weather-v2.1-huawei-nominal-ac-20261011`. Таа е одделна од тековната верзија на моделот **`weather-solar-v3.0`**.
+- Верзија на поставките: `weather-v2.1-huawei-nominal-ac-20261011`. Таа е одделна од официјалната верзија на моделот **`weather-solar-v3.2`** и пробната **`weather-solar-v3.3-shadow`**.
 
 ## Што е зачувано во продукциската база
 
