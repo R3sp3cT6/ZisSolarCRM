@@ -1,5 +1,7 @@
 # ZIS Solar
 
+Контекст за продолжување: [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md). Последна проверка на зачуваните прогностички податоци: [forecast-persistence-audit.json](docs/forecast-persistence-audit.json).
+
 Приватна веб-платформа на македонски за производство, испорака, MEMO DAM цени и приход. Next.js 16 на Vercel, PostgreSQL архива во Neon (Frankfurt).
 
 ## Пристап и архива

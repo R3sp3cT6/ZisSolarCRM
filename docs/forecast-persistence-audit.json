@@ -1,0 +1,65 @@
+{
+  "checkedAt": "2026-10-11T14:54:52.732Z",
+  "environment": "production",
+  "plant": "ZIS Solar, Resen",
+  "modelVersion": "weather-solar-v3.0",
+  "forecastId": "ac4dfa16-fc97-4455-9761-ccc233a575fb",
+  "issuedAt": "2026-10-11T14:52:13.323Z",
+  "pendingArchive": {
+    "batchesBefore": 0,
+    "rowsBefore": 0,
+    "written": 0,
+    "batchesAfter": 0,
+    "rowsAfter": 0
+  },
+  "archive": {
+    "readings": {
+      "hours": 4045,
+      "production_hours": 3684,
+      "export_hours": 4020,
+      "first_hour": "2026-04-03T15:00:00.000Z",
+      "last_hour": "2026-10-11T13:00:00.000Z"
+    },
+    "prices": {
+      "hours": 4800,
+      "first_hour": "2025-09-01T22:00:00.000Z",
+      "last_hour": "2026-10-12T21:00:00.000Z"
+    },
+    "reports": 171,
+    "forecastSnapshots": 4
+  },
+  "savedForecast": {
+    "days": 7,
+    "hourlyPredictions": 168,
+    "metRawPoints": 92,
+    "weatherHours": 226,
+    "silamRawHours": 131,
+    "historicalPriceInputs": 4368,
+    "historicalReadingInputs": 1080,
+    "metIssuedAt": "2026-10-11T13:19:22Z",
+    "silamIssuedAt": "2026-10-10T00:00:00Z",
+    "silamRun": "silam_glob_v6_1_sfc/runs/silam_glob_v6_1_sfc_RUN_2026-10-10T00:00:00Z",
+    "calibrationDays": 12,
+    "config": {
+      "acKw": 875,
+      "noct": 45,
+      "tilt": null,
+      "dcKwp": null,
+      "gamma": -0.004,
+      "azimuth": null,
+      "version": "weather-v2.1-huawei-nominal-ac-20261011",
+      "latitude": 41.068056,
+      "longitude": 21.036111,
+      "lossPercent": 14,
+      "inverterEfficiency": 0.96
+    }
+  },
+  "storedInputSha256": {
+    "met": "756c8cd35d63e086151778c565fe88d9967acb419d2aa456192a138ab6c2c9a1",
+    "silamCsv": "9cb2e798b220b93be6327a9507c29368f3ba99dc0b59be98c0d71f6fa49dd369",
+    "prices": "2146bd673ba72f746a9af8b904a88361b8b4b1557ed0ba0d013b9c12f124ab11",
+    "readings": "18123b41c63512f792ae3beff772011505754699e1e00ce7a13d0ad83e661ebd",
+    "config": "6d8e85e9e925e5af8b78de5a95335aeaa657e0ef5a5e05d0156be9fb9262257d"
+  },
+  "note": "Verified by reading PostgreSQL forecast_runs and forecast_settings directly, not only Redis. Forecasts and raw weather remain separate from actual measurements. Missing actual measurements remain null. Historical values may still be incomplete; these are record counts, not a completeness claim."
+}
