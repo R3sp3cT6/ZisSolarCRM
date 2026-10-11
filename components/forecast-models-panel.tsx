@@ -9,7 +9,7 @@ const l = (mk: string, en: string) => (getLanguage() === 'en' ? en : mk);
 const n = (value: number | null, d = 2) =>
   formatNumber(value, d, getLanguage());
 const time = (value: string) =>
-  new Intl.DateTimeFormat(getLanguage() === 'en' ? 'en-GB' : 'mk-MK', {
+  new Intl.DateTimeFormat('en-GB', {
     timeZone: 'Europe/Skopje',
     day: '2-digit',
     month: '2-digit',
@@ -176,8 +176,8 @@ export function ForecastModelsPanel({ canManage }: { canManage: boolean }) {
           </table>
           <p className="forecast-fine">
             {l(
-              'MWh е прогнозата за избраниот ден. WAPE е грешката на претходните однапред зачувани прогнози, за исти измерени часови. Помал процент е подобро.',
-              'MWh is the forecast for the selected day. WAPE measures earlier forecasts saved before observations, over the same measured hours. Lower is better.',
+              'MWh е прогнозата за датумот прикажан погоре. WAPE е грешката на претходните однапред зачувани прогнози, за исти измерени часови. Помал процент е подобро.',
+              'MWh is the forecast for the date shown above. WAPE measures earlier forecasts saved before observations, over the same measured hours. Lower is better.',
             )}
           </p>
           <p>
