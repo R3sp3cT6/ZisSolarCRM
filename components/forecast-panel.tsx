@@ -27,6 +27,7 @@ import { convertMoney, getCurrency } from '@/lib/currency';
 import { salePrice } from '@/lib/energy';
 import type { ForecastConfig, ForecastPayload } from '@/lib/forecast-model';
 import { formatNumber } from '@/lib/number-format';
+import { ForecastConditions } from './forecast-conditions';
 
 type View = { config: ForecastConfig; forecast: ForecastPayload | null };
 const l = (mk: string, en: string) => (getLanguage() === 'en' ? en : mk);
@@ -890,6 +891,10 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
                     'kW is average power over the hour, not an instantaneous peak. Later weather points are spaced up to 6 hours apart and interpolated. The inverter cap does not predict faults, shutdowns, snow or grid curtailment.',
                   )}
                 </p>
+                <ForecastConditions
+                  day={day}
+                  source={forecast.weather.atmosphere}
+                />
               </section>
               <details className="panel forecast-hourly">
                 <summary>
@@ -1135,6 +1140,34 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
                 <dt>{l('Модел', 'Model')}</dt>
                 <dd>{forecast.version}</dd>
               </div>
+              {forecast.weather.provider === 'met-norway' && (
+                <div>
+                  <dt>
+                    <a
+                      href="https://silam.fmi.fi/"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      FMI SILAM <ArrowUpRight size={12} />
+                    </a>
+                  </dt>
+                  <dd>
+                    {forecast.weather.atmosphere?.status === 'ready' ? (
+                      <>
+                        {l('Издадено', 'Issued')}:{' '}
+                        {time(forecast.weather.atmosphere.issuedAt!)}
+                        <br />
+                        {l('Мрежна точка', 'Grid point')}:{' '}
+                        {number(forecast.weather.atmosphere.latitude, 3)},{' '}
+                        {number(forecast.weather.atmosphere.longitude, 3)} ·
+                        0.2°
+                      </>
+                    ) : (
+                      l('Нема свежи податоци', 'No fresh data')
+                    )}
+                  </dd>
+                </div>
+              )}
               <div>
                 <dt>{l('Испорака / производство', 'Export / production')}</dt>
                 <dd>
@@ -1167,7 +1200,20 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
                 {forecast.weather.issuedAt
                   ? time(forecast.weather.issuedAt)
                   : '—'}
-                .
+                . {l('Атмосферски податоци', 'Atmospheric data')}: Finnish
+                Meteorological Institute (SILAM),{' '}
+                <a
+                  href="https://en.ilmatieteenlaitos.fi/open-data-licence"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  CC BY 4.0
+                </a>
+                .{' '}
+                {l(
+                  'Ефектот од аеросоли е експериментална процена со Solis, според референтен AOD 0.1. Параметрите за атмосфера и ладење се општи, сè уште не се калибрирани за оваа централа.',
+                  'The aerosol effect is an experimental Solis estimate against reference AOD 0.1. Atmospheric and cooling parameters are generic and have not yet been calibrated for this plant.',
+                )}
               </p>
             )}
             <p className="forecast-fine">

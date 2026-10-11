@@ -3,12 +3,15 @@ import {
   weatherConfigured,
   type ForecastConfig,
   type WeatherHour,
+  type AtmosphereSource,
 } from './forecast-model';
+import { fetchAtmosphere, type AerosolHour } from './forecast-atmosphere';
 import { cacheRead, cacheWrite, withCacheLock } from './shared-cache';
 import {
   clearSkyIrradiance,
   cloudTransmission,
   hasCoordinates,
+  aerosolIrradianceFactor,
 } from './forecast-solar';
 
 export function parseForecastWeather(raw: unknown): WeatherHour[] {
@@ -122,6 +125,15 @@ async function fetchOpenMeteo(config: ForecastConfig, key: string) {
     fetchedAt: new Date().toISOString(),
     issuedAt: null,
     provider: 'open-meteo' as const,
+    atmosphere: {
+      status: 'not-used',
+      issuedAt: null,
+      fetchedAt: null,
+      latitude: null,
+      longitude: null,
+      hours: 0,
+    } as AtmosphereSource,
+    atmosphereRaw: null,
     raw,
   };
 }
@@ -131,7 +143,11 @@ type MetBody = {
     meta?: { updated_at?: string; units?: Record<string, string> };
     timeseries?: {
       time: string;
-      data?: { instant?: { details?: Record<string, unknown> } };
+      data?: {
+        instant?: { details?: Record<string, unknown> };
+        next_1_hours?: { details?: Record<string, unknown> };
+        next_6_hours?: { details?: Record<string, unknown> };
+      };
     }[];
   };
 };
@@ -163,10 +179,43 @@ export function parseMetForecast(
       air = details?.air_temperature;
     if (!Number.isFinite(stamp) || stamp % 3600000 !== 0)
       throw Error('Invalid MET time');
+    const optional = (name: string, unit: string, min: number, max: number) => {
+      const value = details?.[name];
+      return meta.units?.[name] === unit &&
+        typeof value === 'number' &&
+        Number.isFinite(value) &&
+        value >= min &&
+        value <= max
+        ? value
+        : null;
+    };
+    const extra = {
+      cloudLow: optional('cloud_area_fraction_low', '%', 0, 100),
+      cloudMid: optional('cloud_area_fraction_medium', '%', 0, 100),
+      cloudHigh: optional('cloud_area_fraction_high', '%', 0, 100),
+      fogCover: optional('fog_area_fraction', '%', 0, 100),
+      humidity: optional('relative_humidity', '%', 0, 100),
+      windSpeed: optional('wind_speed', 'm/s', 0, 100),
+    };
+    const rain = (span: 1 | 6) => {
+      const value =
+        row.data?.[span === 1 ? 'next_1_hours' : 'next_6_hours']?.details
+          ?.precipitation_amount;
+      return meta.units?.precipitation_amount === 'mm' &&
+        typeof value === 'number' &&
+        Number.isFinite(value) &&
+        value >= 0 &&
+        value <= 1000
+        ? value
+        : null;
+    };
     return {
       stamp,
       cloud,
       air,
+      extra,
+      rain1: rain(1),
+      rain6: rain(6),
       valid:
         typeof cloud === 'number' &&
         Number.isFinite(cloud) &&
@@ -194,12 +243,35 @@ export function parseMetForecast(
       const temperature =
         (a.air as number) + ((b.air as number) - (a.air as number)) * f;
       const start = new Date(a.stamp + j * 3600000).toISOString();
+      const extra = Object.fromEntries(
+        Object.entries(a.extra).map(([name, value]) => {
+          const next = b.extra[name as keyof typeof b.extra];
+          return [
+            name,
+            value === null || next === null ? null : value + (next - value) * f,
+          ];
+        }),
+      ) as typeof a.extra;
+      // Fog overlaps low cloud; use the larger cover as a rough proxy, never add
+      // cloud layers or apply rainfall/humidity as a second cloud-loss percentage.
+      const obscuration = Math.max(cloud, extra.fogCover ?? 0);
+      const clear = clearSkyIrradiance(start, config)!;
+      const rainSpan =
+        span === 1 && a.rain1 !== null
+          ? 1
+          : span === 6 && a.rain6 !== null
+            ? 6
+            : null;
       result.push({
         start,
+        ...extra,
         cloudCover: cloud,
         temperature,
-        irradiance:
-          clearSkyIrradiance(start, config)! * cloudTransmission(cloud),
+        clearSkyIrradiance: clear,
+        precipitationMm:
+          rainSpan === 1 ? a.rain1 : rainSpan === 6 ? a.rain6! / 6 : null,
+        precipitationResolutionHours: rainSpan,
+        irradiance: clear * cloudTransmission(obscuration),
         irradianceKind: 'estimated-ghi',
         resolutionHours: span,
       });
@@ -219,7 +291,7 @@ async function fetchMet(config: ForecastConfig, now: Date) {
     lat: config.latitude!.toFixed(4),
     lon: config.longitude!.toFixed(4),
   });
-  const key = 'forecast-weather:met:' + query;
+  const key = 'forecast-weather:met-complete-v1:' + query;
   const result = await withCacheLock(
     key,
     async () => {
@@ -233,7 +305,8 @@ async function fetchMet(config: ForecastConfig, now: Date) {
         };
         if (saved?.modified) headers['If-Modified-Since'] = saved.modified;
         const response = await fetch(
-          'https://api.met.no/weatherapi/locationforecast/2.0/compact?' + query,
+          'https://api.met.no/weatherapi/locationforecast/2.0/complete?' +
+            query,
           { headers, signal: AbortSignal.timeout(15000), cache: 'no-store' },
         );
         const expires = Math.max(
@@ -286,6 +359,15 @@ export async function fetchForecastWeather(
     issuedAt: null,
     raw: null,
     provider: null,
+    atmosphere: {
+      status: 'unavailable',
+      issuedAt: null,
+      fetchedAt: null,
+      latitude: null,
+      longitude: null,
+      hours: 0,
+    } as AtmosphereSource,
+    atmosphereRaw: null,
   };
   if (!hasCoordinates(config))
     return { ...empty, status: 'missing-settings' as const };
@@ -298,8 +380,37 @@ export async function fetchForecastWeather(
     }
   }
   try {
-    return await fetchMet(config, now);
+    const [weather, atmosphere] = await Promise.all([
+      fetchMet(config, now),
+      fetchAtmosphere(config, now),
+    ]);
+    return {
+      ...weather,
+      hours: applyAtmosphere(weather.hours, atmosphere.hours, config),
+      atmosphere: atmosphere.source,
+      atmosphereRaw: atmosphere.raw,
+    };
   } catch {
     return { ...empty, status: 'failed' as const };
   }
+}
+
+export function applyAtmosphere(
+  hours: WeatherHour[],
+  aerosols: AerosolHour[],
+  config: ForecastConfig,
+): WeatherHour[] {
+  const byTime = new Map(aerosols.map((a) => [a.start, a]));
+  return hours.map((h) => {
+    if (h.irradianceKind !== 'estimated-ghi') return h;
+    const a = byTime.get(h.start);
+    const factor = a ? aerosolIrradianceFactor(h.start, config, a.total) : null;
+    return {
+      ...h,
+      aerosolOpticalDepth: a?.total ?? null,
+      dustOpticalDepth: a?.dust ?? null,
+      aerosolFactor: factor,
+      irradiance: h.irradiance * (factor ?? 1),
+    };
+  });
 }

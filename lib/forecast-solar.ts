@@ -42,13 +42,82 @@ export function clearSkyIrradiance(
 export function cloudTransmission(cloud: number) {
   return 1 - 0.75 * (Math.max(0, Math.min(100, cloud)) / 100) ** 3.4;
 }
+
+/** Ineichen (2008) Simplified Solis GHI, reduced to reference water=1 cm and
+ * pressure=101325 Pa. Used only as a relative aerosol sensitivity, not absolute
+ * site radiation. Equations/reference: pvlib.clearsky.simplified_solis.
+ * The 550→700 nm conversion assumes Ångström exponent 1.3 (not observed).
+ * The model's AOD700 validity range is 0–0.45; no extrapolation beyond it. */
+export function solisReferenceGhi(
+  elevation: number,
+  aod550: number,
+): number | null {
+  const a = aod550 * (700 / 550) ** -1.3;
+  if (!Number.isFinite(a) || a < 0 || a > 0.45 || !Number.isFinite(elevation))
+    return null;
+  if (elevation <= 0) return 0;
+  const s = Math.sin((elevation * Math.PI) / 180);
+  const enhanced = 1364 * (0.12 * a * a + 0.97 * a + 1.08);
+  return (
+    enhanced *
+    Math.exp(
+      -(1.24 * a + 0.27) / s ** (-0.3079 * a * a + 0.2846 * a + 0.3798),
+    ) *
+    s
+  );
+}
+
+export function aerosolIrradianceFactor(
+  start: string,
+  c: ForecastConfig,
+  aod550: number,
+): number | null {
+  if (!hasCoordinates(c) || !Number.isFinite(Date.parse(start))) return null;
+  let actual = 0,
+    reference = 0;
+  for (let i = 0; i < 6; i++) {
+    const elevation = getPosition(
+      new Date(Date.parse(start) + (i + 0.5) * 600000),
+      c.latitude!,
+      c.longitude!,
+    ).altitude;
+    const ghi = solisReferenceGhi(elevation, aod550);
+    if (ghi === null) return null;
+    actual += ghi;
+    reference += solisReferenceGhi(elevation, 0.1)!;
+  }
+  // The reference AOD550=0.1 is an explicit assumption, not historical measured AOD.
+  return reference > 0 ? actual / reference : 1;
+}
+
+/** NOCT reference at 1 m/s, adjusted with the Faiman heat-transfer ratio.
+ * 10 m wind → assumed 2 m module height using exponent 0.2. These are generic,
+ * uncalibrated mounting assumptions, not measured module temperature or wind. */
+export function cellTemperature(
+  air: number,
+  g: number,
+  c: ForecastConfig,
+  wind10m?: number | null,
+) {
+  const wind =
+    typeof wind10m === 'number' && Number.isFinite(wind10m) && wind10m >= 0
+      ? wind10m * (2 / 10) ** 0.2
+      : null;
+  const cooling = wind === null ? 1 : 31.84 / (25 + 6.84 * wind);
+  return air + (((c.noct - 20) * g) / 800) * cooling;
+}
 function solarHour(start: string, c: ForecastConfig) {
   const midpoint = new Date(Date.parse(start) + 1800000);
   const noon = getTimes(midpoint, c.latitude!, c.longitude!).solarNoon;
   return 12 + (midpoint.getTime() - noon.getTime()) / 3600000;
 }
-function thermal(air: number, g: number, c: ForecastConfig) {
-  return Math.max(0.1, 1 + c.gamma * (air + ((c.noct - 20) * g) / 800 - 25));
+function thermal(
+  air: number,
+  g: number,
+  c: ForecastConfig,
+  wind?: number | null,
+) {
+  return Math.max(0.1, 1 + c.gamma * (cellTemperature(air, g, c, wind) - 25));
 }
 const quantile90 = (values: number[]) => {
   const sorted = [...values].sort((a, b) => a - b),
@@ -125,6 +194,9 @@ export function weatherAdjustedEnergy(
   // Already fitted to AC production: do not apply system/inverter losses a second time.
   return Math.max(
     0,
-    Math.min(c.acKw, ((factor * g) / 1000) * thermal(w.temperature, g, c)),
+    Math.min(
+      c.acKw,
+      ((factor * g) / 1000) * thermal(w.temperature, g, c, w.windSpeed),
+    ),
   );
 }

@@ -1,6 +1,22 @@
 import { test, mock, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 let entries, requests, respond, busy;
+mock.module('../lib/forecast-atmosphere.ts', {
+  namedExports: {
+    fetchAtmosphere: async () => ({
+      hours: [],
+      raw: null,
+      source: {
+        status: 'unavailable',
+        issuedAt: null,
+        fetchedAt: null,
+        latitude: null,
+        longitude: null,
+        hours: 0,
+      },
+    }),
+  },
+});
 mock.module('../lib/shared-cache.ts', {
   namedExports: {
     cacheRead: async (key) => entries.get(key) ?? null,

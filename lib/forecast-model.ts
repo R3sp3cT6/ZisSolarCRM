@@ -8,10 +8,11 @@ import {
 import {
   calibrateSolar,
   weatherAdjustedEnergy,
+  cellTemperature,
   type SolarCalibration,
 } from './forecast-solar';
 
-export const FORECAST_VERSION = 'weather-solar-v2.1';
+export const FORECAST_VERSION = 'weather-solar-v3.0';
 export type ForecastConfig = {
   latitude: number | null;
   longitude: number | null;
@@ -42,6 +43,26 @@ export type WeatherHour = {
   cloudCover: number | null;
   irradianceKind: 'gti' | 'estimated-ghi';
   resolutionHours: number;
+  cloudLow?: number | null;
+  cloudMid?: number | null;
+  cloudHigh?: number | null;
+  fogCover?: number | null;
+  humidity?: number | null;
+  windSpeed?: number | null; // 10 m above ground, m/s; not cloud motion
+  precipitationMm?: number | null;
+  precipitationResolutionHours?: number | null;
+  clearSkyIrradiance?: number;
+  aerosolOpticalDepth?: number | null; // total at 550 nm, includes dust
+  dustOpticalDepth?: number | null;
+  aerosolFactor?: number | null; // relative Solis GHI, not measured loss
+};
+export type AtmosphereSource = {
+  status: 'ready' | 'unavailable' | 'not-used';
+  issuedAt: string | null;
+  fetchedAt: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  hours: number;
 };
 export type ForecastHour = {
   start: string;
@@ -94,6 +115,7 @@ export type ForecastPayload = {
     hours: number;
     provider: 'open-meteo' | 'met-norway' | null;
     issuedAt: string | null;
+    atmosphere?: AtmosphereSource;
   };
   history: {
     priceHours: number;
@@ -175,8 +197,13 @@ export function pvEnergy(weather: WeatherHour, config: ForecastConfig) {
   )
     return null;
   const g = Math.max(0, weather.irradiance);
-  // Hour-average GTI in W/m²; NOCT cell-temperature approximation, then PVWatts DC.
-  const cell = weather.temperature + ((config.noct - 20) * g) / 800;
+  // Provider GTI already accounts for the atmosphere: never attenuate it again.
+  const cell = cellTemperature(
+    weather.temperature,
+    g,
+    config,
+    weather.windSpeed,
+  );
   const dc =
     ((config.dcKwp! * g) / 1000) * Math.max(0, 1 + config.gamma * (cell - 25));
   const ac = Math.min(

@@ -219,6 +219,7 @@ export async function runForecast(owner: string, now = new Date()) {
           hours: weather.hours.length,
           provider: weather.provider,
           issuedAt: weather.issuedAt,
+          atmosphere: weather.atmosphere,
         },
         history: {
           priceHours: prices.length,
@@ -234,9 +235,11 @@ export async function runForecast(owner: string, now = new Date()) {
         prices,
         readings,
         weather: weather.raw,
+        atmosphere: weather.atmosphereRaw,
+        atmosphereSource: weather.atmosphere,
         weatherModel:
           weather.provider === 'met-norway'
-            ? 'MET Norway Locationforecast / ECMWF; Haurwitz + Kasten-Czeplak estimated GHI'
+            ? 'MET Norway complete / ECMWF; Haurwitz + Kasten-Czeplak cloud/fog proxy; FMI SILAM AOD550; relative Simplified Solis (AOD reference 0.1, Angstrom 1.3, water 1cm, 101325Pa); NOCT + Faiman wind ratio (2m height, exponent 0.2)'
             : 'Open-Meteo best_match GTI',
         config,
         backtest:

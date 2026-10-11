@@ -156,6 +156,58 @@
 .forecast-price-chart {
   height: 200px;
 }
+.forecast-conditions {
+  border-top: 1px solid var(--border);
+  margin-top: 24px;
+  padding-top: 22px;
+}
+.forecast-conditions h3 {
+  font-size: 15px;
+  margin-bottom: 16px;
+}
+.forecast-condition-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.forecast-condition-grid > div {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--primary) 4%, var(--card));
+  min-width: 0;
+}
+.forecast-condition-grid span,
+.forecast-condition-grid p {
+  display: block;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.forecast-condition-grid strong {
+  display: block;
+  margin: 12px 0;
+  font-size: 25px;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.forecast-condition-grid small {
+  font-size: 12px;
+  margin-left: 5px;
+  color: var(--muted-foreground);
+}
+.forecast-weather-details {
+  margin-top: 20px;
+}
+.forecast-condition-status {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--chart-blue) 10%, var(--card));
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.7;
+}
 .forecast-chart :is(svg, [tabindex]):focus {
   outline: none;
 }
@@ -307,6 +359,9 @@
   color: var(--muted-foreground);
 }
 @media (max-width: 1200px) {
+  .forecast-condition-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .forecast-days {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
@@ -315,6 +370,15 @@
   }
 }
 @media (max-width: 640px) {
+  .forecast-condition-grid {
+    gap: 8px;
+  }
+  .forecast-condition-grid > div {
+    padding: 12px;
+  }
+  .forecast-condition-grid strong {
+    font-size: 23px;
+  }
   .forecast-page {
     gap: 16px;
   }
