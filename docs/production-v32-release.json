@@ -1,0 +1,25 @@
+{
+  "checkedAt": "2026-10-11T18:51:21.015Z",
+  "deployment": "dpl_9hJ5zWyC5HX1WAN8KbFxHByUokYq",
+  "commit": "9879ffe",
+  "readyState": "READY",
+  "modelVersion": "weather-solar-v3.2",
+  "forecastId": "0143246b-bf2e-4369-aae4-82ab74302b55",
+  "comparison": {
+    "kind": "backtest",
+    "availableHours": 24,
+    "hours": 13,
+    "actualKwh": 1763.0500000000002,
+    "predictedKwh": 1664.0676666069032,
+    "totalDifferenceKwh": -98.98233339309645,
+    "totalDifferencePercent": -5.614266946093216,
+    "matchPercent": 60.51448598992021,
+    "maeKwh": 53.54995036574706,
+    "rmseKwh": 68.95792756110976,
+    "biasKwh": -7.614025645622804,
+    "wapePercent": 39.48551401007979
+  },
+  "warmDashboardAndForecastSqlQueries": 0,
+  "loginStatus": 200,
+  "anonymousForecastStatus": 401
+}
