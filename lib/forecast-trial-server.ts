@@ -4,7 +4,7 @@ import { cacheRead, cacheWrite, withCacheLock } from './shared-cache';
 import { readForecast } from './forecast-server';
 import { fetchForecastWeather } from './forecast-weather';
 import { fetchIcon } from './forecast-icon-server';
-import { weatherAdjustedEnergy } from './forecast-solar';
+import { buildTrialHours } from './forecast-trial-weather';
 import { localDate, slotsForDay } from './energy';
 import { addDays } from './forecast-model';
 import {
@@ -13,7 +13,6 @@ import {
   type LiveObservation,
   type TrialRun,
   type TrialView,
-  type TrialHour,
 } from './forecast-trial';
 import {
   flushTrialPending,
@@ -141,16 +140,17 @@ export async function runTrial(owner: string) {
       )
         return recent.view;
       await flushTrialPending(owner);
-      const [icon, weather, scores, satellite] = await Promise.all([
-        fetchIcon(config, now),
-        fetchForecastWeather(config, now),
-        trialScores(owner, config.version),
-        fetchSatellite(config, now),
-      ]);
+      const [icon, weather, scores, satellite, previousContext] =
+        await Promise.all([
+          fetchIcon(config, now),
+          fetchForecastWeather(config, now),
+          trialScores(owner, config.version),
+          fetchSatellite(config, now),
+          cacheRead<TrialContext>('trial-context:' + owner),
+        ]);
       await saveSatellitePoints(owner, satellite.points);
       await cacheWrite('trial-satellite:' + owner, satellite, 86400);
       if (icon.status !== 'ready') throw Error('ICON source unavailable');
-      const byStart = new Map(icon.hours.map((h) => [h.start, h]));
       const official = new Map(
         forecast.days
           .flatMap((d) => d.hours)
@@ -178,23 +178,15 @@ export async function runTrial(owner: string) {
           .all<{ start: string; kwh: number; forecastId: string }>()
       ).results;
       for (const p of prior) official.set(p.start, p.kwh);
-      const hours: TrialHour[] = weather.hours
-        .filter((w) => byStart.has(w.start))
-        .map((w) => ({
-          start: w.start,
-          baselineKwh: official.get(w.start) ?? null,
-          weather: { temperature: w.temperature, windSpeed: w.windSpeed },
-          iconKwh: weatherAdjustedEnergy(
-            {
-              ...w,
-              irradiance: byStart.get(w.start)!.irradiance,
-              irradianceKind: 'modeled-ghi',
-              resolutionHours: 1,
-            },
-            config,
-            forecast.calibration,
-          ),
-        }));
+      const { hours, retained: retainedThermalHistory } = buildTrialHours(
+        icon.hours,
+        weather.hours,
+        official,
+        config,
+        forecast.calibration,
+        previousContext,
+        now,
+      );
       const issuedAt = new Date().toISOString(),
         tomorrow = addDays(localDate(issuedAt), 1);
       const selected = hours.filter((h) => localDate(h.start) === tomorrow);
@@ -222,6 +214,7 @@ export async function runTrial(owner: string) {
       };
       const context: TrialContext = {
         version: TRIAL_VERSION,
+        retainedThermalHistory,
         calibration: forecast.calibration,
         config,
         baselineId: run.id,

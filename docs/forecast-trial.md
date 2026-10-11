@@ -16,6 +16,12 @@ Both models are frozen together for tomorrow's 23/24/25 local hours. First-issue
 
 ## Short term
 
+The 11 October follow-up preserves up to two preceding temperature/wind hours
+from a compatible cached context when a new MET response starts at the current
+hour. Those hours are recomputed with the current ICON radiation; future hours
+are unchanged. Provenance is saved in `context.retainedThermalHistory`.
+[Original ICON/GFS comparison and regression details](original-weather-findings.md).
+
 Existing Huawei refreshes supply two complete inverter samples with genuine `collectTime`, active power and cumulative generation. Duplicate, missing, future, stale, stopped-inverter, reset-counter and unstable samples cannot produce a Huawei correction. Expected power is approximated by interpolating ICON hourly averages at interval midpoints. The measured/expected ratio is clamped to 0.5–1.5, decays over 90 minutes, and respects the 875 kW AC cap. Four upcoming 15-minute intervals are integrated in five-minute steps. With valid satellite data, a satellite-only correction can run without two Huawei samples; a known stopped/reset inverter blocks the combined result.
 
 For two consecutive valid LSA SAF daytime slots, estimate the MSG acquisition time using PUM sections 6.2–6.3: project the point to the original MSG 0° full-disk line, then add `760 − line / 5` seconds. Do not use the remapped NetCDF row index. This is an approximation. Normalize each irradiance by instantaneous Haurwitz clear-sky GHI (minimum 50 W/m²), cap the index at 1.5, then weight the newer index 0.65 and older 0.35. Both actual `receivedAt` and file `createdAt` must precede issuance; the latest nominal slot must be at most 45 minutes old. Night, bad quality, wrong coordinates and gaps are rejected.

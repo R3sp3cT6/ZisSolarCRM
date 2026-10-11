@@ -26,6 +26,11 @@ export type TrialContext = {
   issuedAt: string;
   version: string;
   calibration: SolarCalibration;
+  retainedThermalHistory?: {
+    start: string;
+    contextIssuedAt: string;
+    weather: NonNullable<TrialHour['weather']>;
+  }[];
 };
 type Pending = {
   observations: LiveObservation[];

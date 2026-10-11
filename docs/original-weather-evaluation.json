@@ -1,0 +1,1561 @@
+{
+  "checkedAt": "2026-10-11T20:38:59.320Z",
+  "date": "2026-10-11",
+  "kind": "original-weather-diagnostic-not-independent",
+  "hourly": [
+    {
+      "stamp": "2026101018",
+      "runAt": "2026-10-10T18:00:00.000Z",
+      "availableAt": "2026-10-10T22:00:00.000Z",
+      "rows": [
+        {
+          "start": "2026-10-10T22:00:00.000Z",
+          "actualKwh": 0,
+          "iconGhi": 0,
+          "gfsGhi": 0,
+          "iconKwh": 0,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-10T23:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0,
+          "gfsGhi": 0,
+          "iconKwh": 0,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T00:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0,
+          "gfsGhi": 0,
+          "iconKwh": 0,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T01:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0,
+          "gfsGhi": 0,
+          "iconKwh": 0,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T02:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0,
+          "gfsGhi": 0,
+          "iconKwh": 0,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T03:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0,
+          "gfsGhi": 0,
+          "iconKwh": 0,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T04:00:00.000Z",
+          "actualKwh": 0.09,
+          "iconGhi": 0.7841796875,
+          "gfsGhi": 0.5,
+          "iconKwh": 0.5093132161730365,
+          "gfsKwh": 0.32475048628451464,
+          "v32Kwh": 0.0825685522227936
+        },
+        {
+          "start": "2026-10-11T05:00:00.000Z",
+          "actualKwh": 1.31,
+          "iconGhi": 18.6923828125,
+          "gfsGhi": 15.532,
+          "iconKwh": 12.705236247940375,
+          "gfsKwh": 10.559872330655052,
+          "v32Kwh": 10.700602028432554
+        },
+        {
+          "start": "2026-10-11T06:00:00.000Z",
+          "actualKwh": 20.14,
+          "iconGhi": 59.912109375,
+          "gfsGhi": 40.1,
+          "iconKwh": 54.44193040803313,
+          "gfsKwh": 36.49709127737392,
+          "v32Kwh": 85.73133277736889
+        },
+        {
+          "start": "2026-10-11T07:00:00.000Z",
+          "actualKwh": 69.01,
+          "iconGhi": 131.169921875,
+          "gfsGhi": 80.86000000000001,
+          "iconKwh": 128.1953640076358,
+          "gfsKwh": 79.33927988283261,
+          "v32Kwh": 144.98767755919718
+        },
+        {
+          "start": "2026-10-11T08:00:00.000Z",
+          "actualKwh": 116.83,
+          "iconGhi": 136.84747288376093,
+          "gfsGhi": 327.72,
+          "iconKwh": 136.95724026334454,
+          "gfsKwh": 323.26993752495827,
+          "v32Kwh": 188.83716393075093
+        },
+        {
+          "start": "2026-10-11T09:00:00.000Z",
+          "actualKwh": 274.99,
+          "iconGhi": 234.1383621916175,
+          "gfsGhi": 147.95999999999998,
+          "iconKwh": 236.786193044075,
+          "gfsKwh": 150.63876277678128,
+          "v32Kwh": 206.61338142633608
+        },
+        {
+          "start": "2026-10-11T10:00:00.000Z",
+          "actualKwh": 347.57,
+          "iconGhi": 289.26861023902893,
+          "gfsGhi": 125.66000000000008,
+          "iconKwh": 292.27538183497313,
+          "gfsKwh": 128.78844846448413,
+          "v32Kwh": 213.9879394052821
+        },
+        {
+          "start": "2026-10-11T11:00:00.000Z",
+          "actualKwh": 308.71,
+          "iconGhi": 309.0197904109955,
+          "gfsGhi": 26.692000000000007,
+          "iconKwh": 311.1475906326652,
+          "gfsKwh": 27.624976920783396,
+          "v32Kwh": 202.90540724994614
+        },
+        {
+          "start": "2026-10-11T12:00:00.000Z",
+          "actualKwh": 354.21,
+          "iconGhi": 373.5961289405823,
+          "gfsGhi": 34.02,
+          "iconKwh": 373.246499319345,
+          "gfsKwh": 35.24730464729823,
+          "v32Kwh": 222.9319175302418
+        },
+        {
+          "start": "2026-10-11T13:00:00.000Z",
+          "actualKwh": 179.15,
+          "iconGhi": 246.94140481948853,
+          "gfsGhi": 33.13999999999999,
+          "iconKwh": 247.4648847681502,
+          "gfsKwh": 34.03856920584871,
+          "v32Kwh": 167.1992719988573
+        },
+        {
+          "start": "2026-10-11T14:00:00.000Z",
+          "actualKwh": 79.78,
+          "iconGhi": 115.55468893051147,
+          "gfsGhi": 73.66,
+          "iconKwh": 113.10958691531108,
+          "gfsKwh": 72.47973277335618,
+          "v32Kwh": 94.61891628352603
+        },
+        {
+          "start": "2026-10-11T15:00:00.000Z",
+          "actualKwh": 11.25,
+          "iconGhi": 21.789066791534424,
+          "gfsGhi": 48.06,
+          "iconKwh": 20.33230616616249,
+          "gfsKwh": 44.6888011658696,
+          "v32Kwh": 42.13484059832705
+        },
+        {
+          "start": "2026-10-11T16:00:00.000Z",
+          "actualKwh": 0.01,
+          "iconGhi": 0.005856037139892578,
+          "gfsGhi": 0.020000000000010232,
+          "iconKwh": 0.005494432573584529,
+          "gfsKwh": 0.018764985890371372,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T17:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0.025393962860107422,
+          "gfsGhi": 0,
+          "iconKwh": 0.023886344545711535,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T18:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0.0234375,
+          "gfsGhi": 0,
+          "iconKwh": 0.022082878999671582,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T19:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0,
+          "gfsGhi": 0,
+          "iconKwh": 0,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T20:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0.015625,
+          "gfsGhi": 0,
+          "iconKwh": 0.014745727416950316,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T21:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0.011716842651367188,
+          "gfsGhi": 0,
+          "iconKwh": 0.011066573153243293,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        }
+      ],
+      "publication": {
+        "iconLatest": "2026-10-10T21:00:43.000Z",
+        "gfsLatest": "2026-10-10T21:56:39.000Z"
+      },
+      "kind": "prior-evening",
+      "pairedHours": 14,
+      "scores": {
+        "iconKwh": {
+          "hours": 13,
+          "actualKwh": 1763.0500000000002,
+          "predictedKwh": 1927.1770212563827,
+          "totalDifferenceKwh": 164.12702125638256,
+          "totalDifferencePercent": 9.309266399499876,
+          "matchPercent": 80.08378193283576,
+          "maeKwh": 27.010221741010703,
+          "rmseKwh": 35.03876067417611,
+          "biasKwh": 12.625155481260197,
+          "wapePercent": 19.91621806716424
+        },
+        "gfsKwh": {
+          "hours": 13,
+          "actualKwh": 1763.0500000000002,
+          "predictedKwh": 943.5162924424163,
+          "totalDifferenceKwh": -819.5337075575836,
+          "totalDifferencePercent": -46.483860784299004,
+          "matchPercent": 22.200124621235233,
+          "maeKwh": 105.51159252810096,
+          "rmseKwh": 154.2676682252351,
+          "biasKwh": -63.04105442750643,
+          "wapePercent": 77.79987537876477
+        },
+        "v32Kwh": {
+          "hours": 13,
+          "actualKwh": 1763.0500000000002,
+          "predictedKwh": 1580.7310193404887,
+          "totalDifferenceKwh": -182.31898065951106,
+          "totalDifferencePercent": -10.34111231442733,
+          "matchPercent": 59.178693343086344,
+          "maeKwh": 55.3615420780551,
+          "rmseKwh": 72.11796320617043,
+          "biasKwh": -14.024536973808543,
+          "wapePercent": 40.821306656913656
+        }
+      }
+    },
+    {
+      "stamp": "2026101100",
+      "runAt": "2026-10-11T00:00:00.000Z",
+      "availableAt": "2026-10-11T04:00:00.000Z",
+      "rows": [
+        {
+          "start": "2026-10-10T22:00:00.000Z",
+          "actualKwh": 0,
+          "iconGhi": null,
+          "gfsGhi": null,
+          "iconKwh": null,
+          "gfsKwh": null,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-10T23:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": null,
+          "gfsGhi": null,
+          "iconKwh": null,
+          "gfsKwh": null,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T00:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0,
+          "gfsGhi": 0,
+          "iconKwh": 0,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T01:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0,
+          "gfsGhi": 0,
+          "iconKwh": 0,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T02:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0,
+          "gfsGhi": 0,
+          "iconKwh": 0,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T03:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0,
+          "gfsGhi": 0,
+          "iconKwh": 0,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T04:00:00.000Z",
+          "actualKwh": 0.09,
+          "iconGhi": 0.8203125,
+          "gfsGhi": 0.3,
+          "iconKwh": 0.5327793186278049,
+          "gfsKwh": 0.1948535909334934,
+          "v32Kwh": 0.0825685522227936
+        },
+        {
+          "start": "2026-10-11T05:00:00.000Z",
+          "actualKwh": 1.31,
+          "iconGhi": 16.60546875,
+          "gfsGhi": 5.94,
+          "iconKwh": 11.288701156300952,
+          "gfsKwh": 4.041672719980233,
+          "v32Kwh": 10.700602028432554
+        },
+        {
+          "start": "2026-10-11T06:00:00.000Z",
+          "actualKwh": 20.14,
+          "iconGhi": 50.46875,
+          "gfsGhi": 23.2,
+          "iconKwh": 45.89579001321816,
+          "gfsKwh": 21.144324334123457,
+          "v32Kwh": 85.73133277736889
+        },
+        {
+          "start": "2026-10-11T07:00:00.000Z",
+          "actualKwh": 69.01,
+          "iconGhi": 107.33984375,
+          "gfsGhi": 160.4,
+          "iconKwh": 105.10246243764176,
+          "gfsKwh": 156.40190449429133,
+          "v32Kwh": 144.98767755919718
+        },
+        {
+          "start": "2026-10-11T08:00:00.000Z",
+          "actualKwh": 116.83,
+          "iconGhi": 194.7150817066431,
+          "gfsGhi": 341.93999999999994,
+          "iconKwh": 194.02231989745727,
+          "gfsKwh": 336.930497831346,
+          "v32Kwh": 188.83716393075093
+        },
+        {
+          "start": "2026-10-11T09:00:00.000Z",
+          "actualKwh": 274.99,
+          "iconGhi": 230.90679882466793,
+          "gfsGhi": 91.18000000000006,
+          "iconKwh": 233.57692716718395,
+          "gfsKwh": 93.23904241276779,
+          "v32Kwh": 206.61338142633608
+        },
+        {
+          "start": "2026-10-11T10:00:00.000Z",
+          "actualKwh": 347.57,
+          "iconGhi": 223.67902207374573,
+          "gfsGhi": 26.379999999999995,
+          "iconKwh": 227.3044214930117,
+          "gfsKwh": 27.268900409679226,
+          "v32Kwh": 213.9879394052821
+        },
+        {
+          "start": "2026-10-11T11:00:00.000Z",
+          "actualKwh": 308.71,
+          "iconGhi": 310.8688495159149,
+          "gfsGhi": 204.48400000000004,
+          "iconKwh": 312.95223613779814,
+          "gfsKwh": 208.01710144753858,
+          "v32Kwh": 202.90540724994614
+        },
+        {
+          "start": "2026-10-11T12:00:00.000Z",
+          "actualKwh": 354.21,
+          "iconGhi": 349.9043960571289,
+          "gfsGhi": 268.14,
+          "iconKwh": 350.4804828426346,
+          "gfsKwh": 270.97109068301194,
+          "v32Kwh": 222.9319175302418
+        },
+        {
+          "start": "2026-10-11T13:00:00.000Z",
+          "actualKwh": 179.15,
+          "iconGhi": 229.7843894958496,
+          "gfsGhi": 33.860000000000014,
+          "iconKwh": 230.73238757960388,
+          "gfsKwh": 34.77524147624175,
+          "v32Kwh": 167.1992719988573
+        },
+        {
+          "start": "2026-10-11T14:00:00.000Z",
+          "actualKwh": 79.78,
+          "iconGhi": 109.95419311523438,
+          "gfsGhi": 42.579999999999984,
+          "iconKwh": 107.7030960915092,
+          "gfsKwh": 42.059987536546245,
+          "v32Kwh": 94.61891628352603
+        },
+        {
+          "start": "2026-10-11T15:00:00.000Z",
+          "actualKwh": 11.25,
+          "iconGhi": 20.871755599975586,
+          "gfsGhi": 26.220000000000027,
+          "iconKwh": 19.47872043285425,
+          "gfsKwh": 24.45245703403461,
+          "v32Kwh": 42.13484059832705
+        },
+        {
+          "start": "2026-10-11T16:00:00.000Z",
+          "actualKwh": 0.01,
+          "iconGhi": 0.05234098434448242,
+          "gfsGhi": 0,
+          "iconKwh": 0.04910869015788369,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T17:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0,
+          "gfsGhi": 5.684341886080802e-14,
+          "iconKwh": 0,
+          "gfsKwh": 5.346882533777584e-14,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T18:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0.01684713363647461,
+          "gfsGhi": 0,
+          "iconKwh": 0.015873428276455007,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T19:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0.048787593841552734,
+          "gfsGhi": 0,
+          "iconKwh": 0.04600483216626879,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T20:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0.0078125,
+          "gfsGhi": 0,
+          "iconKwh": 0.007372870064222182,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T21:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0.019864559173583984,
+          "gfsGhi": 0,
+          "iconKwh": 0.018762085424606344,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        }
+      ],
+      "publication": {
+        "iconLatest": "2026-10-11T02:54:36.000Z",
+        "gfsLatest": "2026-10-11T03:58:06.000Z"
+      },
+      "kind": "intraday",
+      "pairedHours": 13,
+      "scores": {
+        "iconKwh": {
+          "hours": 13,
+          "actualKwh": 1763.0500000000002,
+          "predictedKwh": 1839.1194332579996,
+          "totalDifferenceKwh": 76.06943325799952,
+          "totalDifferencePercent": 4.314649797680129,
+          "matchPercent": 76.92148434517802,
+          "maeKwh": 31.298905404026076,
+          "rmseKwh": 46.196373949788594,
+          "biasKwh": 5.851494865999963,
+          "wapePercent": 23.07851565482198
+        },
+        "gfsKwh": {
+          "hours": 13,
+          "actualKwh": 1763.0500000000002,
+          "predictedKwh": 1219.4970739704945,
+          "totalDifferenceKwh": -543.5529260295052,
+          "totalDifferencePercent": -30.830261537080922,
+          "matchPercent": 32.3544796778921,
+          "maeKwh": 91.74033431068642,
+          "rmseKwh": 133.36624294684313,
+          "biasKwh": -41.81176354073117,
+          "wapePercent": 67.6455203221079
+        },
+        "v32Kwh": {
+          "hours": 13,
+          "actualKwh": 1763.0500000000002,
+          "predictedKwh": 1580.7310193404887,
+          "totalDifferenceKwh": -182.31898065951106,
+          "totalDifferencePercent": -10.34111231442733,
+          "matchPercent": 59.178693343086344,
+          "maeKwh": 55.3615420780551,
+          "rmseKwh": 72.11796320617043,
+          "biasKwh": -14.024536973808543,
+          "wapePercent": 40.821306656913656
+        }
+      }
+    },
+    {
+      "stamp": "2026101106",
+      "runAt": "2026-10-11T06:00:00.000Z",
+      "availableAt": "2026-10-11T10:00:00.000Z",
+      "rows": [
+        {
+          "start": "2026-10-10T22:00:00.000Z",
+          "actualKwh": 0,
+          "iconGhi": null,
+          "gfsGhi": null,
+          "iconKwh": null,
+          "gfsKwh": null,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-10T23:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": null,
+          "gfsGhi": null,
+          "iconKwh": null,
+          "gfsKwh": null,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T00:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": null,
+          "gfsGhi": null,
+          "iconKwh": null,
+          "gfsKwh": null,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T01:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": null,
+          "gfsGhi": null,
+          "iconKwh": null,
+          "gfsKwh": null,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T02:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": null,
+          "gfsGhi": null,
+          "iconKwh": null,
+          "gfsKwh": null,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T03:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": null,
+          "gfsGhi": null,
+          "iconKwh": null,
+          "gfsKwh": null,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T04:00:00.000Z",
+          "actualKwh": 0.09,
+          "iconGhi": null,
+          "gfsGhi": null,
+          "iconKwh": null,
+          "gfsKwh": null,
+          "v32Kwh": 0.0825685522227936
+        },
+        {
+          "start": "2026-10-11T05:00:00.000Z",
+          "actualKwh": 1.31,
+          "iconGhi": null,
+          "gfsGhi": null,
+          "iconKwh": null,
+          "gfsKwh": null,
+          "v32Kwh": 10.700602028432554
+        },
+        {
+          "start": "2026-10-11T06:00:00.000Z",
+          "actualKwh": 20.14,
+          "iconGhi": 45.8828125,
+          "gfsGhi": 33.78,
+          "iconKwh": 41.74083915626238,
+          "gfsKwh": 30.760613116296778,
+          "v32Kwh": 85.73133277736889
+        },
+        {
+          "start": "2026-10-11T07:00:00.000Z",
+          "actualKwh": 69.01,
+          "iconGhi": 76.7890625,
+          "gfsGhi": 76.46000000000001,
+          "iconKwh": 75.36895216251904,
+          "gfsKwh": 75.04791078012195,
+          "v32Kwh": 144.98767755919718
+        },
+        {
+          "start": "2026-10-11T08:00:00.000Z",
+          "actualKwh": 116.83,
+          "iconGhi": 169.8875674009323,
+          "gfsGhi": 160.96000000000004,
+          "iconKwh": 169.60092703534178,
+          "gfsKwh": 160.79668948449196,
+          "v32Kwh": 188.83716393075093
+        },
+        {
+          "start": "2026-10-11T09:00:00.000Z",
+          "actualKwh": 274.99,
+          "iconGhi": 301.8834859132767,
+          "gfsGhi": 28.47999999999996,
+          "iconKwh": 303.68470909671385,
+          "gfsKwh": 29.26395580858227,
+          "v32Kwh": 206.61338142633608
+        },
+        {
+          "start": "2026-10-11T10:00:00.000Z",
+          "actualKwh": 347.57,
+          "iconGhi": 368.76756143569946,
+          "gfsGhi": 111.11999999999995,
+          "iconKwh": 370.0021437950017,
+          "gfsKwh": 114.02966777115257,
+          "v32Kwh": 213.9879394052821
+        },
+        {
+          "start": "2026-10-11T11:00:00.000Z",
+          "actualKwh": 308.71,
+          "iconGhi": 422.54818296432495,
+          "gfsGhi": 413.84000000000003,
+          "iconKwh": 420.68861234464936,
+          "gfsKwh": 412.37702613974756,
+          "v32Kwh": 202.90540724994614
+        },
+        {
+          "start": "2026-10-11T12:00:00.000Z",
+          "actualKwh": 354.21,
+          "iconGhi": 346.02185821533203,
+          "gfsGhi": 85.76,
+          "iconKwh": 346.73798021475943,
+          "gfsKwh": 88.3702441198072,
+          "v32Kwh": 222.9319175302418
+        },
+        {
+          "start": "2026-10-11T13:00:00.000Z",
+          "actualKwh": 179.15,
+          "iconGhi": 187.59375190734863,
+          "gfsGhi": 180.40000000000003,
+          "iconKwh": 189.29295752773072,
+          "gfsKwh": 182.18575931392914,
+          "v32Kwh": 167.1992719988573
+        },
+        {
+          "start": "2026-10-11T14:00:00.000Z",
+          "actualKwh": 79.78,
+          "iconGhi": 66.8671875,
+          "gfsGhi": 159.77999999999992,
+          "iconKwh": 65.85145211240787,
+          "gfsKwh": 155.53273432973648,
+          "v32Kwh": 94.61891628352603
+        },
+        {
+          "start": "2026-10-11T15:00:00.000Z",
+          "actualKwh": 11.25,
+          "iconGhi": 23.367189407348633,
+          "gfsGhi": 25.740000000000066,
+          "iconKwh": 21.80030394797122,
+          "gfsKwh": 24.006361244820773,
+          "v32Kwh": 42.13484059832705
+        },
+        {
+          "start": "2026-10-11T16:00:00.000Z",
+          "actualKwh": 0.01,
+          "iconGhi": 0.031249046325683594,
+          "gfsGhi": 0.020000000000038654,
+          "iconKwh": 0.02931935383014074,
+          "gfsKwh": 0.018764985890398034,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T17:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0.023436546325683594,
+          "gfsGhi": 0,
+          "iconKwh": 0.022045143043915867,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T18:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0,
+          "gfsGhi": 0,
+          "iconKwh": 0,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T19:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0.06249856948852539,
+          "gfsGhi": 0,
+          "iconKwh": 0.05893366929638903,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T20:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0.0234375,
+          "gfsGhi": 0,
+          "iconKwh": 0.0221185720581844,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        },
+        {
+          "start": "2026-10-11T21:00:00.000Z",
+          "actualKwh": null,
+          "iconGhi": 0.01953411102294922,
+          "gfsGhi": 0,
+          "iconKwh": 0.018449977653990517,
+          "gfsKwh": 0,
+          "v32Kwh": 0
+        }
+      ],
+      "publication": {
+        "iconLatest": "2026-10-11T08:50:52.000Z",
+        "gfsLatest": "2026-10-11T09:50:41.000Z"
+      },
+      "kind": "intraday",
+      "pairedHours": 7,
+      "scores": {
+        "iconKwh": {
+          "hours": 7,
+          "actualKwh": 1280.68,
+          "predictedKwh": 1414.4027692963505,
+          "totalDifferenceKwh": 133.72276929635052,
+          "totalDifferencePercent": 10.441544280878167,
+          "matchPercent": 86.21639249133149,
+          "maeKwh": 25.21770066314512,
+          "rmseKwh": 43.92596872310474,
+          "biasKwh": 19.103252756621504,
+          "wapePercent": 13.783607508668508
+        },
+        "gfsKwh": {
+          "hours": 7,
+          "actualKwh": 1280.68,
+          "predictedKwh": 976.5205579050842,
+          "totalDifferenceKwh": -304.15944209491585,
+          "totalDifferencePercent": -23.749839311531048,
+          "matchPercent": 45.76313098329289,
+          "maeKwh": 99.22867630330924,
+          "rmseKwh": 142.36228047522036,
+          "biasKwh": -43.45134887070226,
+          "wapePercent": 54.23686901670711
+        },
+        "v32Kwh": {
+          "hours": 7,
+          "actualKwh": 1280.68,
+          "predictedKwh": 943.7782930661804,
+          "totalDifferenceKwh": -336.90170693381947,
+          "totalDifferencePercent": -26.30647054172935,
+          "matchPercent": 66.55298585926806,
+          "maeKwh": 61.192745813932234,
+          "rmseKwh": 82.45310399743526,
+          "biasKwh": -48.12881527625992,
+          "wapePercent": 33.44701414073193
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "Selected day previously inspected; not an independent model-selection score.",
+    "Same causal prior-day response and older temperature/wind isolate radiation only.",
+    "Both radiation providers initialized together and checked available by common init+4h cutoff.",
+    "Historical Huawei and satellite delivery delays are assumptions, not original receipts.",
+    "Repeated targets are separated by forecast horizon; groups must not be summed as distinct energy."
+  ],
+  "codeHashes": {
+    "scripts/evaluate-original-weather.mjs": "b211fab5912aec9207a461fad399a6999093cef04e47f9186054a9c0712c6d27",
+    "lib/forecast-icon.ts": "573c09d42ab5c2ac41337452dbae062c2d7052e233f4e57d37fca05253db9375",
+    "lib/forecast-trial.ts": "92017c2452af9ce5eecd3e59e3f1b8681592b441395338f252617ead6c0a4abe",
+    "lib/forecast-solar.ts": "fba507e21fc87ea75021258273079062d90c3b7d15009e374867aea9350843e6"
+  },
+  "shortTerm": [
+    {
+      "huaweiLatency": 5,
+      "satelliteLatency": 2,
+      "groups": [
+        {
+          "leadMinutes": 7.5,
+          "intervals": 47,
+          "huaweiApplied": 35,
+          "satelliteApplied": 28,
+          "scores": {
+            "iconKwh": {
+              "hours": 47,
+              "actualKwh": 1763.0499999999302,
+              "predictedKwh": 1994.9976400169094,
+              "totalDifferenceKwh": 231.94764001697953,
+              "totalDifferencePercent": 13.156044355916663,
+              "matchPercent": 65.23146699291858,
+              "maeKwh": 13.042268535772864,
+              "rmseKwh": 18.89281482221151,
+              "biasKwh": 4.935056170574033,
+              "wapePercent": 34.768533007081416
+            },
+            "withoutSatelliteKwh": {
+              "hours": 47,
+              "actualKwh": 1763.0499999999302,
+              "predictedKwh": 1621.4364051844896,
+              "totalDifferenceKwh": -141.61359481544054,
+              "totalDifferencePercent": -8.03230735460969,
+              "matchPercent": 68.22960048010812,
+              "maeKwh": 11.917617632668758,
+              "rmseKwh": 18.134635588795685,
+              "biasKwh": -3.0130552088391602,
+              "wapePercent": 31.77039951989188
+            },
+            "v34Kwh": {
+              "hours": 47,
+              "actualKwh": 1763.0499999999302,
+              "predictedKwh": 1654.8707093791234,
+              "totalDifferenceKwh": -108.17929062080738,
+              "totalDifferencePercent": -6.135917337614456,
+              "matchPercent": 67.7006971659153,
+              "maeKwh": 12.116018268432084,
+              "rmseKwh": 18.808320501328893,
+              "biasKwh": -2.3016870344852634,
+              "wapePercent": 32.299302834084706
+            }
+          }
+        },
+        {
+          "leadMinutes": 22.5,
+          "intervals": 46,
+          "huaweiApplied": 35,
+          "satelliteApplied": 28,
+          "scores": {
+            "iconKwh": {
+              "hours": 46,
+              "actualKwh": 1762.9600000000792,
+              "predictedKwh": 1964.9869538493913,
+              "totalDifferenceKwh": 202.02695384931232,
+              "totalDifferencePercent": 11.45953134780728,
+              "matchPercent": 66.05835472992308,
+              "maeKwh": 13.008209335942933,
+              "rmseKwh": 18.87234597234516,
+              "biasKwh": 4.391890301072007,
+              "wapePercent": 33.94164527007691
+            },
+            "withoutSatelliteKwh": {
+              "hours": 46,
+              "actualKwh": 1762.9600000000792,
+              "predictedKwh": 1657.3098292433085,
+              "totalDifferenceKwh": -105.65017075677032,
+              "totalDifferencePercent": -5.992771858508734,
+              "matchPercent": 64.15228585653381,
+              "maeKwh": 13.73871437529739,
+              "rmseKwh": 20.134015323949626,
+              "biasKwh": -2.2967428425384853,
+              "wapePercent": 35.84771414346619
+            },
+            "v34Kwh": {
+              "hours": 46,
+              "actualKwh": 1762.9600000000792,
+              "predictedKwh": 1698.9835478858502,
+              "totalDifferenceKwh": -63.976452114229,
+              "totalDifferencePercent": -3.628922500466609,
+              "matchPercent": 62.18455394307694,
+              "maeKwh": 14.492851908807841,
+              "rmseKwh": 21.03065692498836,
+              "biasKwh": -1.3907924372658478,
+              "wapePercent": 37.81544605692306
+            }
+          }
+        },
+        {
+          "leadMinutes": 37.5,
+          "intervals": 45,
+          "huaweiApplied": 35,
+          "satelliteApplied": 28,
+          "scores": {
+            "iconKwh": {
+              "hours": 45,
+              "actualKwh": 1762.8000000000466,
+              "predictedKwh": 1929.7671512937397,
+              "totalDifferenceKwh": 166.9671512936934,
+              "totalDifferencePercent": 9.471701344093999,
+              "matchPercent": 64.25403807718087,
+              "maeKwh": 14.002884817232713,
+              "rmseKwh": 21.38413871833489,
+              "biasKwh": 3.7103811398598534,
+              "wapePercent": 35.74596192281913
+            },
+            "withoutSatelliteKwh": {
+              "hours": 45,
+              "actualKwh": 1762.8000000000466,
+              "predictedKwh": 1690.9671879243715,
+              "totalDifferenceKwh": -71.83281207567506,
+              "totalDifferencePercent": -4.074926938715292,
+              "matchPercent": 64.10528202903295,
+              "maeKwh": 14.061157519827198,
+              "rmseKwh": 22.251944224445452,
+              "biasKwh": -1.5962847127927793,
+              "wapePercent": 35.89471797096705
+            },
+            "v34Kwh": {
+              "hours": 45,
+              "actualKwh": 1762.8000000000466,
+              "predictedKwh": 1734.4699710105533,
+              "totalDifferenceKwh": -28.330028989493123,
+              "totalDifferencePercent": -1.6071039817048092,
+              "matchPercent": 62.78933852157048,
+              "maeKwh": 14.576656456483843,
+              "rmseKwh": 22.432694471032747,
+              "biasKwh": -0.6295561997665138,
+              "wapePercent": 37.21066147842952
+            }
+          }
+        },
+        {
+          "leadMinutes": 52.5,
+          "intervals": 44,
+          "huaweiApplied": 35,
+          "satelliteApplied": 27,
+          "scores": {
+            "iconKwh": {
+              "hours": 44,
+              "actualKwh": 1762.6500000000233,
+              "predictedKwh": 1892.6992100520672,
+              "totalDifferenceKwh": 130.04921005204426,
+              "totalDifferencePercent": 7.3780506653074935,
+              "matchPercent": 63.21750339703628,
+              "maeKwh": 14.735151735730648,
+              "rmseKwh": 21.993265432520474,
+              "biasKwh": 2.9556638648191877,
+              "wapePercent": 36.78249660296372
+            },
+            "withoutSatelliteKwh": {
+              "hours": 44,
+              "actualKwh": 1762.6500000000233,
+              "predictedKwh": 1724.934016109621,
+              "totalDifferenceKwh": -37.71598389040193,
+              "totalDifferencePercent": -2.1397318747568397,
+              "matchPercent": 61.89407566011444,
+              "maeKwh": 15.265319894931856,
+              "rmseKwh": 22.795700794299236,
+              "biasKwh": -0.8571814520545893,
+              "wapePercent": 38.10592433988556
+            },
+            "v34Kwh": {
+              "hours": 44,
+              "actualKwh": 1762.6500000000233,
+              "predictedKwh": 1763.5986173175972,
+              "totalDifferenceKwh": 0.9486173175740441,
+              "totalDifferencePercent": 0.05381767892514291,
+              "matchPercent": 61.99651832465093,
+              "maeKwh": 15.224281130694301,
+              "rmseKwh": 22.70218905795936,
+              "biasKwh": 0.021559484490319185,
+              "wapePercent": 38.00348167534907
+            }
+          }
+        }
+      ]
+    },
+    {
+      "huaweiLatency": 5,
+      "satelliteLatency": 10,
+      "groups": [
+        {
+          "leadMinutes": 7.5,
+          "intervals": 47,
+          "huaweiApplied": 35,
+          "satelliteApplied": 28,
+          "scores": {
+            "iconKwh": {
+              "hours": 47,
+              "actualKwh": 1763.0499999999302,
+              "predictedKwh": 1994.9976400169094,
+              "totalDifferenceKwh": 231.94764001697953,
+              "totalDifferencePercent": 13.156044355916663,
+              "matchPercent": 65.23146699291858,
+              "maeKwh": 13.042268535772864,
+              "rmseKwh": 18.89281482221151,
+              "biasKwh": 4.935056170574033,
+              "wapePercent": 34.768533007081416
+            },
+            "withoutSatelliteKwh": {
+              "hours": 47,
+              "actualKwh": 1763.0499999999302,
+              "predictedKwh": 1621.4364051844896,
+              "totalDifferenceKwh": -141.61359481544054,
+              "totalDifferencePercent": -8.03230735460969,
+              "matchPercent": 68.22960048010812,
+              "maeKwh": 11.917617632668758,
+              "rmseKwh": 18.134635588795685,
+              "biasKwh": -3.0130552088391602,
+              "wapePercent": 31.77039951989188
+            },
+            "v34Kwh": {
+              "hours": 47,
+              "actualKwh": 1763.0499999999302,
+              "predictedKwh": 1654.8707093791234,
+              "totalDifferenceKwh": -108.17929062080738,
+              "totalDifferencePercent": -6.135917337614456,
+              "matchPercent": 67.7006971659153,
+              "maeKwh": 12.116018268432084,
+              "rmseKwh": 18.808320501328893,
+              "biasKwh": -2.3016870344852634,
+              "wapePercent": 32.299302834084706
+            }
+          }
+        },
+        {
+          "leadMinutes": 22.5,
+          "intervals": 46,
+          "huaweiApplied": 35,
+          "satelliteApplied": 28,
+          "scores": {
+            "iconKwh": {
+              "hours": 46,
+              "actualKwh": 1762.9600000000792,
+              "predictedKwh": 1964.9869538493913,
+              "totalDifferenceKwh": 202.02695384931232,
+              "totalDifferencePercent": 11.45953134780728,
+              "matchPercent": 66.05835472992308,
+              "maeKwh": 13.008209335942933,
+              "rmseKwh": 18.87234597234516,
+              "biasKwh": 4.391890301072007,
+              "wapePercent": 33.94164527007691
+            },
+            "withoutSatelliteKwh": {
+              "hours": 46,
+              "actualKwh": 1762.9600000000792,
+              "predictedKwh": 1657.3098292433085,
+              "totalDifferenceKwh": -105.65017075677032,
+              "totalDifferencePercent": -5.992771858508734,
+              "matchPercent": 64.15228585653381,
+              "maeKwh": 13.73871437529739,
+              "rmseKwh": 20.134015323949626,
+              "biasKwh": -2.2967428425384853,
+              "wapePercent": 35.84771414346619
+            },
+            "v34Kwh": {
+              "hours": 46,
+              "actualKwh": 1762.9600000000792,
+              "predictedKwh": 1698.9835478858502,
+              "totalDifferenceKwh": -63.976452114229,
+              "totalDifferencePercent": -3.628922500466609,
+              "matchPercent": 62.18455394307694,
+              "maeKwh": 14.492851908807841,
+              "rmseKwh": 21.03065692498836,
+              "biasKwh": -1.3907924372658478,
+              "wapePercent": 37.81544605692306
+            }
+          }
+        },
+        {
+          "leadMinutes": 37.5,
+          "intervals": 45,
+          "huaweiApplied": 35,
+          "satelliteApplied": 28,
+          "scores": {
+            "iconKwh": {
+              "hours": 45,
+              "actualKwh": 1762.8000000000466,
+              "predictedKwh": 1929.7671512937397,
+              "totalDifferenceKwh": 166.9671512936934,
+              "totalDifferencePercent": 9.471701344093999,
+              "matchPercent": 64.25403807718087,
+              "maeKwh": 14.002884817232713,
+              "rmseKwh": 21.38413871833489,
+              "biasKwh": 3.7103811398598534,
+              "wapePercent": 35.74596192281913
+            },
+            "withoutSatelliteKwh": {
+              "hours": 45,
+              "actualKwh": 1762.8000000000466,
+              "predictedKwh": 1690.9671879243715,
+              "totalDifferenceKwh": -71.83281207567506,
+              "totalDifferencePercent": -4.074926938715292,
+              "matchPercent": 64.10528202903295,
+              "maeKwh": 14.061157519827198,
+              "rmseKwh": 22.251944224445452,
+              "biasKwh": -1.5962847127927793,
+              "wapePercent": 35.89471797096705
+            },
+            "v34Kwh": {
+              "hours": 45,
+              "actualKwh": 1762.8000000000466,
+              "predictedKwh": 1734.4699710105533,
+              "totalDifferenceKwh": -28.330028989493123,
+              "totalDifferencePercent": -1.6071039817048092,
+              "matchPercent": 62.78933852157048,
+              "maeKwh": 14.576656456483843,
+              "rmseKwh": 22.432694471032747,
+              "biasKwh": -0.6295561997665138,
+              "wapePercent": 37.21066147842952
+            }
+          }
+        },
+        {
+          "leadMinutes": 52.5,
+          "intervals": 44,
+          "huaweiApplied": 35,
+          "satelliteApplied": 27,
+          "scores": {
+            "iconKwh": {
+              "hours": 44,
+              "actualKwh": 1762.6500000000233,
+              "predictedKwh": 1892.6992100520672,
+              "totalDifferenceKwh": 130.04921005204426,
+              "totalDifferencePercent": 7.3780506653074935,
+              "matchPercent": 63.21750339703628,
+              "maeKwh": 14.735151735730648,
+              "rmseKwh": 21.993265432520474,
+              "biasKwh": 2.9556638648191877,
+              "wapePercent": 36.78249660296372
+            },
+            "withoutSatelliteKwh": {
+              "hours": 44,
+              "actualKwh": 1762.6500000000233,
+              "predictedKwh": 1724.934016109621,
+              "totalDifferenceKwh": -37.71598389040193,
+              "totalDifferencePercent": -2.1397318747568397,
+              "matchPercent": 61.89407566011444,
+              "maeKwh": 15.265319894931856,
+              "rmseKwh": 22.795700794299236,
+              "biasKwh": -0.8571814520545893,
+              "wapePercent": 38.10592433988556
+            },
+            "v34Kwh": {
+              "hours": 44,
+              "actualKwh": 1762.6500000000233,
+              "predictedKwh": 1763.5986173175972,
+              "totalDifferenceKwh": 0.9486173175740441,
+              "totalDifferencePercent": 0.05381767892514291,
+              "matchPercent": 61.99651832465093,
+              "maeKwh": 15.224281130694301,
+              "rmseKwh": 22.70218905795936,
+              "biasKwh": 0.021559484490319185,
+              "wapePercent": 38.00348167534907
+            }
+          }
+        }
+      ]
+    },
+    {
+      "huaweiLatency": 10,
+      "satelliteLatency": 2,
+      "groups": [
+        {
+          "leadMinutes": 7.5,
+          "intervals": 47,
+          "huaweiApplied": 34,
+          "satelliteApplied": 28,
+          "scores": {
+            "iconKwh": {
+              "hours": 47,
+              "actualKwh": 1763.0499999999302,
+              "predictedKwh": 1994.9976400169094,
+              "totalDifferenceKwh": 231.94764001697953,
+              "totalDifferencePercent": 13.156044355916663,
+              "matchPercent": 65.23146699291858,
+              "maeKwh": 13.042268535772864,
+              "rmseKwh": 18.89281482221151,
+              "biasKwh": 4.935056170574033,
+              "wapePercent": 34.768533007081416
+            },
+            "withoutSatelliteKwh": {
+              "hours": 47,
+              "actualKwh": 1763.0499999999302,
+              "predictedKwh": 1636.8180831892646,
+              "totalDifferenceKwh": -126.23191681066567,
+              "totalDifferencePercent": -7.159860288175075,
+              "matchPercent": 67.56635459260877,
+              "maeKwh": 12.16641245436145,
+              "rmseKwh": 19.248160012114294,
+              "biasKwh": -2.6857854640567163,
+              "wapePercent": 32.43364540739122
+            },
+            "v34Kwh": {
+              "hours": 47,
+              "actualKwh": 1763.0499999999302,
+              "predictedKwh": 1683.7092092186067,
+              "totalDifferenceKwh": -79.34079078132326,
+              "totalDifferencePercent": -4.500200832723202,
+              "matchPercent": 64.92041260888459,
+              "maeKwh": 13.158950329766718,
+              "rmseKwh": 20.691888276909193,
+              "biasKwh": -1.6881019315175163,
+              "wapePercent": 35.07958739111541
+            }
+          }
+        },
+        {
+          "leadMinutes": 22.5,
+          "intervals": 46,
+          "huaweiApplied": 34,
+          "satelliteApplied": 28,
+          "scores": {
+            "iconKwh": {
+              "hours": 46,
+              "actualKwh": 1762.9600000000792,
+              "predictedKwh": 1964.9869538493913,
+              "totalDifferenceKwh": 202.02695384931232,
+              "totalDifferencePercent": 11.45953134780728,
+              "matchPercent": 66.05835472992308,
+              "maeKwh": 13.008209335942933,
+              "rmseKwh": 18.87234597234516,
+              "biasKwh": 4.391890301072007,
+              "wapePercent": 33.94164527007691
+            },
+            "withoutSatelliteKwh": {
+              "hours": 46,
+              "actualKwh": 1762.9600000000792,
+              "predictedKwh": 1668.5706138958396,
+              "totalDifferenceKwh": -94.38938610423965,
+              "totalDifferencePercent": -5.354028798397889,
+              "matchPercent": 64.65117605365505,
+              "maeKwh": 13.547513622706761,
+              "rmseKwh": 20.872092929466643,
+              "biasKwh": -2.051943176179123,
+              "wapePercent": 35.34882394634495
+            },
+            "v34Kwh": {
+              "hours": 46,
+              "actualKwh": 1762.9600000000792,
+              "predictedKwh": 1718.8944706560442,
+              "totalDifferenceKwh": -44.06552934403466,
+              "totalDifferencePercent": -2.499519520807771,
+              "matchPercent": 62.90433601989764,
+              "maeKwh": 14.21699386312265,
+              "rmseKwh": 22.256624639124286,
+              "biasKwh": -0.9579462900877099,
+              "wapePercent": 37.09566398010236
+            }
+          }
+        },
+        {
+          "leadMinutes": 37.5,
+          "intervals": 45,
+          "huaweiApplied": 34,
+          "satelliteApplied": 28,
+          "scores": {
+            "iconKwh": {
+              "hours": 45,
+              "actualKwh": 1762.8000000000466,
+              "predictedKwh": 1929.7671512937397,
+              "totalDifferenceKwh": 166.9671512936934,
+              "totalDifferencePercent": 9.471701344093999,
+              "matchPercent": 64.25403807718087,
+              "maeKwh": 14.002884817232713,
+              "rmseKwh": 21.38413871833489,
+              "biasKwh": 3.7103811398598534,
+              "wapePercent": 35.74596192281913
+            },
+            "withoutSatelliteKwh": {
+              "hours": 45,
+              "actualKwh": 1762.8000000000466,
+              "predictedKwh": 1699.460887631552,
+              "totalDifferenceKwh": -63.339112368495144,
+              "totalDifferencePercent": -3.5930969122131535,
+              "matchPercent": 63.89059646633703,
+              "maeKwh": 14.145257010920613,
+              "rmseKwh": 21.889586912549508,
+              "biasKwh": -1.4075358304110033,
+              "wapePercent": 36.10940353366297
+            },
+            "v34Kwh": {
+              "hours": 45,
+              "actualKwh": 1762.8000000000466,
+              "predictedKwh": 1747.4291787769714,
+              "totalDifferenceKwh": -15.370821223075108,
+              "totalDifferencePercent": -0.8719549139479637,
+              "matchPercent": 62.91337709346162,
+              "maeKwh": 14.528066413255017,
+              "rmseKwh": 22.70170182647288,
+              "biasKwh": -0.3415738049572246,
+              "wapePercent": 37.08662290653838
+            }
+          }
+        },
+        {
+          "leadMinutes": 52.5,
+          "intervals": 44,
+          "huaweiApplied": 34,
+          "satelliteApplied": 27,
+          "scores": {
+            "iconKwh": {
+              "hours": 44,
+              "actualKwh": 1762.6500000000233,
+              "predictedKwh": 1892.6992100520672,
+              "totalDifferenceKwh": 130.04921005204426,
+              "totalDifferencePercent": 7.3780506653074935,
+              "matchPercent": 63.21750339703628,
+              "maeKwh": 14.735151735730648,
+              "rmseKwh": 21.993265432520474,
+              "biasKwh": 2.9556638648191877,
+              "wapePercent": 36.78249660296372
+            },
+            "withoutSatelliteKwh": {
+              "hours": 44,
+              "actualKwh": 1762.6500000000233,
+              "predictedKwh": 1730.1938965208014,
+              "totalDifferenceKwh": -32.45610347922191,
+              "totalDifferencePercent": -1.8413243400119979,
+              "matchPercent": 62.001352116122156,
+              "maeKwh": 15.222344702845039,
+              "rmseKwh": 22.58723448825924,
+              "biasKwh": -0.7376387154368615,
+              "wapePercent": 37.998647883877844
+            },
+            "v34Kwh": {
+              "hours": 44,
+              "actualKwh": 1762.6500000000233,
+              "predictedKwh": 1771.4153339865056,
+              "totalDifferenceKwh": 8.765333986482569,
+              "totalDifferencePercent": 0.49728159228902236,
+              "matchPercent": 60.898145909234124,
+              "maeKwh": 15.664291616611223,
+              "rmseKwh": 22.928005787104528,
+              "biasKwh": 0.19921213605642202,
+              "wapePercent": 39.101854090765876
+            }
+          }
+        }
+      ]
+    },
+    {
+      "huaweiLatency": 10,
+      "satelliteLatency": 10,
+      "groups": [
+        {
+          "leadMinutes": 7.5,
+          "intervals": 47,
+          "huaweiApplied": 34,
+          "satelliteApplied": 28,
+          "scores": {
+            "iconKwh": {
+              "hours": 47,
+              "actualKwh": 1763.0499999999302,
+              "predictedKwh": 1994.9976400169094,
+              "totalDifferenceKwh": 231.94764001697953,
+              "totalDifferencePercent": 13.156044355916663,
+              "matchPercent": 65.23146699291858,
+              "maeKwh": 13.042268535772864,
+              "rmseKwh": 18.89281482221151,
+              "biasKwh": 4.935056170574033,
+              "wapePercent": 34.768533007081416
+            },
+            "withoutSatelliteKwh": {
+              "hours": 47,
+              "actualKwh": 1763.0499999999302,
+              "predictedKwh": 1636.8180831892646,
+              "totalDifferenceKwh": -126.23191681066567,
+              "totalDifferencePercent": -7.159860288175075,
+              "matchPercent": 67.56635459260877,
+              "maeKwh": 12.16641245436145,
+              "rmseKwh": 19.248160012114294,
+              "biasKwh": -2.6857854640567163,
+              "wapePercent": 32.43364540739122
+            },
+            "v34Kwh": {
+              "hours": 47,
+              "actualKwh": 1763.0499999999302,
+              "predictedKwh": 1683.7092092186067,
+              "totalDifferenceKwh": -79.34079078132326,
+              "totalDifferencePercent": -4.500200832723202,
+              "matchPercent": 64.92041260888459,
+              "maeKwh": 13.158950329766718,
+              "rmseKwh": 20.691888276909193,
+              "biasKwh": -1.6881019315175163,
+              "wapePercent": 35.07958739111541
+            }
+          }
+        },
+        {
+          "leadMinutes": 22.5,
+          "intervals": 46,
+          "huaweiApplied": 34,
+          "satelliteApplied": 28,
+          "scores": {
+            "iconKwh": {
+              "hours": 46,
+              "actualKwh": 1762.9600000000792,
+              "predictedKwh": 1964.9869538493913,
+              "totalDifferenceKwh": 202.02695384931232,
+              "totalDifferencePercent": 11.45953134780728,
+              "matchPercent": 66.05835472992308,
+              "maeKwh": 13.008209335942933,
+              "rmseKwh": 18.87234597234516,
+              "biasKwh": 4.391890301072007,
+              "wapePercent": 33.94164527007691
+            },
+            "withoutSatelliteKwh": {
+              "hours": 46,
+              "actualKwh": 1762.9600000000792,
+              "predictedKwh": 1668.5706138958396,
+              "totalDifferenceKwh": -94.38938610423965,
+              "totalDifferencePercent": -5.354028798397889,
+              "matchPercent": 64.65117605365505,
+              "maeKwh": 13.547513622706761,
+              "rmseKwh": 20.872092929466643,
+              "biasKwh": -2.051943176179123,
+              "wapePercent": 35.34882394634495
+            },
+            "v34Kwh": {
+              "hours": 46,
+              "actualKwh": 1762.9600000000792,
+              "predictedKwh": 1718.8944706560442,
+              "totalDifferenceKwh": -44.06552934403466,
+              "totalDifferencePercent": -2.499519520807771,
+              "matchPercent": 62.90433601989764,
+              "maeKwh": 14.21699386312265,
+              "rmseKwh": 22.256624639124286,
+              "biasKwh": -0.9579462900877099,
+              "wapePercent": 37.09566398010236
+            }
+          }
+        },
+        {
+          "leadMinutes": 37.5,
+          "intervals": 45,
+          "huaweiApplied": 34,
+          "satelliteApplied": 28,
+          "scores": {
+            "iconKwh": {
+              "hours": 45,
+              "actualKwh": 1762.8000000000466,
+              "predictedKwh": 1929.7671512937397,
+              "totalDifferenceKwh": 166.9671512936934,
+              "totalDifferencePercent": 9.471701344093999,
+              "matchPercent": 64.25403807718087,
+              "maeKwh": 14.002884817232713,
+              "rmseKwh": 21.38413871833489,
+              "biasKwh": 3.7103811398598534,
+              "wapePercent": 35.74596192281913
+            },
+            "withoutSatelliteKwh": {
+              "hours": 45,
+              "actualKwh": 1762.8000000000466,
+              "predictedKwh": 1699.460887631552,
+              "totalDifferenceKwh": -63.339112368495144,
+              "totalDifferencePercent": -3.5930969122131535,
+              "matchPercent": 63.89059646633703,
+              "maeKwh": 14.145257010920613,
+              "rmseKwh": 21.889586912549508,
+              "biasKwh": -1.4075358304110033,
+              "wapePercent": 36.10940353366297
+            },
+            "v34Kwh": {
+              "hours": 45,
+              "actualKwh": 1762.8000000000466,
+              "predictedKwh": 1747.4291787769714,
+              "totalDifferenceKwh": -15.370821223075108,
+              "totalDifferencePercent": -0.8719549139479637,
+              "matchPercent": 62.91337709346162,
+              "maeKwh": 14.528066413255017,
+              "rmseKwh": 22.70170182647288,
+              "biasKwh": -0.3415738049572246,
+              "wapePercent": 37.08662290653838
+            }
+          }
+        },
+        {
+          "leadMinutes": 52.5,
+          "intervals": 44,
+          "huaweiApplied": 34,
+          "satelliteApplied": 27,
+          "scores": {
+            "iconKwh": {
+              "hours": 44,
+              "actualKwh": 1762.6500000000233,
+              "predictedKwh": 1892.6992100520672,
+              "totalDifferenceKwh": 130.04921005204426,
+              "totalDifferencePercent": 7.3780506653074935,
+              "matchPercent": 63.21750339703628,
+              "maeKwh": 14.735151735730648,
+              "rmseKwh": 21.993265432520474,
+              "biasKwh": 2.9556638648191877,
+              "wapePercent": 36.78249660296372
+            },
+            "withoutSatelliteKwh": {
+              "hours": 44,
+              "actualKwh": 1762.6500000000233,
+              "predictedKwh": 1730.1938965208014,
+              "totalDifferenceKwh": -32.45610347922191,
+              "totalDifferencePercent": -1.8413243400119979,
+              "matchPercent": 62.001352116122156,
+              "maeKwh": 15.222344702845039,
+              "rmseKwh": 22.58723448825924,
+              "biasKwh": -0.7376387154368615,
+              "wapePercent": 37.998647883877844
+            },
+            "v34Kwh": {
+              "hours": 44,
+              "actualKwh": 1762.6500000000233,
+              "predictedKwh": 1771.4153339865056,
+              "totalDifferenceKwh": 8.765333986482569,
+              "totalDifferencePercent": 0.49728159228902236,
+              "matchPercent": 60.898145909234124,
+              "maeKwh": 15.664291616611223,
+              "rmseKwh": 22.928005787104528,
+              "biasKwh": 0.19921213605642202,
+              "wapePercent": 39.101854090765876
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "persistence": {
+    "checkedAt": "2026-10-11T20:39:02.129Z",
+    "id": "original-icon-gfs-3ca412779c0e09f2facd",
+    "readback": "exact",
+    "originalIconFiles": 140,
+    "originalGfsFields": 72,
+    "sourceFiles": 72,
+    "officialModelChanged": false,
+    "measurementsChanged": false
+  }
+}

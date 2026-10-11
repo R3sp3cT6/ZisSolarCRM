@@ -1,6 +1,7 @@
 import { test, mock, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 let user, queries, cache, limited, failWrite;
+let forecastSource, weatherSource, iconSource;
 mock.module('../lib/auth.ts', {
   namedExports: {
     getUser: async () => user,
@@ -19,6 +20,7 @@ mock.module('../lib/shared-cache.ts', {
 mock.module('../lib/forecast-server.ts', {
   namedExports: {
     readForecast: async () => {
+      if (forecastSource) return forecastSource;
       throw Error('Unexpected source read');
     },
   },
@@ -26,6 +28,7 @@ mock.module('../lib/forecast-server.ts', {
 mock.module('../lib/forecast-weather.ts', {
   namedExports: {
     fetchForecastWeather: async () => {
+      if (weatherSource) return weatherSource;
       throw Error('Unexpected weather fetch');
     },
   },
@@ -33,6 +36,7 @@ mock.module('../lib/forecast-weather.ts', {
 mock.module('../lib/forecast-icon-server.ts', {
   namedExports: {
     fetchIcon: async () => {
+      if (iconSource) return iconSource;
       throw Error('Unexpected ICON fetch');
     },
   },
@@ -49,7 +53,21 @@ mock.module('../db/index.ts', {
         bind(...args) {
           queries.push({ sql, args });
           return {
-            first: async () => null,
+            first: async () => {
+              if (sql.includes("inputs->'context' AS context")) {
+                const insert = queries.findLast(
+                  (q) =>
+                    q.sql.startsWith('INSERT INTO forecast_trials') &&
+                    q.args[1] === args[0] &&
+                    q.args[2] === args[1],
+                );
+                if (insert) {
+                  const { view, context } = JSON.parse(insert.args[7]);
+                  return { view, context };
+                }
+              }
+              return null;
+            },
             all: async () => ({ results: [] }),
             run: async () => {
               if (failWrite) throw Error('Database failure');
@@ -60,7 +78,7 @@ mock.module('../db/index.ts', {
     }),
   },
 });
-const { readTrial, handleTrialGet, handleTrialPost } =
+const { readTrial, handleTrialGet, handleTrialPost, runTrial } =
   await import('../lib/forecast-trial-server.ts');
 const { recordLiveTrial, recordHistoricalTrial, flushTrialPending } =
   await import('../lib/forecast-trial-live.ts');
@@ -70,6 +88,104 @@ beforeEach(() => {
   cache = new Map();
   limited = false;
   failWrite = false;
+  forecastSource = weatherSource = iconSource = null;
+});
+
+void test('trial refresh preserves prior thermal context and archives its provenance', async () => {
+  const { defaultForecastConfig } = await import('../lib/forecast-model.ts');
+  const { localDate, slotsForDay } = await import('../lib/energy.ts');
+  const { addDays } = await import('../lib/forecast-model.ts');
+  const { TRIAL_VERSION } = await import('../lib/forecast-trial.ts');
+  const now = new Date(),
+    current = Math.floor(now.getTime() / 3600000) * 3600000;
+  const config = {
+    ...defaultForecastConfig(),
+    latitude: 41.068056,
+    longitude: 21.036111,
+    acKw: 875,
+  };
+  const tomorrow = addDays(localDate(now), 1),
+    slots = slotsForDay(tomorrow);
+  const end = Date.parse(slots.at(-1).start);
+  const hours = Array.from(
+    { length: (end - current) / 3600000 + 4 },
+    (_, i) => ({
+      start: new Date(current + (i - 3) * 3600000).toISOString(),
+      irradiance: 400,
+      diffuse: 100,
+    }),
+  );
+  const calibration = {
+    days: 14,
+    samples: 100,
+    coefficients: [
+      { hour: 7, factor: 1000 },
+      { hour: 17, factor: 1000 },
+    ],
+  };
+  forecastSource = {
+    config,
+    forecast: {
+      id: 'baseline',
+      config,
+      calibration,
+      days: [
+        {
+          date: tomorrow,
+          hours: slots.map((s) => ({ ...s, productionKwh: 100 })),
+        },
+      ],
+    },
+  };
+  weatherSource = {
+    raw: {},
+    issuedAt: now.toISOString(),
+    hours: hours
+      .filter((h) => Date.parse(h.start) >= current)
+      .map((h) => ({
+        ...h,
+        temperature: 20,
+        windSpeed: 2,
+        cloudCover: null,
+        irradianceKind: 'modeled-ghi',
+        resolutionHours: 1,
+      })),
+  };
+  iconSource = {
+    status: 'ready',
+    runAt: new Date(current - 6 * 3600000).toISOString(),
+    hours,
+  };
+  const oldIssuedAt = new Date(current - 4 * 3600000).toISOString();
+  cache.set('trial-context:plant', {
+    version: TRIAL_VERSION,
+    config,
+    issuedAt: oldIssuedAt,
+    hours: hours.map((h) => ({
+      ...h,
+      iconKwh: 999,
+      baselineKwh: 100,
+      weather: { temperature: 18, windSpeed: 1 },
+    })),
+  });
+  const result = await runTrial('plant');
+  assert.equal(result.dayAhead.hours.length, slots.length);
+  const context = cache.get('trial-context:plant');
+  assert.equal(context.retainedThermalHistory.length, 2);
+  assert.equal(context.retainedThermalHistory[0].contextIssuedAt, oldIssuedAt);
+  assert.equal(
+    context.hours[0].start,
+    new Date(current - 2 * 3600000).toISOString(),
+  );
+  const saved = queries.find(
+    (q) =>
+      q.sql.startsWith('INSERT INTO forecast_trials') &&
+      q.args[4] === 'day-ahead',
+  );
+  assert.deepEqual(
+    JSON.parse(saved.args[7]).context.retainedThermalHistory,
+    context.retainedThermalHistory,
+  );
 });
 const req = (origin) =>
   new Request('https://example.com/api/forecast-trial', {
