@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-10-11T20:42:39.847Z",
+  "commit": "814dfef",
+  "deployment": "dpl_7NR6RxvwWM7KCKtQ7bhvuCTMFVTC",
+  "readyState": "READY",
+  "runtimeRole": "zis_app_runtime",
+  "officialModel": "weather-solar-v3.2",
+  "trialModel": "weather-solar-v3.4-satellite",
+  "trialId": "ee167c7a-4395-4eb1-9e55-3811be823022",
+  "previousContextIssuedAt": "2026-10-11T19:46:31.750Z",
+  "retainedThermalHistory": [
+    {
+      "start": "2026-10-11T19:00:00.000Z",
+      "weather": {
+        "windSpeed": 1.25,
+        "temperature": 10.600000000000001
+      },
+      "contextIssuedAt": "2026-10-11T19:46:31.750Z"
+    }
+  ],
+  "readback": "exact",
+  "warmDashboardForecastTrialSqlQueries": 0,
+  "loginStatus": 200,
+  "anonymousTrialStatus": 401,
+  "change": "Retain previously fetched thermal hours needed for fresh Huawei normalization; day-ahead formulas unchanged"
+}
