@@ -1,0 +1,694 @@
+{
+  "checkedAt": "2026-10-11T20:25:21.427Z",
+  "records": [
+    {
+      "id": "forecast-followup-methods-5cca1399b70aea4ded49",
+      "label": "methods",
+      "readback": "exact"
+    },
+    {
+      "id": "forecast-followup-2026-10-10-0830e1b287ef7437b492",
+      "label": "2026-10-10",
+      "readback": "exact"
+    },
+    {
+      "id": "forecast-followup-2026-10-11-ece8184f9ebcc3ee3879",
+      "label": "2026-10-11",
+      "readback": "exact"
+    }
+  ],
+  "huawei": [
+    {
+      "date": "2026-10-10",
+      "rawRows": 1192,
+      "completeObservations": 149,
+      "reports": [
+        {
+          "assumedReceiptMinutes": 5,
+          "groups": [
+            {
+              "leadMinutes": 7.5,
+              "base": {
+                "hours": 48,
+                "actualKwh": 2627.5400000000373,
+                "predictedKwh": 2934.5205290421723,
+                "totalDifferenceKwh": 306.9805290421339,
+                "totalDifferencePercent": 11.68319146586273,
+                "matchPercent": 77.29461417314764,
+                "maeKwh": 12.429022807393443,
+                "rmseKwh": 18.49990566056095,
+                "biasKwh": 6.39542768837779,
+                "wapePercent": 22.70538582685237
+              },
+              "v34": {
+                "hours": 48,
+                "actualKwh": 2627.5400000000373,
+                "predictedKwh": 2865.316821003995,
+                "totalDifferenceKwh": 237.77682100395742,
+                "totalDifferencePercent": 9.049408229901507,
+                "matchPercent": 84.03931212029141,
+                "maeKwh": 8.736947048218767,
+                "rmseKwh": 12.888026549896942,
+                "biasKwh": 4.95368377091578,
+                "wapePercent": 15.960687879708582
+              },
+              "candidate": {
+                "hours": 48,
+                "actualKwh": 2627.5400000000373,
+                "predictedKwh": 2911.4161825761234,
+                "totalDifferenceKwh": 283.87618257608585,
+                "totalDifferencePercent": 10.80387672789308,
+                "matchPercent": 83.60564923663726,
+                "maeKwh": 8.974335917659738,
+                "rmseKwh": 13.46685522987265,
+                "biasKwh": 5.914087137001789,
+                "wapePercent": 16.39435076336274
+              }
+            },
+            {
+              "leadMinutes": 22.5,
+              "base": {
+                "hours": 47,
+                "actualKwh": 2626.590000000084,
+                "predictedKwh": 2932.4749290815203,
+                "totalDifferenceKwh": 305.8849290814358,
+                "totalDifferencePercent": 11.645705233075054,
+                "matchPercent": 77.32811383603196,
+                "maeKwh": 12.670159463706108,
+                "rmseKwh": 18.694994275012675,
+                "biasKwh": 6.508189980456081,
+                "wapePercent": 22.67188616396804
+              },
+              "v34": {
+                "hours": 47,
+                "actualKwh": 2626.590000000084,
+                "predictedKwh": 2926.254509653918,
+                "totalDifferenceKwh": 299.66450965383336,
+                "totalDifferencePercent": 11.408880322160057,
+                "matchPercent": 78.61717233185443,
+                "maeKwh": 11.949770494654523,
+                "rmseKwh": 18.585689662195037,
+                "biasKwh": 6.3758406309326245,
+                "wapePercent": 21.382827668145566
+              },
+              "candidate": {
+                "hours": 47,
+                "actualKwh": 2626.590000000084,
+                "predictedKwh": 2991.435015549593,
+                "totalDifferenceKwh": 364.8450155495077,
+                "totalDifferencePercent": 13.890444094795765,
+                "matchPercent": 77.43781425109252,
+                "maeKwh": 12.608853503452085,
+                "rmseKwh": 19.411924110330776,
+                "biasKwh": 7.7626599053086744,
+                "wapePercent": 22.562185748907485
+              }
+            },
+            {
+              "leadMinutes": 37.5,
+              "base": {
+                "hours": 46,
+                "actualKwh": 2623.7700000000186,
+                "predictedKwh": 2926.6461937441068,
+                "totalDifferenceKwh": 302.87619374408763,
+                "totalDifferencePercent": 11.543549691630192,
+                "matchPercent": 77.41841855586296,
+                "maeKwh": 12.880190422974756,
+                "rmseKwh": 18.891900510869593,
+                "biasKwh": 6.58426508139321,
+                "wapePercent": 22.581581444137047
+              },
+              "v34": {
+                "hours": 46,
+                "actualKwh": 2623.7700000000186,
+                "predictedKwh": 2967.388016515153,
+                "totalDifferenceKwh": 343.6180165151336,
+                "totalDifferencePercent": 13.096346726852245,
+                "matchPercent": 75.30229783936213,
+                "maeKwh": 14.087193477829848,
+                "rmseKwh": 21.46345509197936,
+                "biasKwh": 7.469956880763774,
+                "wapePercent": 24.697702160637878
+              },
+              "candidate": {
+                "hours": 46,
+                "actualKwh": 2623.7700000000186,
+                "predictedKwh": 3038.4247637431104,
+                "totalDifferenceKwh": 414.6547637430907,
+                "totalDifferencePercent": 15.803777150553888,
+                "matchPercent": 73.96020389733869,
+                "maeKwh": 14.852703439191334,
+                "rmseKwh": 22.685882891090465,
+                "biasKwh": 9.014233994415015,
+                "wapePercent": 26.039796102661306
+              }
+            },
+            {
+              "leadMinutes": 52.5,
+              "base": {
+                "hours": 45,
+                "actualKwh": 2617.5500000000466,
+                "predictedKwh": 2917.034323029932,
+                "totalDifferenceKwh": 299.4843230298845,
+                "totalDifferencePercent": 11.441398369845052,
+                "matchPercent": 77.49434055729115,
+                "maeKwh": 13.091041972058575,
+                "rmseKwh": 19.09396346669543,
+                "biasKwh": 6.655207178441877,
+                "wapePercent": 22.505659442708847
+              },
+              "v34": {
+                "hours": 45,
+                "actualKwh": 2617.5500000000466,
+                "predictedKwh": 2983.21824374477,
+                "totalDifferenceKwh": 365.6682437447233,
+                "totalDifferencePercent": 13.96986662125716,
+                "matchPercent": 74.39648590557309,
+                "maeKwh": 14.892995181748525,
+                "rmseKwh": 22.300512389946178,
+                "biasKwh": 8.125960972104963,
+                "wapePercent": 25.60351409442691
+              },
+              "candidate": {
+                "hours": 45,
+                "actualKwh": 2617.5500000000466,
+                "predictedKwh": 3052.1753924158515,
+                "totalDifferenceKwh": 434.6253924158052,
+                "totalDifferencePercent": 16.604282340959962,
+                "matchPercent": 73.18816008762613,
+                "maeKwh": 15.59585145836344,
+                "rmseKwh": 23.772942089293704,
+                "biasKwh": 9.65834205368456,
+                "wapePercent": 26.811839912373873
+              }
+            }
+          ],
+          "scored": 186,
+          "corrected": 108
+        },
+        {
+          "assumedReceiptMinutes": 10,
+          "groups": [
+            {
+              "leadMinutes": 7.5,
+              "base": {
+                "hours": 48,
+                "actualKwh": 2627.5400000000373,
+                "predictedKwh": 2934.5205290421723,
+                "totalDifferenceKwh": 306.9805290421339,
+                "totalDifferencePercent": 11.68319146586273,
+                "matchPercent": 77.29461417314764,
+                "maeKwh": 12.429022807393443,
+                "rmseKwh": 18.49990566056095,
+                "biasKwh": 6.39542768837779,
+                "wapePercent": 22.70538582685237
+              },
+              "v34": {
+                "hours": 48,
+                "actualKwh": 2627.5400000000373,
+                "predictedKwh": 2882.272964074697,
+                "totalDifferenceKwh": 254.7329640746585,
+                "totalDifferencePercent": 9.69473210967882,
+                "matchPercent": 81.78583637185956,
+                "maeKwh": 9.970509062392667,
+                "rmseKwh": 15.462947854627847,
+                "biasKwh": 5.306936751555385,
+                "wapePercent": 18.214163628140437
+              },
+              "candidate": {
+                "hours": 48,
+                "actualKwh": 2627.5400000000373,
+                "predictedKwh": 2956.6579866633397,
+                "totalDifferenceKwh": 329.11798666330185,
+                "totalDifferencePercent": 12.525707949766595,
+                "matchPercent": 81.82870311584273,
+                "maeKwh": 9.947043628124852,
+                "rmseKwh": 15.655060862445024,
+                "biasKwh": 6.856624722152122,
+                "wapePercent": 18.17129688415728
+              }
+            },
+            {
+              "leadMinutes": 22.5,
+              "base": {
+                "hours": 47,
+                "actualKwh": 2626.590000000084,
+                "predictedKwh": 2932.4749290815203,
+                "totalDifferenceKwh": 305.8849290814358,
+                "totalDifferencePercent": 11.645705233075054,
+                "matchPercent": 77.32811383603196,
+                "maeKwh": 12.670159463706108,
+                "rmseKwh": 18.694994275012675,
+                "biasKwh": 6.508189980456081,
+                "wapePercent": 22.67188616396804
+              },
+              "v34": {
+                "hours": 47,
+                "actualKwh": 2626.590000000084,
+                "predictedKwh": 2938.1049017777163,
+                "totalDifferenceKwh": 311.514901777632,
+                "totalDifferencePercent": 11.860050551384955,
+                "matchPercent": 77.42494001405409,
+                "maeKwh": 12.616048257125012,
+                "rmseKwh": 20.08648719889695,
+                "biasKwh": 6.627976633566639,
+                "wapePercent": 22.575059985945913
+              },
+              "candidate": {
+                "hours": 47,
+                "actualKwh": 2626.590000000084,
+                "predictedKwh": 3022.992142709362,
+                "totalDifferenceKwh": 396.40214270927765,
+                "totalDifferencePercent": 15.09189263300572,
+                "matchPercent": 76.75934730590876,
+                "maeKwh": 12.988014033994688,
+                "rmseKwh": 20.69941282505346,
+                "biasKwh": 8.43408814275059,
+                "wapePercent": 23.24065269409123
+              }
+            },
+            {
+              "leadMinutes": 37.5,
+              "base": {
+                "hours": 46,
+                "actualKwh": 2623.7700000000186,
+                "predictedKwh": 2926.6461937441068,
+                "totalDifferenceKwh": 302.87619374408763,
+                "totalDifferencePercent": 11.543549691630192,
+                "matchPercent": 77.41841855586296,
+                "maeKwh": 12.880190422974756,
+                "rmseKwh": 18.891900510869593,
+                "biasKwh": 6.58426508139321,
+                "wapePercent": 22.581581444137047
+              },
+              "v34": {
+                "hours": 46,
+                "actualKwh": 2623.7700000000186,
+                "predictedKwh": 2974.060581181062,
+                "totalDifferenceKwh": 350.2905811810432,
+                "totalDifferencePercent": 13.350658829891366,
+                "matchPercent": 74.37002113387918,
+                "maeKwh": 14.618949923817892,
+                "rmseKwh": 22.062026619516367,
+                "biasKwh": 7.615012634370504,
+                "wapePercent": 25.629978866120823
+              },
+              "candidate": {
+                "hours": 46,
+                "actualKwh": 2623.7700000000186,
+                "predictedKwh": 3059.543729139173,
+                "totalDifferenceKwh": 435.7737291391543,
+                "totalDifferencePercent": 16.60868632308286,
+                "matchPercent": 73.36739651747642,
+                "maeKwh": 15.190831747682909,
+                "rmseKwh": 23.265718675412305,
+                "biasKwh": 9.473341937807701,
+                "wapePercent": 26.632603482523574
+              }
+            },
+            {
+              "leadMinutes": 52.5,
+              "base": {
+                "hours": 45,
+                "actualKwh": 2617.5500000000466,
+                "predictedKwh": 2917.034323029932,
+                "totalDifferenceKwh": 299.4843230298845,
+                "totalDifferencePercent": 11.441398369845052,
+                "matchPercent": 77.49434055729115,
+                "maeKwh": 13.091041972058575,
+                "rmseKwh": 19.09396346669543,
+                "biasKwh": 6.655207178441877,
+                "wapePercent": 22.505659442708847
+              },
+              "v34": {
+                "hours": 45,
+                "actualKwh": 2617.5500000000466,
+                "predictedKwh": 2986.0823848454606,
+                "totalDifferenceKwh": 368.53238484541373,
+                "totalDifferencePercent": 14.07928730474708,
+                "matchPercent": 73.14088187663845,
+                "maeKwh": 15.623352143068061,
+                "rmseKwh": 22.781057195034037,
+                "biasKwh": 8.189608552120305,
+                "wapePercent": 26.859118123361554
+              },
+              "candidate": {
+                "hours": 45,
+                "actualKwh": 2617.5500000000466,
+                "predictedKwh": 3065.689073172824,
+                "totalDifferenceKwh": 448.1390731727769,
+                "totalDifferencePercent": 17.12055445637214,
+                "matchPercent": 72.20447231426884,
+                "maeKwh": 16.16804077639709,
+                "rmseKwh": 24.21776784105145,
+                "biasKwh": 9.958646070506152,
+                "wapePercent": 27.795527685731162
+              }
+            }
+          ],
+          "scored": 186,
+          "corrected": 108
+        }
+      ]
+    },
+    {
+      "date": "2026-10-11",
+      "rawRows": 1155,
+      "completeObservations": 143,
+      "reports": [
+        {
+          "assumedReceiptMinutes": 5,
+          "groups": [
+            {
+              "leadMinutes": 7.5,
+              "base": {
+                "hours": 47,
+                "actualKwh": 1763.0499999999302,
+                "predictedKwh": 1580.3372793801905,
+                "totalDifferenceKwh": -182.7127206197399,
+                "totalDifferencePercent": -10.363445201199465,
+                "matchPercent": 52.31074419847302,
+                "maeKwh": 17.889051583165706,
+                "rmseKwh": 24.44425563068252,
+                "biasKwh": -3.8875046940370193,
+                "wapePercent": 47.68925580152698
+              },
+              "v34": {
+                "hours": 47,
+                "actualKwh": 1763.0499999999302,
+                "predictedKwh": 1546.3600963529238,
+                "totalDifferenceKwh": -216.68990364700642,
+                "totalDifferencePercent": -12.290627245229292,
+                "matchPercent": 65.1346711918082,
+                "maeKwh": 13.078578288357473,
+                "rmseKwh": 18.735285775845526,
+                "biasKwh": -4.610423481851201,
+                "wapePercent": 34.865328808191805
+              },
+              "candidate": {
+                "hours": 47,
+                "actualKwh": 1763.0499999999302,
+                "predictedKwh": 1630.4116388663888,
+                "totalDifferenceKwh": -132.63836113354176,
+                "totalDifferencePercent": -7.523233097957915,
+                "matchPercent": 65.88392138735539,
+                "maeKwh": 12.797521786812915,
+                "rmseKwh": 18.211127234141394,
+                "biasKwh": -2.8220927900753567,
+                "wapePercent": 34.116078612644614
+              }
+            },
+            {
+              "leadMinutes": 22.5,
+              "base": {
+                "hours": 46,
+                "actualKwh": 1762.9600000000792,
+                "predictedKwh": 1579.3211966037402,
+                "totalDifferenceKwh": -183.6388033963393,
+                "totalDifferencePercent": -10.416504254000719,
+                "matchPercent": 52.36083963152023,
+                "maeKwh": 18.257811774612797,
+                "rmseKwh": 24.708148250070888,
+                "biasKwh": -3.9921478999204196,
+                "wapePercent": 47.63916036847977
+              },
+              "v34": {
+                "hours": 46,
+                "actualKwh": 1762.9600000000792,
+                "predictedKwh": 1561.2698786669023,
+                "totalDifferenceKwh": -201.6901213331771,
+                "totalDifferencePercent": -11.440425269612927,
+                "matchPercent": 60.966191531680884,
+                "maeKwh": 14.959791951589338,
+                "rmseKwh": 20.42942825898267,
+                "biasKwh": -4.384567855069068,
+                "wapePercent": 39.033808468319116
+              },
+              "candidate": {
+                "hours": 46,
+                "actualKwh": 1762.9600000000792,
+                "predictedKwh": 1630.2019414629929,
+                "totalDifferenceKwh": -132.75805853708664,
+                "totalDifferencePercent": -7.530406732828918,
+                "matchPercent": 60.426914880248326,
+                "maeKwh": 15.166470900591422,
+                "rmseKwh": 20.591253440345927,
+                "biasKwh": -2.8860447508062315,
+                "wapePercent": 39.573085119751674
+              }
+            },
+            {
+              "leadMinutes": 37.5,
+              "base": {
+                "hours": 45,
+                "actualKwh": 1762.8000000000466,
+                "predictedKwh": 1577.6414867350265,
+                "totalDifferenceKwh": -185.1585132650202,
+                "totalDifferencePercent": -10.503659704164699,
+                "matchPercent": 52.44272567713378,
+                "maeKwh": 18.62976959474462,
+                "rmseKwh": 24.980147504012134,
+                "biasKwh": -4.11463362811156,
+                "wapePercent": 47.55727432286622
+              },
+              "v34": {
+                "hours": 45,
+                "actualKwh": 1762.8000000000466,
+                "predictedKwh": 1571.9713544957333,
+                "totalDifferenceKwh": -190.82864550431344,
+                "totalDifferencePercent": -10.825314584995938,
+                "matchPercent": 58.68099330937991,
+                "maeKwh": 16.18603222093934,
+                "rmseKwh": 21.908487907526716,
+                "biasKwh": -4.240636566762521,
+                "wapePercent": 41.31900669062009
+              },
+              "candidate": {
+                "hours": 45,
+                "actualKwh": 1762.8000000000466,
+                "predictedKwh": 1618.2686368824761,
+                "totalDifferenceKwh": -144.53136311757038,
+                "totalDifferencePercent": -8.198965459358213,
+                "matchPercent": 59.159232720625546,
+                "maeKwh": 15.99868990224071,
+                "rmseKwh": 22.59864680739863,
+                "biasKwh": -3.211808069279342,
+                "wapePercent": 40.840767279374454
+              }
+            },
+            {
+              "leadMinutes": 52.5,
+              "base": {
+                "hours": 44,
+                "actualKwh": 1762.6500000000233,
+                "predictedKwh": 1575.29814977405,
+                "totalDifferenceKwh": -187.35185022597346,
+                "totalDifferencePercent": -10.628987616711825,
+                "matchPercent": 52.563112654097885,
+                "maeKwh": 19.003324881876242,
+                "rmseKwh": 25.26025394516906,
+                "biasKwh": -4.257996596044851,
+                "wapePercent": 47.436887345902115
+              },
+              "v34": {
+                "hours": 44,
+                "actualKwh": 1762.6500000000233,
+                "predictedKwh": 1579.0173050049282,
+                "totalDifferenceKwh": -183.6326949950955,
+                "totalDifferencePercent": -10.417989674359236,
+                "matchPercent": 56.89642834368796,
+                "maeKwh": 17.267388768181686,
+                "rmseKwh": 23.284775116506893,
+                "biasKwh": -4.173470340797625,
+                "wapePercent": 43.10357165631204
+              },
+              "candidate": {
+                "hours": 44,
+                "actualKwh": 1762.6500000000233,
+                "predictedKwh": 1600.5559430583064,
+                "totalDifferenceKwh": -162.09405694171699,
+                "totalDifferencePercent": -9.196043283789455,
+                "matchPercent": 57.05689527860343,
+                "maeKwh": 17.20310534935697,
+                "rmseKwh": 23.22251734659013,
+                "biasKwh": -3.683955839584477,
+                "wapePercent": 42.94310472139657
+              }
+            }
+          ],
+          "scored": 182,
+          "corrected": 96
+        },
+        {
+          "assumedReceiptMinutes": 10,
+          "groups": [
+            {
+              "leadMinutes": 7.5,
+              "base": {
+                "hours": 47,
+                "actualKwh": 1763.0499999999302,
+                "predictedKwh": 1580.3372793801905,
+                "totalDifferenceKwh": -182.7127206197399,
+                "totalDifferencePercent": -10.363445201199465,
+                "matchPercent": 52.31074419847302,
+                "maeKwh": 17.889051583165706,
+                "rmseKwh": 24.44425563068252,
+                "biasKwh": -3.8875046940370193,
+                "wapePercent": 47.68925580152698
+              },
+              "v34": {
+                "hours": 47,
+                "actualKwh": 1763.0499999999302,
+                "predictedKwh": 1579.6010156401833,
+                "totalDifferenceKwh": -183.4489843597471,
+                "totalDifferencePercent": -10.40520599868151,
+                "matchPercent": 63.100141754965136,
+                "maeKwh": 13.84176491040556,
+                "rmseKwh": 19.967143081776435,
+                "biasKwh": -3.903169879994619,
+                "wapePercent": 36.899858245034864
+              },
+              "candidate": {
+                "hours": 47,
+                "actualKwh": 1763.0499999999302,
+                "predictedKwh": 1609.8042906756343,
+                "totalDifferenceKwh": -153.24570932429594,
+                "totalDifferencePercent": -8.6920795963984,
+                "matchPercent": 63.11778764777827,
+                "maeKwh": 13.835145635655731,
+                "rmseKwh": 19.37289120836533,
+                "biasKwh": -3.260547006899914,
+                "wapePercent": 36.88221235222173
+              }
+            },
+            {
+              "leadMinutes": 22.5,
+              "base": {
+                "hours": 46,
+                "actualKwh": 1762.9600000000792,
+                "predictedKwh": 1579.3211966037402,
+                "totalDifferenceKwh": -183.6388033963393,
+                "totalDifferencePercent": -10.416504254000719,
+                "matchPercent": 52.36083963152023,
+                "maeKwh": 18.257811774612797,
+                "rmseKwh": 24.708148250070888,
+                "biasKwh": -3.9921478999204196,
+                "wapePercent": 47.63916036847977
+              },
+              "v34": {
+                "hours": 46,
+                "actualKwh": 1762.9600000000792,
+                "predictedKwh": 1584.1304470575024,
+                "totalDifferenceKwh": -178.82955294257704,
+                "totalDifferencePercent": -10.1437101773477,
+                "matchPercent": 59.12123907240642,
+                "maeKwh": 15.666873992372524,
+                "rmseKwh": 21.852414654770467,
+                "biasKwh": -3.8875989770125443,
+                "wapePercent": 40.87876092759358
+              },
+              "candidate": {
+                "hours": 46,
+                "actualKwh": 1762.9600000000792,
+                "predictedKwh": 1613.3059536214475,
+                "totalDifferenceKwh": -149.65404637863185,
+                "totalDifferencePercent": -8.488794208525725,
+                "matchPercent": 59.41872101536333,
+                "maeKwh": 15.552863391034407,
+                "rmseKwh": 21.891725280713505,
+                "biasKwh": -3.2533488343180834,
+                "wapePercent": 40.58127898463667
+              }
+            },
+            {
+              "leadMinutes": 37.5,
+              "base": {
+                "hours": 45,
+                "actualKwh": 1762.8000000000466,
+                "predictedKwh": 1577.6414867350265,
+                "totalDifferenceKwh": -185.1585132650202,
+                "totalDifferencePercent": -10.503659704164699,
+                "matchPercent": 52.44272567713378,
+                "maeKwh": 18.62976959474462,
+                "rmseKwh": 24.980147504012134,
+                "biasKwh": -4.11463362811156,
+                "wapePercent": 47.55727432286622
+              },
+              "v34": {
+                "hours": 45,
+                "actualKwh": 1762.8000000000466,
+                "predictedKwh": 1584.7590852460858,
+                "totalDifferenceKwh": -178.04091475396092,
+                "totalDifferencePercent": -10.099893053889053,
+                "matchPercent": 58.34863189729737,
+                "maeKwh": 16.316229264765806,
+                "rmseKwh": 22.115666688575217,
+                "biasKwh": -3.956464772310243,
+                "wapePercent": 41.65136810270263
+              },
+              "candidate": {
+                "hours": 45,
+                "actualKwh": 1762.8000000000466,
+                "predictedKwh": 1604.7108966190056,
+                "totalDifferenceKwh": -158.08910338104118,
+                "totalDifferencePercent": -8.96806803840691,
+                "matchPercent": 58.10509566652489,
+                "maeKwh": 16.41163052423375,
+                "rmseKwh": 22.40883752723801,
+                "biasKwh": -3.5130911862453598,
+                "wapePercent": 41.89490433347511
+              }
+            },
+            {
+              "leadMinutes": 52.5,
+              "base": {
+                "hours": 44,
+                "actualKwh": 1762.6500000000233,
+                "predictedKwh": 1575.29814977405,
+                "totalDifferenceKwh": -187.35185022597346,
+                "totalDifferencePercent": -10.628987616711825,
+                "matchPercent": 52.563112654097885,
+                "maeKwh": 19.003324881876242,
+                "rmseKwh": 25.26025394516906,
+                "biasKwh": -4.257996596044851,
+                "wapePercent": 47.436887345902115
+              },
+              "v34": {
+                "hours": 44,
+                "actualKwh": 1762.6500000000233,
+                "predictedKwh": 1583.5345548783407,
+                "totalDifferenceKwh": -179.11544512168297,
+                "totalDifferencePercent": -10.161713619929118,
+                "matchPercent": 57.926217238055855,
+                "maeKwh": 16.854852996668598,
+                "rmseKwh": 22.875588707268566,
+                "biasKwh": -4.07080557094734,
+                "wapePercent": 42.073782761944145
+              },
+              "candidate": {
+                "hours": 44,
+                "actualKwh": 1762.6500000000233,
+                "predictedKwh": 1589.901978135042,
+                "totalDifferenceKwh": -172.74802186498118,
+                "totalDifferencePercent": -9.800472122371367,
+                "matchPercent": 57.91680981923051,
+                "maeKwh": 16.858621630030527,
+                "rmseKwh": 22.92521505051069,
+                "biasKwh": -3.9260914060223,
+                "wapePercent": 42.08319018076949
+              }
+            }
+          ],
+          "scored": 182,
+          "corrected": 96
+        }
+      ]
+    }
+  ],
+  "observationReadback": {
+    "unique": 291,
+    "alreadyPresent": 291,
+    "readback": "exact, first stored observations preserved",
+    "liveInputCache": "not modified"
+  }
+}

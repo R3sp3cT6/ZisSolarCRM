@@ -1,0 +1,262 @@
+{
+  "checkedAt": "2026-10-11T20:13:21.621Z",
+  "evaluationId": "response-research-evaluation-6ba96e6aeb36b080d6a5",
+  "outageId": "response-research-confirmed-interruptions-924ef79ec4e3ec09971c",
+  "sourceDays": 34,
+  "points": 2210,
+  "grids": 990,
+  "records": [
+    {
+      "id": "response-research-2026-09-08-523a5cbfa1ddbc6b6e8a",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-08",
+      "sha256": "523a5cbfa1ddbc6b6e8adb330859a486407722badf83cc82c9e2dbb0ff58e30d",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-09-6165f6fc592140e1a117",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-09",
+      "sha256": "6165f6fc592140e1a117e2e8c8e05cfb3dbc89b2c0109c3bc0487975ee5640ff",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-10-860f65abe822798e864a",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-10",
+      "sha256": "860f65abe822798e864aed61156cd97aa1686c8e15df01fb20e52acf5018fc00",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-11-457aba81d9ff0420d555",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-11",
+      "sha256": "457aba81d9ff0420d5558f704d517428a8199db7406c5bbed7140c1e753a29ff",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-12-3a72cd7dbbf97f9d4b8e",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-12",
+      "sha256": "3a72cd7dbbf97f9d4b8e402af1a195b4fe485983ca3c7c12ce0e1193fdf4299d",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-13-8bb05fa03ab2f5725b87",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-13",
+      "sha256": "8bb05fa03ab2f5725b87ea29d0f9d308d44e0464ee625bc93abe0835d429f56c",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-14-c2eb49368f5b1f870774",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-14",
+      "sha256": "c2eb49368f5b1f870774c20f487b63d782579d21672577320009498b8e059078",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-15-3d53eea526b80a8787d3",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-15",
+      "sha256": "3d53eea526b80a8787d3fb5f0ab75c400bd125ab11a44da7c0e7cc8587c8140b",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-16-8e75410cf9581f4b6f4a",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-16",
+      "sha256": "8e75410cf9581f4b6f4af3e20733bb00006f4d554421522c7ff3294f3b41efa7",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-17-a41c251e920050c6f092",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-17",
+      "sha256": "a41c251e920050c6f092527731339d3615736aad2ffc96a2df44168e6e938176",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-18-aac144bd3e312894a553",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-18",
+      "sha256": "aac144bd3e312894a553d06450ec03d55399c54d3e73b01dd3242cfc578c908f",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-19-ddbe44764667bacc8a73",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-19",
+      "sha256": "ddbe44764667bacc8a73d52a5f057e83689d6807cf7151b7e5aec1545118c47f",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-20-96f98fd440c8e8655d0e",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-20",
+      "sha256": "96f98fd440c8e8655d0ef57f5d3e3c694c427bb6326d7484cd8f50d7f4c3a707",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-21-eec3df303557e5104bb7",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-21",
+      "sha256": "eec3df303557e5104bb732740f97331ef7f66cb17d32c9a0c8f476764615f6f7",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-22-796eb0952c4b84c540bb",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-22",
+      "sha256": "796eb0952c4b84c540bbb2b0703b1aaa529e4ed40f9ba3336b8485f9828f6282",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-23-cf092ddcba146019876d",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-23",
+      "sha256": "cf092ddcba146019876dafb0d108dce94e3ef7b66aced7ae13af7e18ed038390",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-24-000dbe9134c91aa2db69",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-24",
+      "sha256": "000dbe9134c91aa2db699372891f6e03ad9a76d51281ccc1f6d0378539812045",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-25-6c1c089202d274ee0343",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-25",
+      "sha256": "6c1c089202d274ee0343f0cc748e09ee94781e50ce0e83f3783fff06e51253c8",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-26-e87b0bb5971cb0dfefc6",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-26",
+      "sha256": "e87b0bb5971cb0dfefc6d3a97f757dccc79bdfe026f62f93e26d42dd7f3c1f67",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-27-18fd35bfe6567658bd22",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-27",
+      "sha256": "18fd35bfe6567658bd227f6e526d9b94021750efeb75b76143cb4136720f090b",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-28-1e47f3a5be706a1a1a25",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-28",
+      "sha256": "1e47f3a5be706a1a1a2561ff9e6438841211e62cf60f7266799ba1c21eddc309",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-29-e8b310afe2f5d4bd7387",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-29",
+      "sha256": "e8b310afe2f5d4bd73878e515ab2d9539431f649a9925c2ccca9ae92b0c3af12",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-09-30-16ed10e7a78ad1858d7e",
+      "model": "forecast-research-source-v1",
+      "label": "2026-09-30",
+      "sha256": "16ed10e7a78ad1858d7ee62af65db767250815fc6fcd4fb3296d437e81b002b4",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-10-01-569355ca8dfecace4404",
+      "model": "forecast-research-source-v1",
+      "label": "2026-10-01",
+      "sha256": "569355ca8dfecace44040dffc6d7c9acfb2b0c29e2d07ad9e9169f4ab877a2c8",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-10-02-e7be29682ab7abb1056e",
+      "model": "forecast-research-source-v1",
+      "label": "2026-10-02",
+      "sha256": "e7be29682ab7abb1056e2020bbe16f13d28e61e5e651a9a4dfdae999180408be",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-10-03-0fc67d81b9a50b0e4440",
+      "model": "forecast-research-source-v1",
+      "label": "2026-10-03",
+      "sha256": "0fc67d81b9a50b0e44409ca9836c0e614ec36007a69de0589b6c384aebfa36af",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-10-04-640c421fe3cea0001ad0",
+      "model": "forecast-research-source-v1",
+      "label": "2026-10-04",
+      "sha256": "640c421fe3cea0001ad0b7c39bc833288536ab0251a142f90a968732ca124866",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-10-05-87ede2194ecccec1d3bb",
+      "model": "forecast-research-source-v1",
+      "label": "2026-10-05",
+      "sha256": "87ede2194ecccec1d3bb1503e7aaab44091bc6365ae7ad96924705ef7ea5021b",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-10-06-04c781f153c7a7b2a7a3",
+      "model": "forecast-research-source-v1",
+      "label": "2026-10-06",
+      "sha256": "04c781f153c7a7b2a7a36b54512e146d3f2643944f3aa78e7ec1dfbd66e74cb3",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-10-07-f7502489edbd1e2077cb",
+      "model": "forecast-research-source-v1",
+      "label": "2026-10-07",
+      "sha256": "f7502489edbd1e2077cb0c7d2ba6fff63fda882c46cddef751fcca0ba8decc6e",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-10-08-54e7f9bc484f18a9a667",
+      "model": "forecast-research-source-v1",
+      "label": "2026-10-08",
+      "sha256": "54e7f9bc484f18a9a667ed5cce7ee3bfccbd7efbf4e793202b607c920b860828",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-10-09-34c04d798633784f02f7",
+      "model": "forecast-research-source-v1",
+      "label": "2026-10-09",
+      "sha256": "34c04d798633784f02f7d574203aa6b209d79c71a152425c8ea3f6c7b89fa2b6",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-10-10-6635f7009d7f4486131d",
+      "model": "forecast-research-source-v1",
+      "label": "2026-10-10",
+      "sha256": "6635f7009d7f4486131df7dbdc653c8acdf06a917b69aaefd1a210903d6ded0c",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-2026-10-11-e7c4564bfe21d91dfdcd",
+      "model": "forecast-research-source-v1",
+      "label": "2026-10-11",
+      "sha256": "e7c4564bfe21d91dfdcde2d7dd37e5c2ad25b9a7db5c9459d43f6f346eb323a2",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-confirmed-interruptions-924ef79ec4e3ec09971c",
+      "model": "plant-availability-confirmations-v1",
+      "label": "confirmed-interruptions",
+      "sha256": "924ef79ec4e3ec09971cf2af0ed1dc1b0212fecc9556e123fb9892ddb40d6b77",
+      "readback": "exact"
+    },
+    {
+      "id": "response-research-evaluation-6ba96e6aeb36b080d6a5",
+      "model": "regional-motion-v1-research",
+      "label": "evaluation",
+      "sha256": "6ba96e6aeb36b080d6a5c88dd1cb7d051820ade3c1a97a3c3e62c360c8ce3fe8",
+      "readback": "exact"
+    }
+  ]
+}

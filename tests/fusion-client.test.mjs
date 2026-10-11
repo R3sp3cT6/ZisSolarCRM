@@ -31,11 +31,12 @@ test('missing current production is collected hourly while warm meter data is re
  mock.timers.enable({apis:['Date'],now});
  try{
   const state={devices:[1,2],meters:[17],calls:{'inverter-history':[now-75*60000],'meter-history':[now-20*60000]},historyAt:{production:now-75*60000,export:now-20*60000},anchors:{export:{start:'2026-09-09T08:00:00.000Z',values:[{id:17,counter:110}]}}};
-  const {api,requests}=apiFor(state),saved=[];
-  const result=await collectTelemetry(state,api,async rows=>{saved.push(...rows);return rows.length;});
+  const {api,requests}=apiFor(state),saved=[],history=[];
+  const result=await collectTelemetry(state,api,async rows=>{saved.push(...rows);return rows.length;},false,async(values,ids,receivedAt)=>{history.push({values,ids,receivedAt});});
   assert.equal(result.error,null);
   assert.equal(requests.filter(r=>r.path.endsWith('getDevHistoryKpi')).length,1);
   assert.equal(requests[0].body.devTypeId,1);
+  assert.equal(history.length,1);assert.deepEqual(history[0].ids,[1,2]);assert.equal(history[0].values.length,4);assert.equal(history[0].receivedAt.getTime(),now);
   assert.equal(saved.find(r=>r.start==='2026-09-09T07:00:00.000Z').productionKwh,20);
   assert.equal(state.liveHour.productionKwh,10);
   assert.equal(state.liveHour.exportKwh,5);

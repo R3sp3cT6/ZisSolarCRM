@@ -1,0 +1,16 @@
+{
+  "frozenAt": "2026-10-11T20:09:38.823Z",
+  "candidate": "regional-motion-v1",
+  "development": "2026-09-09/2026-09-20",
+  "reserved": "2026-09-21/2026-09-30",
+  "selection": "Motion candidate fixed for a disjoint check; development gain over point persistence is only 0.0147 percentage points, insufficient for promotion.",
+  "minimumPromotionRule": "At least 2% relative WAPE improvement over point persistence on reserved common pairs, no aggregate RMSE regression; report all daily regressions and actual coverage. No tuning after reading reserved results.",
+  "codeHashes": {
+    "scripts/evaluate-response-candidates.mjs": "bc478b37e51d9b3d3d812d92a9897fb34c4de501b845f05ddab998043e96367f",
+    "lib/forecast-satellite-motion.ts": "af80ef7ec5f85ec76054c0e2420e07fa74715cc5fd7620cea5817014b47822d0",
+    "lib/forecast-satellite-nowcast.ts": "ec8a029db181bdcc5b61bc5e6937ff9c1e98fc9021ce89e1dc117d8ed89469c2",
+    "lib/forecast-solar.ts": "fba507e21fc87ea75021258273079062d90c3b7d15009e374867aea9350843e6",
+    "lib/forecast-backtest.ts": "34b76fa5d4670d51518f60298433dc1395dbcd5461c7e1dbfbde56294bdb16bf",
+    "lib/forecast-hourly-calibration.ts": "cecb53192214a9f765b9ec457646613ea1a7c7c8b9fe3ff35dd79345cce57b9a"
+  }
+}

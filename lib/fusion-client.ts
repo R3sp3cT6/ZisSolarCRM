@@ -41,7 +41,7 @@ export function fusionClient(owner:string,state:FusionState,persist:()=>Promise<
 
  return {available,reserve,call};
 }
-export async function collectTelemetry(state:FusionState,api:ReturnType<typeof fusionClient>,save:(rows:ReadingInput[])=>Promise<number>,daily=false){
+export async function collectTelemetry(state:FusionState,api:ReturnType<typeof fusionClient>,save:(rows:ReadingInput[])=>Promise<number>,daily=false,onProductionHistory?:(values:unknown,ids:number[],receivedAt:Date)=>Promise<void>){
  const {available,reserve,call}=api;let updated=0;const errors:string[]=[];
  async function attempt(work:()=>Promise<void>){try{await work();}catch(error){errors.push(error instanceof Error?error.message:'Неуспешно Huawei преземање.');}}
   // Both series need a boundary for the current hour. Share the 26/day quota
@@ -63,6 +63,7 @@ export async function collectTelemetry(state:FusionState,api:ReturnType<typeof f
    await reserve(kind==='export'?'meter-history':'inverter-history',HOUR-60000,13);
    const values=await call(path,{devIds:ids.join(','),devTypeId:kind==='export'?17:1,startTime:from,endTime:now},60000,26);
    const samples=parseCounterHistory(values,ids,kind==='export'?GRID_EXPORT_COUNTER:'total_cap',from,now);
+   if(kind==='production'&&onProductionHistory){try{await onProductionHistory(values,ids,new Date());}catch{console.warn('Historical trial observations deferred');}}
    const rows=[previous,localDate()].flatMap(day=>counterHours(samples,ids,day,kind));
    if(rows.length)updated+=await save(rows);
    state.anchors??={};const anchor=counterAnchor(samples,ids,start);if(anchor)state.anchors[kind]=anchor;

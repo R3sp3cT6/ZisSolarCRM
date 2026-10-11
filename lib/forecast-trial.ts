@@ -15,6 +15,7 @@ export type LiveObservation = {
   totalKwh: number;
   inverters: number;
   allProducing: boolean;
+  source?: 'live' | 'history';
 };
 export type TrialHour = {
   start: string;
@@ -122,6 +123,43 @@ export function liveObservation(
     inverters: ids.length,
     allProducing,
   };
+}
+
+/** Historical five-minute telemetry can close evaluation gaps without new API
+ * calls. The actual arrival is now; never backdate it to the measurement time. */
+export function historicalObservations(
+  input: unknown,
+  ids: number[],
+  receivedAt = new Date(),
+): LiveObservation[] {
+  if (!Array.isArray(input) || !Number.isFinite(receivedAt.getTime()))
+    return [];
+  const groups = new Map<number, unknown[]>();
+  for (const row of input) {
+    if (
+      !row ||
+      !Number.isSafeInteger(row.collectTime) ||
+      row.collectTime < 0 ||
+      !Number.isFinite(new Date(row.collectTime).getTime()) ||
+      row.collectTime > receivedAt.getTime()
+    )
+      continue;
+    groups.set(row.collectTime, [...(groups.get(row.collectTime) ?? []), row]);
+  }
+  return [...groups]
+    .sort(([a], [b]) => a - b)
+    .flatMap(([at, rows]) => {
+      const sample = liveObservation(rows, ids, new Date(at));
+      return sample
+        ? [
+            {
+              ...sample,
+              receivedAt: receivedAt.toISOString(),
+              source: 'history' as const,
+            },
+          ]
+        : [];
+    });
 }
 // Hourly energy divided by one hour is average kW. Linear interpolation between
 // interval midpoints is an explicit power approximation for the short-term trial.

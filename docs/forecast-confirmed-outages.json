@@ -1,0 +1,12 @@
+{
+  "version": "plant-availability-confirmations-v1",
+  "recordedDate": "2026-10-11",
+  "source": "Direct user confirmation in this project conversation",
+  "events": [
+    {"date": "2026-09-11", "timezone": "Europe/Skopje", "status": "confirmed-interruption", "exactStart": null, "exactEnd": null},
+    {"date": "2026-09-12", "timezone": "Europe/Skopje", "status": "confirmed-interruption", "exactStart": null, "exactEnd": null}
+  ],
+  "scope": "User confirmed a shutdown/interruption after being asked about September 11 around 12–14 local time and September 12 during much of the day. Exact outage boundaries and the technical cause were not supplied.",
+  "evaluationPolicy": "Keep every valid measurement in the primary all-hours score. An additional diagnostic may exclude the whole affected days, clearly labelled as such. Do not infer that all excluded hours were stopped. Do not backdate this confirmation or use it as an input available to historical forecasts.",
+  "controlActions": "None"
+}

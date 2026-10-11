@@ -8,6 +8,7 @@ import {
 } from './shared-cache';
 import {
   makeSatelliteNowcast,
+  historicalObservations,
   TRIAL_VERSION,
   type LiveObservation,
   type TrialHour,
@@ -32,6 +33,42 @@ type Pending = {
   satellites?: SatellitePoint[];
 };
 const pendingKey = (owner: string) => 'trial-pending:' + owner;
+
+/** Reuse an already requested Huawei history response. Keep genuine receipt
+ * timestamps and do not feed old samples into the live-prediction input cache. */
+export async function recordHistoricalTrial(
+  owner: string,
+  input: unknown,
+  ids: number[],
+  receivedAt = new Date(),
+) {
+  if (!sharedCache()) return;
+  const observations = historicalObservations(input, ids, receivedAt);
+  if (!observations.length) return;
+  const queued = await withCacheLock(
+    'trial-live:' + owner,
+    async () => {
+      const pending = (await cacheRead<Pending>(pendingKey(owner))) ?? {
+        observations: [],
+        runs: [],
+      };
+      // First arrival wins, matching the append-only SQL table. A historical
+      // replay must not overwrite an original live receipt timestamp.
+      const byTime = new Map(
+        pending.observations.map((s) => [s.measuredAt, s]),
+      );
+      for (const sample of observations)
+        if (!byTime.has(sample.measuredAt))
+          byTime.set(sample.measuredAt, sample);
+      pending.observations = [...byTime.values()].sort((a, b) =>
+        a.measuredAt.localeCompare(b.measuredAt),
+      );
+      await cacheWrite(pendingKey(owner), pending);
+    },
+    90,
+  );
+  if (queued.busy) throw Error('Trial history queue busy');
+}
 
 /** Runs only after an existing Huawei fetch. No additional polling or SQL. */
 export async function recordLiveTrial(

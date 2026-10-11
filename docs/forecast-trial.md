@@ -2,6 +2,12 @@
 
 The official production forecast remains `weather-solar-v3.2`. The separate trial is now `weather-solar-v3.4-satellite` (superseding v3.3-shadow). It saves prospective predictions for comparison; it does not replace real Huawei readings, revenue or historical simulations. Satellite irradiance now changes the numerical short-term forecast.
 
+Follow-up on 11 October: [expanded research results](forecast-followup-results.json),
+[frozen September evaluation](response-holdout.json) and [confirmed interruptions](forecast-confirmed-outages.json).
+Regional motion, adaptive weighting, CSI trend and measured clear-sky persistence
+remain offline research; none replaces the deployed models. September 21–30 is
+no longer an independent holdout for later changes.
+
 ## Day ahead
 
 DWD ICON-EU regional radiation at the nearest 0.0625° grid point (41.0625 N, 21.0625 E) supplies direct plus diffuse horizontal irradiance. ASWDIR_S and ASWDIFD_S are means since model start. Hourly flux is recovered as `n × mean(n) − (n − 1) × mean(n − 1)`. Missing adjacent means are not bridged. The previous v3.2 empirical plant curve and MET temperature/wind are retained; the GFS-specific fitted gain is not applied to ICON.
@@ -43,6 +49,15 @@ This is a retrospective **satellite-component** test on the archived GFS-based v
 The Forecast page has an administrator-only “Refresh trial” button; viewers can read/refresh the saved view. Server-side admin, origin and rate-limit checks protect writes. The existing 08:20 / 12:20 / 18:20 local forecast cron also calculates the trial. No new cron or continuous polling was introduced.
 
 Satellite source data has a shared 15-minute Redis cache. Existing active Huawei refreshes queue short observations and satellite points; SQL flushing follows existing archive activity or the forecast calculation. Day-ahead inputs persist immediately during the scheduled/manual calculation. Failures leave the queue retryable. Warm trial reads use Redis; cold cache or explicit calculation can wake Postgres. Short-term collection requires the configured shared Redis; it is skipped when Redis is absent. The UI marks stale short-term output and has no fabricated WAPE before outcomes arrive.
+
+The already requested Huawei inverter-history response now also supplies complete
+five-minute observations for evaluation. `historicalObservations` keeps actual
+measurement and arrival timestamps separate. `recordHistoricalTrial` deduplicates
+the existing Redis queue, and normal archive work inserts into the same append-only
+`forecast_observations` table. No additional provider calls or cron are introduced.
+Historical samples are not put in the recent live-input cache. Night zeros remain
+valid; missing inverters/invalid counters stay missing. Source data is marked
+`history`, and an existing observation keeps its original stored receipt.
 
 Sources:
 

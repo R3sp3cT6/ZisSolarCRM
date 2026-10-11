@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { iconHours } from '../lib/forecast-icon.ts';
 import {
   liveObservation,
+  historicalObservations,
   makeNowcast,
   makeSatelliteNowcast,
   trialPower,
@@ -32,6 +33,36 @@ const samples = [5, 10].map((min) => ({
 }));
 const make = (s = samples, now = origin) =>
   makeNowcast(hours, s, config, 'frozen-id', '2026-10-11T06:00:00Z', now);
+void test('historical telemetry retains genuine arrival, valid zeros and complete inverter coverage', () => {
+  const at = Date.parse('2026-10-09T10:00Z'),
+    received = new Date('2026-10-11T12:00Z');
+  const rows = [1, 2].map((devId) => ({
+    devId,
+    collectTime: at,
+    dataItemMap: { active_power: 0, total_cap: 100 },
+  }));
+  const result = historicalObservations(rows, [1, 2], received);
+  assert.equal(result.length, 1);
+  assert.equal(result[0].powerKw, 0);
+  assert.equal(result[0].totalKwh, 200);
+  assert.equal(result[0].allProducing, false);
+  assert.equal(result[0].measuredAt, new Date(at).toISOString());
+  assert.equal(result[0].receivedAt, received.toISOString());
+  assert.equal(result[0].source, 'history');
+  assert.deepEqual(historicalObservations(rows.slice(1), [1, 2], received), []);
+  assert.deepEqual(
+    historicalObservations([...rows, rows[0]], [1, 2], received),
+    [],
+  );
+  assert.deepEqual(
+    historicalObservations(
+      rows.map((r) => ({ ...r, collectTime: received.getTime() + 300000 })),
+      [1, 2],
+      received,
+    ),
+    [],
+  );
+});
 void test('ICON running means recover hourly energy and preserve interval totals', () => {
   const h = iconHours('2026-10-11T00:00:00Z', [
     { lead: 0, direct: 0, diffuse: 0 },

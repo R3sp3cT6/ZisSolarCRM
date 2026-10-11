@@ -8,7 +8,7 @@ import {buildDashboard,type DashboardSnapshot} from './dashboard';
 import {syncFusionDirect,fusionConfigured,fusionOwner} from './fusionsolar-server';
 import {collectTelemetry,fusionClient,type FusionState} from './fusion-client';
 import {localDate,rangeFor,type Period,type ReadingInput} from './energy';
-import {recordLiveTrial,flushTrialPending} from './forecast-trial-live';
+import {recordLiveTrial,recordHistoricalTrial,flushTrialPending} from './forecast-trial-live';
 
 export type PendingBatch={id:string;rows:ReadingInput[]};
 const pendingKey=(owner:string)=>'pending:'+owner;
@@ -78,7 +78,7 @@ export async function refreshActive(owner:string){
   const persist=()=>cacheWrite('fusion:'+owner,state);
   // Reservations are durably saved before Huawei calls, even on request failure.
   await persist();
-  const telemetry=await collectTelemetry(state,fusionClient(owner,state,persist),rows=>queueReadings(owner,rows));
+  const telemetry=await collectTelemetry(state,fusionClient(owner,state,persist),rows=>queueReadings(owner,rows),false,(values,ids,receivedAt)=>recordHistoricalTrial(owner,values,ids,receivedAt));
   state.error=telemetry.error;await persist();
   try{await recordLiveTrial(owner,state.forecastObservation);}catch{console.warn('Trial observation deferred');}
   return {configured:true,updated:telemetry.updated,error:telemetry.error,connected:!!state.live,storage:'cache' as const};
