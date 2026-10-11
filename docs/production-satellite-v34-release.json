@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-10-11T19:47:20.922Z",
+  "commit": "7daf878",
+  "deployment": "dpl_CXDqhFzGsBX9RavrFpqCxzU8Jcik",
+  "readyState": "READY",
+  "runtimeRole": "zis_app_runtime",
+  "officialModel": "weather-solar-v3.2",
+  "trialModel": "weather-solar-v3.4-satellite",
+  "trialId": "7a51173d-61c2-4cb0-9f5a-40724a6a4130",
+  "satelliteStatus": "unavailable",
+  "warmDashboardForecastAndTrialSqlQueries": 0,
+  "loginStatus": 200,
+  "anonymousTrialStatus": 401
+}
