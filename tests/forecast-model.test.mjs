@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { slotsForDay } from '../lib/energy.ts';
+import { formatNumber } from '../lib/number-format.ts';
 import {
   addDays,
   defaultForecastConfig,
@@ -12,9 +13,23 @@ import {
   pvEnergy,
   aggregateForecast,
 } from '../lib/forecast-model.ts';
-import { parseForecastWeather } from '../lib/forecast-weather.ts';
+import {
+  parseForecastWeather,
+  parseMetForecast,
+} from '../lib/forecast-weather.ts';
+import {
+  clearSkyIrradiance,
+  cloudTransmission,
+  calibrateSolar,
+  weatherAdjustedEnergy,
+} from '../lib/forecast-solar.ts';
 
 const config = defaultForecastConfig();
+test('Macedonian and English number separators are deterministic across ICU locale support', () => {
+  assert.equal(formatNumber(1234.5, 2, 'mk'), '1.234,50');
+  assert.equal(formatNumber(1234.5, 2, 'en'), '1,234.50');
+  assert.equal(formatNumber(null), '—');
+});
 const prices = (from, n) =>
   Array.from({ length: n }, (_, i) =>
     slotsForDay(addDays(from, i)).map((s) => ({
@@ -94,8 +109,26 @@ test('revenue uses exported kWh converted to MWh and allows negative contract pr
       start: new Date(Date.parse(r.start) + 86400000).toISOString(),
     })),
     readings: readings('2026-09-01', 7),
-    config,
-    weather: [],
+    config: {
+      ...config,
+      latitude: 41,
+      longitude: 21,
+      dcKwp: 1000,
+      acKw: 875,
+      tilt: 30,
+      azimuth: 0,
+      gamma: 0,
+      lossPercent: 0,
+      inverterEfficiency: 1,
+    },
+    weather: slotsForDay('2026-09-09').map((s) => ({
+      start: s.start,
+      irradiance: s.hour >= 7 && s.hour <= 18 ? 100 : 0,
+      temperature: 25,
+      irradianceKind: 'gti',
+      cloudCover: 0,
+      resolutionHours: 1,
+    })),
     now: new Date('2026-09-08T16:00:00Z'),
   });
   assert.ok(Math.abs(second.days[0].revenueEur - 1.08 * (0.94 - 2.2)) < 1e-10);
@@ -152,9 +185,28 @@ test('physical model clips at AC capacity and respects nighttime, units, and unk
     gamma: 0,
     inverterEfficiency: 1,
   };
-  assert.equal(pvEnergy({ irradiance: 1000, temperature: 25 }, full), 875);
-  assert.equal(pvEnergy({ irradiance: 500, temperature: 25 }, full), 500);
-  assert.equal(pvEnergy({ irradiance: 0, temperature: 25 }, full), 0);
+  assert.equal(
+    pvEnergy(
+      { irradiance: 1000, temperature: 25, irradianceKind: 'gti' },
+      full,
+    ),
+    875,
+  );
+  assert.equal(
+    pvEnergy({ irradiance: 500, temperature: 25, irradianceKind: 'gti' }, full),
+    500,
+  );
+  assert.equal(
+    pvEnergy({ irradiance: 0, temperature: 25, irradianceKind: 'gti' }, full),
+    0,
+  );
+  assert.equal(
+    pvEnergy(
+      { irradiance: 500, temperature: 25, irradianceKind: 'estimated-ghi' },
+      full,
+    ),
+    null,
+  );
   assert.equal(pvEnergy({ irradiance: 500, temperature: 25 }, config), null);
   assert.throws(() => validateForecastConfig({ ...full, latitude: 91 }));
   assert.throws(() => validateForecastConfig({ ...full, dcKwp: '1000' }));
@@ -178,4 +230,140 @@ test('weather average radiation shifts to preceding hour; nulls and wrong units 
   assert.equal(parseForecastWeather(raw).length, 0);
   raw.hourly_units.temperature_2m = '°F';
   assert.throws(() => parseForecastWeather(raw));
+});
+
+const gps = { ...config, latitude: 41.068056, longitude: 21.036111, acKw: 875 };
+const met = (points) => ({
+  properties: {
+    meta: {
+      updated_at: '2026-10-11T10:00:00Z',
+      units: { air_temperature: 'celsius', cloud_area_fraction: '%' },
+    },
+    timeseries: points.map(([time, cloud, temp = 20]) => ({
+      time,
+      data: {
+        instant: {
+          details: { air_temperature: temp, cloud_area_fraction: cloud },
+        },
+      },
+    })),
+  },
+});
+const metNow = new Date('2026-10-11T12:00:00Z');
+
+test('solar geometry uses SunCalc degree units, night is zero, and seasons change daylight radiation', () => {
+  assert.equal(clearSkyIrradiance('2026-10-12T00:00:00Z', gps), 0);
+  const noon = clearSkyIrradiance('2026-10-12T10:00:00Z', gps);
+  assert.ok(noon > 500 && noon < 850);
+  assert.ok(
+    clearSkyIrradiance('2026-06-21T10:00:00Z', gps) >
+      clearSkyIrradiance('2026-12-21T10:00:00Z', gps),
+  );
+  assert.equal(cloudTransmission(0), 1);
+  assert.equal(cloudTransmission(100), 0.25);
+});
+
+test('MET instant weather interpolates to hourly midpoints, preserves resolution and never extrapolates', () => {
+  const raw = met([
+    ['2026-10-12T09:00:00Z', 0, 10],
+    ['2026-10-12T15:00:00Z', 100, 22],
+  ]);
+  const w = parseMetForecast(raw, gps, metNow);
+  assert.equal(w.length, 6);
+  assert.equal(w[0].start, '2026-10-12T09:00:00.000Z');
+  assert.equal(w[0].temperature, 11);
+  assert.ok(Math.abs(w[0].cloudCover - 100 / 12) < 1e-8);
+  assert.ok(
+    w.every(
+      (h) => h.resolutionHours === 6 && h.irradianceKind === 'estimated-ghi',
+    ),
+  );
+  assert.equal(w.at(-1).start, '2026-10-12T14:00:00.000Z');
+  raw.properties.timeseries[1].data.instant.details.cloud_area_fraction = null;
+  assert.equal(parseMetForecast(raw, gps, metNow).length, 0);
+});
+
+test('MET rejects stale, future, duplicate and wrong-unit data, and refuses to bridge oversized gaps', () => {
+  const raw = met([
+    ['2026-10-12T09:00:00Z', 0],
+    ['2026-10-12T16:00:00Z', 100],
+  ]);
+  assert.equal(parseMetForecast(raw, gps, metNow).length, 0);
+  assert.throws(() =>
+    parseMetForecast(raw, gps, new Date('2026-10-13T12:00:00Z')),
+  );
+  assert.throws(() =>
+    parseMetForecast(raw, gps, new Date('2026-10-10T12:00:00Z')),
+  );
+  raw.properties.timeseries[1].time = raw.properties.timeseries[0].time;
+  assert.throws(() => parseMetForecast(raw, gps, metNow));
+  raw.properties.meta.units.cloud_area_fraction = 'fraction';
+  assert.throws(() => parseMetForecast(raw, gps, metNow));
+});
+
+test('clouds and heat reduce production, hourly energy stays within AC cap and missing weather stays missing', () => {
+  const history = readings('2026-10-01', 10).map((r) => ({
+    ...r,
+    production_kwh: clearSkyIrradiance(r.start, gps),
+    export_kwh: clearSkyIrradiance(r.start, gps) * 0.95,
+  }));
+  const p = productionProfile(history, '2026-10-11');
+  const calibration = calibrateSolar(p.readings, p.days, gps);
+  assert.ok(calibration.coefficients.length >= 5);
+  assert.deepEqual(
+    calibrateSolar(p.readings, p.days, { ...gps, acKw: 100 }).coefficients,
+    calibration.coefficients,
+  );
+  const sunny = parseMetForecast(
+    met([
+      ['2026-10-12T10:00:00Z', 0],
+      ['2026-10-12T11:00:00Z', 0],
+    ]),
+    gps,
+    metNow,
+  )[0];
+  const cloudy = parseMetForecast(
+    met([
+      ['2026-10-12T10:00:00Z', 100],
+      ['2026-10-12T11:00:00Z', 100],
+    ]),
+    gps,
+    metNow,
+  )[0];
+  const sun = weatherAdjustedEnergy(sunny, gps, calibration),
+    cloud = weatherAdjustedEnergy(cloudy, gps, calibration);
+  assert.ok(sun > cloud * 2 && sun <= 875);
+  assert.ok(
+    weatherAdjustedEnergy({ ...sunny, temperature: 40 }, gps, calibration) <
+      sun,
+  );
+  assert.equal(
+    weatherAdjustedEnergy(sunny, { ...gps, acKw: 100 }, calibration),
+    100,
+  );
+  assert.equal(
+    weatherAdjustedEnergy({ ...sunny, irradiance: 0 }, gps, calibration),
+    0,
+  );
+  const missing = makeForecast({
+    prices: [],
+    readings: history,
+    config: gps,
+    weather: [],
+    now: metNow,
+  });
+  assert.equal(missing.days[0].productionKwh, null);
+  assert.equal(missing.days[0].hours[12].productionSource, 'missing');
+  const partial = makeForecast({
+    prices: [],
+    readings: history,
+    config: gps,
+    weather: [sunny],
+    now: metNow,
+  });
+  assert.equal(partial.days[0].productionKwh, null);
+  assert.ok(
+    partial.days[0].hours.find((h) => h.start === sunny.start).productionKwh >
+      0,
+  );
 });

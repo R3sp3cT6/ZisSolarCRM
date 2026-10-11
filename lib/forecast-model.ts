@@ -5,8 +5,13 @@ import {
   slotsForDay,
   salePrice,
 } from './energy';
+import {
+  calibrateSolar,
+  weatherAdjustedEnergy,
+  type SolarCalibration,
+} from './forecast-solar';
 
-export const FORECAST_VERSION = 'baseline-pvwatts-v1';
+export const FORECAST_VERSION = 'weather-solar-v2.1';
 export type ForecastConfig = {
   latitude: number | null;
   longitude: number | null;
@@ -35,6 +40,8 @@ export type WeatherHour = {
   irradiance: number;
   temperature: number;
   cloudCover: number | null;
+  irradianceKind: 'gti' | 'estimated-ghi';
+  resolutionHours: number;
 };
 export type ForecastHour = {
   start: string;
@@ -44,7 +51,9 @@ export type ForecastHour = {
   productionKwh: number | null;
   exportKwh: number | null;
   revenueEur: number | null;
-  productionSource: 'weather' | 'history' | 'missing';
+  productionSource: 'weather' | 'weather-history' | 'history' | 'missing';
+  weather: WeatherHour | null;
+  powerKw: number | null;
 };
 export type ForecastDay = {
   date: string;
@@ -57,6 +66,8 @@ export type ForecastDay = {
   officialHours: number;
   negativeSaleHours: number;
   complete: boolean;
+  peakPowerKw: number | null;
+  daylightCloudCover: number | null;
 };
 export type ForecastScore = {
   lead: number;
@@ -81,6 +92,8 @@ export type ForecastPayload = {
     status: 'ready' | 'unconfigured' | 'missing-settings' | 'failed';
     fetchedAt: string | null;
     hours: number;
+    provider: 'open-meteo' | 'met-norway' | null;
+    issuedAt: string | null;
   };
   history: {
     priceHours: number;
@@ -88,6 +101,8 @@ export type ForecastPayload = {
     latestReading: string | null;
   };
   liveScore: { hours: number; mae: number | null };
+  productionScore: { hours: number; mae: number | null; bias: number | null };
+  calibration: SolarCalibration;
   warnings: string[];
 };
 export const addDays = (day: string, amount: number) =>
@@ -152,7 +167,13 @@ export function weatherConfigured(c: ForecastConfig) {
   );
 }
 export function pvEnergy(weather: WeatherHour, config: ForecastConfig) {
-  if (!weatherConfigured(config)) return null;
+  if (
+    !weatherConfigured(config) ||
+    weather.irradianceKind !== 'gti' ||
+    !finite(weather.irradiance) ||
+    !finite(weather.temperature)
+  )
+    return null;
   const g = Math.max(0, weather.irradiance);
   // Hour-average GTI in W/m²; NOCT cell-temperature approximation, then PVWatts DC.
   const cell = weather.temperature + ((config.noct - 20) * g) / 800;
@@ -281,7 +302,7 @@ export function productionProfile(readings: ForecastReading[], today: string) {
     })
     .filter((r): r is number => r !== null && r >= 0 && r <= 1.1);
   const ratio = ratios.length >= 7 ? Math.min(1, median(ratios)!) : null;
-  return { profile, days: complete.length, ratio };
+  return { profile, days: complete.length, ratio, readings: complete.flat() };
 }
 export function aggregateForecast(
   date: string,
@@ -314,6 +335,20 @@ export function aggregateForecast(
       (h) => h.memo !== null && salePrice(h.memo) < 0,
     ).length,
     complete: hours.length === slotsForDay(date).length && revenueEur !== null,
+    peakPowerKw:
+      productionKwh === null
+        ? null
+        : Math.max(...hours.map((h) => h.powerKw ?? h.productionKwh ?? 0)),
+    daylightCloudCover: mean(
+      hours
+        .filter(
+          (h) =>
+            h.weather &&
+            h.weather.irradiance > 10 &&
+            h.weather.cloudCover !== null,
+        )
+        .map((h) => h.weather!.cloudCover!),
+    ),
   };
 }
 export function makeForecast(input: {
@@ -331,6 +366,7 @@ export function makeForecast(input: {
   const index = priceIndex(prices.filter((p) => localDate(p.start) <= today)),
     history = productionProfile(input.readings, today),
     weather = new Map(input.weather.map((w) => [w.start, w]));
+  const calibration = calibrateSolar(history.readings, history.days, config);
   const days = Array.from({ length: 7 }, (_, i) => {
     const date = addDays(today, i + 1);
     const hours = slotsForDay(date).map((slot): ForecastHour => {
@@ -339,8 +375,13 @@ export function makeForecast(input: {
           ? known.eur_cents / 100
           : predictPrice(index, date, slot.hour, today);
       const w = weather.get(slot.start),
-        physical = w ? pvEnergy(w, config) : null;
-      const productionKwh = physical ?? history.profile.get(slot.hour) ?? null,
+        physical = w ? pvEnergy(w, config) : null,
+        adjusted =
+          w?.irradianceKind === 'estimated-ghi'
+            ? weatherAdjustedEnergy(w, config, calibration)
+            : null;
+      // A weather outage must not silently reintroduce the repeated historical profile.
+      const productionKwh = physical ?? adjusted,
         exportKwh =
           productionKwh !== null && history.ratio !== null
             ? productionKwh * history.ratio
@@ -354,6 +395,8 @@ export function makeForecast(input: {
             ? 'forecast'
             : 'missing',
         productionKwh,
+        powerKw: productionKwh,
+        weather: w ?? null,
         exportKwh,
         revenueEur:
           exportKwh !== null && memo !== null
@@ -362,8 +405,8 @@ export function makeForecast(input: {
         productionSource:
           physical !== null
             ? 'weather'
-            : productionKwh !== null
-              ? 'history'
+            : adjusted !== null
+              ? 'weather-history'
               : 'missing',
       };
     });
@@ -373,6 +416,7 @@ export function makeForecast(input: {
     days,
     historyDays: history.days,
     exportRatio: history.ratio,
+    calibration,
     priceScores: priceBacktest(prices, today),
   };
 }

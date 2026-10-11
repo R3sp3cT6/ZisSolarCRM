@@ -77,6 +77,16 @@
 .forecast-day .forecast-official {
   color: var(--primary);
 }
+.forecast-day-weather {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.forecast-production-score {
+  border-top: 1px solid var(--border);
+  padding: 20px 0;
+  font-size: 14px;
+}
 .forecast-notice {
   display: flex;
   gap: 12px;

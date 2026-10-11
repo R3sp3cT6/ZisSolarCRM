@@ -1,7 +1,8 @@
 'use client';
 import {convertMoney,getCurrency,currencySymbol,EUR_MKD} from '@/lib/currency';
 import {useCurrency,CurrencySwitch} from '@/components/currency-switch';
-import {t,getLocale} from '@/lib/language';
+import {t,getLocale,getLanguage} from '@/lib/language';
+import {formatNumber} from '@/lib/number-format';
 import {useLanguage} from '@/components/language-switch';
 
 import {useState,useEffect,useCallback,useRef} from 'react';
@@ -28,7 +29,7 @@ import {roleLabels,type Role} from '@/lib/roles';
 type Data=Awaited<ReturnType<typeof getDashboard>>;
 const navigation=[{id:'overview',label:'Преглед',Icon:LayoutDashboard},{id:'market',label:'MEMO берза',Icon:ChartNoAxesCombined},{id:'forecast',label:'Прогноза',Icon:CloudSun},{id:'archive',label:'Архива',Icon:Archive},{id:'connect',label:'Мојата централа',Icon:Cable},{id:'users',label:'Корисници',Icon:Users},{id:'settings',label:'Поставки',Icon:Settings}];
 const periodNames={hour:'час',day:'ден',month:'месец',year:'година'};
-const fmt=(n:number|null|undefined,digits=2)=>n==null?'—':new Intl.NumberFormat(getLocale(),{minimumFractionDigits:digits,maximumFractionDigits:digits}).format(n);
+const fmt=(n:number|null|undefined,digits=2)=>formatNumber(n,digits,getLanguage());
 const moneyFmt=(n:number|null|undefined,digits=2)=>fmt(convertMoney(n),digits);
 const time=(s:string)=>new Intl.DateTimeFormat(getLocale(),{timeZone:'Europe/Skopje',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(s));
 async function post(body:unknown){const response=await fetch('/api/solar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const data=await response.json() as {error?:string;saved?:number;updated?:number};if(!response.ok)throw new Error(data.error||t("Барањето не успеа."));return data;}

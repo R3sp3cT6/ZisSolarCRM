@@ -84,6 +84,38 @@ async function prospectiveScore(owner: string, now: Date) {
     }
   );
 }
+async function productionScore(owner: string, now: Date) {
+  // First frozen prediction for each delivery hour; only completed measured hours.
+  return (
+    (await db()
+      .prepare(`WITH predictions AS (
+ SELECT DISTINCT ON (h.value->>'start') h.value->>'start' AS start,
+ (h.value->>'productionKwh')::double precision AS predicted
+ FROM forecast_runs r CROSS JOIN LATERAL jsonb_array_elements(r.payload->'days') d(value)
+ CROSS JOIN LATERAL jsonb_array_elements(d.value->'hours') h(value)
+ WHERE r.owner=? AND r.model_version=? AND r.issued_at>=?::timestamptz
+ AND h.value->>'productionSource' IN ('weather','weather-history')
+ AND h.value->>'productionKwh' IS NOT NULL AND (h.value->>'start')::timestamptz>r.issued_at
+ ORDER BY h.value->>'start',r.issued_at ASC
+ ) SELECT count(*)::integer AS hours,
+ avg(abs(f.predicted-r.production_kwh))::double precision AS mae,
+ avg(f.predicted-r.production_kwh)::double precision AS bias
+ FROM predictions f JOIN readings r ON r.start=f.start AND r.owner=?
+ WHERE r.production_kwh IS NOT NULL AND r.start<? AND (r.production_kwh>0 OR f.predicted>0)`)
+      .bind(
+        owner,
+        FORECAST_VERSION,
+        addDays(localDate(now), -60),
+        owner,
+        new Date(Math.floor(now.getTime() / 3600000) * 3600000).toISOString(),
+      )
+      .first<{ hours: number; mae: number | null; bias: number | null }>()) ?? {
+      hours: 0,
+      mae: null,
+      bias: null,
+    }
+  );
+}
 export async function runForecast(owner: string, now = new Date()) {
   const result = await withCacheLock(
     key(owner),
@@ -108,7 +140,7 @@ export async function runForecast(owner: string, now = new Date()) {
         await cacheWrite(key(owner), view, 7 * 86400);
         return view;
       }
-      const [priceResult, readingResult, liveScore, weather] =
+      const [priceResult, readingResult, liveScore, weather, measuredScore] =
         await Promise.all([
           db()
             .prepare(
@@ -130,7 +162,8 @@ export async function runForecast(owner: string, now = new Date()) {
             )
             .all<ForecastReading>(),
           prospectiveScore(owner, now),
-          fetchForecastWeather(config),
+          fetchForecastWeather(config, now),
+          productionScore(owner, now),
         ]);
       const prices = priceResult.results,
         readings = readingResult.results;
@@ -142,6 +175,18 @@ export async function runForecast(owner: string, now = new Date()) {
         now,
       });
       const warnings: string[] = [];
+      if (
+        calculated.days.some((d) =>
+          d.hours.some((h) => h.productionSource === 'weather-history'),
+        )
+      )
+        warnings.push('estimated-radiation');
+      if (
+        calculated.days.some((d) =>
+          d.hours.some((h) => (h.weather?.resolutionHours ?? 0) > 1),
+        )
+      )
+        warnings.push('interpolated-weather');
       if (
         calculated.days.some((d) =>
           d.hours.some((h) => h.productionSource === 'history'),
@@ -172,6 +217,8 @@ export async function runForecast(owner: string, now = new Date()) {
           status: weather.status,
           fetchedAt: weather.fetchedAt,
           hours: weather.hours.length,
+          provider: weather.provider,
+          issuedAt: weather.issuedAt,
         },
         history: {
           priceHours: prices.length,
@@ -179,6 +226,7 @@ export async function runForecast(owner: string, now = new Date()) {
           latestReading: readings.at(-1)?.start ?? null,
         },
         liveScore,
+        productionScore: measuredScore,
         warnings,
       };
       const inputs = {
@@ -186,7 +234,10 @@ export async function runForecast(owner: string, now = new Date()) {
         prices,
         readings,
         weather: weather.raw,
-        weatherModel: 'Open-Meteo best_match',
+        weatherModel:
+          weather.provider === 'met-norway'
+            ? 'MET Norway Locationforecast / ECMWF; Haurwitz + Kasten-Czeplak estimated GHI'
+            : 'Open-Meteo best_match GTI',
         config,
         backtest:
           'Latest revised historical prices; fixed model, chronological cutoffs; not an as-issued weather backtest.',

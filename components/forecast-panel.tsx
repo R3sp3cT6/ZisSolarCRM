@@ -26,16 +26,12 @@ import { getLanguage, getLocale } from '@/lib/language';
 import { convertMoney, getCurrency } from '@/lib/currency';
 import { salePrice } from '@/lib/energy';
 import type { ForecastConfig, ForecastPayload } from '@/lib/forecast-model';
+import { formatNumber } from '@/lib/number-format';
 
 type View = { config: ForecastConfig; forecast: ForecastPayload | null };
 const l = (mk: string, en: string) => (getLanguage() === 'en' ? en : mk);
 const number = (value: number | null | undefined, digits = 2) =>
-  value == null
-    ? '—'
-    : new Intl.NumberFormat(getLocale(), {
-        maximumFractionDigits: digits,
-        minimumFractionDigits: digits,
-      }).format(value);
+  formatNumber(value, digits, getLanguage());
 const money = (value: number | null | undefined, digits = 2) =>
   number(convertMoney(value), digits);
 const date = (value: string, short = false) => {
@@ -135,7 +131,7 @@ function SettingsForm({
     },
     {
       key: 'acKw',
-      label: l('Инвертери · AC kW', 'Inverters · AC kW'),
+      label: l('Лимит на моделот · AC kW', 'Model output cap · AC kW'),
       min: 0.1,
       max: 1000000,
       step: '0.1',
@@ -231,8 +227,8 @@ function SettingsForm({
         </p>
         <p className="forecast-fine">
           {l(
-            'Open-Meteo комерцијалниот API клуч се поставува на серверот како OPEN_METEO_API_KEY. Не внесувајте клучеви во овие полиња.',
-            'Set the commercial Open-Meteo API key on the server as OPEN_METEO_API_KEY. Do not enter keys in these fields.',
+            'MET Norway обезбедува облачност и температура без API клуч. Додека DC kWp, наклонот и азимутот се непотврдени, моделот користи измерен производствен профил коригиран за време. AC лимитот е горна граница, не гарантирана расположлива моќност.',
+            'MET Norway supplies cloud cover and temperature without an API key. Until DC kWp, tilt and azimuth are confirmed, the model uses a weather-adjusted measured production profile. The AC cap is an upper bound, not guaranteed available power.',
           )}
         </p>
         <button className="button" disabled={busy} type="submit">
@@ -312,13 +308,20 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
     (checkedAt - Date.parse(forecast.issuedAt) > 24 * 3600000 ||
       forecast.config.version !== view?.config.version);
   const weatherOnly =
-    !!day && day.hours.every((h) => h.productionSource === 'weather');
+    !!day &&
+    day.hours.every(
+      (h) =>
+        h.productionSource === 'weather' ||
+        h.productionSource === 'weather-history',
+    );
   const rows =
     day?.hours.map((h) => ({
       label: hour(h.start),
       start: h.start,
       production: h.productionKwh === null ? null : h.productionKwh / 1000,
       revenue: convertMoney(h.revenueEur),
+      power: h.powerKw,
+      cloud: h.weather?.cloudCover ?? null,
       price: convertMoney(h.memo),
       official: h.priceSource === 'official' ? convertMoney(h.memo) : null,
       estimate: h.priceSource === 'forecast' ? convertMoney(h.memo) : null,
@@ -423,6 +426,25 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
               </div>
             </div>
           )}
+          {forecast.warnings.includes('estimated-radiation') && (
+            <div className="forecast-notice">
+              <CloudSun size={20} />
+              <div>
+                <strong>
+                  {l(
+                    'Облачноста и температурата се вклучени',
+                    'Cloud cover and temperature are included',
+                  )}
+                </strong>
+                <p>
+                  {l(
+                    'За секој час се пресметуваат сончевото зрачење, очекуваната моќност и приходот. Зрачењето е проценето од облачноста и положбата на сонцето; производствениот одзив е изведен од Huawei мерењата. Ова е почетен модел, без потврдена точност.',
+                    'Solar irradiance, expected power and revenue are calculated for each hour. Irradiance is estimated from cloud cover and the sun’s position; the production response is derived from Huawei readings. This is an initial model with accuracy still to be established.',
+                  )}
+                </p>
+              </div>
+            </div>
+          )}
           <fieldset
             className="forecast-days"
             aria-label={l('Изберете ден за прогноза', 'Select forecast day')}
@@ -448,6 +470,10 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
                   )}{' '}
                   MWh
                 </span>
+                <span className="forecast-day-weather">
+                  <CloudSun size={14} /> {number(d.daylightCloudCover, 0)}%{' '}
+                  {l('облачност', 'cloud cover')}
+                </span>
                 <small
                   className={
                     d.officialHours === d.hours.length
@@ -466,8 +492,8 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
             <div className="forecast-notice warning">
               <Info size={18} />
               {l(
-                'За дел од пресметките недостигаат целосни мерења или цени. Празнините не се сметаат за нула.',
-                'Some calculations lack complete measurements or prices. Gaps are not treated as zero.',
+                'За дел од пресметките недостигаат временски податоци, технички параметри, мерења или цени. Не се заменуваат со повторен историски просек или нула.',
+                'Some calculations lack weather, technical settings, readings or prices. These are not replaced with a repeated historical average or zero.',
               )}
             </div>
           )}
@@ -480,12 +506,12 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
                     <p>
                       {weatherOnly
                         ? l(
-                            'Временска прогноза + физички модел на панелите',
-                            'Weather forecast + physical panel model',
+                            'Временска прогноза → моќност → производство → приход',
+                            'Weather forecast → power → production → revenue',
                           )
                         : l(
-                            'Историски профил на производство + MEMO модел',
-                            'Historical production profile + MEMO model',
+                            'Нецелосна временска прогноза или производствен модел',
+                            'Incomplete weather forecast or production model',
                           )}
                     </p>
                   </div>
@@ -723,6 +749,148 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
                   {money(2.2)} {getCurrency()}/MWh).{' '}
                 </p>
               </section>
+              <section className="panel forecast-conditions">
+                <div className="panel-heading">
+                  <div>
+                    <h2>
+                      {l(
+                        'Времето и моќноста по час',
+                        'Weather and hourly power',
+                      )}
+                    </h2>
+                    <p>
+                      {l(
+                        'Како условите го менуваат очекуваното производство.',
+                        'How conditions change expected production.',
+                      )}
+                    </p>
+                  </div>
+                  <CloudSun size={22} />
+                </div>
+                <div className="forecast-metrics">
+                  <div>
+                    <span>
+                      {l(
+                        'Највисока просечна часовна моќност',
+                        'Highest hourly average power',
+                      )}
+                    </span>
+                    <strong>
+                      ≈ {number(day.peakPowerKw, 0)} <small>kW</small>
+                    </strong>
+                  </div>
+                  <div>
+                    <span>
+                      {l(
+                        'Облачност во дневните часови',
+                        'Daylight cloud cover',
+                      )}
+                    </span>
+                    <strong>
+                      {number(day.daylightCloudCover, 0)} <small>%</small>
+                    </strong>
+                  </div>
+                  <div>
+                    <span>
+                      {l('Горна граница на моделот', 'Model output cap')}
+                    </span>
+                    <strong>
+                      {number(forecast.config.acKw, 0)} <small>kW AC</small>
+                    </strong>
+                  </div>
+                  <div>
+                    <span>
+                      {l(
+                        'Денови за производствениот одзив',
+                        'Production-response history',
+                      )}
+                    </span>
+                    <strong>
+                      {forecast.calibration?.days ?? forecast.historyDays}{' '}
+                      <small>{l('целосни дена', 'complete days')}</small>
+                    </strong>
+                  </div>
+                </div>
+                <div className="forecast-chart-title">
+                  <h3>{l('Очекувана моќност · kW', 'Expected power · kW')}</h3>
+                  <span>{l('Облачност · %', 'Cloud cover · %')}</span>
+                </div>
+                <div className="forecast-chart">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <ComposedChart
+                      data={rows}
+                      margin={{ top: 12, right: 2, bottom: 6, left: 0 }}
+                    >
+                      <CartesianGrid
+                        stroke="var(--border)"
+                        strokeDasharray="3 6"
+                        vertical={false}
+                      />
+                      <XAxis
+                        dataKey="label"
+                        minTickGap={25}
+                        tick={{ fill: 'var(--chart-label)', fontSize: 11 }}
+                        tickLine={false}
+                        axisLine={false}
+                      />
+                      <YAxis
+                        yAxisId="power"
+                        width={44}
+                        tick={{ fill: 'var(--chart-green)', fontSize: 10 }}
+                        tickLine={false}
+                        axisLine={false}
+                      />
+                      <YAxis
+                        yAxisId="cloud"
+                        orientation="right"
+                        domain={[0, 100]}
+                        width={38}
+                        tickFormatter={(v) => v + '%'}
+                        tick={{ fill: 'var(--chart-blue)', fontSize: 10 }}
+                        tickLine={false}
+                        axisLine={false}
+                      />
+                      <Tooltip
+                        contentStyle={tooltip}
+                        formatter={(value, name) => [
+                          number(typeof value === 'number' ? value : null, 1) +
+                            (name === l('Облачност', 'Cloud cover')
+                              ? '%'
+                              : ' kW'),
+                          name,
+                        ]}
+                      />
+                      <Area
+                        yAxisId="power"
+                        type="monotone"
+                        dataKey="power"
+                        name={l('Моќност', 'Power')}
+                        stroke="var(--chart-green)"
+                        fill="var(--chart-green)"
+                        fillOpacity={0.12}
+                        strokeWidth={2}
+                        isAnimationActive={false}
+                      />
+                      <Line
+                        yAxisId="cloud"
+                        type="linear"
+                        dataKey="cloud"
+                        name={l('Облачност', 'Cloud cover')}
+                        stroke="var(--chart-blue)"
+                        strokeDasharray="5 4"
+                        dot={false}
+                        isAnimationActive={false}
+                      />
+                    </ComposedChart>
+                  </ResponsiveContainer>
+                </div>
+                <p className="forecast-fine">
+                  {l(
+                    'kW е просечна моќност во часот, не моментален врв. Подоцнежните временски точки се со чекор до 6 часа и се интерполираат. Границата од инвертерите не предвидува дефекти, исклучувања, снег или ограничувања од мрежата.',
+                    'kW is average power over the hour, not an instantaneous peak. Later weather points are spaced up to 6 hours apart and interpolated. The inverter cap does not predict faults, shutdowns, snow or grid curtailment.',
+                  )}
+                </p>
+              </section>
               <details className="panel forecast-hourly">
                 <summary>
                   {l(
@@ -736,6 +904,17 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
                       <tr>
                         <th>{l('Час', 'Hour')}</th>
                         <th>MWh</th>
+                        <th>kW</th>
+                        <th>{l('Облачност', 'Cloud cover')} %</th>
+                        <th>°C</th>
+                        <th>
+                          {l('Зрачење', 'Irradiance')} W/m²
+                          <small>
+                            {forecast.weather.provider === 'met-norway'
+                              ? l('проценето GHI', 'estimated GHI')
+                              : 'GTI'}
+                          </small>
+                        </th>
                         <th>MEMO {getCurrency()}/MWh</th>
                         <th>{l('Ваша цена', 'Your price')}</th>
                         <th>
@@ -762,6 +941,10 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
                               3,
                             )}
                           </td>
+                          <td>{number(h.powerKw, 0)}</td>
+                          <td>{number(h.weather?.cloudCover, 0)}</td>
+                          <td>{number(h.weather?.temperature, 1)}</td>
+                          <td>{number(h.weather?.irradiance, 0)}</td>
                           <td>{money(h.memo)}</td>
                           <td>
                             {money(h.memo === null ? null : salePrice(h.memo))}
@@ -841,6 +1024,19 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
                 </p>
               </div>
             </div>
+            <div className="forecast-production-score">
+              <strong>
+                {l('Проверка на производство', 'Production validation')}:{' '}
+                {number(forecast.productionScore?.mae, 1)} kWh MAE
+              </strong>
+              <p className="forecast-fine">
+                {forecast.productionScore?.hours ?? 0}{' '}
+                {l(
+                  'споредени часови со производство. Првата зачувана временска прогноза за секој час се споредува со подоцнежните Huawei мерења. Ноќните часови со нула и во двете вредности се исклучени, за да не ја подобруваат вештачки оценката.',
+                  'compared production hours. The first saved weather-based forecast for each hour is compared with later Huawei readings. Hours with zero in both values are excluded so nights do not artificially improve the score.',
+                )}
+              </p>
+            </div>
             <details>
               <summary>
                 {l(
@@ -910,11 +1106,18 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
               <div>
                 <dt>
                   <a
-                    href="https://open-meteo.com/"
+                    href={
+                      forecast.weather.provider === 'met-norway'
+                        ? 'https://www.met.no/'
+                        : 'https://open-meteo.com/'
+                    }
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Open-Meteo <ArrowUpRight size={12} />
+                    {forecast.weather.provider === 'met-norway'
+                      ? 'MET Norway / ECMWF'
+                      : 'Open-Meteo'}{' '}
+                    <ArrowUpRight size={12} />
                   </a>
                 </dt>
                 <dd>
@@ -922,10 +1125,7 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
                     ? l('Поврзано', 'Connected')
                     : forecast.weather.status === 'failed'
                       ? l('Изворот не одговори', 'Provider unavailable')
-                      : l(
-                          'Чека API клуч / технички параметри',
-                          'Awaiting API key / technical parameters',
-                        )}
+                      : l('Недостасува GPS-локација', 'Missing GPS location')}
                   {forecast.weather.fetchedAt
                     ? ' · ' + time(forecast.weather.fetchedAt)
                     : ''}
@@ -948,6 +1148,28 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
                 </dd>
               </div>
             </dl>
+            {forecast.weather.provider === 'met-norway' && (
+              <p className="forecast-fine">
+                {l('Временски податоци', 'Weather data')}: MET Norway ·{' '}
+                <a
+                  href="https://creativecommons.org/licenses/by/4.0/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  CC BY 4.0
+                </a>
+                .{' '}
+                {l(
+                  'Податоците се интерполирани; зрачењето и производството се наши пресметки. Издадено',
+                  'Data is interpolated; irradiance and production are our calculations. Issued',
+                )}
+                :{' '}
+                {forecast.weather.issuedAt
+                  ? time(forecast.weather.issuedAt)
+                  : '—'}
+                .
+              </p>
+            )}
             <p className="forecast-fine">
               {l(
                 'Официјалните цени се објавени факти; производството и приходот за идните денови остануваат процени. Овој модул не ја вклучува и исклучува централата.',
