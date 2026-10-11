@@ -404,6 +404,25 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
               )}
             </span>
           </div>
+          {forecast.warnings.includes('history-production') && (
+            <div className="forecast-notice">
+              <Info size={20} />
+              <div>
+                <strong>
+                  {l(
+                    'Производството е историска референца',
+                    'Production is a historical reference',
+                  )}
+                </strong>
+                <p>
+                  {l(
+                    'Се користи медијана од последните целосни денови. Облачноста за идните денови сè уште не е вклучена; приходот е сценарио, не гарантирана заработка.',
+                    'Uses the median of recent complete days. Future cloud cover is not yet included; revenue is a scenario, not guaranteed earnings.',
+                  )}
+                </p>
+              </div>
+            </div>
+          )}
           <fieldset
             className="forecast-days"
             aria-label={l('Изберете ден за прогноза', 'Select forecast day')}
@@ -443,25 +462,6 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
               </button>
             ))}
           </fieldset>
-          {forecast.warnings.includes('history-production') && (
-            <div className="forecast-notice">
-              <Info size={20} />
-              <div>
-                <strong>
-                  {l(
-                    'Производството е историска референца',
-                    'Production is a historical reference',
-                  )}
-                </strong>
-                <p>
-                  {l(
-                    'Се користи медијана од последните целосни денови. Облачноста за идните денови сè уште не е вклучена; приходот е сценарио, не гарантирана заработка.',
-                    'Uses the median of recent complete days. Future cloud cover is not yet included; revenue is a scenario, not guaranteed earnings.',
-                  )}
-                </p>
-              </div>
-            </div>
-          )}
           {forecast.warnings.some((w) => w.startsWith('missing-')) && (
             <div className="forecast-notice warning">
               <Info size={18} />
