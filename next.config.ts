@@ -2,7 +2,7 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
  serverExternalPackages:['@meri-imperiumi/eccodes-wasm','seek-bzip'],
- outputFileTracingIncludes:{'/api/forecast-trial':['./node_modules/@meri-imperiumi/eccodes-wasm/**/*'],'/api/forecast-sync':['./node_modules/@meri-imperiumi/eccodes-wasm/**/*']},
+ outputFileTracingIncludes:{'/api/forecast-trial':['./node_modules/@meri-imperiumi/eccodes-wasm/**/*'],'/api/forecast-sync':['./node_modules/@meri-imperiumi/eccodes-wasm/**/*'],'/api/forecast-models':['./node_modules/@meri-imperiumi/eccodes-wasm/**/*']},
  poweredByHeader:false,
  async headers(){return [{source:'/:path*',headers:[
   {key:'X-Content-Type-Options',value:'nosniff'},

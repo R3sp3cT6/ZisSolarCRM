@@ -29,6 +29,7 @@ import type { ForecastConfig, ForecastPayload } from '@/lib/forecast-model';
 import { formatNumber } from '@/lib/number-format';
 import { ForecastConditions } from './forecast-conditions';
 import { ForecastTrialPanel } from './forecast-trial-panel';
+import { ForecastModelsPanel } from './forecast-models-panel';
 
 type View = { config: ForecastConfig; forecast: ForecastPayload | null };
 const l = (mk: string, en: string) => (getLanguage() === 'en' ? en : mk);
@@ -1357,6 +1358,7 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
         </>
       )}
       <ForecastTrialPanel canManage={canManage}/>
+      <ForecastModelsPanel canManage={canManage}/>
       {canManage && view && (
         <SettingsForm
           key={view.config.version}

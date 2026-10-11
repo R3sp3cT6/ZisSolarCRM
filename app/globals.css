@@ -3,6 +3,14 @@
 @import 'shadcn/tailwind.css';
 @custom-variant dark (&:is(.dark *));
 .forecast-trial { padding:24px; min-width:0; }
+.model-comparison-table { margin:18px 0; min-width:0; width:100%; table-layout:fixed; border-collapse:collapse; }
+.model-comparison-row { border-bottom:1px solid var(--border); }
+.model-comparison-table .model-comparison-row>td,.model-comparison-table .model-comparison-row>th { padding:14px 5px; min-width:0; white-space:normal; overflow-wrap:anywhere; }
+.model-comparison-row>td:first-child,.model-comparison-row>th:first-child { width:44%; text-align:left; }
+.model-comparison-row small { display:block; margin-top:5px; font-size:11px; line-height:1.5; opacity:.75; }
+.model-comparison-row>td:not(:first-child), .model-comparison-head>th:not(:first-child) { text-align:right; }
+.model-comparison-head { font-size:12px; opacity:.75; }
+.forecast-models p { margin-top:12px; }
 .forecast-trial h2 { display:flex; align-items:center; gap:8px; }
 .forecast-trial h3 { margin:20px 0 8px; font-size:15px; }
 .forecast-trial p { line-height:1.65; overflow-wrap:anywhere; }
