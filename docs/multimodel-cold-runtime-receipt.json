@@ -1,0 +1,51 @@
+{
+  "checkedAt": "2026-10-11T21:12:54.245Z",
+  "deployment": "dpl_GAKbvnCksGbYpd4JSNStkgiJX9Cu",
+  "branch": "br-restless-math-b17bc65t",
+  "status": 200,
+  "seconds": 13.492251,
+  "wallSeconds": 17.766,
+  "cliCode": 0,
+  "complete": true,
+  "sources": {
+    "gfs": {
+      "runAt": "2026-10-11T12:00:00.000Z",
+      "status": "ready",
+      "fetchedAt": "2026-10-11T21:12:51.464Z"
+    },
+    "icon": {
+      "runAt": "2026-10-11T12:00:00.000Z",
+      "status": "ready",
+      "fetchedAt": "2026-10-11T19:42:35.321Z"
+    },
+    "arpege": {
+      "runAt": "2026-10-11T12:00:00Z",
+      "status": "ready",
+      "fetchedAt": "2026-10-11T21:12:54.686Z"
+    }
+  },
+  "hours": 24,
+  "runId": "ae745035-1a1c-4f2c-93b7-574e074f83a1",
+  "readback": true,
+  "sourceFiles": {
+    "arpege": {
+      "count": 3,
+      "bytes": 237489126,
+      "fetchedAt": "2026-10-11T21:12:54.686Z"
+    },
+    "gfs": {
+      "count": 25,
+      "bytes": 21456970,
+      "fetchedAt": "2026-10-11T21:12:51.464Z"
+    }
+  },
+  "cleanup": {
+    "checkedAt": "2026-10-11T21:14:05.812Z",
+    "testSessionExpired": true,
+    "previewDeleted": true,
+    "temporaryBypassRevoked": true,
+    "protectionUnchanged": true,
+    "privateSessionFileRemoved": true,
+    "branchRetainedUntil": "2026-10-13T13:30:00Z"
+  }
+}

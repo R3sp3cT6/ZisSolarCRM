@@ -80,8 +80,26 @@ and administrator refresh show the persisted values; anonymous API is 401,
 login is 200. Desktop and 390px mobile layouts were checked in Macedonian and
 English with no horizontal overflow or console errors. Existing chart initial
 measurement warnings remain. [UI receipt](multimodel-ui-verification.json).
-The source downloads above were measured locally; a fresh Vercel cold-source
-download is not claimed by this cached production endpoint verification.
+The production endpoint check above used cached source data. A subsequent
+[cold Vercel check](multimodel-cold-runtime-receipt.json) used the identical
+application on the existing isolated Neon branch, with every Redis environment
+variable explicitly empty. Before the request, that branch had zero multimodel
+runs. Authenticated POST completed in **13.492 seconds**, downloaded all three
+ARPEGE packages (237,489,126 bytes) and 25 GFS fields (21,456,970 bytes), decoded
+24 complete target hours and persisted an exactly matching response. ICON and
+thermal calibration came from the branch's already saved context. This tests
+fresh ARPEGE/GFS collection, not a new ICON network request or forecast accuracy.
+
+The temporary preview deployment was removed, its test session expired and its
+private local credential file removed. The CLI-generated automation bypass
+token for this test was revoked; existing protection was unchanged. Production
+alias was rechecked READY on the original release. The branch retains its
+previous automatic expiry of 13 October at 13:30 UTC.
+
+[Outcome availability](multimodel-outcomes-status.json), read directly from
+production at 21:14 UTC: zero completed and zero measured target hours for the
+new 12 October forecasts. Operational success cannot establish improved accuracy;
+the previously specified chronological and prospective evaluation gates remain.
 
 Fixture metadata: `tests/fixtures/*-solar-test.grib2` are synthetic 2×2 regular
 GRIB2 grids generated with ecCodes, 11 Oct 2026 12 UTC / lead 1, values

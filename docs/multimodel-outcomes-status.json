@@ -1,0 +1,11 @@
+{
+  "databaseCheckedAt": "2026-10-11T21:14:39.573Z",
+  "runId": "057bd63b-9a3c-4d3a-90ff-3aa86f2cc2b1",
+  "issuedAt": "2026-10-11T21:02:43.100Z",
+  "targetDate": "2026-10-12",
+  "firstTargetHour": "2026-10-11T22:00:00.000Z",
+  "lastTargetHour": "2026-10-12T21:00:00.000Z",
+  "targetHours": 24,
+  "completedTargetHours": 0,
+  "measuredCompletedHours": 0
+}
