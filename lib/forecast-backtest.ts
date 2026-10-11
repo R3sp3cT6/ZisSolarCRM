@@ -266,10 +266,14 @@ export function backtestScores(
   const total = pairs.reduce((s, p) => s + p.actual, 0),
     abs = pairs.reduce((s, p) => s + Math.abs(p.pred - p.actual), 0);
   const wapePercent = total > 0 ? (abs / total) * 100 : null;
+  const difference = pairs.reduce((s, p) => s + p.pred - p.actual, 0);
   return {
     hours: pairs.length,
     actualKwh: pairs.length ? total : null,
     predictedKwh: pairs.length ? pairs.reduce((s, p) => s + p.pred, 0) : null,
+    // Signed net difference of the SAME paired hours, not the live meter total.
+    totalDifferenceKwh: pairs.length ? difference : null,
+    totalDifferencePercent: total > 0 ? (difference / total) * 100 : null,
     // A descriptive 0–100 match score, not a probability of future accuracy.
     matchPercent: wapePercent === null ? null : Math.max(0, 100 - wapePercent),
     maeKwh: pairs.length ? abs / pairs.length : null,

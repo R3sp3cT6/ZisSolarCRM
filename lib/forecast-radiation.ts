@@ -68,6 +68,28 @@ export function hourlyRadiation(
     .map(([start, irradiance]) => ({ start, irradiance }));
 }
 
+/** THREDDS renumbers time axes as runs change. Follow DSWRF's own CF
+ * coordinates/bounds instead of assuming the unrelated variable named time. */
+export function radiationTimeAxis(das: string, issuedAt: string) {
+  const block = (name: string) =>
+    das.match(new RegExp('(?:^|\\n)\\s*' + name + ' \\{([^}]+)\\}'))?.[1] ?? '';
+  const axis = block(GFS_RADIATION_FIELD).match(
+    /String coordinates "reftime (time\d*) lat lon\s*"/,
+  )?.[1];
+  const bound =
+    axis && block(axis).match(/String bounds "(time\d*_bounds)"/)?.[1];
+  if (
+    !axis ||
+    !bound ||
+    !block(GFS_RADIATION_FIELD).includes('String units "W.m-2"') ||
+    !block(bound).includes(
+      'String units "Hour since ' + issuedAt.replace('.000Z', 'Z') + '"',
+    )
+  )
+    throw Error('Changed GFS radiation metadata');
+  return { axis, bounds: bound };
+}
+
 /** NCSS CSV timestamps are interval MIDPOINTS. Match against the actual CF
  * bounds from the same explicit run; never infer start/end from the label. */
 export function parseGfsRadiation(
@@ -77,19 +99,9 @@ export function parseGfsRadiation(
   issuedAt: string,
   c: ForecastConfig,
 ) {
-  const block = (name: string) =>
-    das.match(new RegExp('(?:^|\\n)\\s*' + name + ' \\{([^}]+)\\}'))?.[1] ?? '';
-  if (
-    !block(GFS_RADIATION_FIELD).includes('String units "W.m-2"') ||
-    !block(GFS_RADIATION_FIELD).includes(
-      'String coordinates "reftime time lat lon ',
-    ) ||
-    !block('time').includes('String bounds "time_bounds"') ||
-    !block('time_bounds').includes(
-      'String units "Hour since ' + issuedAt.replace('.000Z', 'Z') + '"',
-    )
-  )
-    throw Error('Changed GFS radiation metadata');
+  const metadata = radiationTimeAxis(das, issuedAt);
+  if (!new RegExp('(?:^|\\n)' + metadata.bounds + '\\[').test(bounds))
+    throw Error('Wrong radiation bounds variable');
   const run = Date.parse(issuedAt),
     byMidpoint = new Map<number, { start: string; end: string }>();
   if (!Number.isFinite(run)) throw Error('Invalid GFS run time');
@@ -111,7 +123,7 @@ export function parseGfsRadiation(
   if (lines.length < 3 || lines.length > 140)
     throw Error('Invalid GFS CSV size');
   const indexes = [
-    'time',
+    columns.includes('time') ? 'time' : metadata.axis,
     'latitude[unit="degrees_north"]',
     'longitude[unit="degrees_east"]',
     GFS_RADIATION_FIELD + '[unit="W.m-2"]',

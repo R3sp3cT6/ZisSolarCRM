@@ -35,6 +35,8 @@ const number = (value: number | null | undefined, digits = 2) =>
   formatNumber(value, digits, getLanguage());
 const money = (value: number | null | undefined, digits = 2) =>
   number(convertMoney(value), digits);
+const percent = (value: number | null | undefined) =>
+  value == null ? '—' : number(value, 1) + '%';
 const date = (value: string, short = false) => {
   const d = new Date(value + 'T12:00:00Z');
   if (getLanguage() === 'mk') {
@@ -1075,17 +1077,70 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
             </div>
             <div className="forecast-production-score">
               <strong>
-                {l('Проверка на производство', 'Production validation')}:{' '}
+                {l('Часовна грешка — WAPE', 'Hourly error — WAPE')}:{' '}
+                {percent(forecast.productionScore?.wape)} ·{' '}
                 {number(forecast.productionScore?.mae, 1)} kWh MAE
               </strong>
               <p className="forecast-fine">
+                {l('Основен → коригиран модел', 'Baseline → corrected model')}:{' '}
+                {percent(forecast.productionScore?.baselineWape)} →{' '}
+                {percent(forecast.productionScore?.wape)} WAPE
+              </p>
+              <p className="forecast-fine">
                 {forecast.productionScore?.hours ?? 0}{' '}
                 {l(
-                  'споредени часови со производство. Првата зачувана временска прогноза за секој час се споредува со подоцнежните Huawei мерења. Ноќните часови со нула и во двете вредности се исклучени, за да не ја подобруваат вештачки оценката.',
-                  'compared production hours. The first saved weather-based forecast for each hour is compared with later Huawei readings. Hours with zero in both values are excluded so nights do not artificially improve the score.',
+                  'споредени часови од однапред зачувани GFS прогнози за следниот ден, од оваа верзија и поставки. Основниот и коригираниот модел се оценуваат на истите Huawei мерења. Ноќните двојни нули се исклучени.',
+                  'paired hours from GFS day-ahead forecasts saved in advance, from this version and configuration. Baseline and corrected models use identical Huawei measurements. Nighttime double zeros are excluded.',
                 )}
               </p>
             </div>
+            {forecast.hourlyCalibration && (
+              <div className="forecast-production-score">
+                <strong>
+                  {l('Цел: помал часовен WAPE', 'Target: lower hourly WAPE')}
+                </strong>
+                <p className="forecast-fine">
+                  {forecast.hourlyCalibration.status === 'accepted'
+                    ? l(
+                        'Активна корекција за утре',
+                        'Day-ahead correction active',
+                      )
+                    : l(
+                        'Основен модел; корекцијата сè уште не ја поминала проверката',
+                        'Baseline model; correction has not passed validation',
+                      )}
+                  {' · ×'}
+                  {number(forecast.hourlyCalibration.factor, 3)}
+                </p>
+                <p className="forecast-fine">
+                  {l(
+                    'Проверка по редослед на деновите',
+                    'Rolling chronological validation',
+                  )}
+                  :{' '}
+                  {percent(forecast.hourlyCalibration.validation.baselineWape)}{' '}
+                  →{' '}
+                  {percent(forecast.hourlyCalibration.validation.candidateWape)}{' '}
+                  WAPE
+                  {' · '}
+                  {forecast.hourlyCalibration.validation.days}{' '}
+                  {l('дена', 'days')},{' '}
+                  {forecast.hourlyCalibration.validation.hours}{' '}
+                  {l('часа', 'hours')}
+                </p>
+                <p className="forecast-fine">
+                  {l(
+                    'Корекцијата учи од апсолутните часовни грешки. Се применува само ако претходната проверка го намали WAPE за најмалку 2% релативно. Не гарантира подобрување секој ден.',
+                    'The correction learns from absolute hourly errors. It is applied only when prior validation reduces WAPE by at least 2% relatively. It does not guarantee improvement every day.',
+                  )}{' '}
+                  {forecast.hourlyCalibration.source !== 'prospective' &&
+                    l(
+                      'Проверката вклучува историски симулации; потребна е и проверка на нови, однапред издадени прогнози.',
+                      'Validation includes historical simulations; new forecasts issued in advance still need to be evaluated.',
+                    )}
+                </p>
+              </div>
+            )}
             <details>
               <summary>
                 {l(

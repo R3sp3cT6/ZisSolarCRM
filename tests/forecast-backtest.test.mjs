@@ -174,6 +174,8 @@ void test('error metrics exclude missing, incomplete and double-zero hours; WAPE
     hours: 2,
     actualKwh: 200,
     predictedKwh: 190,
+    totalDifferenceKwh: -10,
+    totalDifferencePercent: -5,
     matchPercent: 75,
     maeKwh: 25,
     rmseKwh: Math.sqrt(650),
@@ -200,6 +202,9 @@ void test('match score uses hourly absolute errors, clamps at zero and needs pos
     ],
   );
   assert.equal(score.actualKwh, score.predictedKwh);
+  assert.equal(score.totalDifferenceKwh, 0);
+  assert.equal(score.totalDifferencePercent, 0);
+  assert.equal(score.wapePercent, 50, 'equal daily totals are not zero hourly error');
   assert.equal(
     score.matchPercent,
     50,

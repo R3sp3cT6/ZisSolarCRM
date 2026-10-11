@@ -114,6 +114,19 @@ test('night stays zero; invalid or oversized radiation cannot become production'
     hourlyRadiation([{ ...intervals[0], end: '2026-10-11T09:30:00Z' }], config),
   );
 });
+
+test('renumbered CF time1 axis is followed after a GFS run update; wrong bounds fail closed', async () => {
+  const changed=das.replaceAll('time_bounds','time1_bounds').replaceAll('reftime time lat','reftime time1 lat').replace('time {','time1 {');
+  const changedBounds=bounds.replaceAll('time_bounds','time1_bounds');
+  assert.equal(parseGfsRadiation(csv,changed,changedBounds,run,config).hours.length,6);
+  assert.throws(()=>parseGfsRadiation(csv,changed,bounds,run,config));
+  globalThis.fetch=async url=>{
+    const href=String(url);requests.push(href);
+    return new Response(href.includes('catalog')?catalog:href.includes('.das')?changed:href.includes('.ascii?time1_bounds')?changedBounds:csv);
+  };
+  assert.equal((await fetchRadiation(config,now)).source.status,'ready');
+  assert.ok(requests.some(r=>r.endsWith('.ascii?time1_bounds')));
+});
 test('provider picks an explicit fresh run; external catalog cannot change request origin', () => {
   const found = latestGfsRun(
     catalog + ' GFS_Global_0p25deg_20261012_0000.grib2 https://evil.test/Best',

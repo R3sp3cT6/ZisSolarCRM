@@ -21,6 +21,7 @@ import { fetchForecastWeather } from './forecast-weather';
 import { readContracts } from './contracts-server';
 import { contractFor, contractScheduleVersion } from './contracts';
 import { revalueForecast } from './forecast-model';
+import { loadHourlyCalibration } from './forecast-hourly-calibration-server';
 
 export type ForecastView = {
   owner: string;
@@ -92,35 +93,55 @@ async function prospectiveScore(owner: string, now: Date) {
     }
   );
 }
-async function productionScore(owner: string, now: Date) {
+async function productionScore(
+  owner: string,
+  now: Date,
+  configVersion: string,
+) {
   // First frozen prediction for each delivery hour; only completed measured hours.
   return (
     (await db()
       .prepare(`WITH predictions AS (
  SELECT DISTINCT ON (h.value->>'start') h.value->>'start' AS start,
- (h.value->>'productionKwh')::double precision AS predicted
+ (h.value->>'productionKwh')::double precision AS predicted,
+ COALESCE(h.value->>'baseProductionKwh',h.value->>'productionKwh')::double precision AS baseline
  FROM forecast_runs r CROSS JOIN LATERAL jsonb_array_elements(r.payload->'days') d(value)
  CROSS JOIN LATERAL jsonb_array_elements(d.value->'hours') h(value)
  WHERE r.owner=? AND r.model_version=? AND r.issued_at>=?::timestamptz
- AND h.value->>'productionSource' IN ('weather','weather-history')
+ AND h.value->>'productionSource'='weather-history'
+ AND h.value->'weather'->>'irradianceKind'='modeled-ghi'
+ AND r.payload->'config'->>'version'=?
+ AND ((h.value->>'start')::timestamptz AT TIME ZONE 'Europe/Skopje')::date =
+     (r.issued_at AT TIME ZONE 'Europe/Skopje')::date+1
  AND h.value->>'productionKwh' IS NOT NULL AND (h.value->>'start')::timestamptz>r.issued_at
  ORDER BY h.value->>'start',r.issued_at ASC
  ) SELECT count(*)::integer AS hours,
  avg(abs(f.predicted-r.production_kwh))::double precision AS mae,
- avg(f.predicted-r.production_kwh)::double precision AS bias
+ avg(f.predicted-r.production_kwh)::double precision AS bias,
+ (100.0*sum(abs(f.predicted-r.production_kwh))/NULLIF(sum(r.production_kwh),0))::double precision AS wape,
+ (100.0*sum(abs(f.baseline-r.production_kwh))/NULLIF(sum(r.production_kwh),0))::double precision AS "baselineWape"
  FROM predictions f JOIN readings r ON r.start=f.start AND r.owner=?
  WHERE r.production_kwh IS NOT NULL AND r.start<? AND (r.production_kwh>0 OR f.predicted>0)`)
       .bind(
         owner,
         FORECAST_VERSION,
         addDays(localDate(now), -60),
+        configVersion,
         owner,
         new Date(Math.floor(now.getTime() / 3600000) * 3600000).toISOString(),
       )
-      .first<{ hours: number; mae: number | null; bias: number | null }>()) ?? {
+      .first<{
+        hours: number;
+        mae: number | null;
+        bias: number | null;
+        wape: number | null;
+        baselineWape: number | null;
+      }>()) ?? {
       hours: 0,
       mae: null,
       bias: null,
+      wape: null,
+      baselineWape: null,
     }
   );
 }
@@ -134,7 +155,7 @@ export async function runForecast(owner: string, now = new Date()) {
       // SQL uniqueness also deduplicates retries when Redis is unavailable or a lease expires.
       const runKey =
         FORECAST_VERSION +
-        ':' +
+        ':hourly-wape-v1:cf-bounds-v2:' +
         config.version +
         ':' +
         contractScheduleVersion(contracts) +
@@ -151,31 +172,38 @@ export async function runForecast(owner: string, now = new Date()) {
         await cacheWrite(key(owner), view, 7 * 86400);
         return view;
       }
-      const [priceResult, readingResult, liveScore, weather, measuredScore] =
-        await Promise.all([
-          db()
-            .prepare(
-              'SELECT start,eur_cents,fetched_at FROM prices WHERE start>=? AND start<? ORDER BY start',
-            )
-            .bind(
-              slotsForDay(addDays(today, -180))[0].start,
-              slotsForDay(addDays(today, 8))[0].start,
-            )
-            .all<ForecastPrice>(),
-          db()
-            .prepare(
-              'SELECT start,production_kwh,export_kwh FROM readings WHERE owner=? AND start>=? AND start<? ORDER BY start',
-            )
-            .bind(
-              owner,
-              slotsForDay(addDays(today, -45))[0].start,
-              slotsForDay(today)[0].start,
-            )
-            .all<ForecastReading>(),
-          prospectiveScore(owner, now),
-          fetchForecastWeather(config, now),
-          productionScore(owner, now),
-        ]);
+      const [
+        priceResult,
+        readingResult,
+        liveScore,
+        weather,
+        measuredScore,
+        hourly,
+      ] = await Promise.all([
+        db()
+          .prepare(
+            'SELECT start,eur_cents,fetched_at FROM prices WHERE start>=? AND start<? ORDER BY start',
+          )
+          .bind(
+            slotsForDay(addDays(today, -180))[0].start,
+            slotsForDay(addDays(today, 8))[0].start,
+          )
+          .all<ForecastPrice>(),
+        db()
+          .prepare(
+            'SELECT start,production_kwh,export_kwh FROM readings WHERE owner=? AND start>=? AND start<? ORDER BY start',
+          )
+          .bind(
+            owner,
+            slotsForDay(addDays(today, -45))[0].start,
+            slotsForDay(today)[0].start,
+          )
+          .all<ForecastReading>(),
+        prospectiveScore(owner, now),
+        fetchForecastWeather(config, now),
+        productionScore(owner, now, config.version),
+        loadHourlyCalibration(owner, config, now),
+      ]);
       const prices = priceResult.results,
         readings = readingResult.results;
       const calculated = makeForecast({
@@ -185,6 +213,7 @@ export async function runForecast(owner: string, now = new Date()) {
         weather: weather.hours,
         contracts,
         now,
+        hourlyCalibration: hourly.calibration,
       });
       const warnings: string[] = [];
       if (
@@ -244,6 +273,7 @@ export async function runForecast(owner: string, now = new Date()) {
         },
         liveScore,
         productionScore: measuredScore,
+        hourlyCalibration: hourly.calibration,
         warnings,
       };
       const inputs = {
@@ -257,6 +287,8 @@ export async function runForecast(owner: string, now = new Date()) {
         radiation: weather.radiationRaw,
         radiationSource: weather.radiation,
         calibration: calculated.calibration,
+        hourlyCalibration: hourly.calibration,
+        hourlyCalibrationInputs: hourly.inputs,
         weatherModel:
           weather.provider === 'met-norway'
             ? 'MET Norway complete; NOAA GFS surface DSWRF preferred (CF interval bounds, de-averaged 3h, clear-sky hourly allocation); fallback Haurwitz + Kasten-Czeplak cloud/fog + FMI SILAM relative Solis; no repeated atmospheric attenuation on GFS; NOCT + Faiman; 14 recent complete daylight days for solar calibration'

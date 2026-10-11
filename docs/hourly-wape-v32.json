@@ -1,0 +1,655 @@
+{
+  "checkedAt": "2026-10-11T18:42:43.810Z",
+  "baselineReplayId": "386fc06c-5952-4faf-ba01-218896defb39",
+  "modelVersion": "weather-solar-v3.2",
+  "objective": "Lower hourly WAPE, evaluated on identical completed hours; net total error is separate.",
+  "period": {
+    "from": "2026-10-01",
+    "to": "2026-10-10"
+  },
+  "completed": {
+    "baseline": {
+      "hours": 129,
+      "actualKwh": 39253.58999999999,
+      "predictedKwh": 41828.07511149517,
+      "totalDifferenceKwh": 2574.4851114951825,
+      "totalDifferencePercent": 6.558597854349585,
+      "matchPercent": 88.21210763827207,
+      "maeKwh": 35.869542149720914,
+      "rmseKwh": 65.43648036963589,
+      "biasKwh": 19.957248926319245,
+      "wapePercent": 11.78789236172793
+    },
+    "candidate": {
+      "hours": 129,
+      "actualKwh": 39253.58999999999,
+      "predictedKwh": 41560.451788998915,
+      "totalDifferenceKwh": 2306.8617889989214,
+      "totalDifferencePercent": 5.876817353518295,
+      "matchPercent": 88.47870990179081,
+      "maeKwh": 35.058294402028146,
+      "rmseKwh": 63.587686057287016,
+      "biasKwh": 17.882649527123423,
+      "wapePercent": 11.521290098209187
+    }
+  },
+  "currentDay": {
+    "date": "2026-10-11",
+    "baseline": {
+      "hours": 13,
+      "actualKwh": 1763.0500000000002,
+      "predictedKwh": 1664.0676666069032,
+      "totalDifferenceKwh": -98.98233339309645,
+      "totalDifferencePercent": -5.614266946093216,
+      "matchPercent": 60.51448598992021,
+      "maeKwh": 53.54995036574706,
+      "rmseKwh": 68.95792756110976,
+      "biasKwh": -7.614025645622804,
+      "wapePercent": 39.48551401007979
+    },
+    "candidate": {
+      "hours": 13,
+      "actualKwh": 1763.0500000000002,
+      "predictedKwh": 1580.7310193404887,
+      "totalDifferenceKwh": -182.31898065951106,
+      "totalDifferencePercent": -10.34111231442733,
+      "matchPercent": 59.178693343086344,
+      "maeKwh": 55.3615420780551,
+      "rmseKwh": 72.11796320617043,
+      "biasKwh": -14.024536973808543,
+      "wapePercent": 40.821306656913656
+    },
+    "calibration": {
+      "version": "hourly-wape-v1",
+      "status": "accepted",
+      "factor": 0.9499199167565456,
+      "candidateFactor": 0.9499199167565456,
+      "trainedAt": "2026-10-10T18:00:00.000Z",
+      "trainingDays": [
+        "2026-10-01",
+        "2026-10-02",
+        "2026-10-03",
+        "2026-10-04",
+        "2026-10-05",
+        "2026-10-06",
+        "2026-10-07",
+        "2026-10-08",
+        "2026-10-09"
+      ],
+      "trainingHours": 116,
+      "source": "historical",
+      "validation": {
+        "days": 5,
+        "hours": 64,
+        "baselineWape": 18.56802596475343,
+        "candidateWape": 15.753674486845862
+      }
+    }
+  },
+  "days": [
+    {
+      "date": "2026-10-01",
+      "baseline": {
+        "hours": 13,
+        "actualKwh": 4657.249999999999,
+        "predictedKwh": 4739.05085968786,
+        "totalDifferenceKwh": 81.8008596878608,
+        "totalDifferencePercent": 1.7564197689164378,
+        "matchPercent": 97.11017421610931,
+        "maeKwh": 10.352800870788371,
+        "rmseKwh": 12.845051597842692,
+        "biasKwh": 6.292373822143138,
+        "wapePercent": 2.889825783890683
+      },
+      "candidate": {
+        "hours": 13,
+        "actualKwh": 4657.249999999999,
+        "predictedKwh": 4739.05085968786,
+        "totalDifferenceKwh": 81.8008596878608,
+        "totalDifferencePercent": 1.7564197689164378,
+        "matchPercent": 97.11017421610931,
+        "maeKwh": 10.352800870788371,
+        "rmseKwh": 12.845051597842692,
+        "biasKwh": 6.292373822143138,
+        "wapePercent": 2.889825783890683
+      },
+      "calibration": {
+        "version": "hourly-wape-v1",
+        "status": "insufficient",
+        "factor": 1,
+        "candidateFactor": 1,
+        "trainedAt": "2026-09-30T18:00:00.000Z",
+        "trainingDays": [],
+        "trainingHours": 0,
+        "source": null,
+        "validation": {
+          "days": 0,
+          "hours": 0,
+          "baselineWape": null,
+          "candidateWape": null
+        }
+      }
+    },
+    {
+      "date": "2026-10-02",
+      "baseline": {
+        "hours": 13,
+        "actualKwh": 4643.26,
+        "predictedKwh": 4731.950440835691,
+        "totalDifferenceKwh": 88.69044083569081,
+        "totalDifferencePercent": 1.9100899117363834,
+        "matchPercent": 96.63017942876934,
+        "maeKwh": 12.036117742748074,
+        "rmseKwh": 14.256382193063706,
+        "biasKwh": 6.822341602745447,
+        "wapePercent": 3.369820571230665
+      },
+      "candidate": {
+        "hours": 13,
+        "actualKwh": 4643.26,
+        "predictedKwh": 4731.950440835691,
+        "totalDifferenceKwh": 88.69044083569081,
+        "totalDifferencePercent": 1.9100899117363834,
+        "matchPercent": 96.63017942876934,
+        "maeKwh": 12.036117742748074,
+        "rmseKwh": 14.256382193063706,
+        "biasKwh": 6.822341602745447,
+        "wapePercent": 3.369820571230665
+      },
+      "calibration": {
+        "version": "hourly-wape-v1",
+        "status": "insufficient",
+        "factor": 1,
+        "candidateFactor": 1,
+        "trainedAt": "2026-10-01T18:00:00.000Z",
+        "trainingDays": [],
+        "trainingHours": 0,
+        "source": null,
+        "validation": {
+          "days": 0,
+          "hours": 0,
+          "baselineWape": null,
+          "candidateWape": null
+        }
+      }
+    },
+    {
+      "date": "2026-10-03",
+      "baseline": {
+        "hours": 13,
+        "actualKwh": 4640.51,
+        "predictedKwh": 4791.115000273693,
+        "totalDifferenceKwh": 150.60500027369238,
+        "totalDifferencePercent": 3.2454407009939077,
+        "matchPercent": 95.63176656139018,
+        "maeKwh": 15.59294688784868,
+        "rmseKwh": 18.9719464009629,
+        "biasKwh": 11.58500002105326,
+        "wapePercent": 4.368233438609826
+      },
+      "candidate": {
+        "hours": 13,
+        "actualKwh": 4640.51,
+        "predictedKwh": 4791.115000273693,
+        "totalDifferenceKwh": 150.60500027369238,
+        "totalDifferencePercent": 3.2454407009939077,
+        "matchPercent": 95.63176656139018,
+        "maeKwh": 15.59294688784868,
+        "rmseKwh": 18.9719464009629,
+        "biasKwh": 11.58500002105326,
+        "wapePercent": 4.368233438609826
+      },
+      "calibration": {
+        "version": "hourly-wape-v1",
+        "status": "insufficient",
+        "factor": 1,
+        "candidateFactor": 1,
+        "trainedAt": "2026-10-02T18:00:00.000Z",
+        "trainingDays": [
+          "2026-10-01"
+        ],
+        "trainingHours": 13,
+        "source": "historical",
+        "validation": {
+          "days": 0,
+          "hours": 0,
+          "baselineWape": null,
+          "candidateWape": null
+        }
+      }
+    },
+    {
+      "date": "2026-10-04",
+      "baseline": {
+        "hours": 13,
+        "actualKwh": 4583.8,
+        "predictedKwh": 4799.8294227918595,
+        "totalDifferenceKwh": 216.02942279185964,
+        "totalDifferencePercent": 4.712889366723235,
+        "matchPercent": 94.95256507034567,
+        "maeKwh": 17.797255561961173,
+        "rmseKwh": 22.957761091586942,
+        "biasKwh": 16.617647907066125,
+        "wapePercent": 5.047434929654331
+      },
+      "candidate": {
+        "hours": 13,
+        "actualKwh": 4583.8,
+        "predictedKwh": 4799.8294227918595,
+        "totalDifferenceKwh": 216.02942279185964,
+        "totalDifferencePercent": 4.712889366723235,
+        "matchPercent": 94.95256507034567,
+        "maeKwh": 17.797255561961173,
+        "rmseKwh": 22.957761091586942,
+        "biasKwh": 16.617647907066125,
+        "wapePercent": 5.047434929654331
+      },
+      "calibration": {
+        "version": "hourly-wape-v1",
+        "status": "insufficient",
+        "factor": 1,
+        "candidateFactor": 1,
+        "trainedAt": "2026-10-03T18:00:00.000Z",
+        "trainingDays": [
+          "2026-10-01",
+          "2026-10-02"
+        ],
+        "trainingHours": 26,
+        "source": "historical",
+        "validation": {
+          "days": 0,
+          "hours": 0,
+          "baselineWape": null,
+          "candidateWape": null
+        }
+      }
+    },
+    {
+      "date": "2026-10-05",
+      "baseline": {
+        "hours": 13,
+        "actualKwh": 4491.719999999999,
+        "predictedKwh": 4767.105546298963,
+        "totalDifferenceKwh": 275.38554629896333,
+        "totalDifferencePercent": 6.1309597726252605,
+        "matchPercent": 93.80909220179385,
+        "maeKwh": 21.39063413489121,
+        "rmseKwh": 26.63445234909139,
+        "biasKwh": 21.183503561458718,
+        "wapePercent": 6.190907798206161
+      },
+      "candidate": {
+        "hours": 13,
+        "actualKwh": 4491.719999999999,
+        "predictedKwh": 4767.105546298963,
+        "totalDifferenceKwh": 275.38554629896333,
+        "totalDifferencePercent": 6.1309597726252605,
+        "matchPercent": 93.80909220179385,
+        "maeKwh": 21.39063413489121,
+        "rmseKwh": 26.63445234909139,
+        "biasKwh": 21.183503561458718,
+        "wapePercent": 6.190907798206161
+      },
+      "calibration": {
+        "version": "hourly-wape-v1",
+        "status": "insufficient",
+        "factor": 1,
+        "candidateFactor": 0.9759385034713269,
+        "trainedAt": "2026-10-04T18:00:00.000Z",
+        "trainingDays": [
+          "2026-10-01",
+          "2026-10-02",
+          "2026-10-03"
+        ],
+        "trainingHours": 39,
+        "source": "historical",
+        "validation": {
+          "days": 0,
+          "hours": 0,
+          "baselineWape": null,
+          "candidateWape": null
+        }
+      }
+    },
+    {
+      "date": "2026-10-06",
+      "baseline": {
+        "hours": 13,
+        "actualKwh": 4448.94,
+        "predictedKwh": 4792.091341292484,
+        "totalDifferenceKwh": 343.1513412924841,
+        "totalDifferencePercent": 7.713103375017064,
+        "matchPercent": 92.15012427786499,
+        "maeKwh": 26.86432776556564,
+        "rmseKwh": 32.06969887268394,
+        "biasKwh": 26.39625702249878,
+        "wapePercent": 7.849875722135012
+      },
+      "candidate": {
+        "hours": 13,
+        "actualKwh": 4448.94,
+        "predictedKwh": 4792.091341292484,
+        "totalDifferenceKwh": 343.1513412924841,
+        "totalDifferencePercent": 7.713103375017064,
+        "matchPercent": 92.15012427786499,
+        "maeKwh": 26.86432776556564,
+        "rmseKwh": 32.06969887268394,
+        "biasKwh": 26.39625702249878,
+        "wapePercent": 7.849875722135012
+      },
+      "calibration": {
+        "version": "hourly-wape-v1",
+        "status": "insufficient",
+        "factor": 1,
+        "candidateFactor": 0.9683260918670611,
+        "trainedAt": "2026-10-05T18:00:00.000Z",
+        "trainingDays": [
+          "2026-10-01",
+          "2026-10-02",
+          "2026-10-03",
+          "2026-10-04"
+        ],
+        "trainingHours": 52,
+        "source": "historical",
+        "validation": {
+          "days": 0,
+          "hours": 0,
+          "baselineWape": null,
+          "candidateWape": null
+        }
+      }
+    },
+    {
+      "date": "2026-10-07",
+      "baseline": {
+        "hours": 13,
+        "actualKwh": 4076.8300000000004,
+        "predictedKwh": 4383.242614682987,
+        "totalDifferenceKwh": 306.4126146829866,
+        "totalDifferencePercent": 7.515952705484079,
+        "matchPercent": 91.69196645037434,
+        "maeKwh": 26.054184935477245,
+        "rmseKwh": 34.6109081622408,
+        "biasKwh": 23.570201129460507,
+        "wapePercent": 8.30803354962567
+      },
+      "candidate": {
+        "hours": 13,
+        "actualKwh": 4076.8300000000004,
+        "predictedKwh": 4383.242614682987,
+        "totalDifferenceKwh": 306.4126146829866,
+        "totalDifferencePercent": 7.515952705484079,
+        "matchPercent": 91.69196645037434,
+        "maeKwh": 26.054184935477245,
+        "rmseKwh": 34.6109081622408,
+        "biasKwh": 23.570201129460507,
+        "wapePercent": 8.30803354962567
+      },
+      "calibration": {
+        "version": "hourly-wape-v1",
+        "status": "insufficient",
+        "factor": 1,
+        "candidateFactor": 0.9593097180933401,
+        "trainedAt": "2026-10-06T18:00:00.000Z",
+        "trainingDays": [
+          "2026-10-01",
+          "2026-10-02",
+          "2026-10-03",
+          "2026-10-04",
+          "2026-10-05"
+        ],
+        "trainingHours": 65,
+        "source": "historical",
+        "validation": {
+          "days": 1,
+          "hours": 13,
+          "baselineWape": 6.190907798206161,
+          "candidateWape": 3.6394383008164604
+        }
+      }
+    },
+    {
+      "date": "2026-10-08",
+      "baseline": {
+        "hours": 13,
+        "actualKwh": 3366.52,
+        "predictedKwh": 3397.3447231717364,
+        "totalDifferenceKwh": 30.8247231717362,
+        "totalDifferencePercent": 0.9156257254297078,
+        "matchPercent": 58.43794594789086,
+        "maeKwh": 107.63037400577421,
+        "rmseKwh": 152.5789432454762,
+        "biasKwh": 2.3711325516720154,
+        "wapePercent": 41.56205405210914
+      },
+      "candidate": {
+        "hours": 13,
+        "actualKwh": 3366.52,
+        "predictedKwh": 3397.3447231717364,
+        "totalDifferenceKwh": 30.8247231717362,
+        "totalDifferencePercent": 0.9156257254297078,
+        "matchPercent": 58.43794594789086,
+        "maeKwh": 107.63037400577421,
+        "rmseKwh": 152.5789432454762,
+        "biasKwh": 2.3711325516720154,
+        "wapePercent": 41.56205405210914
+      },
+      "calibration": {
+        "version": "hourly-wape-v1",
+        "status": "insufficient",
+        "factor": 1,
+        "candidateFactor": 0.9544142951169781,
+        "trainedAt": "2026-10-07T18:00:00.000Z",
+        "trainingDays": [
+          "2026-10-01",
+          "2026-10-02",
+          "2026-10-03",
+          "2026-10-04",
+          "2026-10-05",
+          "2026-10-06"
+        ],
+        "trainingHours": 78,
+        "source": "historical",
+        "validation": {
+          "days": 2,
+          "hours": 26,
+          "baselineWape": 7.016422777579499,
+          "candidateWape": 4.054088424069975
+        }
+      }
+    },
+    {
+      "date": "2026-10-09",
+      "baseline": {
+        "hours": 12,
+        "actualKwh": 1717.2200000000003,
+        "predictedKwh": 2339.2640141632,
+        "totalDifferenceKwh": 622.0440141632,
+        "totalDifferencePercent": 36.223897588148276,
+        "matchPercent": 42.00933395851856,
+        "maeKwh": 82.98560961646065,
+        "rmseKwh": 99.43209614631957,
+        "biasKwh": 51.83700118026667,
+        "wapePercent": 57.99066604148144
+      },
+      "candidate": {
+        "hours": 12,
+        "actualKwh": 1717.2200000000003,
+        "predictedKwh": 2223.8932463769324,
+        "totalDifferenceKwh": 506.67324637693235,
+        "totalDifferencePercent": 29.505435900870726,
+        "matchPercent": 44.77547490254683,
+        "maeKwh": 79.02721582320711,
+        "rmseKwh": 92.40671659497177,
+        "biasKwh": 42.22277053141103,
+        "wapePercent": 55.22452509745317
+      },
+      "calibration": {
+        "version": "hourly-wape-v1",
+        "status": "accepted",
+        "factor": 0.9506807409989856,
+        "candidateFactor": 0.9506807409989856,
+        "trainedAt": "2026-10-08T18:00:00.000Z",
+        "trainingDays": [
+          "2026-10-01",
+          "2026-10-02",
+          "2026-10-03",
+          "2026-10-04",
+          "2026-10-05",
+          "2026-10-06",
+          "2026-10-07"
+        ],
+        "trainingHours": 91,
+        "source": "historical",
+        "validation": {
+          "days": 3,
+          "hours": 39,
+          "baselineWape": 7.420930677627896,
+          "candidateWape": 4.351533345973223
+        }
+      }
+    },
+    {
+      "date": "2026-10-10",
+      "baseline": {
+        "hours": 13,
+        "actualKwh": 2627.5399999999995,
+        "predictedKwh": 3087.0811482967074,
+        "totalDifferenceKwh": 459.54114829670715,
+        "totalDifferencePercent": 17.489406376181037,
+        "matchPercent": 79.41035047417887,
+        "maeKwh": 41.61548285775081,
+        "rmseKwh": 76.7618731714538,
+        "biasKwh": 35.3493190997467,
+        "wapePercent": 20.589649525821134
+      },
+      "candidate": {
+        "hours": 13,
+        "actualKwh": 2627.5399999999995,
+        "predictedKwh": 2934.8285935867134,
+        "totalDifferenceKwh": 307.2885935867128,
+        "totalDifferencePercent": 11.694915913238727,
+        "matchPercent": 81.58539762601384,
+        "maeKwh": 37.21931101672583,
+        "rmseKwh": 69.06092249246657,
+        "biasKwh": 23.637584122054832,
+        "wapePercent": 18.41460237398616
+      },
+      "calibration": {
+        "version": "hourly-wape-v1",
+        "status": "accepted",
+        "factor": 0.9506807409989856,
+        "candidateFactor": 0.9506807409989856,
+        "trainedAt": "2026-10-09T18:00:00.000Z",
+        "trainingDays": [
+          "2026-10-01",
+          "2026-10-02",
+          "2026-10-03",
+          "2026-10-04",
+          "2026-10-05",
+          "2026-10-06",
+          "2026-10-07",
+          "2026-10-08"
+        ],
+        "trainingHours": 104,
+        "source": "historical",
+        "validation": {
+          "days": 4,
+          "hours": 52,
+          "baselineWape": 14.436110396308402,
+          "candidateWape": 11.616705937293757
+        }
+      }
+    },
+    {
+      "date": "2026-10-11",
+      "baseline": {
+        "hours": 13,
+        "actualKwh": 1763.0500000000002,
+        "predictedKwh": 1664.0676666069032,
+        "totalDifferenceKwh": -98.98233339309645,
+        "totalDifferencePercent": -5.614266946093216,
+        "matchPercent": 60.51448598992021,
+        "maeKwh": 53.54995036574706,
+        "rmseKwh": 68.95792756110976,
+        "biasKwh": -7.614025645622804,
+        "wapePercent": 39.48551401007979
+      },
+      "candidate": {
+        "hours": 13,
+        "actualKwh": 1763.0500000000002,
+        "predictedKwh": 1580.7310193404887,
+        "totalDifferenceKwh": -182.31898065951106,
+        "totalDifferencePercent": -10.34111231442733,
+        "matchPercent": 59.178693343086344,
+        "maeKwh": 55.3615420780551,
+        "rmseKwh": 72.11796320617043,
+        "biasKwh": -14.024536973808543,
+        "wapePercent": 40.821306656913656
+      },
+      "calibration": {
+        "version": "hourly-wape-v1",
+        "status": "accepted",
+        "factor": 0.9499199167565456,
+        "candidateFactor": 0.9499199167565456,
+        "trainedAt": "2026-10-10T18:00:00.000Z",
+        "trainingDays": [
+          "2026-10-01",
+          "2026-10-02",
+          "2026-10-03",
+          "2026-10-04",
+          "2026-10-05",
+          "2026-10-06",
+          "2026-10-07",
+          "2026-10-08",
+          "2026-10-09"
+        ],
+        "trainingHours": 116,
+        "source": "historical",
+        "validation": {
+          "days": 5,
+          "hours": 64,
+          "baselineWape": 18.56802596475343,
+          "candidateWape": 15.753674486845862
+        }
+      }
+    }
+  ],
+  "calibrationForNextDay": {
+    "version": "hourly-wape-v1",
+    "status": "accepted",
+    "factor": 0.9494969404246154,
+    "candidateFactor": 0.9494969404246154,
+    "trainedAt": "2026-10-11T18:42:43.810Z",
+    "trainingDays": [
+      "2026-10-01",
+      "2026-10-02",
+      "2026-10-03",
+      "2026-10-04",
+      "2026-10-05",
+      "2026-10-06",
+      "2026-10-07",
+      "2026-10-08",
+      "2026-10-09",
+      "2026-10-10"
+    ],
+    "trainingHours": 129,
+    "source": "historical",
+    "validation": {
+      "days": 6,
+      "hours": 77,
+      "baselineWape": 18.824283174980952,
+      "candidateWape": 16.090968714172263
+    }
+  },
+  "limitations": [
+    "Retrospective diagnostic, not an independent holdout: October errors were inspected during development.",
+    "Rolling folds use only earlier available measurement revisions. Model selection still happened afterwards.",
+    "One bounded gain corrects systematic bias; it cannot repair wrong cloud arrival times.",
+    "Replay uses GFS temperature/wind; live uses MET. Validate new issued predictions prospectively."
+  ],
+  "hashes": {
+    "predictions": "2c951f817850fc9e339c8c9430f0e08e0ea260e2d708ac89774a73ba54412728",
+    "revisions": "6e4a25fcc9faa6fbbd97f181d384a454c34b7d039be9d120fc1440dd53321bad"
+  }
+}

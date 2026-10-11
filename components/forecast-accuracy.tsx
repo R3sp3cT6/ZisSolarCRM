@@ -25,7 +25,7 @@ export function ForecastAccuracy({ comparison }: { comparison: Comparison }) {
   if (comparison.status === 'unavailable' || !comparison.evaluations?.length)
     return (
       <span className="forecast-match-empty">
-        {t('Совпаѓање на моделот')} <strong>—</strong>
+        {t('Часовна грешка — WAPE')} <strong>—</strong>
         <small>
           {t(
             comparison.status === 'unavailable'
@@ -48,16 +48,33 @@ export function ForecastAccuracy({ comparison }: { comparison: Comparison }) {
           <strong>{mwh(score.predictedKwh)} MWh</strong>
         </span>
         <span className="forecast-match-value">
-          {t('Совпаѓање')}{' '}
+          {t('Разлика во збирот')}{' '}
           <strong>
-            {number(score.matchPercent)}
-            {score.matchPercent !== null && '%'}
+            {score.totalDifferenceKwh !== null &&
+              score.totalDifferenceKwh > 0 &&
+              '+'}
+            {mwh(score.totalDifferenceKwh)} MWh
+          </strong>
+          <span>
+            (
+            {score.totalDifferencePercent !== null &&
+              score.totalDifferencePercent > 0 &&
+              '+'}
+            {number(score.totalDifferencePercent)}
+            {score.totalDifferencePercent !== null && '%'})
+          </span>
+        </span>
+        <span className="forecast-match-value forecast-wape">
+          {t('Часовна грешка — WAPE')}{' '}
+          <strong>
+            {number(score.wapePercent)}
+            {score.wapePercent !== null && '%'}
           </strong>
           <Info size={14} aria-hidden="true" />
         </span>
         <small>
           {score.hours > 0
-            ? `${score.hours} ${t('споредени часови')}`
+            ? `${t('Реално во споредбата')}: ${mwh(score.actualKwh)} MWh · ${score.hours} ${t('споредени часови')} · ${t('Помал WAPE е подобро.')}`
             : t('Нема споредливи мерења.')}
         </small>
       </PopoverTrigger>
@@ -84,11 +101,20 @@ export function ForecastAccuracy({ comparison }: { comparison: Comparison }) {
             <dd>{mwh(score.predictedKwh)} MWh</dd>
           </div>
           <div>
+            <dt>{t('Разлика во збирот')}</dt>
+            <dd>
+              {score.totalDifferenceKwh !== null &&
+                score.totalDifferenceKwh > 0 &&
+                '+'}
+              {mwh(score.totalDifferenceKwh)} MWh
+            </dd>
+          </div>
+          <div>
             <dt>{t('Просечно отстапување по час')}</dt>
             <dd>{mwh(score.maeKwh)} MWh</dd>
           </div>
           <div>
-            <dt>{t('Релативна грешка')} (WAPE)</dt>
+            <dt>{t('Часовна грешка — WAPE')}</dt>
             <dd>
               {number(score.wapePercent)}
               {score.wapePercent !== null && '%'}
@@ -102,10 +128,15 @@ export function ForecastAccuracy({ comparison }: { comparison: Comparison }) {
         </p>
         <p>
           {t(
-            'Совпаѓање = max(0, 100 − WAPE). WAPE е збирот на апсолутните часовни грешки / реалното производство × 100. Ова е описна оценка за споредените часови, а не гаранција за идната точност.',
+            'Разликата во збирот е предвидено − реално; процентот е во однос на реалното. Плус значи повеќе предвидено, минус помалку. Се споредуваат истите часови, па збирот може да се разликува од тековниот Huawei бројач.',
           )}
         </p>
-        {score.matchPercent === null && (
+        <p>
+          {t(
+            'WAPE = збир на |предвидено − реално| за секој час / збир на реалното × 100. Утринските и пладневните грешки не се поништуваат. Целта е помал часовен WAPE, не само близок дневен збир.',
+          )}
+        </p>
+        {score.wapePercent === null && (
           <p>
             {t(
               'Процентот се прикажува кога има споредливи часови со вкупно реално производство над нула.',

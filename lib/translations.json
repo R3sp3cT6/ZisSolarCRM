@@ -420,5 +420,11 @@
   "Релативна грешка": "Relative error",
   "Само споредени завршени часови од избраниот период. Недостасувачките мерења, тековниот час и ноќните двојни нули се исклучени.": "Only paired completed hours in the selected period. Missing readings, the current hour and nighttime double zeros are excluded.",
   "Совпаѓање = max(0, 100 − WAPE). WAPE е збирот на апсолутните часовни грешки / реалното производство × 100. Ова е описна оценка за споредените часови, а не гаранција за идната точност.": "Match = max(0, 100 − WAPE). WAPE is total absolute hourly error / actual production × 100. This describes the paired hours and does not guarantee future accuracy.",
-  "Процентот се прикажува кога има споредливи часови со вкупно реално производство над нула.": "The percentage is shown when comparable hours have total actual production above zero."
+  "Процентот се прикажува кога има споредливи часови со вкупно реално производство над нула.": "The percentage is shown when comparable hours have total actual production above zero.",
+  "Часовна грешка — WAPE": "Hourly error — WAPE",
+  "Разлика во збирот": "Total difference",
+  "Реално во споредбата": "Actual in comparison",
+  "Помал WAPE е подобро.": "Lower WAPE is better.",
+  "Разликата во збирот е предвидено − реално; процентот е во однос на реалното. Плус значи повеќе предвидено, минус помалку. Се споредуваат истите часови, па збирот може да се разликува од тековниот Huawei бројач.": "Total difference is predicted − actual; the percentage is relative to actual. Plus means overprediction, minus means underprediction. The same hours are compared, so the total can differ from the current Huawei meter.",
+  "WAPE = збир на |предвидено − реално| за секој час / збир на реалното × 100. Утринските и пладневните грешки не се поништуваат. Целта е помал часовен WAPE, не само близок дневен збир.": "WAPE = sum of |predicted − actual| for each hour / actual total × 100. Morning and midday errors do not cancel. The target is lower hourly WAPE, not just a close daily total."
 }

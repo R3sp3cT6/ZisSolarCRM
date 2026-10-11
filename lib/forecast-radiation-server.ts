@@ -3,6 +3,7 @@ import type { AtmosphereSource, ForecastConfig } from './forecast-model';
 import {
   GFS_RADIATION_FIELD,
   parseGfsRadiation,
+  radiationTimeAxis,
   type RadiationHour,
 } from './forecast-radiation';
 import { cacheRead, cacheWrite, withCacheLock } from './shared-cache';
@@ -59,7 +60,7 @@ export async function fetchRadiation(
     },
   };
   if (c.latitude === null || c.longitude === null) return empty;
-  const key = `forecast-radiation:gfs-v1:${c.latitude.toFixed(4)}:${c.longitude.toFixed(4)}`;
+  const key = `forecast-radiation:gfs-v2:${c.latitude.toFixed(4)}:${c.longitude.toFixed(4)}`;
   try {
     const result = await withCacheLock(
       key,
@@ -90,11 +91,15 @@ export async function fetchRadiation(
             time_end: new Date(run.stamp + 9 * 86400000).toISOString(),
             accept: 'csv',
           });
-          const [csv, das, bounds] = await Promise.all([
+          const [csv, das] = await Promise.all([
             fetchText(ROOT + 'ncss/grid/' + run.path + '?' + query, 50000),
             fetchText(ROOT + 'dodsC/' + run.path + '.das', 300000),
-            fetchText(ROOT + 'dodsC/' + run.path + '.ascii?time_bounds', 20000),
           ]);
+          const axis = radiationTimeAxis(das, run.issuedAt);
+          const bounds = await fetchText(
+            ROOT + 'dodsC/' + run.path + '.ascii?' + axis.bounds,
+            20000,
+          );
           const parsed = parseGfsRadiation(csv, das, bounds, run.issuedAt, c);
           const value: Radiation = {
             hours: parsed.hours,

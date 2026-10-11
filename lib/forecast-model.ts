@@ -16,7 +16,9 @@ import {
   type SolarCalibration,
 } from './forecast-solar';
 
-export const FORECAST_VERSION = 'weather-solar-v3.1';
+import type { HourlyCalibration } from './forecast-hourly-calibration';
+
+export const FORECAST_VERSION = 'weather-solar-v3.2';
 export type ForecastConfig = {
   latitude: number | null;
   longitude: number | null;
@@ -75,6 +77,7 @@ export type ForecastHour = {
   memo: number | null;
   priceSource: 'official' | 'forecast' | 'missing';
   productionKwh: number | null;
+  baseProductionKwh?: number | null;
   exportKwh: number | null;
   revenueEur: number | null;
   productionSource: 'weather' | 'weather-history' | 'history' | 'missing';
@@ -132,7 +135,14 @@ export type ForecastPayload = {
     latestReading: string | null;
   };
   liveScore: { hours: number; mae: number | null };
-  productionScore: { hours: number; mae: number | null; bias: number | null };
+  productionScore: {
+    hours: number;
+    mae: number | null;
+    bias: number | null;
+    wape?: number | null;
+    baselineWape?: number | null;
+  };
+  hourlyCalibration?: HourlyCalibration;
   calibration: SolarCalibration;
   warnings: string[];
 };
@@ -395,6 +405,7 @@ export function makeForecast(input: {
   weather: WeatherHour[];
   now: Date;
   contracts?: readonly ContractTerms[];
+  hourlyCalibration?: HourlyCalibration;
 }) {
   const contracts = input.contracts ?? CONTRACT_SCHEDULE;
   const { config, now } = input,
@@ -424,7 +435,20 @@ export function makeForecast(input: {
             ? weatherAdjustedEnergy(w, config, calibration)
             : null;
       // A weather outage must not silently reintroduce the repeated historical profile.
-      const productionKwh = physical ?? adjusted,
+      const baseProductionKwh = physical ?? adjusted;
+      // The correction was validated for day-ahead GFS empirical production only.
+      // Never feed corrected predictions back into the next fit as its baseline.
+      const factor =
+        i === 0 &&
+        physical === null &&
+        w?.irradianceKind === 'modeled-ghi' &&
+        input.hourlyCalibration?.status === 'accepted'
+          ? input.hourlyCalibration.factor
+          : 1;
+      const productionKwh =
+          baseProductionKwh === null
+            ? null
+            : Math.min(config.acKw ?? Infinity, baseProductionKwh * factor),
         exportKwh =
           productionKwh !== null && history.ratio !== null
             ? productionKwh * history.ratio
@@ -438,6 +462,7 @@ export function makeForecast(input: {
             ? 'forecast'
             : 'missing',
         productionKwh,
+        baseProductionKwh,
         powerKw: productionKwh,
         weather: w ?? null,
         exportKwh,
