@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-10-11T20:50:13.299Z",
+  "diagnostic": {
+    "id": "three-model-radiation-diagnostic-v1-f62662307183963f8e82",
+    "readback": "exact"
+  },
+  "prospective": {
+    "id": "arpege-hourly-prospective-v1-1137b24a530fc9f5927f",
+    "readback": "exact"
+  },
+  "prospectiveDate": "2026-10-12",
+  "prospectiveHours": 24,
+  "prospectiveArpegeMwh": 3.7168950017465816,
+  "productionModelsChanged": false,
+  "automaticProviderCollectionAdded": false
+}

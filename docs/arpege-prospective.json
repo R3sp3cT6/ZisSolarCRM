@@ -1,0 +1,182 @@
+{
+  "date": "2026-10-12",
+  "issuedAt": "2026-10-11T20:50:12.284Z",
+  "kind": "prospective-research-only",
+  "modelVersion": "arpege-hourly-plant-v1",
+  "configVersion": "weather-v2.1-huawei-nominal-ac-20261011",
+  "weatherRunAt": "2026-10-11T12:00:00Z",
+  "comparisonTrialId": "ee167c7a-4395-4eb1-9e55-3811be823022",
+  "comparisonIssuedAt": "2026-10-11T20:42:36.519Z",
+  "comparisonIconRunAt": "2026-10-11T12:00:00.000Z",
+  "note": "Original hourly ARPEGE radiation with already available MET thermal inputs and plant calibration. Comparison models retain their own origins; not a controlled same-cycle comparison. Not active in the CRM forecast.",
+  "hours": [
+    {
+      "start": "2026-10-11T22:00:00.000Z",
+      "predictedKwh": 0,
+      "ghi": 0,
+      "comparisonIconKwh": 0.011116912959992703,
+      "comparisonV32Kwh": 0
+    },
+    {
+      "start": "2026-10-11T23:00:00.000Z",
+      "predictedKwh": 0,
+      "ghi": 0,
+      "comparisonIconKwh": 0.015643605094361232,
+      "comparisonV32Kwh": 0
+    },
+    {
+      "start": "2026-10-12T00:00:00.000Z",
+      "predictedKwh": 0,
+      "ghi": 0,
+      "comparisonIconKwh": 0,
+      "comparisonV32Kwh": 0
+    },
+    {
+      "start": "2026-10-12T01:00:00.000Z",
+      "predictedKwh": 0,
+      "ghi": 0,
+      "comparisonIconKwh": 0.02089762564445415,
+      "comparisonV32Kwh": 0
+    },
+    {
+      "start": "2026-10-12T02:00:00.000Z",
+      "predictedKwh": 0,
+      "ghi": 0,
+      "comparisonIconKwh": 0.03986135792807493,
+      "comparisonV32Kwh": 0
+    },
+    {
+      "start": "2026-10-12T03:00:00.000Z",
+      "predictedKwh": 0,
+      "ghi": 0,
+      "comparisonIconKwh": 0,
+      "comparisonV32Kwh": 0
+    },
+    {
+      "start": "2026-10-12T04:00:00.000Z",
+      "predictedKwh": 0.3478808654140133,
+      "ghi": 0.5179904513888889,
+      "comparisonIconKwh": 0.3719457670029847,
+      "comparisonV32Kwh": 0.14063298171860103
+    },
+    {
+      "start": "2026-10-12T05:00:00.000Z",
+      "predictedKwh": 41.24317161218666,
+      "ghi": 59.03073025173611,
+      "comparisonIconKwh": 31.747324891473564,
+      "comparisonV32Kwh": 24.582509314746233
+    },
+    {
+      "start": "2026-10-12T06:00:00.000Z",
+      "predictedKwh": 223.0703199958268,
+      "ghi": 246.6175759548611,
+      "comparisonIconKwh": 158.30829920512898,
+      "comparisonV32Kwh": 218.07217355485614
+    },
+    {
+      "start": "2026-10-12T07:00:00.000Z",
+      "predictedKwh": 398.1942510687933,
+      "ghi": 416.1514236111111,
+      "comparisonIconKwh": 312.1250122255737,
+      "comparisonV32Kwh": 364.6573823682025
+    },
+    {
+      "start": "2026-10-12T08:00:00.000Z",
+      "predictedKwh": 524.9585192745044,
+      "ghi": 546.3762022569445,
+      "comparisonIconKwh": 405.35899377636065,
+      "comparisonV32Kwh": 468.9261643519857
+    },
+    {
+      "start": "2026-10-12T09:00:00.000Z",
+      "predictedKwh": 566.5427156549965,
+      "ghi": 586.8011111111111,
+      "comparisonIconKwh": 474.2576488349038,
+      "comparisonV32Kwh": 372.91291621891594
+    },
+    {
+      "start": "2026-10-12T10:00:00.000Z",
+      "predictedKwh": 565.6453751502535,
+      "ghi": 587.2979166666667,
+      "comparisonIconKwh": 361.5587746995261,
+      "comparisonV32Kwh": 383.5439545772898
+    },
+    {
+      "start": "2026-10-12T11:00:00.000Z",
+      "predictedKwh": 516.8627571377187,
+      "ghi": 534.3409027777777,
+      "comparisonIconKwh": 285.3728784238614,
+      "comparisonV32Kwh": 363.31566166445947
+    },
+    {
+      "start": "2026-10-12T12:00:00.000Z",
+      "predictedKwh": 398.7249905786067,
+      "ghi": 405.3020746527778,
+      "comparisonIconKwh": 364.2557226808787,
+      "comparisonV32Kwh": 240.6867477604698
+    },
+    {
+      "start": "2026-10-12T13:00:00.000Z",
+      "predictedKwh": 302.8572606135694,
+      "ghi": 306.66545138888887,
+      "comparisonIconKwh": 305.0580313431674,
+      "comparisonV32Kwh": 180.35825005107608
+    },
+    {
+      "start": "2026-10-12T14:00:00.000Z",
+      "predictedKwh": 145.29320421681757,
+      "ghi": 149.59480902777779,
+      "comparisonIconKwh": 140.43285226671458,
+      "comparisonV32Kwh": 101.55264833898451
+    },
+    {
+      "start": "2026-10-12T15:00:00.000Z",
+      "predictedKwh": 33.15455557789424,
+      "ghi": 35.555546875,
+      "comparisonIconKwh": 27.597131478009025,
+      "comparisonV32Kwh": 21.576860071042045
+    },
+    {
+      "start": "2026-10-12T16:00:00.000Z",
+      "predictedKwh": 0,
+      "ghi": 0,
+      "comparisonIconKwh": 0,
+      "comparisonV32Kwh": 0
+    },
+    {
+      "start": "2026-10-12T17:00:00.000Z",
+      "predictedKwh": 0,
+      "ghi": 0,
+      "comparisonIconKwh": 0.13545791828411313,
+      "comparisonV32Kwh": 0
+    },
+    {
+      "start": "2026-10-12T18:00:00.000Z",
+      "predictedKwh": 0,
+      "ghi": 0,
+      "comparisonIconKwh": 0,
+      "comparisonV32Kwh": 0
+    },
+    {
+      "start": "2026-10-12T19:00:00.000Z",
+      "predictedKwh": 0,
+      "ghi": 0,
+      "comparisonIconKwh": 0.10571484193625244,
+      "comparisonV32Kwh": 0
+    },
+    {
+      "start": "2026-10-12T20:00:00.000Z",
+      "predictedKwh": 0,
+      "ghi": 0,
+      "comparisonIconKwh": 0,
+      "comparisonV32Kwh": 0
+    },
+    {
+      "start": "2026-10-12T21:00:00.000Z",
+      "predictedKwh": 0,
+      "ghi": 0,
+      "comparisonIconKwh": 0.06324265605941802,
+      "comparisonV32Kwh": 0
+    }
+  ]
+}
