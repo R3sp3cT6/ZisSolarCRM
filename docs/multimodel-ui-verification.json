@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-10-11T21:09:25Z",
+  "deployment": "dpl_3q6ZauShNAsjanLSoYzASLXXaZrg",
+  "codeCommit": "8dd7c6e",
+  "url": "https://zissolar.vercel.app/?view=forecast",
+  "authenticatedGet": "displayed persisted model totals",
+  "adminRefresh": "completed using recent cached generation",
+  "desktop": "five model rows, native hourly label, original cycles and null initial WAPE visible",
+  "mobileViewport": { "width": 390, "height": 844 },
+  "mobileDocumentWidth": 375,
+  "languages": ["mk", "en"],
+  "horizontalOverflow": false,
+  "consoleErrors": [],
+  "knownWarnings": "Existing Recharts initial width/height measurement warnings",
+  "screenshots": ["outputs/forecast-multimodel-desktop.png", "outputs/forecast-multimodel-mobile.png"],
+  "cleanup": "Macedonian restored, viewport reset and test tab closed",
+  "accuracy": "No prospective outcomes yet; weights null, 0 matched hours. This verifies operation, not improved accuracy."
+}

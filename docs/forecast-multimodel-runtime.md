@@ -74,6 +74,15 @@ Exact SQL payload readback and original inputs verified with runtime DB role;
 warm dashboard + official forecast + trial + model comparison uses 0 SQL calls.
 Deployment/UI verification is recorded in the runtime receipt and project context.
 
+Production release: code `a9691d2` plus browser date-format correction `8dd7c6e`,
+deployment `dpl_3q6ZauShNAsjanLSoYzASLXXaZrg` READY. Authenticated browser GET
+and administrator refresh show the persisted values; anonymous API is 401,
+login is 200. Desktop and 390px mobile layouts were checked in Macedonian and
+English with no horizontal overflow or console errors. Existing chart initial
+measurement warnings remain. [UI receipt](multimodel-ui-verification.json).
+The source downloads above were measured locally; a fresh Vercel cold-source
+download is not claimed by this cached production endpoint verification.
+
 Fixture metadata: `tests/fixtures/*-solar-test.grib2` are synthetic 2×2 regular
 GRIB2 grids generated with ecCodes, 11 Oct 2026 12 UTC / lead 1, values
 100/200/300/400 W/m² (ARPEGE multiplied by 3,600 for J/m²). They are not observed

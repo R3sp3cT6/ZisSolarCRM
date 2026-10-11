@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-11T21:02:44.431Z",
+  "checkedAt": "2026-10-11T21:09:25.143Z",
   "runtimeRole": "zis_app_runtime",
   "runId": "057bd63b-9a3c-4d3a-90ff-3aa86f2cc2b1",
   "issuedAt": "2026-10-11T21:02:43.100Z",
@@ -47,5 +47,8 @@
   "sourceBytes": {
     "arpege": 237489126,
     "gfs": 21456970
-  }
+  },
+  "deployment": "dpl_3q6ZauShNAsjanLSoYzASLXXaZrg",
+  "loginStatus": 200,
+  "anonymousStatus": 401
 }
