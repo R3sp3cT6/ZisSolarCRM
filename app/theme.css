@@ -4,6 +4,7 @@
   --chart-label: #708a95;
   --chart-green: #159c75;
   --chart-blue: #588de3;
+  --chart-forecast: #c9787e;
   --chart-bar: #abdccd;
   --chart-zero: #8ca09b;
 }
@@ -30,6 +31,9 @@
 .topbar { padding-right: 84px; }
 .green-line { background: var(--chart-green); }
 .blue-line { background: var(--chart-blue); }
+.legend-line.forecast-line { background: none; border-top: 2px dashed var(--chart-forecast); height: 0; width: 22px; border-radius: 0; }
+.forecast-comparison-note { margin: 12px 0 0; color: var(--muted-foreground); font-size: 11px; line-height: 1.6; }
+.forecast-comparison-note span { display: block; }
 
 :root.dark {
   color-scheme: dark;
@@ -47,6 +51,7 @@
   --chart-label: #b1c5dc;
   --chart-green: #43e3b5;
   --chart-blue: #6cc4ff;
+  --chart-forecast: #e4a0a5;
   --chart-bar: #25bba6;
   --chart-zero: #91abc5;
 }

@@ -386,5 +386,12 @@
   "Huawei поврзувањето не е конфигурирано.": "The Huawei connection is not configured.",
   "Преземањето не заврши целосно. Обидете се повторно.": "The download did not fully complete. Try again.",
   "Прогноза": "Forecast",
-  "Проценка на производство, MEMO цени и приход за следните 7 дена.": "Estimated production, MEMO prices and revenue for the next 7 days."
+  "Проценка на производство, MEMO цени и приход за следните 7 дена.": "Estimated production, MEMO prices and revenue for the next 7 days.",
+  "Прогнозирано производство · MWh": "Forecast production · MWh",
+  "Прогноза (MWh)": "Forecast (MWh)",
+  "Споредбата со прогнозата моментално не е достапна.": "Forecast comparison is temporarily unavailable.",
+  "За овој период нема однапред зачувана временска прогноза за производство.": "No weather-based production forecast was saved in advance for this period.",
+  "Првата зачувана прогноза пред секој час. Празнините означуваат недостасувачка прогноза.": "First forecast saved before each hour. Gaps indicate missing forecasts.",
+  "Се прикажуваат само целосно прогнозирани денови или месеци.": "Only days or months with complete forecasts are shown.",
+  "Прогнозата е за цел час; тековното мерење сè уште се дополнува.": "Forecasts cover a full hour; the current reading is still accumulating."
 }

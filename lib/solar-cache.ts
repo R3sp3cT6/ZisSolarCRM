@@ -1,4 +1,6 @@
 import 'server-only';
+import {readForecastComparison} from './forecast-comparison-server';
+import {attachForecastComparison} from './forecast-comparison';
 import {cacheRead,cacheWrite,sharedCache,withCacheLock} from './shared-cache';
 import {archiveDue,LIVE_INTERVAL_MS,type Activity} from './cache-policy';
 import {loadDashboardSnapshot,saveReadings,getDashboard} from './solar-server';
@@ -93,6 +95,6 @@ export async function getCachedDashboard(owner:string,day:string,period:Period,h
   }else snapshot=loaded.value;
  }
  if(snapshot.owner!==owner)throw Error('Невалиден кеш за централата.');
- const [state,batches]=await Promise.all([cacheRead<FusionState>('fusion:'+owner),cacheRead<PendingBatch[]>(pendingKey(owner))]);
- return {...buildDashboard(overlayPending(snapshot,batches??[],state),day,period,hour),storage:'cache' as const,archivedAt:snapshot.savedAt};
+ const [state,batches,forecast]=await Promise.all([cacheRead<FusionState>('fusion:'+owner),cacheRead<PendingBatch[]>(pendingKey(owner)),readForecastComparison(owner)]);
+ return {...attachForecastComparison(buildDashboard(overlayPending(snapshot,batches??[],state),day,period,hour),forecast),storage:'cache' as const,archivedAt:snapshot.savedAt};
 }

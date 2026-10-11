@@ -1,5 +1,7 @@
 import {buildDashboard,type DashboardSnapshot,type DbReading,type DbPrice} from './dashboard';
 import 'server-only';
+import {readForecastComparison} from './forecast-comparison-server';
+import {attachForecastComparison} from './forecast-comparison';
 import {db} from '../db/index';
 export {db} from '../db/index';
 const env=process.env;
@@ -57,4 +59,7 @@ export async function loadDashboardSnapshot(owner:string):Promise<DashboardSnaps
   fusionState:{live:state.live,liveHour:state.liveHour,lastSuccess:state.lastSuccess,error:state.error},
   configured:!!(env.FUSIONSOLAR_PASSWORD&&env.FUSIONSOLAR_OWNER===owner),savedAt:new Date().toISOString()};
 }
-export async function getDashboard(owner:string,day:string,period:Period,hour?:string){return buildDashboard(await loadDashboardSnapshot(owner),day,period,hour);}
+export async function getDashboard(owner:string,day:string,period:Period,hour?:string){
+ const [snapshot,forecast]=await Promise.all([loadDashboardSnapshot(owner),readForecastComparison(owner)]);
+ return attachForecastComparison(buildDashboard(snapshot,day,period,hour),forecast);
+}

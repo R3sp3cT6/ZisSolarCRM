@@ -6,6 +6,7 @@ import {localDate,slotsForDay} from '../lib/energy.ts';
 let entries=new Map(),locks=new Set(),loads=0,syncs=0,telemetryCalls=0,saves=[],failSave=false,failAck=false;
 const read=async key=>structuredClone(entries.get(key)??null);
 const write=async(key,value)=>{if(failAck&&key==='pending:owner'&&value.length===0){failAck=false;throw Error('ack interrupted');}entries.set(key,structuredClone(value));};
+mock.module('../lib/forecast-comparison-server.ts',{namedExports:{readForecastComparison:async()=>({hours:[]})}});
 mock.module('../lib/shared-cache.ts',{namedExports:{sharedCache:()=>({}),cacheRead:read,cacheWrite:write,withCacheLock:async(key,work)=>{if(locks.has(key))return {busy:true};locks.add(key);try{return {busy:false,value:await work()};}finally{locks.delete(key);}}}});
 const snapshot=()=>({owner:'owner',plant:{name:'Plant',capacity_kw:800},readings:[],prices:[],reports:[],syncs:[],fusionState:{},configured:true,savedAt:new Date().toISOString()});
 mock.module('../lib/solar-server.ts',{namedExports:{loadDashboardSnapshot:async()=>{loads++;return snapshot();},getDashboard:()=>{throw Error('Unexpected database read');},saveReadings:async(owner,rows,source,preserve,fillOnly)=>{assert.equal(owner,'owner');assert.equal(preserve,true);assert.equal(fillOnly,true);if(failSave)throw Error('database unavailable');saves.push(rows);return rows.length;}}});
