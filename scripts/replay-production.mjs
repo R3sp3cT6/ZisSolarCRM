@@ -77,7 +77,7 @@ const payload = {
 };
 const inputs = {
   method:
-    'Fixed current solar model replay; archived prior-day 12 UTC GFS runs; 18 UTC information cutoff; point fields at 3-hour resolution, interpolated to hour midpoints; reference atmosphere; no historical fog/aerosol corrections.',
+    'Current solar model retrospective replay; archived prior-day 12 UTC GFS runs; 18 UTC information cutoff. DSWRF original GRIB interval bounds, de-averaged to 3h, clear-sky weighted hourly allocation. Temperature/wind midpoint interpolation. Recent completed daylight-only calibration. No repeated cloud/aerosol correction on surface flux.',
   limitations: [
     'Different weather provider from live MET forecasts: not the live-model accuracy score.',
     'Settings and model selected today; retrospective validation, not a prediction issued historically.',
@@ -92,6 +92,9 @@ for (let date = from; date <= to; date = addDays(date, 1)) {
     readFileSync(join(directory, date + '.json'), 'utf8'),
   );
   assert.equal(archive.day, date);
+  archive.radiation = JSON.parse(
+    readFileSync(join(directory, date + '-radiation.json'), 'utf8'),
+  );
   const { originAt } = backtestOrigin(date);
   const { results: readings } = await connection
     .prepare(`SELECT DISTINCT ON(start) start,

@@ -6,6 +6,8 @@ import {
   type AtmosphereSource,
 } from './forecast-model';
 import { fetchAtmosphere, type AerosolHour } from './forecast-atmosphere';
+import { fetchRadiation } from './forecast-radiation-server';
+import type { RadiationHour } from './forecast-radiation';
 import { cacheRead, cacheWrite, withCacheLock } from './shared-cache';
 import {
   clearSkyIrradiance,
@@ -134,6 +136,8 @@ async function fetchOpenMeteo(config: ForecastConfig, key: string) {
       hours: 0,
     } as AtmosphereSource,
     atmosphereRaw: null,
+    radiation: undefined,
+    radiationRaw: null,
     raw,
   };
 }
@@ -368,6 +372,8 @@ export async function fetchForecastWeather(
       hours: 0,
     } as AtmosphereSource,
     atmosphereRaw: null,
+    radiation: undefined,
+    radiationRaw: null,
   };
   if (!hasCoordinates(config))
     return { ...empty, status: 'missing-settings' as const };
@@ -380,19 +386,48 @@ export async function fetchForecastWeather(
     }
   }
   try {
-    const [weather, atmosphere] = await Promise.all([
+    const [weather, atmosphere, radiation] = await Promise.all([
       fetchMet(config, now),
       fetchAtmosphere(config, now),
+      fetchRadiation(config, now),
     ]);
     return {
       ...weather,
-      hours: applyAtmosphere(weather.hours, atmosphere.hours, config),
+      hours: applyRadiation(
+        applyAtmosphere(weather.hours, atmosphere.hours, config),
+        radiation.hours,
+        radiation.source.issuedAt,
+      ),
       atmosphere: atmosphere.source,
       atmosphereRaw: atmosphere.raw,
+      radiation: radiation.source,
+      radiationRaw: radiation.raw,
     };
   } catch {
     return { ...empty, status: 'failed' as const };
   }
+}
+
+export function applyRadiation(
+  hours: WeatherHour[],
+  radiation: RadiationHour[],
+  issuedAt: string | null,
+): WeatherHour[] {
+  const byStart = new Map(radiation.map((h) => [h.start, h.irradiance]));
+  return hours.map((h) => {
+    const g = byStart.get(h.start);
+    if (h.irradianceKind === 'gti' || g === undefined || !issuedAt) return h;
+    // GFS surface flux already models atmospheric transmission. Do not multiply
+    // it again by cloud fraction, fog or SILAM aerosol attenuation.
+    return {
+      ...h,
+      irradiance: g,
+      irradianceKind: 'modeled-ghi',
+      radiationRunAt: issuedAt,
+      resolutionHours: Math.max(3, h.resolutionHours),
+      aerosolFactor: null,
+    };
+  });
 }
 
 export function applyAtmosphere(

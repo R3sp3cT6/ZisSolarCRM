@@ -431,14 +431,33 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
               </div>
             </div>
           )}
+          {forecast.warnings.includes('modeled-radiation') && (
+            <div className="forecast-notice">
+              <CloudSun size={20} />
+              <div>
+                <strong>
+                  {l(
+                    'Прогнозирано сончево зрачење · NOAA GFS',
+                    'Forecast solar irradiance · NOAA GFS',
+                  )}
+                </strong>
+                <p>
+                  {l(
+                    'Производството го користи прогнозираното зрачење на површината, температурата и ветерот, со одзив од последните целосни дневни Huawei мерења. Зрачењето е во тричасовни интервали, распределено по час според положбата на сонцето. Локалните облаци и сенки сè уште можат да предизвикаат отстапувања.',
+                    'Production uses forecast surface irradiance, temperature and wind, with a response fitted to recent complete daylight Huawei readings. Three-hour irradiance intervals are allocated to hours using solar position. Local clouds and shading can still cause errors.',
+                  )}
+                </p>
+              </div>
+            </div>
+          )}
           {forecast.warnings.includes('estimated-radiation') && (
             <div className="forecast-notice">
               <CloudSun size={20} />
               <div>
                 <strong>
                   {l(
-                    'Облачноста и температурата се вклучени',
-                    'Cloud cover and temperature are included',
+                    'Процена од облачност за часови без директна прогноза за зрачење',
+                    'Cloud-based estimate where irradiance forecasts are unavailable',
                   )}
                 </strong>
                 <p>
@@ -820,7 +839,12 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
                     </span>
                     <strong>
                       {forecast.calibration?.days ?? forecast.historyDays}{' '}
-                      <small>{l('целосни дена', 'complete days')}</small>
+                      <small>
+                        {l(
+                          'дена со целосни сончеви часови',
+                          'days with complete daylight hours',
+                        )}
+                      </small>
                     </strong>
                   </div>
                 </div>
@@ -1121,8 +1145,8 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
               <div>
                 <dt>Huawei</dt>
                 <dd>
-                  {forecast.historyDays}{' '}
-                  {l('целосни дена за профилот', 'complete profile days')} ·{' '}
+                  {forecast.calibration?.days ?? forecast.historyDays}{' '}
+                  {l('дена за сончевиот одзив', 'days for solar response')} ·{' '}
                   {forecast.history.latestReading
                     ? time(forecast.history.latestReading)
                     : '—'}
@@ -1160,6 +1184,37 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
                 <dt>{l('Модел', 'Model')}</dt>
                 <dd>{forecast.version}</dd>
               </div>
+              {forecast.weather.radiation && (
+                <div>
+                  <dt>
+                    <a
+                      href="https://thredds.ucar.edu/thredds/catalog/grib/NCEP/GFS/Global_0p25deg/catalog.html"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      NOAA GFS · UCAR <ArrowUpRight size={12} />
+                    </a>
+                  </dt>
+                  <dd>
+                    {forecast.weather.radiation.status === 'ready' ? (
+                      <>
+                        {l('Издадено', 'Issued')}:{' '}
+                        {time(forecast.weather.radiation.issuedAt!)}
+                        <br />
+                        {l('Мрежна точка', 'Grid point')}:{' '}
+                        {number(forecast.weather.radiation.latitude, 3)},{' '}
+                        {number(forecast.weather.radiation.longitude, 3)} ·
+                        0.25°
+                      </>
+                    ) : (
+                      l(
+                        'Нема свежо зрачење; се користи процена од облачност.',
+                        'No fresh irradiance; using a cloud-based estimate.',
+                      )
+                    )}
+                  </dd>
+                </div>
+              )}
               {forecast.weather.provider === 'met-norway' && (
                 <div>
                   <dt>
@@ -1213,8 +1268,8 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
                 </a>
                 .{' '}
                 {l(
-                  'Податоците се интерполирани; зрачењето и производството се наши пресметки. Издадено',
-                  'Data is interpolated; irradiance and production are our calculations. Issued',
+                  'Температурата и временските услови се интерполирани. Зрачењето е од NOAA GFS кога е достапно, инаку е наша процена од облачност; производството е наша пресметка. MET издадено',
+                  'Temperature and weather conditions are interpolated. Irradiance comes from NOAA GFS where available, otherwise from our cloud estimate; production is our calculation. MET issued',
                 )}
                 :{' '}
                 {forecast.weather.issuedAt

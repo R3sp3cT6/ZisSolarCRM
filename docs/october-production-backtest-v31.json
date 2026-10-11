@@ -1,0 +1,92 @@
+{
+  "id": "386fc06c-5952-4faf-ba01-218896defb39",
+  "createdAt": "2026-10-11T16:02:30.755Z",
+  "from": "2026-10-01",
+  "to": "2026-10-11",
+  "model": "weather-solar-v3.1-gfs-dswrf-replay-v1",
+  "source": "NOAA GFS",
+  "sourceGridDegrees": 0.25,
+  "sourceResolutionHours": 3,
+  "days": [
+    {
+      "date": "2026-10-01",
+      "predictedKwh": 4739.05085968786,
+      "trainingDays": 14
+    },
+    {
+      "date": "2026-10-02",
+      "predictedKwh": 4731.950440835691,
+      "trainingDays": 14
+    },
+    {
+      "date": "2026-10-03",
+      "predictedKwh": 4791.115000273693,
+      "trainingDays": 14
+    },
+    {
+      "date": "2026-10-04",
+      "predictedKwh": 4799.8294227918595,
+      "trainingDays": 14
+    },
+    {
+      "date": "2026-10-05",
+      "predictedKwh": 4767.105546298963,
+      "trainingDays": 14
+    },
+    {
+      "date": "2026-10-06",
+      "predictedKwh": 4792.091341292484,
+      "trainingDays": 14
+    },
+    {
+      "date": "2026-10-07",
+      "predictedKwh": 4383.242614682987,
+      "trainingDays": 14
+    },
+    {
+      "date": "2026-10-08",
+      "predictedKwh": 3397.3447231717364,
+      "trainingDays": 14
+    },
+    {
+      "date": "2026-10-09",
+      "predictedKwh": 2339.2640141632,
+      "trainingDays": 14
+    },
+    {
+      "date": "2026-10-10",
+      "predictedKwh": 3087.0811482967074,
+      "trainingDays": 14
+    },
+    {
+      "date": "2026-10-11",
+      "predictedKwh": 1664.0676666069032,
+      "trainingDays": 14
+    }
+  ],
+  "score": {
+    "kind": "backtest",
+    "availableHours": 264,
+    "hours": 139,
+    "actualKwh": 40925.599999999984,
+    "predictedKwh": 43348.17931921514,
+    "matchPercent": 87.12205359681523,
+    "maeKwh": 37.91638009483297,
+    "rmseKwh": 66.3919989790778,
+    "biasKwh": 17.42862819579252,
+    "wapePercent": 12.877946403184767
+  },
+  "scope": "Paired completed hours with actual or predicted production above zero; missing actuals excluded; current partial hour excluded.",
+  "sourceDataUnchanged": {
+    "readings": "45b4e238d4866fbdae7fd2da5b8caa68",
+    "prices": "2c2df42aad277f7b3b5278c69b8063be",
+    "prospective_forecasts": "2881ebcde4cd59b14abcff4dc18e9301"
+  },
+  "inputsSha256": "4988ac43c8c1c21ee1b3f1de490306efb84d8df10e35ad528a40e3b4d2ce5404",
+  "limitations": [
+    "Different weather provider from live MET forecasts: not the live-model accuracy score.",
+    "Settings and model selected today; retrospective validation, not a prediction issued historically.",
+    "Six-hour run-publication allowance is a conservative assumption; historical distribution timestamps are not independently archived.",
+    "Latest available revision before origin is selected; unavailable history stays missing."
+  ]
+}

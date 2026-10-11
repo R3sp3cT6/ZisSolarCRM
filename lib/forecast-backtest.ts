@@ -1,19 +1,20 @@
 import { slotsForDay, localDate } from './energy';
+import { hourlyRadiation, type RadiationInterval } from './forecast-radiation';
 import {
   addDays,
-  productionProfile,
   type ForecastConfig,
   type ForecastReading,
   type WeatherHour,
 } from './forecast-model';
 import {
   calibrateSolar,
+  solarTraining,
   clearSkyIrradiance,
   cloudTransmission,
   weatherAdjustedEnergy,
 } from './forecast-solar';
 
-export const BACKTEST_VERSION = 'weather-solar-v3.0-gfs-replay-v1';
+export const BACKTEST_VERSION = 'weather-solar-v3.1-gfs-dswrf-replay-v1';
 type Field = {
   value: number;
   units: string;
@@ -31,6 +32,16 @@ export type GfsArchive = {
   fetchedAt: string;
   latitude: number;
   longitude: number;
+  radiation?: {
+    day: string;
+    provider: string;
+    intervals: (RadiationInterval & {
+      runAt: string;
+      units: string;
+      distanceKm: number;
+      sourceUrl: string;
+    })[];
+  };
   points: {
     validAt: string;
     runAt: string;
@@ -162,13 +173,52 @@ export function reconstructDay(
   const origin = backtestOrigin(archive.day);
   // Caller must additionally enforce revision.created_at < originAt in SQL.
   // Calibration excludes the target day and the unfinished origin day entirely.
-  const history = productionProfile(
+  const history = solarTraining(
     readings.filter((r) => r.start < origin.originAt),
     localDate(origin.originAt),
+    config,
   );
-  const calibration = calibrateSolar(history.readings, history.days, config);
-  const weather = gfsWeather(archive, config),
-    byStart = new Map(weather.map((w) => [w.start, w]));
+  const calibration = {
+    ...calibrateSolar(history.readings, history.days, config),
+    trainingDates: history.dates,
+  };
+  let weather = gfsWeather(archive, config);
+  if (archive.radiation) {
+    if (
+      archive.radiation.day !== archive.day ||
+      archive.radiation.provider !== 'NOAA GFS' ||
+      archive.radiation.intervals.some(
+        (v) =>
+          Date.parse(v.runAt) !== Date.parse(origin.weatherRunAt) ||
+          v.units !== 'W m**-2' ||
+          !Number.isFinite(v.distanceKm) ||
+          v.distanceKm > 25 ||
+          !v.sourceUrl.startsWith(
+            'https://noaa-gfs-bdp-pds.s3.amazonaws.com/',
+          ) ||
+          Date.parse(v.start) < Date.parse(origin.weatherRunAt) ||
+          Date.parse(v.end) > Date.parse(origin.weatherRunAt) + 48 * 3600000,
+      )
+    )
+      throw Error('Invalid archived GFS radiation');
+    const radiation = new Map(
+      hourlyRadiation(archive.radiation.intervals, config).map((r) => [
+        r.start,
+        r.irradiance,
+      ]),
+    );
+    weather = weather.map((w) =>
+      radiation.has(w.start)
+        ? {
+            ...w,
+            irradiance: radiation.get(w.start)!,
+            irradianceKind: 'modeled-ghi',
+            radiationRunAt: origin.weatherRunAt,
+          }
+        : w,
+    );
+  }
+  const byStart = new Map(weather.map((w) => [w.start, w]));
   const hours = slotsForDay(archive.day).map((slot) => ({
     start: slot.start,
     ...origin,

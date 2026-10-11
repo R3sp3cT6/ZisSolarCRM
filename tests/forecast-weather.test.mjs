@@ -1,6 +1,15 @@
 import { test, mock, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 let entries, requests, respond, busy;
+mock.module('../lib/forecast-radiation-server.ts', {
+  namedExports: {
+    fetchRadiation: async () => ({
+      hours: [],
+      raw: null,
+      source: { status: 'unavailable', issuedAt: null },
+    }),
+  },
+});
 mock.module('../lib/forecast-atmosphere.ts', {
   namedExports: {
     fetchAtmosphere: async () => ({

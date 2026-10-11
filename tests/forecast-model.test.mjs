@@ -21,6 +21,7 @@ import {
   clearSkyIrradiance,
   cloudTransmission,
   calibrateSolar,
+  solarTraining,
   weatherAdjustedEnergy,
 } from '../lib/forecast-solar.ts';
 
@@ -250,6 +251,44 @@ const met = (points) => ({
   },
 });
 const metNow = new Date('2026-10-11T12:00:00Z');
+
+test('solar training accepts night gaps but rejects missing daylight, keeps zeros and excludes current/future days', () => {
+  const rows = readings('2026-09-10', 33).map((r) => ({
+    ...r,
+    production_kwh:
+      clearSkyIrradiance(r.start, gps) >= 50
+        ? clearSkyIrradiance(r.start, gps)
+        : null,
+  }));
+  const original = structuredClone(rows);
+  const recent = solarTraining(rows, '2026-10-11', gps);
+  assert.equal(recent.days, 14);
+  assert.equal(recent.dates[0], '2026-10-10');
+  assert.ok(
+    recent.readings.every((r) => r.start < slotsForDay('2026-10-11')[0].start),
+  );
+  assert.deepEqual(rows, original);
+  const missing = slotsForDay('2026-10-10')[12].start;
+  rows.find((r) => r.start === missing).production_kwh = null;
+  assert.equal(solarTraining(rows, '2026-10-11', gps).dates[0], '2026-10-09');
+  rows.find((r) => r.start === missing).production_kwh = 0;
+  assert.equal(solarTraining(rows, '2026-10-11', gps).dates[0], '2026-10-10');
+  assert.deepEqual(
+    solarTraining(rows, '2026-10-11', { ...gps, latitude: null }).readings,
+    [],
+  );
+});
+
+test('daylight calibration follows local dates across DST and does not use too little history', () => {
+  const rows = readings('2026-10-20', 7);
+  const history = solarTraining(rows, '2026-10-27', gps);
+  assert.equal(history.days, 7);
+  assert.equal(
+    new Set(history.readings.map((r) => r.start)).size,
+    history.readings.length,
+  );
+  assert.deepEqual(calibrateSolar(history.readings, 6, gps).coefficients, []);
+});
 
 test('solar geometry uses SunCalc degree units, night is zero, and seasons change daylight radiation', () => {
   assert.equal(clearSkyIrradiance('2026-10-12T00:00:00Z', gps), 0);

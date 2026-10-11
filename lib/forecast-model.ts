@@ -10,12 +10,13 @@ import {
 import { contractScheduleVersion } from './contracts';
 import {
   calibrateSolar,
+  solarTraining,
   weatherAdjustedEnergy,
   cellTemperature,
   type SolarCalibration,
 } from './forecast-solar';
 
-export const FORECAST_VERSION = 'weather-solar-v3.0';
+export const FORECAST_VERSION = 'weather-solar-v3.1';
 export type ForecastConfig = {
   latitude: number | null;
   longitude: number | null;
@@ -44,7 +45,8 @@ export type WeatherHour = {
   irradiance: number;
   temperature: number;
   cloudCover: number | null;
-  irradianceKind: 'gti' | 'estimated-ghi';
+  irradianceKind: 'gti' | 'estimated-ghi' | 'modeled-ghi';
+  radiationRunAt?: string;
   resolutionHours: number;
   cloudLow?: number | null;
   cloudMid?: number | null;
@@ -122,6 +124,7 @@ export type ForecastPayload = {
     provider: 'open-meteo' | 'met-norway' | null;
     issuedAt: string | null;
     atmosphere?: AtmosphereSource;
+    radiation?: AtmosphereSource;
   };
   history: {
     priceHours: number;
@@ -402,7 +405,11 @@ export function makeForecast(input: {
   const index = priceIndex(prices.filter((p) => localDate(p.start) <= today)),
     history = productionProfile(input.readings, today),
     weather = new Map(input.weather.map((w) => [w.start, w]));
-  const calibration = calibrateSolar(history.readings, history.days, config);
+  const training = solarTraining(input.readings, today, config);
+  const calibration = {
+    ...calibrateSolar(training.readings, training.days, config),
+    trainingDates: training.dates,
+  };
   const days = Array.from({ length: 7 }, (_, i) => {
     const date = addDays(today, i + 1);
     const hours = slotsForDay(date).map((slot): ForecastHour => {
@@ -413,7 +420,7 @@ export function makeForecast(input: {
       const w = weather.get(slot.start),
         physical = w ? pvEnergy(w, config) : null,
         adjusted =
-          w?.irradianceKind === 'estimated-ghi'
+          w && w.irradianceKind !== 'gti'
             ? weatherAdjustedEnergy(w, config, calibration)
             : null;
       // A weather outage must not silently reintroduce the repeated historical profile.

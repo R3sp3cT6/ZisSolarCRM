@@ -1,0 +1,278 @@
+{
+  "checkedAt": "2026-10-11T16:02:45.582Z",
+  "from": "2026-10-01",
+  "to": "2026-10-10",
+  "baseline": {
+    "id": "f30139c7-6893-4329-9c7b-e0e01a8c59aa",
+    "model": "weather-solar-v3.0-gfs-replay-v1"
+  },
+  "candidate": {
+    "id": "386fc06c-5952-4faf-ba01-218896defb39",
+    "model": "weather-solar-v3.1-gfs-dswrf-replay-v1"
+  },
+  "before": {
+    "hours": 129,
+    "actualKwh": 39253.58999999999,
+    "predictedKwh": 30408.35725599876,
+    "matchPercent": 73.96392494201639,
+    "maeKwh": 79.22553608800888,
+    "rmseKwh": 120.30260953045398,
+    "biasKwh": -68.56769568993201,
+    "wapePercent": 26.03607505798361
+  },
+  "after": {
+    "hours": 129,
+    "actualKwh": 39253.58999999999,
+    "predictedKwh": 41828.07511149517,
+    "matchPercent": 88.21210763827207,
+    "maeKwh": 35.869542149720914,
+    "rmseKwh": 65.43648036963589,
+    "biasKwh": 19.957248926319245,
+    "wapePercent": 11.78789236172793
+  },
+  "relativeMaeReductionPercent": 54.72477193480307,
+  "days": [
+    {
+      "date": "2026-10-01",
+      "before": {
+        "hours": 13,
+        "actualKwh": 4657.249999999999,
+        "predictedKwh": 4028.9211346669854,
+        "matchPercent": 86.50858628304226,
+        "maeKwh": 48.33298964100108,
+        "rmseKwh": 56.41731136729043,
+        "biasKwh": -48.33298964100108,
+        "wapePercent": 13.491413716957737
+      },
+      "after": {
+        "hours": 13,
+        "actualKwh": 4657.249999999999,
+        "predictedKwh": 4739.05085968786,
+        "matchPercent": 97.11017421610931,
+        "maeKwh": 10.352800870788371,
+        "rmseKwh": 12.845051597842692,
+        "biasKwh": 6.292373822143138,
+        "wapePercent": 2.889825783890683
+      }
+    },
+    {
+      "date": "2026-10-02",
+      "before": {
+        "hours": 13,
+        "actualKwh": 4643.26,
+        "predictedKwh": 4000.1510126658404,
+        "matchPercent": 86.14962359777054,
+        "maeKwh": 49.46992210262765,
+        "rmseKwh": 57.42396281516131,
+        "biasKwh": -49.469922102627635,
+        "wapePercent": 13.850376402229456
+      },
+      "after": {
+        "hours": 13,
+        "actualKwh": 4643.26,
+        "predictedKwh": 4731.950440835691,
+        "matchPercent": 96.63017942876934,
+        "maeKwh": 12.036117742748074,
+        "rmseKwh": 14.256382193063706,
+        "biasKwh": 6.822341602745447,
+        "wapePercent": 3.369820571230665
+      }
+    },
+    {
+      "date": "2026-10-03",
+      "before": {
+        "hours": 13,
+        "actualKwh": 4640.51,
+        "predictedKwh": 3953.7292562007,
+        "matchPercent": 85.20031755562859,
+        "maeKwh": 52.829287984561525,
+        "rmseKwh": 61.27430370811281,
+        "biasKwh": -52.8292879845615,
+        "wapePercent": 14.799682444371411
+      },
+      "after": {
+        "hours": 13,
+        "actualKwh": 4640.51,
+        "predictedKwh": 4791.115000273693,
+        "matchPercent": 95.63176656139018,
+        "maeKwh": 15.59294688784868,
+        "rmseKwh": 18.9719464009629,
+        "biasKwh": 11.58500002105326,
+        "wapePercent": 4.368233438609826
+      }
+    },
+    {
+      "date": "2026-10-04",
+      "before": {
+        "hours": 13,
+        "actualKwh": 4583.8,
+        "predictedKwh": 3815.9431907476783,
+        "matchPercent": 83.24846613612458,
+        "maeKwh": 59.06590840402475,
+        "rmseKwh": 69.01825184877981,
+        "biasKwh": -59.06590840402476,
+        "wapePercent": 16.751533863875427
+      },
+      "after": {
+        "hours": 13,
+        "actualKwh": 4583.8,
+        "predictedKwh": 4799.8294227918595,
+        "matchPercent": 94.95256507034567,
+        "maeKwh": 17.797255561961173,
+        "rmseKwh": 22.957761091586942,
+        "biasKwh": 16.617647907066125,
+        "wapePercent": 5.047434929654331
+      }
+    },
+    {
+      "date": "2026-10-05",
+      "before": {
+        "hours": 13,
+        "actualKwh": 4491.719999999999,
+        "predictedKwh": 3737.1108118634197,
+        "matchPercent": 83.19999492095278,
+        "maeKwh": 58.046860625890744,
+        "rmseKwh": 68.08501870803245,
+        "biasKwh": -58.046860625890744,
+        "wapePercent": 16.80000507904722
+      },
+      "after": {
+        "hours": 13,
+        "actualKwh": 4491.719999999999,
+        "predictedKwh": 4767.105546298963,
+        "matchPercent": 93.80909220179385,
+        "maeKwh": 21.39063413489121,
+        "rmseKwh": 26.63445234909139,
+        "biasKwh": 21.183503561458718,
+        "wapePercent": 6.190907798206161
+      }
+    },
+    {
+      "date": "2026-10-06",
+      "before": {
+        "hours": 13,
+        "actualKwh": 4448.94,
+        "predictedKwh": 3708.8694454754796,
+        "matchPercent": 83.36523858437019,
+        "maeKwh": 56.92850419419392,
+        "rmseKwh": 67.3080928958804,
+        "biasKwh": -56.92850419419393,
+        "wapePercent": 16.634761415629814
+      },
+      "after": {
+        "hours": 13,
+        "actualKwh": 4448.94,
+        "predictedKwh": 4792.091341292484,
+        "matchPercent": 92.15012427786499,
+        "maeKwh": 26.86432776556564,
+        "rmseKwh": 32.06969887268394,
+        "biasKwh": 26.39625702249878,
+        "wapePercent": 7.849875722135012
+      }
+    },
+    {
+      "date": "2026-10-07",
+      "before": {
+        "hours": 13,
+        "actualKwh": 4076.8300000000004,
+        "predictedKwh": 1419.309707352946,
+        "matchPercent": 34.81405178417904,
+        "maeKwh": 204.42463789592722,
+        "rmseKwh": 264.1669926598553,
+        "biasKwh": -204.42463789592733,
+        "wapePercent": 65.18594821582096
+      },
+      "after": {
+        "hours": 13,
+        "actualKwh": 4076.8300000000004,
+        "predictedKwh": 4383.242614682987,
+        "matchPercent": 91.69196645037434,
+        "maeKwh": 26.054184935477245,
+        "rmseKwh": 34.6109081622408,
+        "biasKwh": 23.570201129460507,
+        "wapePercent": 8.30803354962567
+      }
+    },
+    {
+      "date": "2026-10-08",
+      "before": {
+        "hours": 13,
+        "actualKwh": 3366.52,
+        "predictedKwh": 3087.7678449847776,
+        "matchPercent": 70.30561927145101,
+        "maeKwh": 76.89748200790368,
+        "rmseKwh": 100.0645597796764,
+        "biasKwh": -21.44247346270945,
+        "wapePercent": 29.694380728548996
+      },
+      "after": {
+        "hours": 13,
+        "actualKwh": 3366.52,
+        "predictedKwh": 3397.3447231717364,
+        "matchPercent": 58.43794594789086,
+        "maeKwh": 107.63037400577421,
+        "rmseKwh": 152.5789432454762,
+        "biasKwh": 2.3711325516720154,
+        "wapePercent": 41.56205405210914
+      }
+    },
+    {
+      "date": "2026-10-09",
+      "before": {
+        "hours": 12,
+        "actualKwh": 1717.2200000000003,
+        "predictedKwh": 1493.6837997430155,
+        "matchPercent": 51.98738073524897,
+        "maeKwh": 68.70685837817982,
+        "rmseKwh": 98.21200068882578,
+        "biasKwh": -18.628016688082052,
+        "wapePercent": 48.01261926475103
+      },
+      "after": {
+        "hours": 12,
+        "actualKwh": 1717.2200000000003,
+        "predictedKwh": 2339.2640141632,
+        "matchPercent": 42.00933395851856,
+        "maeKwh": 82.98560961646065,
+        "rmseKwh": 99.43209614631957,
+        "biasKwh": 51.83700118026667,
+        "wapePercent": 57.99066604148144
+      }
+    },
+    {
+      "date": "2026-10-10",
+      "before": {
+        "hours": 13,
+        "actualKwh": 2627.5399999999995,
+        "predictedKwh": 1162.871052297931,
+        "matchPercent": 42.23992222058308,
+        "maeKwh": 116.74378059117622,
+        "rmseKwh": 175.35311616522893,
+        "biasKwh": -112.66684213092836,
+        "wapePercent": 57.76007777941692
+      },
+      "after": {
+        "hours": 13,
+        "actualKwh": 2627.5399999999995,
+        "predictedKwh": 3087.0811482967074,
+        "matchPercent": 79.41035047417887,
+        "maeKwh": 41.61548285775081,
+        "rmseKwh": 76.7618731714538,
+        "biasKwh": 35.3493190997467,
+        "wapePercent": 20.589649525821134
+      }
+    }
+  ],
+  "inputsSha256": {
+    "baseline": "6d5e5640020e612cbf70aee11a26f094e25c4ed9d5cbe3670abeac501812977b",
+    "candidate": "95a7c6498a1eb7143dfaa6152c66b893731c8190951ca53ef449436d4b832f55",
+    "actuals": "5039d589b3e8856b969ba2c4332f29b24870c5d034287507d7cf9e305438cd10"
+  },
+  "method": "Same completed delivery hours, archived prior-day 12 UTC GFS run, 18 UTC cutoff, only reading revisions already available at each origin. Double-zero nights and missing actuals excluded. Model design selected retrospectively after inspecting October errors, so this is NOT an independent holdout or prospective accuracy claim. No adjustment parameters fitted on target production.",
+  "limitations": [
+    "Only ten October days; results do not establish seasonal or seven-day-ahead skill.",
+    "GFS weather replay; live uses MET temperature/wind and GFS irradiance.",
+    "Current plant parameters applied retrospectively; original release timestamps not independently archived.",
+    "Some individual days worsen; local cloud timing and panel geometry remain uncertain."
+  ]
+}

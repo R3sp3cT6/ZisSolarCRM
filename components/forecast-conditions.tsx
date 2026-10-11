@@ -19,6 +19,9 @@ export function ForecastConditions({
   );
   if (!daylight.length) return null;
   const weather = daylight.map((h) => h.weather!);
+  const modeled = weather.filter(
+    (w) => w.irradianceKind === 'modeled-ghi',
+  ).length;
   const clear = weather.reduce((sum, w) => sum + w.clearSkyIrradiance!, 0);
   const received = weather.reduce((sum, w) => sum + w.irradiance, 0);
   const withAerosols = weather.filter((w) => w.aerosolFactor != null);
@@ -64,10 +67,15 @@ export function ForecastConditions({
             <small>%</small>
           </strong>
           <p>
-            {l(
-              'Со облачност, магла и достапните аеросоли.',
-              'Including clouds, fog and available aerosol data.',
-            )}
+            {modeled
+              ? l(
+                  'NOAA GFS зрачење; резервна процена од облачност за непокриените часови.',
+                  'NOAA GFS irradiance; cloud-based fallback for uncovered hours.',
+                )
+              : l(
+                  'Со облачност, магла и достапните аеросоли.',
+                  'Including clouds, fog and available aerosol data.',
+                )}
           </p>
         </div>
         <div>
@@ -81,6 +89,14 @@ export function ForecastConditions({
             <small>%</small>
           </strong>
           <p>
+            {modeled > 0 && (
+              <>
+                {l(
+                  'За GFS нема повторно намалување од аеросоли. ',
+                  'No repeated aerosol attenuation for GFS. ',
+                )}
+              </>
+            )}
             {l(
               'Според референтна атмосфера; покриени',
               'Versus a reference atmosphere; covered',
@@ -135,7 +151,7 @@ export function ForecastConditions({
           'Airborne dust is included when data is available; deposited dirt, snow cover and shadows from nearby objects are not measured.',
         )}
       </p>
-      {source?.status !== 'ready' && (
+      {modeled < weather.length && source?.status !== 'ready' && (
         <p className="forecast-condition-status">
           {l(
             'SILAM моментално нема свежи податоци. Се користи временскиот модел без нова корекција за аеросоли.',
@@ -143,14 +159,15 @@ export function ForecastConditions({
           )}
         </p>
       )}
-      {source?.status === 'ready' && withAerosols.length < weather.length && (
-        <p className="forecast-condition-status">
-          {l(
-            'Дел од денот е надвор од достапната прогноза или опсегот на моделот за аеросоли. За тие часови се користи референтната атмосфера.',
-            'Part of this day is outside aerosol coverage or the aerosol model’s valid range. Those hours use the reference atmosphere.',
-          )}
-        </p>
-      )}
+      {source?.status === 'ready' &&
+        withAerosols.length + modeled < weather.length && (
+          <p className="forecast-condition-status">
+            {l(
+              'Дел од денот е надвор од достапната прогноза или опсегот на моделот за аеросоли. За тие часови се користи референтната атмосфера.',
+              'Part of this day is outside aerosol coverage or the aerosol model’s valid range. Those hours use the reference atmosphere.',
+            )}
+          </p>
+        )}
       <details className="forecast-weather-details">
         <summary>
           {l('Детални временски услови по час', 'Detailed hourly weather')}

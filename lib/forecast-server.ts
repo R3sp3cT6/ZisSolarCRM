@@ -189,10 +189,16 @@ export async function runForecast(owner: string, now = new Date()) {
       const warnings: string[] = [];
       if (
         calculated.days.some((d) =>
-          d.hours.some((h) => h.productionSource === 'weather-history'),
+          d.hours.some((h) => h.weather?.irradianceKind === 'estimated-ghi'),
         )
       )
         warnings.push('estimated-radiation');
+      if (
+        calculated.days.some((d) =>
+          d.hours.some((h) => h.weather?.irradianceKind === 'modeled-ghi'),
+        )
+      )
+        warnings.push('modeled-radiation');
       if (
         calculated.days.some((d) =>
           d.hours.some((h) => (h.weather?.resolutionHours ?? 0) > 1),
@@ -229,6 +235,7 @@ export async function runForecast(owner: string, now = new Date()) {
           provider: weather.provider,
           issuedAt: weather.issuedAt,
           atmosphere: weather.atmosphere,
+          radiation: weather.radiation,
         },
         history: {
           priceHours: prices.length,
@@ -247,9 +254,12 @@ export async function runForecast(owner: string, now = new Date()) {
         weather: weather.raw,
         atmosphere: weather.atmosphereRaw,
         atmosphereSource: weather.atmosphere,
+        radiation: weather.radiationRaw,
+        radiationSource: weather.radiation,
+        calibration: calculated.calibration,
         weatherModel:
           weather.provider === 'met-norway'
-            ? 'MET Norway complete / ECMWF; Haurwitz + Kasten-Czeplak cloud/fog proxy; FMI SILAM AOD550; relative Simplified Solis (AOD reference 0.1, Angstrom 1.3, water 1cm, 101325Pa); NOCT + Faiman wind ratio (2m height, exponent 0.2)'
+            ? 'MET Norway complete; NOAA GFS surface DSWRF preferred (CF interval bounds, de-averaged 3h, clear-sky hourly allocation); fallback Haurwitz + Kasten-Czeplak cloud/fog + FMI SILAM relative Solis; no repeated atmospheric attenuation on GFS; NOCT + Faiman; 14 recent complete daylight days for solar calibration'
             : 'Open-Meteo best_match GTI',
         config,
         backtest:

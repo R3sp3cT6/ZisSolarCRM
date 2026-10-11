@@ -1,4 +1,5 @@
 import { getPosition, getTimes } from 'suncalc';
+import { slotsForDay } from './energy';
 import type {
   ForecastConfig,
   ForecastReading,
@@ -130,7 +131,46 @@ export type SolarCalibration = {
   samples: number;
   days: number;
   coefficients: { hour: number; factor: number }[];
+  trainingDates?: string[];
 };
+
+/** Nighttime gaps must not discard a complete solar day. Require every slot
+ * actually used by the fit (clear-sky GHI >= 50 W/m²), retaining measured zeros.
+ * The cutoff excludes today's unfinished day, even if it already has readings.
+ * This selects training data only; it never fills missing measured production. */
+export function solarTraining(
+  readings: ForecastReading[],
+  today: string,
+  c: ForecastConfig,
+) {
+  const byStart = new Map(readings.map((r) => [r.start, r]));
+  const selected: ForecastReading[] = [],
+    dates: string[] = [];
+  if (!hasCoordinates(c)) return { readings: selected, dates, days: 0 };
+  for (let lag = 1; lag <= 45 && dates.length < 14; lag++) {
+    const day = new Date(Date.parse(today + 'T12:00:00Z') - lag * 86400000)
+      .toISOString()
+      .slice(0, 10);
+    const slots = slotsForDay(day).filter(
+      (s) => clearSkyIrradiance(s.start, c)! >= 50,
+    );
+    const rows = slots.map((s) => byStart.get(s.start));
+    if (
+      rows.length >= 5 &&
+      rows.every(
+        (r): r is ForecastReading =>
+          !!r &&
+          r.production_kwh !== null &&
+          Number.isFinite(r.production_kwh) &&
+          r.production_kwh >= 0,
+      )
+    ) {
+      dates.push(day);
+      selected.push(...rows);
+    }
+  }
+  return { readings: selected, dates, days: dates.length };
+}
 
 /** Empirical upper envelope from completed historical days only. The coefficients
  * absorb panel geometry and losses; they are NOT installed DC kWp. Historical air
