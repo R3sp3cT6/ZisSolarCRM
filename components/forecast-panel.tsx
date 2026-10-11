@@ -24,7 +24,7 @@ import { useLanguage } from './language-switch';
 import { useCurrency } from './currency-switch';
 import { getLanguage, getLocale } from '@/lib/language';
 import { convertMoney, getCurrency } from '@/lib/currency';
-import { salePrice } from '@/lib/energy';
+import { salePrice, contractFor } from '@/lib/energy';
 import type { ForecastConfig, ForecastPayload } from '@/lib/forecast-model';
 import { formatNumber } from '@/lib/number-format';
 import { ForecastConditions } from './forecast-conditions';
@@ -304,6 +304,10 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
   }
   const forecast = view?.forecast,
     day = forecast?.days.find((d) => d.date === selected) ?? forecast?.days[0];
+  const contract = contractFor(
+    day?.date ?? new Date().toISOString(),
+    forecast?.contracts,
+  );
   const stale =
     !!forecast &&
     (checkedAt - Date.parse(forecast.issuedAt) > 24 * 3600000 ||
@@ -711,7 +715,7 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
                         ]}
                       />
                       <ReferenceLine
-                        y={convertMoney(2.2 / 0.94)!}
+                        y={convertMoney(contract.fixedEurMwh / contract.share)!}
                         stroke="var(--muted-foreground)"
                         strokeDasharray="2 5"
                       />
@@ -740,16 +744,24 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
                     'Праг за негативна продажна цена',
                     'Negative selling-price threshold',
                   )}
-                  : {money(2.2 / 0.94)} {getCurrency()}/MWh ·{' '}
-                  {day.negativeSaleHours}{' '}
+                  : {money(contract.fixedEurMwh / contract.share)}{' '}
+                  {getCurrency()}/MWh · {day.negativeSaleHours}{' '}
                   {l('часа под прагот.', 'hours below the threshold.')}{' '}
                   {l(
                     'Приход = испорачани MWh × (MEMO × 0,94 −',
                     'Revenue = exported MWh × (MEMO × 0.94 −',
                   )}{' '}
-                  {money(2.2)} {getCurrency()}/MWh).{' '}
+                  {money(contract.fixedEurMwh)} {getCurrency()}/MWh).{' '}
                 </p>
               </section>
+              {forecast.pricingAdjusted && (
+                <p className="forecast-fine">
+                  {l(
+                    'Приходот е коригиран според договорот што важи од 01.10.2026; зачуваната прогноза за производство останува иста.',
+                    'Revenue is adjusted for the contract effective 1 October 2026; the saved production forecast is unchanged.',
+                  )}
+                </p>
+              )}
               <section className="panel forecast-conditions">
                 <div className="panel-heading">
                   <div>
@@ -952,7 +964,15 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
                           <td>{number(h.weather?.irradiance, 0)}</td>
                           <td>{money(h.memo)}</td>
                           <td>
-                            {money(h.memo === null ? null : salePrice(h.memo))}
+                            {money(
+                              h.memo === null
+                                ? null
+                                : salePrice(
+                                    h.memo,
+                                    h.start,
+                                    forecast?.contracts,
+                                  ),
+                            )}
                           </td>
                           <td>{money(h.revenueEur)}</td>
                           <td>

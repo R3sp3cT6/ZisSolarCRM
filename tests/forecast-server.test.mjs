@@ -1,5 +1,7 @@
 import { test, mock, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
+import {CONTRACT_SCHEDULE} from '../lib/contracts.ts';
+mock.module('../lib/contracts-server.ts',{namedExports:{readContracts:async()=>CONTRACT_SCHEDULE}});
 let user,
   cache,
   queries,

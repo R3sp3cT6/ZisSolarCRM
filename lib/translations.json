@@ -393,5 +393,7 @@
   "За овој период нема однапред зачувана временска прогноза за производство.": "No weather-based production forecast was saved in advance for this period.",
   "Првата зачувана прогноза пред секој час. Празнините означуваат недостасувачка прогноза.": "First forecast saved before each hour. Gaps indicate missing forecasts.",
   "Се прикажуваат само целосно прогнозирани денови или месеци.": "Only days or months with complete forecasts are shown.",
-  "Прогнозата е за цел час; тековното мерење сè уште се дополнува.": "Forecasts cover a full hour; the current reading is still accumulating."
+  "Прогнозата е за цел час; тековното мерење сè уште се дополнува.": "Forecasts cover a full hour; the current reading is still accumulating.",
+  "Важи од": "Effective from",
+  "Периодот опфаќа повеќе договори. Секој час се пресметува според договорот што важел тогаш.": "This period spans multiple contracts. Each hour uses the terms effective at that time."
 }

@@ -18,6 +18,9 @@ import {
   type ForecastReading,
 } from './forecast-model';
 import { fetchForecastWeather } from './forecast-weather';
+import { readContracts } from './contracts-server';
+import { contractFor, contractScheduleVersion } from './contracts';
+import { revalueForecast } from './forecast-model';
 
 export type ForecastView = {
   owner: string;
@@ -38,9 +41,14 @@ async function loadConfig(owner: string) {
   return row?.config ?? defaultForecastConfig();
 }
 export async function readForecast(owner: string): Promise<ForecastView> {
+  const contracts = await readContracts();
+  const priced = (view: ForecastView): ForecastView => ({
+    ...view,
+    forecast: view.forecast ? revalueForecast(view.forecast, contracts) : null,
+  });
   try {
     const cached = await cacheRead<ForecastView>(key(owner));
-    if (cached?.owner === owner) return cached;
+    if (cached?.owner === owner) return priced(cached);
   } catch {
     /* SQL remains a fallback when Redis is unavailable. */
   }
@@ -57,7 +65,7 @@ export async function readForecast(owner: string): Promise<ForecastView> {
   try {
     await cacheWrite(key(owner), view, 7 * 86400);
   } catch {}
-  return view;
+  return priced(view);
 }
 async function prospectiveScore(owner: string, now: Date) {
   // Aggregate in SQL instead of transferring hundreds of full forecast snapshots.
@@ -122,11 +130,14 @@ export async function runForecast(owner: string, now = new Date()) {
     async () => {
       const config = await loadConfig(owner),
         today = localDate(now);
+      const contracts = await readContracts();
       // SQL uniqueness also deduplicates retries when Redis is unavailable or a lease expires.
       const runKey =
         FORECAST_VERSION +
         ':' +
         config.version +
+        ':' +
+        contractScheduleVersion(contracts) +
         ':' +
         Math.floor(now.getTime() / 1800000);
       const existing = await db()
@@ -172,6 +183,7 @@ export async function runForecast(owner: string, now = new Date()) {
         readings,
         config,
         weather: weather.hours,
+        contracts,
         now,
       });
       const warnings: string[] = [];
@@ -206,11 +218,8 @@ export async function runForecast(owner: string, now = new Date()) {
         id: crypto.randomUUID(),
         issuedAt: now.toISOString(),
         version: FORECAST_VERSION,
-        contract: {
-          share: 0.94,
-          fixedEurMwh: 2.2,
-          version: 'excerpt-10A-94pct-2.2',
-        },
+        contract: contractFor(calculated.days[0].date, contracts),
+        contracts,
         config,
         ...calculated,
         weather: {
@@ -231,6 +240,7 @@ export async function runForecast(owner: string, now = new Date()) {
         warnings,
       };
       const inputs = {
+        contracts,
         retrievedAt: new Date().toISOString(),
         prices,
         readings,

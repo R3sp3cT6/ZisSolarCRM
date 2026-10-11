@@ -22,6 +22,7 @@ export function formatMwh(kwh: number | null | undefined) {
 }
 
 type ReportRow = {
+  contractVersion?: string;
   partial?: boolean;
   start: string;
   productionKwh: number | null;
@@ -39,6 +40,6 @@ export function energyReportCsv(rows: ReportRow[], contractVersion: string) {
   // complete hourly measurement and must not later be re-imported as one.
   return [header, ...rows.filter(row=>!row.partial).map(row => [
     row.start, csvNumber(toMwh(row.productionKwh)), csvNumber(toMwh(row.exportKwh)),
-    csvNumber(convertMoney(row.memo)), csvNumber(convertMoney(row.sale)), convertMoney(row.revenue), convertMoney(row.estimate), contractVersion, row.priceFetchedAt,
+    csvNumber(convertMoney(row.memo)), csvNumber(convertMoney(row.sale)), convertMoney(row.revenue), convertMoney(row.estimate), row.contractVersion ?? contractVersion, row.priceFetchedAt,
   ].map(value => value ?? '').join(','))].join('\n');
 }

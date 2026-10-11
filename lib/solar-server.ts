@@ -1,11 +1,12 @@
 import {buildDashboard,type DashboardSnapshot,type DbReading,type DbPrice} from './dashboard';
 import 'server-only';
+import {readContracts} from './contracts-server';
 import {readForecastComparison} from './forecast-comparison-server';
 import {attachForecastComparison} from './forecast-comparison';
 import {db} from '../db/index';
 export {db} from '../db/index';
 const env=process.env;
-import {CONTRACT,MEMO_URL,parseMemo,localDate,type Period,type ReadingInput} from './energy';
+import {contractFor,MEMO_URL,parseMemo,localDate,type Period,type ReadingInput} from './energy';
 export async function ensurePlant(owner:string){if(!owner)throw Error('Недостасува сопственикот на централата.');await db().prepare('INSERT INTO plants (owner, created_at) VALUES (?, ?) ON CONFLICT(owner) DO NOTHING').bind(owner,new Date().toISOString()).run();}
 export async function syncMemo(day:string,force=false){
  const connection=db();const previous=await connection.prepare('SELECT * FROM sync_runs WHERE market_date=?').bind(day).first<{attempted_at:string;succeeded_at:string|null;error:string|null}>();
@@ -32,7 +33,8 @@ export async function saveReadings(owner:string,rows:ReadingInput[],source:strin
   if(!rows.length)return 0;
  }
  // One PostgreSQL transaction is atomic: an import either saves every row and its revision, or none.
- const payload=JSON.stringify(rows.map(r=>({...r,id:crypto.randomUUID(),source,contractVersion:CONTRACT.version})));
+ const contracts=await readContracts();
+ const payload=JSON.stringify(rows.map(r=>({...r,id:crypto.randomUUID(),source,contractVersion:contractFor(r.start,contracts).version})));
  // An incomplete API response must not erase measured values imported from device exports.
  const updates=fillOnly
   ? "production_kwh=COALESCE(readings.production_kwh,excluded.production_kwh),export_kwh=COALESCE(readings.export_kwh,excluded.export_kwh),power_kw=COALESCE(readings.power_kw,excluded.power_kw),observed_at=excluded.observed_at,source=CASE WHEN readings.source LIKE '%device counters%' THEN readings.source ELSE readings.source || ' + device counters' END,updated_at=excluded.updated_at"
@@ -46,16 +48,17 @@ export async function saveReadings(owner:string,rows:ReadingInput[],source:strin
 }
 export async function loadDashboardSnapshot(owner:string):Promise<DashboardSnapshot>{
  const connection=db();await ensurePlant(owner);
- const [plant,readings,prices,reports,syncs,fusion]=await Promise.all([
+ const [plant,readings,prices,reports,syncs,fusion,contracts]=await Promise.all([
   connection.prepare('SELECT name,capacity_kw FROM plants WHERE owner=?').bind(owner).first<DashboardSnapshot['plant']>(),
   connection.prepare('SELECT * FROM readings WHERE owner=? ORDER BY start').bind(owner).all<DbReading>(),
   connection.prepare('SELECT start,market_date,eur_cents,fetched_at FROM prices ORDER BY start').all<DbPrice>(),
   connection.prepare('SELECT kind,period,payload,updated_at FROM fusion_reports WHERE owner=?').bind(owner).all<DashboardSnapshot['reports'][number]>(),
   connection.prepare('SELECT market_date,attempted_at,succeeded_at,error FROM sync_runs').all<DashboardSnapshot['syncs'][number]>(),
   connection.prepare('SELECT state FROM fusion_state WHERE owner=?').bind(owner).first<{state:string}>(),
+  readContracts(),
  ]);
  const state=fusion?JSON.parse(fusion.state):{};
- return {owner,plant,readings:readings.results,prices:prices.results,reports:reports.results,syncs:syncs.results,
+ return {owner,plant,contracts,readings:readings.results,prices:prices.results,reports:reports.results,syncs:syncs.results,
   fusionState:{live:state.live,liveHour:state.liveHour,lastSuccess:state.lastSuccess,error:state.error},
   configured:!!(env.FUSIONSOLAR_PASSWORD&&env.FUSIONSOLAR_OWNER===owner),savedAt:new Date().toISOString()};
 }

@@ -19,9 +19,9 @@ test('CSV formats MWh and EUR/MWh to two decimals without changing source values
  assert.equal(row.productionKwh,627.17);
 });
 test('contract uses MWh conversion and keeps zero and negative prices',()=>{
- assert.equal(salePrice(100),91.8);assert.equal(revenue(500,100),45.9);
- assert.equal(salePrice(0),-2.2);assert.equal(revenue(1000,0),-2.2);
- assert.ok(Math.abs(revenue(1000,-20)+21)<1e-9);assert.equal(revenue(0,100),0);
+ assert.equal(salePrice(100,'2026-09-01'),91.8);assert.equal(revenue(500,100,'2026-09-01'),45.9);
+ assert.equal(salePrice(0,'2026-09-01'),-2.2);assert.equal(revenue(1000,0,'2026-09-01'),-2.2);
+ assert.ok(Math.abs(revenue(1000,-20,'2026-09-01')+21)<1e-9);assert.equal(revenue(0,100,'2026-09-01'),0);
 });
 test('Skopje delivery days preserve 23 and 25 hour DST dates',()=>{
  const spring=slotsForDay('2026-03-29');assert.equal(spring.length,23);assert.ok(!spring.some(s=>s.hour===2));

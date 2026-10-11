@@ -21,13 +21,16 @@
 
 ## Договорна пресметка
 
-Според доставениот извадок, точка 10А:
+Според доставените извадоци, точка 10А, по локален датум на испорака во Ресен (`Europe/Skopje`):
 
-`Продажна цена (EUR/MWh) = MEMO DAM(h) × 0,94 − 2,20`
+- До 30.09.2026: `Продажна цена (EUR/MWh) = MEMO DAM(h) × 0,94 − 2,20`.
+- Од 01.10.2026: `Продажна цена (EUR/MWh) = MEMO DAM(h) × 0,94 − 2,50`.
 
 `Приход (EUR) = испорачана енергија (kWh) / 1000 × продажна цена`
 
-Формулата важи понеделник–недела. Балансирањето е вклучено, нема двојно одземање или измислен минимум за негативни цени. Договорна верзија: `excerpt-10A-94pct-2.2`. Датумите на важност не се утврдени од доставениот извадок.
+Формулата важи понеделник–недела. Балансирањето е вклучено, нема двојно одземање или измислен минимум за негативни цени. Миграцијата `007_contract_versions.sql` ги чува двете верзии во `contract_versions`; претходната има непознат почетен датум, новата е `excerpt-10A-20261001-94pct-2.5`. Runtime улогата има само SELECT врз договорите и ревизиската евиденција. Примени ги миграцијата и новите grants од `db/runtime-permissions.sql` пред објавување на кодот.
+
+Секој часовен приход, календарски збир, архива, CSV, прогноза и дневен push извештај го користи договорот што важи за часот. За период со повеќе договори нема единствен надомест за целиот период. Договорите се заеднички кеширани седум дена; кешот треба да се верзионира/обнови при следна договорна измена, заедно со dashboard snapshots. Нема нов polling. Октомвриската исправка и дневните суми пред/по неа се зачувани во `contract_recalculations` и [october-contract-recalculation.json](docs/october-contract-recalculation.json). Изворните мерења, цени и старите `forecast_runs` остануваат неизменети; приказот на приходот од старите прогнози се коригира со означување, а новите прогнози го зачувуваат важечкиот распоред во payload и inputs.
 
 Приходот се собира час по час, не производство × просечна цена. Кога нема испорака од броило, вредноста на производството е посебна проценка. Непознати мерења/цени остануваат непознати. Приходот е делумен додека не се пополни архивата и не е исплатена фактура или добивка по даноци и сите трошоци. UTC складирање, Europe/Skopje приказ, 23/25 часови на DST денови; двосмислени MEMO табели се одбиваат.
 
@@ -128,7 +131,7 @@ The collector validates every expected hourly slot (23/24/25), saves the prices 
 
 The initial price model is a reproducible benchmark, not a trained regional market model: 50% of the latest available same-hour delivery-day price plus 50% of the latest same-weekday price available at the issue-day cutoff. Each 1–7-day horizon uses that cutoff, so a long-range forecast cannot read intervening future labels. Official MEMO prices fetched before issuance override predictions. Daily means are duration-weighted through actual UTC slots, including 23/25-hour days; export-weighted capture prices are shown separately. No price clipping or assumed ban on negative prices is applied.
 
-Production in `weather-solar-v3.0` requires weather for every delivery hour. **There is no repeated historical-profile fallback.** Missing weather/parameters/calibration leave production and revenue unavailable. Up to 14 complete production days within the preceding 45 days inform the empirical response; at least seven are required. Incomplete days are excluded, not zero-filled. Export uses the median daily export/production ratio from at least seven paired complete days (plausible ratios 0–1.1, capped at 1). Revenue is a scenario: `sum(export_kWh / 1000 * (MEMO_EUR_MWh * .94 - 2.2))`; it is not a calibrated expected value of a joint probability distribution. Missing components make the daily result unavailable rather than a misleading partial sum.
+Production in `weather-solar-v3.0` requires weather for every delivery hour. **There is no repeated historical-profile fallback.** Missing weather/parameters/calibration leave production and revenue unavailable. Up to 14 complete production days within the preceding 45 days inform the empirical response; at least seven are required. Incomplete days are excluded, not zero-filled. Export uses the median daily export/production ratio from at least seven paired complete days (plausible ratios 0–1.1, capped at 1). Revenue is a scenario: `sum(export_kWh / 1000 * salePrice(MEMO_EUR_MWh, delivery_hour, effective_contracts))`; it is not a calibrated expected value of a joint probability distribution. Missing components make the daily result unavailable rather than a misleading partial sum.
 
 The default source is **MET Norway Locationforecast (global ECMWF)** at the configured GPS coordinates. Its complete endpoint supplies total and layered cloud cover, fog where available, air temperature, humidity, wind and precipitation; it does **not** supply solar irradiance. Its 1h/6h instant samples are interpolated to hourly midpoints without extrapolation or bridging gaps longer than six hours. Source resolution is retained per hour. The server identifies the app, rounds coordinates to four decimals, shares raw responses in Redis, respects `Expires`, and revalidates with the original `Last-Modified`. Forecasts issued more than 24 hours ago are rejected. CC BY 4.0 attribution and our modifications are shown in the UI. No paid API key is needed for this path.
 

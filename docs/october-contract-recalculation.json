@@ -1,0 +1,156 @@
+{
+  "auditId": "d9c8c33d-53c1-4c07-9c6c-b3649e37aee7",
+  "schemaVersion": 1,
+  "environment": "production",
+  "asOf": "2026-10-11T15:18:44.208Z",
+  "scope": "Persisted completed hours only; partial or missing readings remain excluded/unknown.",
+  "periodFrom": "2026-10-01",
+  "periodToExclusive": "2026-11-01",
+  "effectiveTimezone": "Europe/Skopje",
+  "previousContract": {
+    "version": "excerpt-10A-94pct-2.2",
+    "effectiveFrom": null,
+    "share": 0.94,
+    "fixedEurMwh": 2.2
+  },
+  "contract": {
+    "version": "excerpt-10A-20261001-94pct-2.5",
+    "effectiveFrom": "2026-10-01",
+    "share": 0.94,
+    "fixedEurMwh": 2.5
+  },
+  "pricedHours": 256,
+  "pricedExportMwh": 40.71400000000001,
+  "beforeEur": 2377.8914966,
+  "afterEur": 2365.6772965999994,
+  "changeEur": -12.214200000000801,
+  "partial": true,
+  "daily": [
+    {
+      "date": "2026-10-01",
+      "pricedHours": 24,
+      "expectedHours": 24,
+      "pricedExportMwh": 4.631,
+      "beforeEur": 196.3395384,
+      "afterEur": 194.95023840000002,
+      "changeEur": -1.3892999999999915,
+      "partial": false
+    },
+    {
+      "date": "2026-10-02",
+      "pricedHours": 24,
+      "expectedHours": 24,
+      "pricedExportMwh": 4.619,
+      "beforeEur": 219.22564799999998,
+      "afterEur": 217.83994799999996,
+      "changeEur": -1.3857000000000141,
+      "partial": false
+    },
+    {
+      "date": "2026-10-03",
+      "pricedHours": 24,
+      "expectedHours": 24,
+      "pricedExportMwh": 4.614,
+      "beforeEur": 88.92650660000001,
+      "afterEur": 87.5423066,
+      "changeEur": -1.384200000000007,
+      "partial": false
+    },
+    {
+      "date": "2026-10-04",
+      "pricedHours": 24,
+      "expectedHours": 24,
+      "pricedExportMwh": 4.554000000000001,
+      "beforeEur": 121.6189316,
+      "afterEur": 120.25273160000002,
+      "changeEur": -1.3661999999999779,
+      "partial": false
+    },
+    {
+      "date": "2026-10-05",
+      "pricedHours": 24,
+      "expectedHours": 24,
+      "pricedExportMwh": 4.468,
+      "beforeEur": 123.45868699999998,
+      "afterEur": 122.11828700000001,
+      "changeEur": -1.340399999999974,
+      "partial": false
+    },
+    {
+      "date": "2026-10-06",
+      "pricedHours": 24,
+      "expectedHours": 24,
+      "pricedExportMwh": 4.427999999999999,
+      "beforeEur": 337.84336559999997,
+      "afterEur": 336.5149656000001,
+      "changeEur": -1.3283999999998741,
+      "partial": false
+    },
+    {
+      "date": "2026-10-07",
+      "pricedHours": 24,
+      "expectedHours": 24,
+      "pricedExportMwh": 4.058,
+      "beforeEur": 233.46788759999998,
+      "afterEur": 232.2504876,
+      "changeEur": -1.2173999999999694,
+      "partial": false
+    },
+    {
+      "date": "2026-10-08",
+      "pricedHours": 24,
+      "expectedHours": 24,
+      "pricedExportMwh": 3.3489999999999993,
+      "beforeEur": 253.71336480000002,
+      "afterEur": 252.7086648,
+      "changeEur": -1.004700000000014,
+      "partial": false
+    },
+    {
+      "date": "2026-10-09",
+      "pricedHours": 24,
+      "expectedHours": 24,
+      "pricedExportMwh": 1.712,
+      "beforeEur": 258.14815940000005,
+      "afterEur": 257.6345594,
+      "changeEur": -0.5136000000000536,
+      "partial": false
+    },
+    {
+      "date": "2026-10-10",
+      "pricedHours": 24,
+      "expectedHours": 24,
+      "pricedExportMwh": 2.6159999999999997,
+      "beforeEur": 294.9673346,
+      "afterEur": 294.18253459999994,
+      "changeEur": -0.7848000000000752,
+      "partial": false
+    },
+    {
+      "date": "2026-10-11",
+      "pricedHours": 16,
+      "expectedHours": 24,
+      "pricedExportMwh": 1.665,
+      "beforeEur": 250.182073,
+      "afterEur": 249.682573,
+      "changeEur": -0.4995000000000118,
+      "partial": true
+    }
+  ],
+  "septemberUnchanged": true,
+  "septemberRevenueEur": 8556.733802999997,
+  "existingForecastsVerified": 4,
+  "archivedForecastsWithCorrectedView": 4,
+  "originalDataUnchanged": {
+    "readings": "4045",
+    "readings_hash": "0f538dfb9d26b379bc844d0af498c06b",
+    "prices_hash": "5237d466135d2bf6046ab194e06db2be",
+    "forecasts_hash": "fe7d20514f255f75ca557cbe179a1936"
+  },
+  "sourceSnapshotSha256": "03f6d439be2e150032772273716b145f35ad50bfcf7b5ab9d82c9233408f274e",
+  "permissions": {
+    "can_read": true,
+    "can_change": false,
+    "can_read_audit": true
+  }
+}

@@ -1,10 +1,13 @@
 import {
-  CONTRACT,
+  contractFor,
+  CONTRACT_SCHEDULE,
+  type ContractTerms,
   localDate,
   localHour,
   slotsForDay,
   salePrice,
 } from './energy';
+import { contractScheduleVersion } from './contracts';
 import {
   calibrateSolar,
   weatherAdjustedEnergy,
@@ -103,7 +106,10 @@ export type ForecastPayload = {
   id: string;
   issuedAt: string;
   version: string;
-  contract: typeof CONTRACT;
+  contract: ContractTerms;
+  contracts?: readonly ContractTerms[];
+  pricingAdjusted?: boolean;
+  asIssuedContractVersion?: string;
   config: ForecastConfig;
   days: ForecastDay[];
   priceScores: ForecastScore[];
@@ -334,6 +340,7 @@ export function productionProfile(readings: ForecastReading[], today: string) {
 export function aggregateForecast(
   date: string,
   hours: ForecastHour[],
+  contracts: readonly ContractTerms[] = CONTRACT_SCHEDULE,
 ): ForecastDay {
   const sum = (key: 'productionKwh' | 'exportKwh' | 'revenueEur') =>
     hours.length && hours.every((h) => h[key] !== null)
@@ -359,7 +366,7 @@ export function aggregateForecast(
     capturePrice,
     officialHours: hours.filter((h) => h.priceSource === 'official').length,
     negativeSaleHours: hours.filter(
-      (h) => h.memo !== null && salePrice(h.memo) < 0,
+      (h) => h.memo !== null && salePrice(h.memo, h.start, contracts) < 0,
     ).length,
     complete: hours.length === slotsForDay(date).length && revenueEur !== null,
     peakPowerKw:
@@ -384,7 +391,9 @@ export function makeForecast(input: {
   config: ForecastConfig;
   weather: WeatherHour[];
   now: Date;
+  contracts?: readonly ContractTerms[];
 }) {
+  const contracts = input.contracts ?? CONTRACT_SCHEDULE;
   const { config, now } = input,
     today = localDate(now),
     issuedAt = now.toISOString();
@@ -427,7 +436,7 @@ export function makeForecast(input: {
         exportKwh,
         revenueEur:
           exportKwh !== null && memo !== null
-            ? (exportKwh / 1000) * salePrice(memo)
+            ? (exportKwh / 1000) * salePrice(memo, slot.start, contracts)
             : null,
         productionSource:
           physical !== null
@@ -437,7 +446,7 @@ export function makeForecast(input: {
               : 'missing',
       };
     });
-    return aggregateForecast(date, hours);
+    return aggregateForecast(date, hours, contracts);
   });
   return {
     days,
@@ -445,5 +454,48 @@ export function makeForecast(input: {
     exportRatio: history.ratio,
     calibration,
     priceScores: priceBacktest(prices, today),
+  };
+}
+
+// Correct the financial view of an archived weather forecast without rewriting
+// its as-issued database record, production, export, prices or issuance time.
+export function revalueForecast(
+  payload: ForecastPayload,
+  contracts: readonly ContractTerms[],
+): ForecastPayload {
+  if (
+    payload.contracts &&
+    contractScheduleVersion(payload.contracts) ===
+      contractScheduleVersion(contracts)
+  )
+    return payload;
+  const days = payload.days.map((day) =>
+    aggregateForecast(
+      day.date,
+      day.hours.map((h) => ({
+        ...h,
+        revenueEur:
+          h.exportKwh !== null && h.memo !== null
+            ? (h.exportKwh / 1000) * salePrice(h.memo, h.start, contracts)
+            : null,
+      })),
+      contracts,
+    ),
+  );
+  return {
+    ...payload,
+    days,
+    contracts,
+    contract: contractFor(
+      days[0]?.date ?? localDate(payload.issuedAt),
+      contracts,
+    ),
+    asIssuedContractVersion:
+      payload.asIssuedContractVersion ?? payload.contract.version,
+    pricingAdjusted: days.some((d, i) =>
+      d.hours.some(
+        (h, j) => h.revenueEur !== payload.days[i].hours[j].revenueEur,
+      ),
+    ),
   };
 }

@@ -1,5 +1,6 @@
+import {contractFor,CONTRACT_SCHEDULE,type ContractTerms} from './contracts';
+export {contractFor,CONTRACT_SCHEDULE,type ContractTerms} from './contracts';
 export const ZONE='Europe/Skopje';
-export const CONTRACT={share:0.94,fixedEurMwh:2.2,version:'excerpt-10A-94pct-2.2'} as const;
 export const MEMO_URL='https://dam-data.memo.mk/index.php?action=auction-by-hour&lang=en';
 const dateFormat=new Intl.DateTimeFormat('en-CA',{timeZone:ZONE,year:'numeric',month:'2-digit',day:'2-digit'});
 const hourFormat=new Intl.DateTimeFormat('en-GB',{timeZone:ZONE,hour:'2-digit',hourCycle:'h23'});
@@ -24,8 +25,8 @@ export function rangeFor(day:string,period:Period,hour?:string){
  const next=new Date(first+'T12:00:00Z');if(period==='year')next.setUTCFullYear(next.getUTCFullYear()+1);else if(period==='month')next.setUTCMonth(next.getUTCMonth()+1);else next.setUTCDate(next.getUTCDate()+1);
  return {from:slotsForDay(first)[0].start,to:slotsForDay(next.toISOString().slice(0,10))[0].start};
 }
-export function salePrice(memo:number){return memo*CONTRACT.share-CONTRACT.fixedEurMwh;}
-export function revenue(kwh:number,memo:number){return kwh/1000*salePrice(memo);}
+export function salePrice(memo:number,delivery:string,contracts:readonly ContractTerms[]=CONTRACT_SCHEDULE){const contract=contractFor(delivery,contracts);return memo*contract.share-contract.fixedEurMwh;}
+export function revenue(kwh:number,memo:number,delivery:string,contracts:readonly ContractTerms[]=CONTRACT_SCHEDULE){return kwh/1000*salePrice(memo,delivery,contracts);}
 export type ReadingInput={start:string;productionKwh:number|null;exportKwh:number|null;powerKw:number|null;observedAt:string};
 export function validateReadings(input:unknown,now=new Date()):ReadingInput[]{
  if(!Array.isArray(input)||input.length===0||input.length>1000)throw new Error('Внесете од 1 до 1.000 часовни мерења.');
