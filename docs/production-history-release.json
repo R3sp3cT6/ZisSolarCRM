@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-10-11T20:28:39.295Z",
+  "commit": "f009cd6",
+  "deployment": "dpl_Hvvc5pyNyZCMNKXtH5uCRoAugHP3",
+  "readyState": "READY",
+  "runtimeRole": "zis_app_runtime",
+  "officialModel": "weather-solar-v3.2",
+  "trialModel": "weather-solar-v3.4-satellite",
+  "warmDashboardForecastTrialSqlQueries": 0,
+  "loginStatus": 200,
+  "anonymousTrialStatus": 401,
+  "change": "Reuse existing inverter-history requests for five-minute evaluation observations; no new model or schedule"
+}
