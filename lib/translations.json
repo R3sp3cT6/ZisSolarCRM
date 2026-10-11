@@ -395,5 +395,13 @@
   "Се прикажуваат само целосно прогнозирани денови или месеци.": "Only days or months with complete forecasts are shown.",
   "Прогнозата е за цел час; тековното мерење сè уште се дополнува.": "Forecasts cover a full hour; the current reading is still accumulating.",
   "Важи од": "Effective from",
-  "Периодот опфаќа повеќе договори. Секој час се пресметува според договорот што важел тогаш.": "This period spans multiple contracts. Each hour uses the terms effective at that time."
+  "Периодот опфаќа повеќе договори. Секој час се пресметува според договорот што важел тогаш.": "This period spans multiple contracts. Each hour uses the terms effective at that time.",
+  "Историска симулација · MWh": "Historical simulation · MWh",
+  "Прогноза / историска симулација · MWh": "Forecast / historical simulation · MWh",
+  "Историска симулација (MWh)": "Historical simulation (MWh)",
+  "Прогноза / симулација (MWh)": "Forecast / simulation (MWh)",
+  "Проверка на симулацијата": "Simulation evaluation",
+  "споредени завршени часови": "paired completed hours",
+  "Историска симулација со архивирани NOAA/GFS прогнози и тогаш достапни мерења. Пресметана накнадно; одделна од оценката на MET прогнозата. Без историски податоци за магла и прашина.": "Historical simulation using archived NOAA/GFS forecasts and readings available at the time. Reconstructed afterwards; separate from the MET forecast score. Historical fog and dust data are unavailable.",
+  "MAE е просечното апсолутно отстапување; WAPE е збирот на апсолутните грешки / реалното производство. Помало е подобро. Ноќните двојни нули и незавршените часови се исклучени.": "MAE is mean absolute error; WAPE is total absolute error / actual production. Lower is better. Nighttime double zeros and incomplete hours are excluded."
 }

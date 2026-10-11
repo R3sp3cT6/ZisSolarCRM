@@ -13,3 +13,4 @@ GRANT SELECT,INSERT,UPDATE,DELETE ON push_subscriptions,push_deliveries TO zis_a
 GRANT SELECT,INSERT,UPDATE ON forecast_settings TO zis_app_runtime;
 GRANT SELECT,INSERT ON forecast_runs TO zis_app_runtime;
 GRANT SELECT ON contract_versions,contract_recalculations TO zis_app_runtime;
+GRANT SELECT ON forecast_backtests TO zis_app_runtime;

@@ -36,6 +36,7 @@ mock.module('../db/index.ts', {
     }),
   },
 });
+mock.module('../lib/forecast-backtest-server.ts',{namedExports:{readBacktest:async()=>null}});
 const { readForecastComparison } =
   await import('../lib/forecast-comparison-server.ts');
 const day = '2026-10-12';

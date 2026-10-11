@@ -151,6 +151,7 @@ export function EnergyChart({
       point.forecastProductionKwh != null,
   );
   const comparison = data?.forecastComparison;
+  const hasBacktest = (comparison?.backtestHours ?? 0) > 0;
 
   return (
     <section className="panel chart-panel">
@@ -197,7 +198,13 @@ export function EnergyChart({
           </span>
           <span>
             <i className="legend-line forecast-line" />
-            {t('Прогнозирано производство · MWh')}
+            {t(
+              hasBacktest
+                ? comparison?.prospectiveHours
+                  ? 'Прогноза / историска симулација · MWh'
+                  : 'Историска симулација · MWh'
+                : 'Прогнозирано производство · MWh',
+            )}
           </span>
         </div>
         {comparison && (
@@ -205,9 +212,11 @@ export function EnergyChart({
             {t(
               comparison.status === 'unavailable'
                 ? 'Споредбата со прогнозата моментално не е достапна.'
-                : comparison.status === 'missing'
-                  ? 'За овој период нема однапред зачувана временска прогноза за производство.'
-                  : 'Првата зачувана прогноза пред секој час. Празнините означуваат недостасувачка прогноза.',
+                : hasBacktest
+                  ? 'Историска симулација со архивирани NOAA/GFS прогнози и тогаш достапни мерења. Пресметана накнадно; одделна од оценката на MET прогнозата. Без историски податоци за магла и прашина.'
+                  : comparison.status === 'missing'
+                    ? 'За овој период нема однапред зачувана временска прогноза за производство.'
+                    : 'Првата зачувана прогноза пред секој час. Празнините означуваат недостасувачка прогноза.',
             )}
             {comparison.coveredHours > 0 &&
               (period === 'month' ||
@@ -221,6 +230,22 @@ export function EnergyChart({
                   )}
                 </span>
               )}
+          </p>
+        )}
+        {hasBacktest && comparison && comparison.backtestScore.hours > 0 && (
+          <p className="forecast-comparison-note">
+            {t('Проверка на симулацијата')}: {comparison.backtestScore.hours}{' '}
+            {t('споредени завршени часови')} · MAE{' '}
+            {formatValue((comparison.backtestScore.maeKwh ?? 0) / 1000)} MWh ·
+            RMSE {formatValue((comparison.backtestScore.rmseKwh ?? 0) / 1000)}{' '}
+            MWh
+            {comparison.backtestScore.wapePercent !== null && (
+              <> · WAPE {formatValue(comparison.backtestScore.wapePercent)}%</>
+            )}
+            <br />
+            {t(
+              'MAE е просечното апсолутно отстапување; WAPE е збирот на апсолутните грешки / реалното производство. Помало е подобро. Ноќните двојни нули и незавршените часови се исклучени.',
+            )}
           </p>
         )}
         {t(
@@ -310,12 +335,18 @@ export function EnergyChart({
                     labelFormatter={(label, items) =>
                       `${String(label).split(' GMT')[0]}${items[0]?.payload?.partial ? ' · ' + t(period === 'day' || period === 'hour' ? 'Тековен час' : 'Делумен период') : ''}`
                     }
-                    formatter={(value, name) => [
+                    formatter={(value, name, item) => [
                       formatValue(Number(value)),
                       name === 'productionMwh'
                         ? t('Производство (MWh)')
                         : name === 'forecastMwh'
-                          ? t('Прогноза (MWh)')
+                          ? t(
+                              item.payload?.forecastKind === 'backtest'
+                                ? 'Историска симулација (MWh)'
+                                : item.payload?.forecastKind === 'mixed'
+                                  ? 'Прогноза / симулација (MWh)'
+                                  : 'Прогноза (MWh)',
+                            )
                           : t('Приход (EUR)'),
                     ]}
                     contentStyle={tooltipStyle}

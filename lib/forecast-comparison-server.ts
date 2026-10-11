@@ -1,6 +1,7 @@
 import 'server-only';
 import { db } from '../db/index';
 import { readForecast } from './forecast-server';
+import { readBacktest } from './forecast-backtest-server';
 import { cacheRead, cacheWrite, withCacheLock } from './shared-cache';
 import type {
   ForecastComparison,
@@ -13,7 +14,7 @@ type StoredComparison = {
   hours: ForecastComparisonHour[];
 };
 
-export async function readForecastComparison(
+async function readProspectiveComparison(
   owner: string,
 ): Promise<ForecastComparison> {
   try {
@@ -63,4 +64,24 @@ export async function readForecastComparison(
     // Keep the measured chart available if forecast storage is temporarily offline.
     return { hours: [], unavailable: true };
   }
+}
+
+export async function readForecastComparison(
+  owner: string,
+): Promise<ForecastComparison> {
+  const [prospective, backtest] = await Promise.allSettled([
+    readProspectiveComparison(owner),
+    readBacktest(owner),
+  ]);
+  const result =
+    prospective.status === 'fulfilled'
+      ? prospective.value
+      : { hours: [], unavailable: true };
+  return {
+    ...result,
+    ...(backtest.status === 'fulfilled' && backtest.value
+      ? { backtest: backtest.value }
+      : {}),
+    ...(backtest.status === 'rejected' ? { unavailable: true } : {}),
+  };
 }

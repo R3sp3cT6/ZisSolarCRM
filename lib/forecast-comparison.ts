@@ -1,5 +1,6 @@
 import { hourLabel, localDate } from './energy';
 import type { buildDashboard } from './dashboard';
+import { backtestScores, type BacktestPayload } from './forecast-backtest';
 
 export type ForecastComparisonHour = {
   start: string;
@@ -9,6 +10,7 @@ export type ForecastComparisonHour = {
 };
 export type ForecastComparison = {
   hours: ForecastComparisonHour[];
+  backtest?: BacktestPayload;
   unavailable?: boolean;
 };
 
@@ -39,7 +41,42 @@ export function attachForecastComparison(
   data: ReturnType<typeof buildDashboard>,
   comparison: ForecastComparison,
 ) {
-  const forecasts = firstForecasts(comparison.hours);
+  const forecasts = new Map<
+    string,
+    ForecastComparisonHour & { kind: 'forecast' | 'backtest' }
+  >(
+    [...firstForecasts(comparison.hours)].map(([key, h]) => [
+      key,
+      { ...h, kind: 'forecast' },
+    ]),
+  );
+  for (const day of comparison.backtest?.days ?? [])
+    for (const h of day.hours) {
+      const start = Date.parse(h.start),
+        origin = Date.parse(h.originAt),
+        created = Date.parse(comparison.backtest!.createdAt);
+      if (
+        !Number.isFinite(start) ||
+        start % 3600000 !== 0 ||
+        !Number.isFinite(origin) ||
+        origin >= start ||
+        !Number.isFinite(created) ||
+        created < origin ||
+        h.productionKwh === null ||
+        !Number.isFinite(h.productionKwh) ||
+        h.productionKwh < 0
+      )
+        continue;
+      const key = new Date(start).toISOString();
+      if (!forecasts.has(key))
+        forecasts.set(key, {
+          start: key,
+          productionKwh: h.productionKwh,
+          issuedAt: comparison.backtest!.createdAt,
+          modelVersion: comparison.backtest!.modelVersion,
+          kind: 'backtest',
+        });
+    }
   const actual = new Map(data.chart.map((point) => [point.key, point]));
   const bins = new Map<string, { label: string; starts: string[] }>();
   for (
@@ -67,10 +104,12 @@ export function attachForecastComparison(
     bin.starts.push(start);
     bins.set(key, bin);
   }
-  let coveredHours = 0;
+  let coveredHours = 0,
+    backtestHours = 0;
   const chart = [...bins].map(([key, bin]) => {
     const predicted = bin.starts.flatMap((start) => forecasts.get(start) ?? []);
     coveredHours += predicted.length;
+    backtestHours += predicted.filter((h) => h.kind === 'backtest').length;
     // A partial forecast sum must never look like a complete day/month prediction.
     const complete = predicted.length === bin.starts.length;
     return {
@@ -89,6 +128,13 @@ export function attachForecastComparison(
         complete && predicted.length === 1 ? predicted[0].issuedAt : null,
       forecastModelVersion:
         complete && predicted.length === 1 ? predicted[0].modelVersion : null,
+      forecastKind: complete
+        ? predicted.every((h) => h.kind === 'backtest')
+          ? 'backtest'
+          : predicted.every((h) => h.kind === 'forecast')
+            ? 'forecast'
+            : 'mixed'
+        : null,
     };
   });
   return {
@@ -105,6 +151,13 @@ export function attachForecastComparison(
             ? ('complete' as const)
             : ('partial' as const),
       coveredHours,
+      backtestHours,
+      prospectiveHours: coveredHours - backtestHours,
+      backtestCreatedAt: comparison.backtest?.createdAt ?? null,
+      backtestScore: backtestScores(
+        data.rows,
+        [...forecasts.values()].filter((h) => h.kind === 'backtest'),
+      ),
     },
   };
 }

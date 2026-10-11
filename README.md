@@ -127,6 +127,8 @@ The collector validates every expected hourly slot (23/24/25), saves the prices 
 
 ### Forecast module (experimental)
 
+October historical comparison: [production replay method and audit](docs/production-backtest.md). The overview can show separately labelled NOAA/GFS historical simulations alongside actual production and genuine pre-issued forecasts. These simulations are stored in `forecast_backtests`, never backdated into `forecast_runs`, and do not count towards the live MET model's prospective score.
+
 `/?view=forecast` shows seven future Skopje delivery days. Authenticated users can read their assigned plant's saved forecast; only freshly authorized administrators can change settings or calculate. No client-supplied owner is accepted. Forecasts never replace measured readings or official prices.
 
 The initial price model is a reproducible benchmark, not a trained regional market model: 50% of the latest available same-hour delivery-day price plus 50% of the latest same-weekday price available at the issue-day cutoff. Each 1–7-day horizon uses that cutoff, so a long-range forecast cannot read intervening future labels. Official MEMO prices fetched before issuance override predictions. Daily means are duration-weighted through actual UTC slots, including 23/25-hour days; export-weighted capture prices are shown separately. No price clipping or assumed ban on negative prices is applied.
