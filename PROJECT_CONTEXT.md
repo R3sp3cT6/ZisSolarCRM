@@ -11,7 +11,8 @@
 - Проверка на истите **129 часа од 1–10 октомври**: WAPE **26,04% → 11,79%**, совпаѓање **73,96% → 88,21%**, часовна MAE **0,07923 → 0,03587 MWh** (54,72% релативно намалување). [Машински audit](docs/production-improvement-v31.json). 8 и 9 октомври поединечно се полоши. Ова е накнадна дијагностичка споредба, НЕ независен holdout/гарантирана идна точност; live температура/ветер е MET, replay е GFS.
 - Нова append-only продукциска симулација: `386fc06c-5952-4faf-ba01-218896defb39`, модел `weather-solar-v3.1-gfs-dswrf-replay-v1`, 264 часа за 1–11 октомври. [SQL readback audit](docs/october-production-backtest-v31.json). Старите вистински прогнози, мерните податоци и цени не се препишани. Официјални однапред зачувани прогнози имаат предност над replay на графиконот.
 - Изолиран Neon branch тест: `380f2cff-b52d-453c-9a42-6d1ee81833b6` replay и `8a5b1e42-1c81-4b6e-9783-5755cb3d94bc` live v3.1, сите 168 идни часа со GFS; SQL readback потврден. Новите live snapshots содржат CSV, DAS, bounds, run, timestamps и calibration во `inputs`.
-- Проверено: 131 тест вкупно (52 forecast), build/TypeScript, насочен lint за новиот модел. `energy-chart.tsx` има 2 претходни lint грешки (effect setState и role=group), надвор од оваа промена. Desktop/mobile 390px MK/EN се проверуваат во изолиран preview; зачувај receipt по објавување.
+- Проверено: 131 тест вкупно (52 forecast), build/TypeScript, насочен lint за новиот модел. `energy-chart.tsx` има 2 претходни lint грешки (effect setState и role=group), надвор од оваа промена. Desktop/mobile 390px MK/EN проверени во изолиран preview, без хоризонтален overflow и console errors; слика `outputs/forecast-v31.jpg`.
+- Објавено: код `f3c0722`, deployment `dpl_4Q266aph2fGymFJf1ynogZkoMwUc` READY на production alias. Нов live SQL snapshot `876a4814-3109-436e-a00a-cc624ea2a73d`, издаден `2026-10-11T16:06:06.781Z`, сите 168 идни часа со GFS; [persistence receipt](docs/production-v31-persistence.json). Новиот replay е објавен во заедничкиот кеш. Топол forecast и comparison read: **0 SQL queries**, `/login` 200; [release receipt](docs/production-v31-release.json). Новиот модел за 11 октомври во тековниот спарен примерок има 61,53% совпаѓање; не го мешај тој делумен дневен број со 88,21% за 1–10 октомври.
 - Договорот, ценовниот benchmark и постојниот estimator за export ratio не се менувани. За понатаму: одделно подобрување на export ratio при долги серии ноќни NULL записи, потврдени DC/tilt/azimuth и подолга проспективна проверка. Нема автоматска контрола на централата.
 
 ## Што правиме
@@ -66,8 +67,8 @@
 | Работна гранка | `codex/energy-forecast`, upstream `origin/master` |
 | Продукциска апликација | https://zissolar.vercel.app |
 | Прогноза | https://zissolar.vercel.app/?view=forecast |
-| Последна објавена кодна промена | `1d34d03` — процент на совпаѓање и MWh во лентата |
-| Vercel deployment | `dpl_59iF2mmDZhHtHB8whsCw2FKuKAtg`, проверено `READY`; `/login` HTTP 200 |
+| Последна објавена кодна промена | `f3c0722` — модел v3.1, дневна калибрација и GFS зрачење |
+| Vercel deployment | `dpl_4Q266aph2fGymFJf1ynogZkoMwUc`, проверено `READY`; `/login` HTTP 200 |
 | Framework / runtime | Next.js 16.3.4, React 19, Node.js 24, TypeScript |
 | База | PostgreSQL во Neon; проект `shy-cloud-43336984`, production branch `br-orange-shape-b1h87mhs` |
 | Кеш | Upstash Redis, серверски пристап; нема клуч во browser |

@@ -1,0 +1,23 @@
+{
+  "checkedAt": "2026-10-11T16:06:38.699Z",
+  "deployment": "dpl_4Q266aph2fGymFJf1ynogZkoMwUc",
+  "commit": "f3c0722",
+  "backtestId": "386fc06c-5952-4faf-ba01-218896defb39",
+  "warmComparisonSqlQueries": 0,
+  "today": [
+    {
+      "kind": "backtest",
+      "availableHours": 24,
+      "hours": 10,
+      "actualKwh": 1672.0100000000002,
+      "predictedKwh": 1520.1042077199772,
+      "matchPercent": 61.530977932680685,
+      "maeKwh": 64.32058958677858,
+      "rmseKwh": 77.67136164924807,
+      "biasKwh": -15.19057922800224,
+      "wapePercent": 38.469022067319315
+    }
+  ],
+  "cron": null,
+  "loginStatus": 200
+}
