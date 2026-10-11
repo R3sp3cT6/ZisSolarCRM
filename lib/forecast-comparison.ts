@@ -137,6 +137,22 @@ export function attachForecastComparison(
         : null,
     };
   });
+  const completedRows = data.rows.filter(
+    (row) => Date.parse(row.start) + 3600000 <= Date.parse(data.generatedAt),
+  );
+  const evaluations = (['forecast', 'backtest'] as const).map((kind) => {
+    const hours = [...forecasts.values()].filter(
+      (h) =>
+        h.kind === kind &&
+        h.start >= data.range.from &&
+        h.start < data.range.to,
+    );
+    return {
+      kind,
+      availableHours: hours.length,
+      ...backtestScores(completedRows, hours),
+    };
+  });
   return {
     ...data,
     chart,
@@ -154,9 +170,9 @@ export function attachForecastComparison(
       backtestHours,
       prospectiveHours: coveredHours - backtestHours,
       backtestCreatedAt: comparison.backtest?.createdAt ?? null,
-      backtestScore: backtestScores(
-        data.rows,
-        [...forecasts.values()].filter((h) => h.kind === 'backtest'),
+      backtestScore: evaluations[1],
+      evaluations: evaluations.filter(
+        (evaluation) => evaluation.availableHours > 0,
       ),
     },
   };

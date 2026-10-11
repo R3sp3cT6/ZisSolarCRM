@@ -172,6 +172,9 @@ void test('error metrics exclude missing, incomplete and double-zero hours; WAPE
   ];
   assert.deepEqual(backtestScores(rows, hours), {
     hours: 2,
+    actualKwh: 200,
+    predictedKwh: 190,
+    matchPercent: 75,
     maeKwh: 25,
     rmseKwh: Math.sqrt(650),
     biasKwh: -5,
@@ -183,6 +186,53 @@ void test('error metrics exclude missing, incomplete and double-zero hours; WAPE
       [{ start: 'a', productionKwh: 5 }],
     ).wapePercent,
     null,
+  );
+});
+void test('match score uses hourly absolute errors, clamps at zero and needs positive actual production', () => {
+  const score = backtestScores(
+    [
+      { start: 'a', productionKwh: 100 },
+      { start: 'b', productionKwh: 100 },
+    ],
+    [
+      { start: 'a', productionKwh: 150 },
+      { start: 'b', productionKwh: 50 },
+    ],
+  );
+  assert.equal(score.actualKwh, score.predictedKwh);
+  assert.equal(
+    score.matchPercent,
+    50,
+    'opposing hourly errors must not cancel',
+  );
+  assert.equal(
+    backtestScores(
+      [{ start: 'a', productionKwh: 100 }],
+      [{ start: 'a', productionKwh: 300 }],
+    ).matchPercent,
+    0,
+  );
+  assert.equal(
+    backtestScores(
+      [{ start: 'a', productionKwh: 100 }],
+      [{ start: 'a', productionKwh: 100 }],
+    ).matchPercent,
+    100,
+  );
+  assert.equal(
+    backtestScores(
+      [{ start: 'a', productionKwh: 0 }],
+      [{ start: 'a', productionKwh: 20 }],
+    ).matchPercent,
+    null,
+  );
+  assert.equal(backtestScores([], []).predictedKwh, null);
+  assert.equal(
+    backtestScores(
+      [{ start: 'a', productionKwh: -10 }],
+      [{ start: 'a', productionKwh: 20 }],
+    ).hours,
+    0,
   );
 });
 const cache = new Map(),

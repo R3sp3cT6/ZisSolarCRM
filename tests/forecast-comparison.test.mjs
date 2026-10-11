@@ -36,7 +36,9 @@ mock.module('../db/index.ts', {
     }),
   },
 });
-mock.module('../lib/forecast-backtest-server.ts',{namedExports:{readBacktest:async()=>null}});
+mock.module('../lib/forecast-backtest-server.ts', {
+  namedExports: { readBacktest: async () => null },
+});
 const { readForecastComparison } =
   await import('../lib/forecast-comparison-server.ts');
 const day = '2026-10-12';
@@ -101,6 +103,54 @@ void test('forecast-only hours extend the chart without changing real production
     attachForecastComparison(base, { hours: [] }).forecastComparison.status,
     'missing',
   );
+});
+
+void test('strip evaluation separates simulation and forecast, using only paired completed hours in the selected range', () => {
+  const date = '2026-10-01',
+    base = dashboard(date),
+    slots = slotsForDay(date);
+  const [a, b, current, future] = slots.slice(10, 14).map((s) => s.start);
+  base.generatedAt = new Date(Date.parse(current) + 1800000).toISOString();
+  base.rows = [a, b, current, future].map((start) => ({
+    start,
+    productionKwh: 100,
+    partial: false,
+  }));
+  const result = attachForecastComparison(base, {
+    hours: [a, current, future].map((start) =>
+      prediction(start, 90, '2026-09-30T12:00:00Z'),
+    ),
+    backtest: {
+      id: 'sim',
+      createdAt: '2026-10-11T15:00:00Z',
+      modelVersion: 'replay',
+      fromDate: date,
+      toDate: date,
+      source: 'NOAA GFS',
+      days: [
+        {
+          date,
+          historyDays: 14,
+          productionKwh: 150,
+          hours: [a, b].map((start) => ({
+            start,
+            productionKwh: 75,
+            originAt: '2026-09-30T18:00:00Z',
+            weatherRunAt: '2026-09-30T12:00:00Z',
+          })),
+        },
+      ],
+    },
+  });
+  const [forecast, simulation] = result.forecastComparison.evaluations;
+  assert.equal(forecast.hours, 1);
+  assert.equal(forecast.actualKwh, 100);
+  assert.equal(forecast.predictedKwh, 90);
+  assert.equal(forecast.matchPercent, 90);
+  assert.equal(simulation.hours, 1);
+  assert.equal(simulation.predictedKwh, 75);
+  assert.equal(simulation.matchPercent, 75);
+  assert.deepEqual(result.totals, base.totals);
 });
 
 void test('daily aggregation keeps missing forecast hours unknown, preserves zero and handles both DST transitions', () => {

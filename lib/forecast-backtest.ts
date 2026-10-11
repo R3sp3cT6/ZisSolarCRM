@@ -205,16 +205,23 @@ export function backtestScores(
     return !r.partial &&
       r.productionKwh !== null &&
       Number.isFinite(r.productionKwh) &&
+      r.productionKwh >= 0 &&
       pred != null &&
       Number.isFinite(pred) &&
+      pred >= 0 &&
       (r.productionKwh > 0 || pred > 0)
       ? [{ actual: r.productionKwh, pred }]
       : [];
   });
   const total = pairs.reduce((s, p) => s + p.actual, 0),
     abs = pairs.reduce((s, p) => s + Math.abs(p.pred - p.actual), 0);
+  const wapePercent = total > 0 ? (abs / total) * 100 : null;
   return {
     hours: pairs.length,
+    actualKwh: pairs.length ? total : null,
+    predictedKwh: pairs.length ? pairs.reduce((s, p) => s + p.pred, 0) : null,
+    // A descriptive 0–100 match score, not a probability of future accuracy.
+    matchPercent: wapePercent === null ? null : Math.max(0, 100 - wapePercent),
     maeKwh: pairs.length ? abs / pairs.length : null,
     rmseKwh: pairs.length
       ? Math.sqrt(
@@ -225,6 +232,6 @@ export function backtestScores(
     biasKwh: pairs.length
       ? pairs.reduce((s, p) => s + p.pred - p.actual, 0) / pairs.length
       : null,
-    wapePercent: total > 0 ? (abs / total) * 100 : null,
+    wapePercent,
   };
 }

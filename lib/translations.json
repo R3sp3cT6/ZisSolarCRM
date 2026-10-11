@@ -403,5 +403,22 @@
   "Проверка на симулацијата": "Simulation evaluation",
   "споредени завршени часови": "paired completed hours",
   "Историска симулација со архивирани NOAA/GFS прогнози и тогаш достапни мерења. Пресметана накнадно; одделна од оценката на MET прогнозата. Без историски податоци за магла и прашина.": "Historical simulation using archived NOAA/GFS forecasts and readings available at the time. Reconstructed afterwards; separate from the MET forecast score. Historical fog and dust data are unavailable.",
-  "MAE е просечното апсолутно отстапување; WAPE е збирот на апсолутните грешки / реалното производство. Помало е подобро. Ноќните двојни нули и незавршените часови се исклучени.": "MAE is mean absolute error; WAPE is total absolute error / actual production. Lower is better. Nighttime double zeros and incomplete hours are excluded."
+  "MAE е просечното апсолутно отстапување; WAPE е збирот на апсолутните грешки / реалното производство. Помало е подобро. Ноќните двојни нули и незавршените часови се исклучени.": "MAE is mean absolute error; WAPE is total absolute error / actual production. Lower is better. Nighttime double zeros and incomplete hours are excluded.",
+  "Совпаѓање на моделот": "Model match",
+  "Споредбата моментално не е достапна.": "Comparison is currently unavailable.",
+  "Нема споредливи мерења.": "No comparable readings yet.",
+  "Предвидено · симулација": "Predicted · simulation",
+  "Предвидено · прогноза": "Predicted · forecast",
+  "Совпаѓање": "Match",
+  "споредени часови": "paired hours",
+  "Споредба со реалното производство": "Comparison with actual production",
+  "Историска симулација со NOAA/GFS, пресметана накнадно.": "Historical NOAA/GFS simulation, reconstructed afterwards.",
+  "Првата зачувана прогноза пред почетокот на секој час.": "The first saved forecast before each hour starts.",
+  "Реално производство": "Actual production",
+  "Предвидено производство": "Predicted production",
+  "Просечно отстапување по час": "Mean absolute hourly error",
+  "Релативна грешка": "Relative error",
+  "Само споредени завршени часови од избраниот период. Недостасувачките мерења, тековниот час и ноќните двојни нули се исклучени.": "Only paired completed hours in the selected period. Missing readings, the current hour and nighttime double zeros are excluded.",
+  "Совпаѓање = max(0, 100 − WAPE). WAPE е збирот на апсолутните часовни грешки / реалното производство × 100. Ова е описна оценка за споредените часови, а не гаранција за идната точност.": "Match = max(0, 100 − WAPE). WAPE is total absolute hourly error / actual production × 100. This describes the paired hours and does not guarantee future accuracy.",
+  "Процентот се прикажува кога има споредливи часови со вкупно реално производство над нула.": "The percentage is shown when comparable hours have total actual production above zero."
 }

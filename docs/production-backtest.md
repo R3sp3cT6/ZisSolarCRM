@@ -30,6 +30,8 @@ The score is calculated from paired, completed hourly readings in the selected p
 - Bias = mean(simulation − actual), retained in the receipt.
 - WAPE = sum(abs(simulation − actual)) / sum(actual) × 100. Lower is better; **100 − WAPE is not a calibrated accuracy percentage**.
 
+The overview balance strip also shows a descriptive **Match / Совпаѓање** score, `max(0, 100 − WAPE)`, in response to the requested percentage display. It is explicitly described as a score of the paired historical hours, not guaranteed future accuracy. It shows predicted MWh for those same paired completed hours, and a click/tap opens actual MWh, predicted MWh, hourly MAE in MWh, WAPE and the formula. Opposing hourly errors do not cancel. A zero actual denominator or no pairs produces an unavailable percentage, not 100%. Prospective forecasts and reconstructed simulations have separate entries and scores. These paired-hour totals can differ from the dashboard's complete-day/live totals because of missing or unfinished hours. UI values use three decimal places for MWh and one for percent, in MK/EN; currency changes do not affect them.
+
 Production audit at `2026-10-11T15:33:48.536Z`: 264 reconstructed hours, 139 scored hours, MAE **79.236 kWh**, RMSE **119.418 kWh**, bias **−67.141 kWh**, WAPE **26.912%**. The UI recalculates against currently available actuals, so its score can change as missing measurements arrive. See [database receipt](october-production-backtest.json). The short sample is not proof of future performance, and paired-hour scoring does not establish full-day accuracy when actual readings are incomplete.
 
 ## Persistence, access and operations
