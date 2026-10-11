@@ -1,6 +1,6 @@
 # ZIS Solar — контекст за продолжување на работата
 
-Последно проверено: **11.10.2026** (`2026-10-11T15:38:33Z`). Ова е состојба на проектот на тој датум; тековните податоци се читаат од базата.
+Последно проверено: **11.10.2026** (`2026-10-11T15:40:47Z`). Ова е состојба на проектот на тој датум; тековните податоци се читаат од базата.
 
 ## Што правиме
 
@@ -52,8 +52,8 @@
 | Работна гранка | `codex/energy-forecast`, upstream `origin/master` |
 | Продукциска апликација | https://zissolar.vercel.app |
 | Прогноза | https://zissolar.vercel.app/?view=forecast |
-| Последна објавена кодна промена | `f6f8cee` — нов октомвриски договор и исправени приходи |
-| Vercel deployment | `dpl_CAmnzLRoTiPj3AJthZ55ymiqBTtB`, проверено `READY`; `/login` HTTP 200 |
+| Последна објавена кодна промена | `25fc9bb` — историска GFS симулација и споредба за октомври |
+| Vercel deployment | `dpl_CZuK7YWo7MNdc856UsP6D9Hys2NZ`, проверено `READY`; `/login` HTTP 200 |
 | Framework / runtime | Next.js 16.3.4, React 19, Node.js 24, TypeScript |
 | База | PostgreSQL во Neon; проект `shy-cloud-43336984`, production branch `br-orange-shape-b1h87mhs` |
 | Кеш | Upstash Redis, серверски пристап; нема клуч во browser |
@@ -197,3 +197,4 @@ MET користи Redis, `Expires`, `Last-Modified` и одбива прогн�
 - Читање преку owner-bound Redis кеш (7 дена) и lock; топла продукциска споредба: 0 SQL queries. Нема нов cron. `forecast_backtests` runtime е read-only; рачно објавување на нова симулација бара maintenance скрипта и верификација на SQL записот.
 - `npm test`: 121 успешен тест; build и TypeScript успешни; насочен lint и diff проверка успешни. Локална слика: `outputs/october-historical-comparison.jpg`.
 - Код: `lib/forecast-backtest.ts`, `lib/forecast-backtest-server.ts`, проширена `forecast-comparison`, `scripts/download-gfs-backtest.py`, `scripts/replay-production.mjs`. [Постапка и извори](docs/production-backtest.md).
+- Објавено на `https://zissolar.vercel.app`; production build/TypeScript успешни. GitHub master е синхронизиран. Привремената тест-сесија е истечена, preview процесите и tab се затворени, привремените branch/production maintenance env датотеки се отстранети. NOAA изворите се задржани локално за репродукција.
