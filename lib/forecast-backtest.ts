@@ -55,6 +55,8 @@ export type BacktestHour = {
   productionKwh: number | null;
   originAt: string;
   weatherRunAt: string;
+  baselineKwh?: number | null;
+  satelliteWeight?: number;
 };
 export type BacktestPayload = {
   id: string;
@@ -62,7 +64,9 @@ export type BacktestPayload = {
   modelVersion: string;
   fromDate: string;
   toDate: string;
-  source: 'NOAA GFS';
+  source: 'NOAA GFS' | 'NOAA GFS + LSA SAF';
+  method?: 'satellite-hour-ahead';
+  evaluationId?: string;
   days: {
     date: string;
     historyDays: number;

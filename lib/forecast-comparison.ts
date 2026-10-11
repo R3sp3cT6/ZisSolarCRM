@@ -43,7 +43,11 @@ export function attachForecastComparison(
 ) {
   const forecasts = new Map<
     string,
-    ForecastComparisonHour & { kind: 'forecast' | 'backtest' }
+    ForecastComparisonHour & {
+      kind: 'forecast' | 'backtest';
+      baselineKwh?: number | null;
+      satelliteWeight?: number;
+    }
   >(
     [...firstForecasts(comparison.hours)].map(([key, h]) => [
       key,
@@ -59,7 +63,9 @@ export function attachForecastComparison(
         !Number.isFinite(start) ||
         start % 3600000 !== 0 ||
         !Number.isFinite(origin) ||
-        origin >= start ||
+        (comparison.backtest?.method === 'satellite-hour-ahead'
+          ? origin !== start
+          : origin >= start) ||
         !Number.isFinite(created) ||
         created < origin ||
         h.productionKwh === null ||
@@ -75,6 +81,8 @@ export function attachForecastComparison(
           issuedAt: comparison.backtest!.createdAt,
           modelVersion: comparison.backtest!.modelVersion,
           kind: 'backtest',
+          baselineKwh: h.baselineKwh,
+          satelliteWeight: h.satelliteWeight,
         });
     }
   const actual = new Map(data.chart.map((point) => [point.key, point]));
@@ -135,6 +143,10 @@ export function attachForecastComparison(
             ? 'forecast'
             : 'mixed'
         : null,
+      forecastMethod:
+        complete && predicted.some((h) => h.kind === 'backtest')
+          ? (comparison.backtest?.method ?? null)
+          : null,
     };
   });
   const completedRows = data.rows.filter(
@@ -150,6 +162,20 @@ export function attachForecastComparison(
     return {
       kind,
       availableHours: hours.length,
+      satelliteAppliedHours: hours.filter((h) => (h.satelliteWeight ?? 0) > 0)
+        .length,
+      baselineScore:
+        kind === 'backtest' &&
+        comparison.backtest?.method === 'satellite-hour-ahead'
+          ? backtestScores(
+              completedRows,
+              hours.flatMap((h) =>
+                h.baselineKwh != null
+                  ? [{ start: h.start, productionKwh: h.baselineKwh }]
+                  : [],
+              ),
+            )
+          : null,
       ...backtestScores(completedRows, hours),
     };
   });
@@ -170,6 +196,8 @@ export function attachForecastComparison(
       backtestHours,
       prospectiveHours: coveredHours - backtestHours,
       backtestCreatedAt: comparison.backtest?.createdAt ?? null,
+      backtestMethod: comparison.backtest?.method ?? null,
+      backtestModelVersion: comparison.backtest?.modelVersion ?? null,
       backtestScore: evaluations[1],
       evaluations: evaluations.filter(
         (evaluation) => evaluation.availableHours > 0,

@@ -2,7 +2,7 @@ import 'server-only';
 import { db } from '../db/index';
 import { cacheRead, cacheWrite, withCacheLock } from './shared-cache';
 import type { BacktestPayload } from './forecast-backtest';
-export const backtestKey = (owner: string) => 'forecast-backtest:v1:' + owner;
+export const backtestKey = (owner: string) => 'forecast-backtest:v2:' + owner;
 type Stored = { owner: string; backtest: BacktestPayload | null };
 export async function readBacktest(
   owner: string,

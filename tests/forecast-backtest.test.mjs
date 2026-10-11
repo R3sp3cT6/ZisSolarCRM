@@ -11,6 +11,7 @@ import { clearSkyIrradiance } from '../lib/forecast-solar.ts';
 import { slotsForDay } from '../lib/energy.ts';
 import { attachForecastComparison } from '../lib/forecast-comparison.ts';
 import { buildDashboard } from '../lib/dashboard.ts';
+import { satelliteReplay } from '../lib/forecast-satellite-replay.ts';
 const config = {
   ...defaultForecastConfig(),
   latitude: 41.068056,
@@ -204,7 +205,11 @@ void test('match score uses hourly absolute errors, clamps at zero and needs pos
   assert.equal(score.actualKwh, score.predictedKwh);
   assert.equal(score.totalDifferenceKwh, 0);
   assert.equal(score.totalDifferencePercent, 0);
-  assert.equal(score.wapePercent, 50, 'equal daily totals are not zero hourly error');
+  assert.equal(
+    score.wapePercent,
+    50,
+    'equal daily totals are not zero hourly error',
+  );
   assert.equal(
     score.matchPercent,
     50,
@@ -271,10 +276,133 @@ void test('historical replay uses a shared owner-bound cache and zero SQL on rep
   assert.equal(queries, 1);
   await readBacktest('a');
   assert.equal(queries, 1);
-  cache.set('forecast-backtest:v1:b', {
+  cache.set('forecast-backtest:v2:b', {
     owner: 'a',
     backtest: { id: 'private-a' },
   });
   assert.equal((await readBacktest('b')).id, 'backtest-b');
   assert.deepEqual(requested, ['a', 'b']);
+});
+
+void test('next-hour satellite replay keeps all source hours, missing weather stays missing and scoring uses the plotted series', () => {
+  const hours = slotsForDay(day).map((s) => ({
+    start: s.start,
+    productionKwh: 100,
+    ...backtestOrigin(day),
+  }));
+  const inputs = {
+    replay: {
+      payload: {
+        id: 'old',
+        createdAt: '2026-10-11T18:00:00Z',
+        modelVersion: 'old',
+        source: 'NOAA GFS',
+        fromDate: day,
+        toDate: day,
+        days: [{ date: day, historyDays: 14, productionKwh: 2400, hours }],
+      },
+      inputs: {
+        config,
+        days: [
+          {
+            date: day,
+            calibration: { coefficients: [] },
+            weather: hours
+              .slice(0, -1)
+              .map((h) => ({ start: h.start, temperature: 15 })),
+          },
+        ],
+      },
+    },
+    revisions: [],
+    satellitePoints: [],
+    actual: [{ start: hours[12].start, productionKwh: 999999 }],
+  };
+  const original = structuredClone(inputs);
+  const identity = {
+    id: 'new',
+    evaluationId: 'experiment',
+    createdAt: '2026-10-11T21:00:00Z',
+  };
+  const backtest = satelliteReplay(inputs, identity);
+  assert.deepEqual(inputs, original, 'no source mutation or backdated receipt');
+  assert.equal(backtest.days[0].hours.length, 24);
+  assert.equal(backtest.days[0].hours[23].productionKwh, null);
+  assert.equal(
+    backtest.days[0].productionKwh,
+    null,
+    'incomplete sum stays missing',
+  );
+  assert.ok(
+    backtest.days[0].hours
+      .slice(0, -1)
+      .every((h) => Math.abs(h.productionKwh - 100) < 1e-9),
+  );
+  inputs.actual = [];
+  assert.deepEqual(
+    satelliteReplay(inputs, identity),
+    backtest,
+    'target actuals cannot change predicted hours',
+  );
+  const base = buildDashboard(
+    {
+      owner: 'o',
+      plant: null,
+      readings: [
+        {
+          start: hours[12].start,
+          production_kwh: 200,
+          export_kwh: null,
+          power_kw: null,
+        },
+      ],
+      prices: [],
+      reports: [],
+      syncs: [],
+      fusionState: {},
+      configured: false,
+      savedAt: '',
+    },
+    day,
+    'day',
+  );
+  base.generatedAt = identity.createdAt;
+  const result = attachForecastComparison(base, { hours: [], backtest });
+  assert.equal(result.forecastComparison.backtestHours, 23);
+  assert.equal(result.chart[12].forecastMethod, 'satellite-hour-ahead');
+  assert.equal(result.forecastComparison.backtestScore.hours, 1);
+  assert.ok(
+    Math.abs(result.forecastComparison.backtestScore.wapePercent - 50) < 1e-9,
+  );
+  assert.equal(
+    result.forecastComparison.backtestScore.predictedKwh,
+    result.chart[12].forecastProductionKwh,
+  );
+  assert.deepEqual(result.totals, base.totals);
+  const futureOrigin = structuredClone(backtest);
+  futureOrigin.days[0].hours[12].originAt = new Date(
+    Date.parse(hours[12].start) + 1,
+  ).toISOString();
+  assert.equal(
+    attachForecastComparison(base, { hours: [], backtest: futureOrigin })
+      .chart[12].forecastProductionKwh,
+    null,
+  );
+  const real = attachForecastComparison(base, {
+    backtest,
+    hours: [
+      {
+        start: hours[12].start,
+        productionKwh: 175,
+        issuedAt: backtestOrigin(day).originAt,
+        modelVersion: 'real',
+      },
+    ],
+  });
+  assert.equal(real.chart[12].forecastProductionKwh, 175);
+  assert.equal(
+    real.chart[12].forecastKind,
+    'forecast',
+    'real as-issued snapshots retain priority',
+  );
 });

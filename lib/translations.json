@@ -431,5 +431,12 @@
   "Реално во споредбата": "Actual in comparison",
   "Помал WAPE е подобро.": "Lower WAPE is better.",
   "Разликата во збирот е предвидено − реално; процентот е во однос на реалното. Плус значи повеќе предвидено, минус помалку. Се споредуваат истите часови, па збирот може да се разликува од тековниот Huawei бројач.": "Total difference is predicted − actual; the percentage is relative to actual. Plus means overprediction, minus means underprediction. The same hours are compared, so the total can differ from the current Huawei meter.",
-  "WAPE = збир на |предвидено − реално| за секој час / збир на реалното × 100. Утринските и пладневните грешки не се поништуваат. Целта е помал часовен WAPE, не само близок дневен збир.": "WAPE = sum of |predicted − actual| for each hour / actual total × 100. Morning and midday errors do not cancel. The target is lower hourly WAPE, not just a close daily total."
+  "WAPE = збир на |предвидено − реално| за секој час / збир на реалното × 100. Утринските и пладневните грешки не се поништуваат. Целта е помал часовен WAPE, не само близок дневен збир.": "WAPE = sum of |predicted − actual| for each hour / actual total × 100. Morning and midday errors do not cancel. The target is lower hourly WAPE, not just a close daily total.",
+  "Сателитска симулација · 1 час": "Satellite simulation · 1 hour",
+  "Сателитска симулација · MWh": "Satellite simulation · MWh",
+  "Сателитска симулација (MWh)": "Satellite simulation (MWh)",
+  "Сателитска корекција": "Satellite correction",
+  "Основа v3.2 — WAPE": "v3.2 baseline — WAPE",
+  "v3.2 + LSA SAF: историска симулација за следниот час, со претходни сателитски набљудувања. Не е прогноза издадена ден однапред.": "v3.2 + LSA SAF: a historical next-hour simulation using earlier satellite observations. This is not a forecast issued a day ahead.",
+  "Без валиден сателитски запис се користи основата v3.2. Историската достапност е претпоставена: создавање на датотеката + 2 минути. Целосниот ICON/Huawei модел не е реконструиран за овие денови.": "The v3.2 baseline is used when satellite data is unavailable. Historical availability is assumed: file creation + 2 minutes. The full ICON/Huawei model has not been reconstructed for these days."
 }

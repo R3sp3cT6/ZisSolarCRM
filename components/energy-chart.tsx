@@ -152,6 +152,8 @@ export function EnergyChart({
   );
   const comparison = data?.forecastComparison;
   const hasBacktest = (comparison?.backtestHours ?? 0) > 0;
+  const satelliteReplay =
+    hasBacktest && comparison?.backtestMethod === 'satellite-hour-ahead';
 
   return (
     <section className="panel chart-panel">
@@ -202,7 +204,9 @@ export function EnergyChart({
               hasBacktest
                 ? comparison?.prospectiveHours
                   ? 'Прогноза / историска симулација · MWh'
-                  : 'Историска симулација · MWh'
+                  : satelliteReplay
+                    ? 'Сателитска симулација · MWh'
+                    : 'Историска симулација · MWh'
                 : 'Прогнозирано производство · MWh',
             )}
           </span>
@@ -213,7 +217,9 @@ export function EnergyChart({
               comparison.status === 'unavailable'
                 ? 'Споредбата со прогнозата моментално не е достапна.'
                 : hasBacktest
-                  ? 'Историска симулација со архивирани NOAA/GFS прогнози и тогаш достапни мерења. Пресметана накнадно; одделна од оценката на однапред зачуваните прогнози.'
+                  ? satelliteReplay
+                    ? 'v3.2 + LSA SAF: историска симулација за следниот час, со претходни сателитски набљудувања. Не е прогноза издадена ден однапред.'
+                    : 'Историска симулација со архивирани NOAA/GFS прогнози и тогаш достапни мерења. Пресметана накнадно; одделна од оценката на однапред зачуваните прогнози.'
                   : comparison.status === 'missing'
                     ? 'За овој период нема однапред зачувана временска прогноза за производство.'
                     : 'Првата зачувана прогноза пред секој час. Празнините означуваат недостасувачка прогноза.',
@@ -230,6 +236,22 @@ export function EnergyChart({
                   )}
                 </span>
               )}
+          </p>
+        )}
+        {satelliteReplay && comparison && (
+          <p className="forecast-comparison-note">
+            {t('Сателитска корекција')}:{' '}
+            {comparison.backtestScore.satelliteAppliedHours} {t('часа')} ·{' '}
+            {t('Основа v3.2 — WAPE')}{' '}
+            {comparison.backtestScore.baselineScore?.wapePercent != null
+              ? formatValue(
+                  comparison.backtestScore.baselineScore.wapePercent,
+                ) + '%'
+              : '—'}
+            .{' '}
+            {t(
+              'Без валиден сателитски запис се користи основата v3.2. Историската достапност е претпоставена: создавање на датотеката + 2 минути. Целосниот ICON/Huawei модел не е реконструиран за овие денови.',
+            )}
           </p>
         )}
         {hasBacktest && comparison && comparison.backtestScore.hours > 0 && (
@@ -342,7 +364,10 @@ export function EnergyChart({
                         : name === 'forecastMwh'
                           ? t(
                               item.payload?.forecastKind === 'backtest'
-                                ? 'Историска симулација (MWh)'
+                                ? item.payload?.forecastMethod ===
+                                  'satellite-hour-ahead'
+                                  ? 'Сателитска симулација (MWh)'
+                                  : 'Историска симулација (MWh)'
                                 : item.payload?.forecastKind === 'mixed'
                                   ? 'Прогноза / симулација (MWh)'
                                   : 'Прогноза (MWh)',

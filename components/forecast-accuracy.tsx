@@ -37,12 +37,19 @@ export function ForecastAccuracy({ comparison }: { comparison: Comparison }) {
     );
 
   return comparison.evaluations.map((score) => {
+    const satellite =
+      score.kind === 'backtest' &&
+      comparison.backtestMethod === 'satellite-hour-ahead';
     const match =
       score.matchPercent !== null && Number.isFinite(score.matchPercent)
         ? Math.max(0, Math.min(100, score.matchPercent))
         : null;
     const source = t(
-      score.kind === 'backtest' ? 'Историска симулација' : 'Зачувана прогноза',
+      satellite
+        ? 'Сателитска симулација · 1 час'
+        : score.kind === 'backtest'
+          ? 'Историска симулација'
+          : 'Зачувана прогноза',
     );
     return (
       <div className="forecast-comparison-item" key={score.kind}>
@@ -137,11 +144,20 @@ export function ForecastAccuracy({ comparison }: { comparison: Comparison }) {
             </PopoverTitle>
             <p>
               {t(
-                score.kind === 'backtest'
-                  ? 'Историска симулација со NOAA/GFS, пресметана накнадно.'
-                  : 'Првата зачувана прогноза пред почетокот на секој час.',
+                satellite
+                  ? 'v3.2 + LSA SAF: историска симулација за следниот час, со претходни сателитски набљудувања. Не е прогноза издадена ден однапред.'
+                  : score.kind === 'backtest'
+                    ? 'Историска симулација со NOAA/GFS, пресметана накнадно.'
+                    : 'Првата зачувана прогноза пред почетокот на секој час.',
               )}
             </p>
+            {satellite && (
+              <p>
+                {t(
+                  'Без валиден сателитски запис се користи основата v3.2. Историската достапност е претпоставена: создавање на датотеката + 2 минути. Целосниот ICON/Huawei модел не е реконструиран за овие денови.',
+                )}
+              </p>
+            )}
             <dl>
               <div>
                 <dt>{t('Точност на моделот')}</dt>
