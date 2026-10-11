@@ -10,5 +10,6 @@ legacy
 dist
 tests
 zissolarpass.txt
+lsa-saf.env.local*
 *.tar.gz
 *.dpapi

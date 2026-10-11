@@ -8,6 +8,7 @@ p = argparse.ArgumentParser()
 p.add_argument('--from-date', required=True)
 p.add_argument('--to-date', required=True)
 p.add_argument('--out', required=True)
+p.add_argument('--hourly', action='store_true', help='Archive native hourly means for diagnostic replay; use a separate output directory.')
 args = p.parse_args()
 out = pathlib.Path(args.out)
 out.mkdir(parents=True, exist_ok=True)
@@ -57,11 +58,11 @@ def step(day, lead):
         finally: eccodes.codes_release(m)
 
 for i in range((last-first).days+1):
-    day=first+dt.timedelta(days=i); target=out/(day.isoformat()+'-radiation.json')
+    day=first+dt.timedelta(days=i); target=out/(day.isoformat()+('-radiation-hourly.json' if args.hourly else '-radiation.json'))
     if target.exists():
         print(day,'already archived',flush=True); continue
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
-        values=list(pool.map(lambda lead:step(day,lead),range(9,37,3)))
+        values=list(pool.map(lambda lead:step(day,lead),range(7,37) if args.hourly else range(9,37,3)))
     target.write_text(json.dumps({'day':day.isoformat(),'provider':'NOAA GFS',
         'fetchedAt':dt.datetime.now(dt.timezone.utc).isoformat(),'intervals':values},indent=2))
     print(day,'saved',len(values),'DSWRF intervals',flush=True)

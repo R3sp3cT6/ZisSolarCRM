@@ -8,6 +8,7 @@ import {buildDashboard,type DashboardSnapshot} from './dashboard';
 import {syncFusionDirect,fusionConfigured,fusionOwner} from './fusionsolar-server';
 import {collectTelemetry,fusionClient,type FusionState} from './fusion-client';
 import {localDate,rangeFor,type Period,type ReadingInput} from './energy';
+import {recordLiveTrial,flushTrialPending} from './forecast-trial-live';
 
 export type PendingBatch={id:string;rows:ReadingInput[]};
 const pendingKey=(owner:string)=>'pending:'+owner;
@@ -48,6 +49,7 @@ export async function mutateAndCache<T>(owner:string,work:()=>Promise<T>){
  return result.value;
 }
 async function archive(owner:string,day:string,options:{active?:boolean;daily?:boolean;evening?:boolean;manual?:boolean}){
+ try{await flushTrialPending(owner);}catch{console.warn('Trial archive deferred');}
  const queued=await flushPending(owner);
  const result=await syncFusionDirect(owner,day,options);
  await rebuildSnapshot(owner);
@@ -78,6 +80,7 @@ export async function refreshActive(owner:string){
   await persist();
   const telemetry=await collectTelemetry(state,fusionClient(owner,state,persist),rows=>queueReadings(owner,rows));
   state.error=telemetry.error;await persist();
+  try{await recordLiveTrial(owner,state.forecastObservation);}catch{console.warn('Trial observation deferred');}
   return {configured:true,updated:telemetry.updated,error:telemetry.error,connected:!!state.live,storage:'cache' as const};
  });
  return result.busy?{configured:true,updated:0,cached:true,busy:true,error:null}:result.value;

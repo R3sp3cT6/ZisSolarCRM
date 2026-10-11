@@ -15,10 +15,11 @@
     "db:migrate": "node --env-file=.env.local scripts/migrate.mjs",
     "test:push": "node --conditions=react-server --experimental-transform-types --experimental-test-module-mocks --import ./tests/register-ts.mjs --test tests/push-delivery.test.mjs",
     "test:cache": "node --conditions=react-server --experimental-transform-types --experimental-test-module-mocks --import ./tests/register-ts.mjs --test tests/cache.test.mjs tests/session-cache.test.mjs tests/fusion-client.test.mjs tests/memo-sync.test.mjs tests/manual-refresh.test.mjs",
-    "test:forecast": "node --conditions=react-server --experimental-transform-types --experimental-test-module-mocks --import ./tests/register-ts.mjs --test tests/forecast-model.test.mjs tests/forecast-server.test.mjs tests/forecast-weather.test.mjs tests/forecast-atmosphere.test.mjs tests/forecast-comparison.test.mjs tests/contracts-server.test.mjs tests/forecast-backtest.test.mjs tests/forecast-radiation.test.mjs tests/forecast-hourly-calibration.test.mjs"
+    "test:forecast": "node --conditions=react-server --experimental-transform-types --experimental-test-module-mocks --import ./tests/register-ts.mjs --test tests/forecast-model.test.mjs tests/forecast-server.test.mjs tests/forecast-weather.test.mjs tests/forecast-atmosphere.test.mjs tests/forecast-comparison.test.mjs tests/contracts-server.test.mjs tests/forecast-backtest.test.mjs tests/forecast-radiation.test.mjs tests/forecast-hourly-calibration.test.mjs tests/forecast-trial.test.mjs tests/forecast-trial-server.test.mjs"
   },
   "dependencies": {
     "@base-ui/react": "1.7.0",
+    "@meri-imperiumi/eccodes-wasm": "2.48.2",
     "@neondatabase/serverless": "1.1.0",
     "@shadcn/react": "0.3.0",
     "@upstash/redis": "^1.38.4",
@@ -35,6 +36,7 @@
     "react-dom": "19.2.6",
     "react-resizable-panels": "4.5.8",
     "recharts": "3.8.0",
+    "seek-bzip": "2.0.0",
     "server-only": "0.0.1",
     "shadcn": "4.18.0",
     "suncalc": "^2.0.2",

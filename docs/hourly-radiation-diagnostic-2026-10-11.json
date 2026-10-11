@@ -1,0 +1,1032 @@
+{
+  "checkedAt": "2026-10-11T18:58:42.602Z",
+  "day": "2026-10-11",
+  "baselineReplayId": "386fc06c-5952-4faf-ba01-218896defb39",
+  "baseline": {
+    "hours": 13,
+    "actualKwh": 1763.0500000000002,
+    "predictedKwh": 1664.0676666069032,
+    "totalDifferenceKwh": -98.98233339309645,
+    "totalDifferencePercent": -5.614266946093216,
+    "matchPercent": 60.51448598992021,
+    "maeKwh": 53.54995036574706,
+    "rmseKwh": 68.95792756110976,
+    "biasKwh": -7.614025645622804,
+    "wapePercent": 39.48551401007979
+  },
+  "candidate": {
+    "hours": 13,
+    "actualKwh": 1763.0500000000002,
+    "predictedKwh": 1658.9976812908026,
+    "totalDifferenceKwh": -104.05231870919742,
+    "totalDifferencePercent": -5.901835949587216,
+    "matchPercent": 46.99804326487984,
+    "maeKwh": 71.88084601681047,
+    "rmseKwh": 100.79775996568657,
+    "biasKwh": -8.004024516092109,
+    "wapePercent": 53.00195673512016
+  },
+  "conservation": {
+    "checkedIntervals": 10,
+    "maximumDifferenceWhM2": 0.04000000000007731
+  },
+  "rows": [
+    {
+      "start": "2026-10-10T22:00:00.000Z",
+      "localHour": "00:00",
+      "actualKwh": 0,
+      "baselineKwh": 0,
+      "nativeHourlyKwh": 0,
+      "baselineGhi": 0,
+      "nativeHourlyGhi": 0
+    },
+    {
+      "start": "2026-10-10T23:00:00.000Z",
+      "localHour": "01:00",
+      "actualKwh": null,
+      "baselineKwh": 0,
+      "nativeHourlyKwh": 0,
+      "baselineGhi": 0,
+      "nativeHourlyGhi": 0
+    },
+    {
+      "start": "2026-10-11T00:00:00.000Z",
+      "localHour": "02:00",
+      "actualKwh": null,
+      "baselineKwh": 0,
+      "nativeHourlyKwh": 0,
+      "baselineGhi": 0,
+      "nativeHourlyGhi": 0
+    },
+    {
+      "start": "2026-10-11T01:00:00.000Z",
+      "localHour": "03:00",
+      "actualKwh": null,
+      "baselineKwh": 0,
+      "nativeHourlyKwh": 0,
+      "baselineGhi": 0,
+      "nativeHourlyGhi": 0
+    },
+    {
+      "start": "2026-10-11T02:00:00.000Z",
+      "localHour": "04:00",
+      "actualKwh": null,
+      "baselineKwh": 0,
+      "nativeHourlyKwh": 0,
+      "baselineGhi": 0,
+      "nativeHourlyGhi": 0
+    },
+    {
+      "start": "2026-10-11T03:00:00.000Z",
+      "localHour": "05:00",
+      "actualKwh": null,
+      "baselineKwh": 0,
+      "nativeHourlyKwh": 0,
+      "baselineGhi": 0,
+      "nativeHourlyGhi": 0
+    },
+    {
+      "start": "2026-10-11T04:00:00.000Z",
+      "localHour": "06:00",
+      "actualKwh": 0.09,
+      "baselineKwh": 0.08692159282723519,
+      "nativeHourlyKwh": 0.25980258846946813,
+      "baselineGhi": 0.13382412345449332,
+      "nativeHourlyGhi": 0.4
+    },
+    {
+      "start": "2026-10-11T05:00:00.000Z",
+      "localHour": "07:00",
+      "actualKwh": 1.31,
+      "baselineKwh": 11.26474120573156,
+      "nativeHourlyKwh": 11.084032779054157,
+      "baselineGhi": 16.57017587654551,
+      "nativeHourlyGhi": 16.304000000000002
+    },
+    {
+      "start": "2026-10-11T06:00:00.000Z",
+      "localHour": "08:00",
+      "actualKwh": 20.14,
+      "baselineKwh": 90.25111618892493,
+      "nativeHourlyKwh": 75.87562155613323,
+      "baselineGhi": 99.6392840692211,
+      "nativeHourlyGhi": 83.66
+    },
+    {
+      "start": "2026-10-11T07:00:00.000Z",
+      "localHour": "09:00",
+      "actualKwh": 69.01,
+      "baselineKwh": 152.6314745081358,
+      "nativeHourlyKwh": 108.28633357347329,
+      "baselineGhi": 156.48485022878754,
+      "nativeHourlyGhi": 110.62
+    },
+    {
+      "start": "2026-10-11T08:00:00.000Z",
+      "localHour": "10:00",
+      "actualKwh": 116.83,
+      "baselineKwh": 198.7927198910894,
+      "nativeHourlyKwh": 259.17607707804297,
+      "baselineGhi": 199.57586570199143,
+      "nativeHourlyGhi": 261.4200000000001
+    },
+    {
+      "start": "2026-10-11T09:00:00.000Z",
+      "localHour": "11:00",
+      "actualKwh": 274.99,
+      "baselineKwh": 217.50610528496676,
+      "nativeHourlyKwh": 49.30871933282356,
+      "baselineGhi": 214.74919564438474,
+      "nativeHourlyGhi": 48.059999999999945
+    },
+    {
+      "start": "2026-10-11T10:00:00.000Z",
+      "localHour": "12:00",
+      "actualKwh": 347.57,
+      "baselineKwh": 225.26945233018515,
+      "nativeHourlyKwh": 188.57254465031747,
+      "baselineGhi": 221.6370342866841,
+      "nativeHourlyGhi": 184.94000000000005
+    },
+    {
+      "start": "2026-10-11T11:00:00.000Z",
+      "localHour": "13:00",
+      "actualKwh": 308.71,
+      "baselineKwh": 213.60264551853652,
+      "nativeHourlyKwh": 412.02927549343343,
+      "baselineGhi": 210.08977006893116,
+      "nativeHourlyGhi": 413.4759999999999
+    },
+    {
+      "start": "2026-10-11T12:00:00.000Z",
+      "localHour": "14:00",
+      "actualKwh": 354.21,
+      "baselineKwh": 234.6849598558074,
+      "nativeHourlyKwh": 219.64707755299224,
+      "baselineGhi": 231.31423729349476,
+      "nativeHourlyGhi": 216.14000000000001
+    },
+    {
+      "start": "2026-10-11T13:00:00.000Z",
+      "localHour": "15:00",
+      "actualKwh": 179.15,
+      "baselineKwh": 176.01407134377277,
+      "nativeHourlyKwh": 179.2380697358006,
+      "baselineGhi": 174.16306325089388,
+      "nativeHourlyGhi": 177.42
+    },
+    {
+      "start": "2026-10-11T14:00:00.000Z",
+      "localHour": "16:00",
+      "actualKwh": 79.78,
+      "baselineKwh": 99.60725595332039,
+      "nativeHourlyKwh": 111.12696705539769,
+      "baselineGhi": 101.58269945561146,
+      "nativeHourlyGhi": 113.50000000000006
+    },
+    {
+      "start": "2026-10-11T15:00:00.000Z",
+      "localHour": "17:00",
+      "actualKwh": 11.25,
+      "baselineKwh": 44.35620293360557,
+      "nativeHourlyKwh": 44.393159894864446,
+      "baselineGhi": 47.70000000000002,
+      "nativeHourlyGhi": 47.74000000000001
+    },
+    {
+      "start": "2026-10-11T16:00:00.000Z",
+      "localHour": "18:00",
+      "actualKwh": 0.01,
+      "baselineKwh": 0,
+      "nativeHourlyKwh": 0,
+      "baselineGhi": 0,
+      "nativeHourlyGhi": 0
+    },
+    {
+      "start": "2026-10-11T17:00:00.000Z",
+      "localHour": "19:00",
+      "actualKwh": null,
+      "baselineKwh": 0,
+      "nativeHourlyKwh": 0,
+      "baselineGhi": 0,
+      "nativeHourlyGhi": 0
+    },
+    {
+      "start": "2026-10-11T18:00:00.000Z",
+      "localHour": "20:00",
+      "actualKwh": null,
+      "baselineKwh": 0,
+      "nativeHourlyKwh": 0,
+      "baselineGhi": 0,
+      "nativeHourlyGhi": 0
+    },
+    {
+      "start": "2026-10-11T19:00:00.000Z",
+      "localHour": "21:00",
+      "actualKwh": null,
+      "baselineKwh": 0,
+      "nativeHourlyKwh": 0,
+      "baselineGhi": 0,
+      "nativeHourlyGhi": 0
+    },
+    {
+      "start": "2026-10-11T20:00:00.000Z",
+      "localHour": "22:00",
+      "actualKwh": null,
+      "baselineKwh": 0,
+      "nativeHourlyKwh": 0,
+      "baselineGhi": 0,
+      "nativeHourlyGhi": 0
+    },
+    {
+      "start": "2026-10-11T21:00:00.000Z",
+      "localHour": "23:00",
+      "actualKwh": null,
+      "baselineKwh": 0,
+      "nativeHourlyKwh": 0,
+      "baselineGhi": 0,
+      "nativeHourlyGhi": 0
+    }
+  ],
+  "inputs": {
+    "config": {
+      "acKw": 875,
+      "noct": 45,
+      "tilt": null,
+      "dcKwp": null,
+      "gamma": -0.004,
+      "azimuth": null,
+      "version": "weather-v2.1-huawei-nominal-ac-20261011",
+      "latitude": 41.068056,
+      "longitude": 21.036111,
+      "lossPercent": 14,
+      "inverterEfficiency": 0.96
+    },
+    "calibration": {
+      "days": 14,
+      "samples": 154,
+      "coefficients": [
+        {
+          "hour": 7,
+          "factor": 623.9161003786254
+        },
+        {
+          "hour": 8,
+          "factor": 867.8623268146891
+        },
+        {
+          "hour": 9,
+          "factor": 946.9919670272627
+        },
+        {
+          "hour": 10,
+          "factor": 971.3879282667559
+        },
+        {
+          "hour": 11,
+          "factor": 990.8840206604219
+        },
+        {
+          "hour": 12,
+          "factor": 996.1134815957411
+        },
+        {
+          "hour": 13,
+          "factor": 995.8270349076049
+        },
+        {
+          "hour": 14,
+          "factor": 998.158037608355
+        },
+        {
+          "hour": 15,
+          "factor": 993.2967852623177
+        },
+        {
+          "hour": 16,
+          "factor": 960.8873198294954
+        },
+        {
+          "hour": 17,
+          "factor": 897.1464653020417
+        }
+      ],
+      "trainingDates": [
+        "2026-10-09",
+        "2026-10-08",
+        "2026-10-07",
+        "2026-10-06",
+        "2026-10-05",
+        "2026-10-04",
+        "2026-10-03",
+        "2026-10-02",
+        "2026-10-01",
+        "2026-09-30",
+        "2026-09-29",
+        "2026-09-28",
+        "2026-09-27",
+        "2026-09-26"
+      ]
+    },
+    "weather": [
+      {
+        "start": "2026-10-10T22:00:00.000Z",
+        "windSpeed": 2.43340260728907,
+        "cloudCover": 100,
+        "irradiance": 0,
+        "temperature": 14.717724609375068,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 0
+      },
+      {
+        "start": "2026-10-10T23:00:00.000Z",
+        "windSpeed": 2.569552802804825,
+        "cloudCover": 100,
+        "irradiance": 0,
+        "temperature": 14.625390625000023,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 0
+      },
+      {
+        "start": "2026-10-11T00:00:00.000Z",
+        "windSpeed": 2.8236238270271445,
+        "cloudCover": 100,
+        "irradiance": 0,
+        "temperature": 14.602504069010479,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 0
+      },
+      {
+        "start": "2026-10-11T01:00:00.000Z",
+        "windSpeed": 3.1714246205699355,
+        "cloudCover": 100,
+        "irradiance": 0,
+        "temperature": 14.649064941406323,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 0
+      },
+      {
+        "start": "2026-10-11T02:00:00.000Z",
+        "windSpeed": 3.524579944180739,
+        "cloudCover": 100,
+        "irradiance": 0,
+        "temperature": 14.69562581380211,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 0
+      },
+      {
+        "start": "2026-10-11T03:00:00.000Z",
+        "windSpeed": 3.8214698090418713,
+        "cloudCover": 100,
+        "irradiance": 0,
+        "temperature": 14.72502278645834,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 0
+      },
+      {
+        "start": "2026-10-11T04:00:00.000Z",
+        "windSpeed": 4.066631149622791,
+        "cloudCover": 100,
+        "irradiance": 0.13382412345449332,
+        "temperature": 14.737255859375068,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 0.8099096961937148
+      },
+      {
+        "start": "2026-10-11T05:00:00.000Z",
+        "windSpeed": 4.320477851791289,
+        "cloudCover": 100,
+        "irradiance": 16.57017587654551,
+        "temperature": 14.749488932291683,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 100.28345983983195
+      },
+      {
+        "start": "2026-10-11T06:00:00.000Z",
+        "windSpeed": 4.54885531045876,
+        "cloudCover": 100,
+        "irradiance": 99.6392840692211,
+        "temperature": 14.887972005208383,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 285.66311986820307
+      },
+      {
+        "start": "2026-10-11T07:00:00.000Z",
+        "windSpeed": 4.871159761120744,
+        "cloudCover": 100,
+        "irradiance": 156.48485022878754,
+        "temperature": 15.152705078125052,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 448.63781334888694
+      },
+      {
+        "start": "2026-10-11T08:00:00.000Z",
+        "windSpeed": 5.33337426344724,
+        "cloudCover": 100,
+        "irradiance": 199.57586570199143,
+        "temperature": 15.417438151041722,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 572.1785837724561
+      },
+      {
+        "start": "2026-10-11T09:00:00.000Z",
+        "windSpeed": 5.051578072926231,
+        "cloudCover": 100,
+        "irradiance": 214.74919564438474,
+        "temperature": 15.357093098958387,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 646.9994861700612
+      },
+      {
+        "start": "2026-10-11T10:00:00.000Z",
+        "windSpeed": 3.9790773847767875,
+        "cloudCover": 100,
+        "irradiance": 221.6370342866841,
+        "temperature": 14.971669921875048,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 667.7512661663394
+      },
+      {
+        "start": "2026-10-11T11:00:00.000Z",
+        "windSpeed": 3.001191328470115,
+        "cloudCover": 100,
+        "irradiance": 210.08977006893116,
+        "temperature": 14.586246744791708,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 632.9615013286268
+      },
+      {
+        "start": "2026-10-11T12:00:00.000Z",
+        "windSpeed": 2.3049158387517656,
+        "cloudCover": 88.98333333333333,
+        "irradiance": 231.31423729349476,
+        "temperature": 14.418139648437545,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 545.0769143086922
+      },
+      {
+        "start": "2026-10-11T13:00:00.000Z",
+        "windSpeed": 1.751026788951768,
+        "cloudCover": 66.95,
+        "irradiance": 174.16306325089388,
+        "temperature": 14.46734863281256,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 410.4038999678841
+      },
+      {
+        "start": "2026-10-11T14:00:00.000Z",
+        "windSpeed": 1.1976906099915536,
+        "cloudCover": 44.91666666666667,
+        "irradiance": 101.58269945561146,
+        "temperature": 14.516557617187516,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 239.37300623721333
+      },
+      {
+        "start": "2026-10-11T15:00:00.000Z",
+        "windSpeed": 0.7115234801456779,
+        "cloudCover": 41.5,
+        "irradiance": 47.70000000000002,
+        "temperature": 14.20929768880211,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 57.5511522452164
+      },
+      {
+        "start": "2026-10-11T16:00:00.000Z",
+        "windSpeed": 1.0084807253564494,
+        "cloudCover": 56.7,
+        "irradiance": 0,
+        "temperature": 13.545568847656284,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 0
+      },
+      {
+        "start": "2026-10-11T17:00:00.000Z",
+        "windSpeed": 1.7673194076551277,
+        "cloudCover": 71.9,
+        "irradiance": 0,
+        "temperature": 12.881840006510458,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 0
+      },
+      {
+        "start": "2026-10-11T18:00:00.000Z",
+        "windSpeed": 2.1205524222706518,
+        "cloudCover": 82.38333333333334,
+        "irradiance": 0,
+        "temperature": 12.443876139322981,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 0
+      },
+      {
+        "start": "2026-10-11T19:00:00.000Z",
+        "windSpeed": 1.9946152094600693,
+        "cloudCover": 88.15,
+        "irradiance": 0,
+        "temperature": 12.231677246093795,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 0
+      },
+      {
+        "start": "2026-10-11T20:00:00.000Z",
+        "windSpeed": 1.8738099591014774,
+        "cloudCover": 93.91666666666667,
+        "irradiance": 0,
+        "temperature": 12.01947835286461,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 0
+      },
+      {
+        "start": "2026-10-11T21:00:00.000Z",
+        "windSpeed": 1.978888776180575,
+        "cloudCover": 94.86666666666667,
+        "irradiance": 0,
+        "temperature": 11.803704427083403,
+        "irradianceKind": "modeled-ghi",
+        "radiationRunAt": "2026-10-10T12:00:00.000Z",
+        "resolutionHours": 3,
+        "clearSkyIrradiance": 0
+      }
+    ],
+    "archive": {
+      "day": "2026-10-11",
+      "provider": "NOAA GFS",
+      "fetchedAt": "2026-10-11T18:56:31.373996+00:00",
+      "intervals": [
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-10T18:00:00Z",
+          "end": "2026-10-10T19:00:00Z",
+          "value": 0,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f007",
+          "byteRange": "450306998-451092196",
+          "sha256": "6e67fb55fc6d4aeea6addf31e4673462b197fc65a63f1c41f6f7e956b1ac2738",
+          "indexSha256": "8cdfb744727567cc8190c135b3f79b76d829a7446534a73147c0ac43a5bb92ff"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-10T18:00:00Z",
+          "end": "2026-10-10T20:00:00Z",
+          "value": 0,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f008",
+          "byteRange": "455544057-456351782",
+          "sha256": "b1e80a7e8577302ab1a9515aa3c6c45c5209870ce6437fe8e72849ae394cab27",
+          "indexSha256": "5b9db164e141a37b67fe2a5a74fed8b5ed7eeff145a2e3a0aa0913b4cc279158"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-10T18:00:00Z",
+          "end": "2026-10-10T21:00:00Z",
+          "value": 0,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f009",
+          "byteRange": "456897528-457735685",
+          "sha256": "03ecc8a22b86d61321f024e855d6125730fe82d03450b06ec655f91dac6653fd",
+          "indexSha256": "dd05b2b942116a542929bf04ddf41bcb1c02c8aa1b064f5a2fe94812cdd2a3f1"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-10T18:00:00Z",
+          "end": "2026-10-10T22:00:00Z",
+          "value": 0,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f010",
+          "byteRange": "458782517-459654171",
+          "sha256": "7739e07dd3533a09c518726909e92bc1847d637c7a04b2a53decea299d6f45d5",
+          "indexSha256": "8373f110de764b926843680b0364e5c1ff5664a515cd1f01027cee38892c5d97"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-10T18:00:00Z",
+          "end": "2026-10-10T23:00:00Z",
+          "value": 0,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f011",
+          "byteRange": "458283554-459217851",
+          "sha256": "e2ad2941cfd4ffdbdc75f0a03c97bef0647781589b86fd20e5a32799043eb6eb",
+          "indexSha256": "92fb04c7752a82cadd524c13f2bfa0b6bb223968d62e6f098fe6134356a8bb98"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-10T18:00:00Z",
+          "end": "2026-10-11T00:00:00Z",
+          "value": 0,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f012",
+          "byteRange": "458601654-459577872",
+          "sha256": "f5b084822e5f3da7c75ddbbc0bb1d564895f2547b5fa270dc075c5c5422d0660",
+          "indexSha256": "979115e333c3907142ce2ba1786bb25fd1c02907490823fddde54cd7a13fe110"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T00:00:00Z",
+          "end": "2026-10-11T01:00:00Z",
+          "value": 0,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f013",
+          "byteRange": "457843766-458613003",
+          "sha256": "c22b95467cfe9485f3ea875358042205ce0a32dc721c423a27239aa715a57ad5",
+          "indexSha256": "6f33e9cee04d99712949f81b689ce62706324f1c582c2e9167ba660b9732e706"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T00:00:00Z",
+          "end": "2026-10-11T02:00:00Z",
+          "value": 0,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f014",
+          "byteRange": "458393710-459186130",
+          "sha256": "139b5418003df56d65674207c23a279f5806d31de178bed3438162c246bdea5f",
+          "indexSha256": "1ed4d4347bd2384e227ca32fa71d9d1d259253b13904d21c6090c9199ae2f88e"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T00:00:00Z",
+          "end": "2026-10-11T03:00:00Z",
+          "value": 0,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f015",
+          "byteRange": "460264177-461086938",
+          "sha256": "078dc97664e96a2027a52c2762197c6f34beb97b9d598a5d58f92705cf9647cb",
+          "indexSha256": "c25b959b3651f92fd6403a63865cc47a8b7697655279adb3340094c449ffb482"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T00:00:00Z",
+          "end": "2026-10-11T04:00:00Z",
+          "value": 0,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f016",
+          "byteRange": "456655306-457513760",
+          "sha256": "93a471f88e29d5ca4dc487b11b09d070a35c85646f533033b4fee3eeabefcb1c",
+          "indexSha256": "981b545e4fc434523f3336462041e69e10624360a8061bda9df90ec6991d2bdc"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T00:00:00Z",
+          "end": "2026-10-11T05:00:00Z",
+          "value": 0.08,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f017",
+          "byteRange": "458317220-459214402",
+          "sha256": "424fb04850d1eaa3b692696ee468bae6400ee66208b605682cb84a18187408d6",
+          "indexSha256": "ccf175aba6548cb80e2654326941fb14d0d3b5b6e0a46fb8d3f28149d7e607b7"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T00:00:00Z",
+          "end": "2026-10-11T06:00:00Z",
+          "value": 2.7840000000000003,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f018",
+          "byteRange": "459924623-460889328",
+          "sha256": "716be7e33fe4066f62d159871dabe334049568a5e3bdf2eea92fcbd5ec950e39",
+          "indexSha256": "8b623ade828ae8842d5aad13f73ecfa23cc5b0748c90bcdc5d7d57fa13fcbeff"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T06:00:00Z",
+          "end": "2026-10-11T07:00:00Z",
+          "value": 83.66,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f019",
+          "byteRange": "460034092-460787096",
+          "sha256": "761a9eae8e5fb37ff1f2dec16d2d0e0af7056265acd787d951a818e6ffe1a8c0",
+          "indexSha256": "87683699b5640cb18aa11719d9d82473003cd0bd990ba4e6bd237bd9a5956e9d"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T06:00:00Z",
+          "end": "2026-10-11T08:00:00Z",
+          "value": 97.14,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f020",
+          "byteRange": "460716930-461496359",
+          "sha256": "fc9a5418e4dd9c00cca73d0f57139fe6db6b2970acbf1daf3051d012e12df9a4",
+          "indexSha256": "4598a3503487ace651d69ddd6e492fd190d01aeeb398bc986bcaa976454f173e"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T06:00:00Z",
+          "end": "2026-10-11T09:00:00Z",
+          "value": 151.9,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f021",
+          "byteRange": "462928469-463742722",
+          "sha256": "7aaba6c65ccd13b4be52a923f90e350cc78a7f8c2326953edc503a63c433dabf",
+          "indexSha256": "1a02103f55d7a5523ca01f34bc7247635389813bb6fb932315a5a9dc11d38ec1"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T06:00:00Z",
+          "end": "2026-10-11T10:00:00Z",
+          "value": 125.94,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f022",
+          "byteRange": "463783027-464635676",
+          "sha256": "370fc94e324a0d5526824d05a258d5ee4e8297b8b3ec63cc40b0b59b2ce2853a",
+          "indexSha256": "48fb1df2981202c92ede7619594114e8ce6489a9c2b32a45d094493ac9c38bdd"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T06:00:00Z",
+          "end": "2026-10-11T11:00:00Z",
+          "value": 137.74,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f023",
+          "byteRange": "466484555-467378859",
+          "sha256": "0c22389312590ebe837561abe9b26360e95f108089534aef7515d44f2780588b",
+          "indexSha256": "03184ca7a3a10822603c4dc25966b1984d5f9129da51e24971c7fd6c19ca98af"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T06:00:00Z",
+          "end": "2026-10-11T12:00:00Z",
+          "value": 183.696,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f024",
+          "byteRange": "468515021-469478674",
+          "sha256": "2459102dde8cdadb707cba15eeb4006b8f96ae74f321a1e8d59cff1a73239da1",
+          "indexSha256": "bcfbcef101edc59c137b580b904ddb7dc06471a74ae9c26bc3f555c20eecdb31"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T12:00:00Z",
+          "end": "2026-10-11T13:00:00Z",
+          "value": 216.14000000000001,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f025",
+          "byteRange": "466516356-467286221",
+          "sha256": "66a6eb01e759b402455105782485280cb98ac4363d195031cc4353476627ecb3",
+          "indexSha256": "396dee39fa387fde750f349fb19347d479aa0e5dbff165773899493f1edbb229"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T12:00:00Z",
+          "end": "2026-10-11T14:00:00Z",
+          "value": 196.78,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f026",
+          "byteRange": "468880166-469675555",
+          "sha256": "b49864e787e72b74fbc86d5b56bbad6cfb35f107d7df6d7cbdfe8f2e3fcb3115",
+          "indexSha256": "c0403afaa39d7ad1cd7f9c8c2c658b32b8b49ae3239f556e2a638b39645d1a40"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T12:00:00Z",
+          "end": "2026-10-11T15:00:00Z",
+          "value": 169.02,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f027",
+          "byteRange": "467229653-468059753",
+          "sha256": "1d3f6b1844dd4f38e39127be9ec7caf4cba5a7f0ef045ada26f0505c9a32f763",
+          "indexSha256": "8dcbbbac1a911c00784be642e8a734c2a91385d49761e4dc8102b04c6742ed44"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T12:00:00Z",
+          "end": "2026-10-11T16:00:00Z",
+          "value": 138.70000000000002,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f028",
+          "byteRange": "469202865-470071900",
+          "sha256": "55896dc53806e13495a6d1cd409ac5c31e8a0ff5ebba1f09644a1710b9bf2d1a",
+          "indexSha256": "d05d14a43541de04217b57e387bc4149a404e1790cef6164695d8f2aa52789dd"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T12:00:00Z",
+          "end": "2026-10-11T17:00:00Z",
+          "value": 110.96000000000001,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f029",
+          "byteRange": "468841812-469752672",
+          "sha256": "8d08b2b1dccc5e319fb629b6736156ce32771cbc0c3c0f78fc97230e305e6306",
+          "indexSha256": "ef8f218248eebe6cc9592f8855c0306f37a7546f162c9bc8ae4b088106162014"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T12:00:00Z",
+          "end": "2026-10-11T18:00:00Z",
+          "value": 92.46000000000001,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f030",
+          "byteRange": "472200058-473154664",
+          "sha256": "d29f2ca045d095a472b6058dcc631c1dbc1d5d69526c9e9ba697314e0ca3c465",
+          "indexSha256": "93aa1cea527b864c75514a24c3bac0beb56ea27a431af3b08500486d760198b0"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T18:00:00Z",
+          "end": "2026-10-11T19:00:00Z",
+          "value": 0,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f031",
+          "byteRange": "470762857-471550127",
+          "sha256": "e36b1a60f6be2a6cdd66e815464cb69c2f0cff734e0349bd259d77dff53ede37",
+          "indexSha256": "a8c50edb8e108b542fac5c61f27958b0542bea46cd3f55788a47b1f09ce1ec7c"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T18:00:00Z",
+          "end": "2026-10-11T20:00:00Z",
+          "value": 0,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f032",
+          "byteRange": "471874334-472685611",
+          "sha256": "cf9d5321f6329efecbca9b4196edef24748ec0db9dfba14ad2d26419a79cbb6c",
+          "indexSha256": "b8c3dbe7b5c9080ae904be769d1280a21e8fcd12db9f8d3b35ebb2b1d20980b1"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T18:00:00Z",
+          "end": "2026-10-11T21:00:00Z",
+          "value": 0,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f033",
+          "byteRange": "474207908-475051874",
+          "sha256": "7c67e1dac1c57d59aee83a2b13ed4f878203962eb523b77a42b05b18e80bde29",
+          "indexSha256": "edb4a81fe72bab26cf1c605f9862bcb344636265d2c70e0ced4b11c2e23200b2"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T18:00:00Z",
+          "end": "2026-10-11T22:00:00Z",
+          "value": 0,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f034",
+          "byteRange": "475428480-476305641",
+          "sha256": "52905a5987f4b73da366bffb9ce3c0d11a04ff04f7b8a823faf85b9e2432bbfd",
+          "indexSha256": "3cd4e3021664d08dbd0babb662e5eb64bbd741323a06e2e20cae1046f8ca29ec"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T18:00:00Z",
+          "end": "2026-10-11T23:00:00Z",
+          "value": 0,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f035",
+          "byteRange": "473146130-474085439",
+          "sha256": "5b5fbb6d1c63bbf62a9b7831c5847409a7f47bce144f92daf75552a34f82cca7",
+          "indexSha256": "79dc022e6e1b7eed9795287fb7d49e8d0c2a939f4e39fefb89a828653c480b7b"
+        },
+        {
+          "runAt": "2026-10-10T12:00:00Z",
+          "start": "2026-10-11T18:00:00Z",
+          "end": "2026-10-12T00:00:00Z",
+          "value": 0,
+          "latitude": 41,
+          "longitude": 21,
+          "distanceKm": 8.151415968720192,
+          "units": "W m**-2",
+          "sourceUrl": "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261010/12/atmos/gfs.t12z.pgrb2.0p25.f036",
+          "byteRange": "474056605-475036874",
+          "sha256": "d60bc5c683a13ab0eda9e0a27351d83aec40c5c1ea70a952bc4f42efc24c2a62",
+          "indexSha256": "ce54eb8d339416c9ad38c536456f12235a85a9e3eda63d9799335cc9633152f3"
+        }
+      ]
+    }
+  },
+  "archiveSha256": "a9dbe5b1a27a545d1d08850c9748837148187c325a2af190c07072eb3507a3a1",
+  "limitations": [
+    "One selected difficult day; retrospective diagnostic, not an independent model validation.",
+    "Same prior-day GFS run, solar coefficients, temperature/wind and actual hours; only radiation temporal resolution changes.",
+    "No measured irradiance at the plant: weather error cannot be isolated fully from plant response or shading.",
+    "No production model, historical curve, measurement, price or database record was changed."
+  ]
+}

@@ -7,6 +7,7 @@ import {FUSION_STATION,FUSION_GRID_DATE,hourlyReportCoverage,parseFusionHours,pa
 
 import {fusionClient,collectTelemetry,type FusionState as State} from './fusion-client';
 import {cacheRead,cacheWrite} from './shared-cache';
+import {recordLiveTrial} from './forecast-trial-live';
 const HOUR=3600000,DAY=24*HOUR;
 export function fusionConfigured(){return !!(env.FUSIONSOLAR_USERNAME&&env.FUSIONSOLAR_PASSWORD&&env.FUSIONSOLAR_OWNER);}
 export function fusionOwner(){return env.FUSIONSOLAR_OWNER;}
@@ -52,6 +53,7 @@ export async function syncFusionDirect(owner:string,requestedDay=localDate(),opt
   });
   const telemetry=await collectTelemetry(state,api,rows=>saveReadings(owner,rows,'Huawei FusionSolar · device counters',true,true),options.daily);
   updated+=telemetry.updated;if(telemetry.error)errors.push(telemetry.error);
+  try{await recordLiveTrial(owner,state.forecastObservation);}catch{console.warn('Trial observation deferred');}
   // The daily pass closes yesterday first; active visits refresh today's report.
   await attempt(async()=>{await hours(options.daily?localDate(new Date(Date.parse(slotsForDay(localDate())[0].start)-HOUR)):localDate());});
   if(options.evening){state.error=errors[0]??null;return {configured:true,updated,error:state.error,connected:!!state.live,liveUpdated:state.lastSuccess!==previousSuccess,lastSuccess:state.lastSuccess??null};}
