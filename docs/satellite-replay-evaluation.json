@@ -1,0 +1,2810 @@
+{
+  "checkedAt": "2026-10-11T19:38:59.445Z",
+  "model": "satellite-csi-v1-on-v3.2-replay",
+  "from": "2026-10-01",
+  "to": "2026-10-11",
+  "method": "At the start of each hour use only two earlier valid LSA SAF slots; approximate MSG acquisition time; assumed source availability = original date_created + 2 minutes; 0.75 maximum satellite weight decaying with observation age over 120 minutes; no fitted target-day parameters; complete next-hour five-minute integration. Baseline is the frozen previous-day GFS v3.2 replay. Same actual hours including satellite fallback; no target-hour satellite input.",
+  "limitations": [
+    "Retrospective component test, not independently held-out or genuinely as-issued forecasts. October was inspected in previous development.",
+    "Historical source creation timestamps exist, but actual historical delivery latency is unknown; receivedAt in raw archive remains today.",
+    "No historical ICON-EU or complete Huawei five-minute series for these days: this evaluates satellite on v3.2 background only, not the full live combined trial.",
+    "Short-term update has later weather observations than the day-ahead baseline; no claim of improved day-ahead accuracy.",
+    "Scan time and clear-sky irradiance are modeled. No optical-flow cloud motion or individual-panel shadow prediction."
+  ],
+  "v32": {
+    "hours": 142,
+    "actualKwh": 41016.639999999985,
+    "predictedKwh": 43141.182808339414,
+    "totalDifferenceKwh": 2124.54280833941,
+    "totalDifferencePercent": 5.179709523596791,
+    "matchPercent": 87.21928460040523,
+    "maeKwh": 36.917042428706665,
+    "rmseKwh": 64.41561848916838,
+    "biasKwh": 14.961569072812747,
+    "wapePercent": 12.780715399594769
+  },
+  "satellite": {
+    "hours": 142,
+    "actualKwh": 41016.639999999985,
+    "predictedKwh": 44332.16181894431,
+    "totalDifferenceKwh": 3315.5218189443117,
+    "totalDifferencePercent": 8.083357922404938,
+    "matchPercent": 87.36383980260555,
+    "maeKwh": 36.49949533794768,
+    "rmseKwh": 58.31461820976635,
+    "biasKwh": 23.348745203833182,
+    "wapePercent": 12.636160197394453
+  },
+  "satelliteAppliedHours": 107,
+  "days": [
+    {
+      "date": "2026-10-01",
+      "v32": {
+        "hours": 13,
+        "actualKwh": 4657.249999999999,
+        "predictedKwh": 4739.05085968786,
+        "totalDifferenceKwh": 81.8008596878608,
+        "totalDifferencePercent": 1.7564197689164378,
+        "matchPercent": 97.11017421610931,
+        "maeKwh": 10.352800870788371,
+        "rmseKwh": 12.845051597842692,
+        "biasKwh": 6.292373822143138,
+        "wapePercent": 2.889825783890683
+      },
+      "satellite": {
+        "hours": 13,
+        "actualKwh": 4657.249999999999,
+        "predictedKwh": 4799.662997229943,
+        "totalDifferenceKwh": 142.41299722994276,
+        "totalDifferencePercent": 3.057877443339799,
+        "matchPercent": 96.61204221478893,
+        "maeKwh": 12.13735876551864,
+        "rmseKwh": 14.948742455835653,
+        "biasKwh": 10.954845940764828,
+        "wapePercent": 3.387957785211065
+      },
+      "satelliteAppliedHours": 11
+    },
+    {
+      "date": "2026-10-02",
+      "v32": {
+        "hours": 13,
+        "actualKwh": 4643.26,
+        "predictedKwh": 4731.950440835691,
+        "totalDifferenceKwh": 88.69044083569081,
+        "totalDifferencePercent": 1.9100899117363834,
+        "matchPercent": 96.63017942876934,
+        "maeKwh": 12.036117742748074,
+        "rmseKwh": 14.256382193063706,
+        "biasKwh": 6.822341602745447,
+        "wapePercent": 3.369820571230665
+      },
+      "satellite": {
+        "hours": 13,
+        "actualKwh": 4643.26,
+        "predictedKwh": 4794.215489622604,
+        "totalDifferenceKwh": 150.9554896226029,
+        "totalDifferencePercent": 3.2510669146806963,
+        "matchPercent": 96.11113899597407,
+        "maeKwh": 13.889994419656471,
+        "rmseKwh": 17.04637846267547,
+        "biasKwh": 11.611960740200223,
+        "wapePercent": 3.888861004025924
+      },
+      "satelliteAppliedHours": 11
+    },
+    {
+      "date": "2026-10-03",
+      "v32": {
+        "hours": 13,
+        "actualKwh": 4640.51,
+        "predictedKwh": 4791.115000273693,
+        "totalDifferenceKwh": 150.60500027369238,
+        "totalDifferencePercent": 3.2454407009939077,
+        "matchPercent": 95.63176656139018,
+        "maeKwh": 15.59294688784868,
+        "rmseKwh": 18.9719464009629,
+        "biasKwh": 11.58500002105326,
+        "wapePercent": 4.368233438609826
+      },
+      "satellite": {
+        "hours": 13,
+        "actualKwh": 4640.51,
+        "predictedKwh": 4857.503757636977,
+        "totalDifferenceKwh": 216.9937576369777,
+        "totalDifferencePercent": 4.676075639034884,
+        "matchPercent": 94.99663104642596,
+        "maeKwh": 17.86014127903834,
+        "rmseKwh": 22.530129161493548,
+        "biasKwh": 16.691827510536747,
+        "wapePercent": 5.003368953574034
+      },
+      "satelliteAppliedHours": 11
+    },
+    {
+      "date": "2026-10-04",
+      "v32": {
+        "hours": 13,
+        "actualKwh": 4583.8,
+        "predictedKwh": 4799.8294227918595,
+        "totalDifferenceKwh": 216.02942279185964,
+        "totalDifferencePercent": 4.712889366723235,
+        "matchPercent": 94.95256507034567,
+        "maeKwh": 17.797255561961173,
+        "rmseKwh": 22.957761091586942,
+        "biasKwh": 16.617647907066125,
+        "wapePercent": 5.047434929654331
+      },
+      "satellite": {
+        "hours": 13,
+        "actualKwh": 4583.8,
+        "predictedKwh": 4855.994295447714,
+        "totalDifferenceKwh": 272.1942954477133,
+        "totalDifferencePercent": 5.938180013257849,
+        "matchPercent": 93.98841192500343,
+        "maeKwh": 21.1968595524379,
+        "rmseKwh": 26.44746566299662,
+        "biasKwh": 20.938022726747175,
+        "wapePercent": 6.011588074996569
+      },
+      "satelliteAppliedHours": 11
+    },
+    {
+      "date": "2026-10-05",
+      "v32": {
+        "hours": 13,
+        "actualKwh": 4491.719999999999,
+        "predictedKwh": 4767.105546298963,
+        "totalDifferenceKwh": 275.38554629896333,
+        "totalDifferencePercent": 6.1309597726252605,
+        "matchPercent": 93.80909220179385,
+        "maeKwh": 21.39063413489121,
+        "rmseKwh": 26.63445234909139,
+        "biasKwh": 21.183503561458718,
+        "wapePercent": 6.190907798206161
+      },
+      "satellite": {
+        "hours": 13,
+        "actualKwh": 4491.719999999999,
+        "predictedKwh": 4833.511443841358,
+        "totalDifferenceKwh": 341.79144384135924,
+        "totalDifferencePercent": 7.609366653339017,
+        "matchPercent": 92.33068532108008,
+        "maeKwh": 26.49878009969092,
+        "rmseKwh": 31.873387053103926,
+        "biasKwh": 26.291649526258404,
+        "wapePercent": 7.669314678919924
+      },
+      "satelliteAppliedHours": 10
+    },
+    {
+      "date": "2026-10-06",
+      "v32": {
+        "hours": 13,
+        "actualKwh": 4448.94,
+        "predictedKwh": 4792.091341292484,
+        "totalDifferenceKwh": 343.1513412924841,
+        "totalDifferencePercent": 7.713103375017064,
+        "matchPercent": 92.15012427786499,
+        "maeKwh": 26.86432776556564,
+        "rmseKwh": 32.06969887268394,
+        "biasKwh": 26.39625702249878,
+        "wapePercent": 7.849875722135012
+      },
+      "satellite": {
+        "hours": 13,
+        "actualKwh": 4448.94,
+        "predictedKwh": 4833.947194472192,
+        "totalDifferenceKwh": 385.0071944721909,
+        "totalDifferencePercent": 8.653908447229924,
+        "matchPercent": 91.20931920565212,
+        "maeKwh": 30.084008779389258,
+        "rmseKwh": 35.627010468680496,
+        "biasKwh": 29.61593803632238,
+        "wapePercent": 8.790680794347876
+      },
+      "satelliteAppliedHours": 10
+    },
+    {
+      "date": "2026-10-07",
+      "v32": {
+        "hours": 13,
+        "actualKwh": 4076.8300000000004,
+        "predictedKwh": 4383.242614682987,
+        "totalDifferenceKwh": 306.4126146829866,
+        "totalDifferencePercent": 7.515952705484079,
+        "matchPercent": 91.69196645037434,
+        "maeKwh": 26.054184935477245,
+        "rmseKwh": 34.6109081622408,
+        "biasKwh": 23.570201129460507,
+        "wapePercent": 8.30803354962567
+      },
+      "satellite": {
+        "hours": 13,
+        "actualKwh": 4076.8300000000004,
+        "predictedKwh": 4539.391160488955,
+        "totalDifferenceKwh": 462.56116048895495,
+        "totalDifferencePercent": 11.346098819154953,
+        "matchPercent": 87.86782269877482,
+        "maeKwh": 38.046787989964514,
+        "rmseKwh": 49.14961456859835,
+        "biasKwh": 35.58162772991961,
+        "wapePercent": 12.132177301225184
+      },
+      "satelliteAppliedHours": 10
+    },
+    {
+      "date": "2026-10-08",
+      "v32": {
+        "hours": 13,
+        "actualKwh": 3366.52,
+        "predictedKwh": 3397.3447231717364,
+        "totalDifferenceKwh": 30.8247231717362,
+        "totalDifferencePercent": 0.9156257254297078,
+        "matchPercent": 58.43794594789086,
+        "maeKwh": 107.63037400577421,
+        "rmseKwh": 152.5789432454762,
+        "biasKwh": 2.3711325516720154,
+        "wapePercent": 41.56205405210914
+      },
+      "satellite": {
+        "hours": 13,
+        "actualKwh": 3366.52,
+        "predictedKwh": 3568.881554481839,
+        "totalDifferenceKwh": 202.36155448183933,
+        "totalDifferencePercent": 6.011001107429611,
+        "matchPercent": 72.42123394996908,
+        "maeKwh": 71.418821140577,
+        "rmseKwh": 107.44066419041494,
+        "biasKwh": 15.566273421679949,
+        "wapePercent": 27.578766050030918
+      },
+      "satelliteAppliedHours": 9
+    },
+    {
+      "date": "2026-10-09",
+      "v32": {
+        "hours": 12,
+        "actualKwh": 1717.2200000000003,
+        "predictedKwh": 2223.8932463769324,
+        "totalDifferenceKwh": 506.67324637693235,
+        "totalDifferencePercent": 29.505435900870726,
+        "matchPercent": 44.77547490254683,
+        "maeKwh": 79.02721582320711,
+        "rmseKwh": 92.40671659497177,
+        "biasKwh": 42.22277053141103,
+        "wapePercent": 55.22452509745317
+      },
+      "satellite": {
+        "hours": 12,
+        "actualKwh": 1717.2200000000003,
+        "predictedKwh": 2300.585189507861,
+        "totalDifferenceKwh": 583.3651895078604,
+        "totalDifferencePercent": 33.97148819067215,
+        "matchPercent": 49.77158091679201,
+        "maeKwh": 71.87770484838869,
+        "rmseKwh": 89.34950191010996,
+        "biasKwh": 48.61376579232169,
+        "wapePercent": 50.22841908320799
+      },
+      "satelliteAppliedHours": 8
+    },
+    {
+      "date": "2026-10-10",
+      "v32": {
+        "hours": 13,
+        "actualKwh": 2627.5399999999995,
+        "predictedKwh": 2934.8285935867134,
+        "totalDifferenceKwh": 307.2885935867128,
+        "totalDifferencePercent": 11.694915913238727,
+        "matchPercent": 81.58539762601384,
+        "maeKwh": 37.21931101672583,
+        "rmseKwh": 69.06092249246657,
+        "biasKwh": 23.637584122054832,
+        "wapePercent": 18.41460237398616
+      },
+      "satellite": {
+        "hours": 13,
+        "actualKwh": 2627.5399999999995,
+        "predictedKwh": 3122.422321869289,
+        "totalDifferenceKwh": 494.8823218692894,
+        "totalDifferencePercent": 18.834435322365767,
+        "matchPercent": 73.00806149405295,
+        "maeKwh": 54.555690847627766,
+        "rmseKwh": 90.97444152059754,
+        "biasKwh": 38.06787091302226,
+        "wapePercent": 26.99193850594705
+      },
+      "satelliteAppliedHours": 9
+    },
+    {
+      "date": "2026-10-11",
+      "v32": {
+        "hours": 13,
+        "actualKwh": 1763.0500000000002,
+        "predictedKwh": 1580.7310193404887,
+        "totalDifferenceKwh": -182.31898065951106,
+        "totalDifferencePercent": -10.34111231442733,
+        "matchPercent": 59.178693343086344,
+        "maeKwh": 55.3615420780551,
+        "rmseKwh": 72.11796320617043,
+        "biasKwh": -14.024536973808543,
+        "wapePercent": 40.821306656913656
+      },
+      "satellite": {
+        "hours": 13,
+        "actualKwh": 1763.0500000000002,
+        "predictedKwh": 1826.0464143455797,
+        "totalDifferenceKwh": 62.9964143455796,
+        "totalDifferencePercent": 3.5731496183080225,
+        "matchPercent": 65.60244335400611,
+        "maeKwh": 46.649701726707335,
+        "rmseKwh": 59.446453577006665,
+        "biasKwh": 4.845878026583046,
+        "wapePercent": 34.39755664599389
+      },
+      "satelliteAppliedHours": 7
+    }
+  ],
+  "relativeWapeReductionPercent": 1.1310415550361053,
+  "hashes": {
+    "baseline": "c4967538c9b77cd9083652ca22b7c692825986c968596b6ab927f021ef4906db",
+    "actual": "cbd4be2e230be25b90d9d78c36c4110b8fcf0358132394d0bcf0f6268138afd6",
+    "source": "e14e89846a71c6a0362f938ecb4ebcb00ae472ec62824e7cf972c2a3a61938c5"
+  },
+  "rows": [
+    {
+      "start": "2026-10-01T04:00:00.000Z",
+      "originAt": "2026-10-01T04:00:00.000Z",
+      "actualKwh": 3.82,
+      "baselineKwh": 3.3387812694248935,
+      "predictedKwh": 3.3387812694248944,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-01T05:00:00.000Z",
+      "originAt": "2026-10-01T05:00:00.000Z",
+      "actualKwh": 80.32,
+      "baselineKwh": 83.58524152585203,
+      "predictedKwh": 83.585241525852,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-01T06:00:00.000Z",
+      "originAt": "2026-10-01T06:00:00.000Z",
+      "actualKwh": 262.71,
+      "baselineKwh": 288.5308557670757,
+      "predictedKwh": 285.53679241819174,
+      "satelliteWeight": 0.43615435665374447,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-01T05:15:00.000Z",
+          "2026-10-01T05:30:00.000Z"
+        ],
+        "observedAt": "2026-10-01T05:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0798326734605115,
+        "stability": 0.9849387121986163
+      }
+    },
+    {
+      "start": "2026-10-01T07:00:00.000Z",
+      "originAt": "2026-10-01T07:00:00.000Z",
+      "actualKwh": 435.56,
+      "baselineKwh": 455.6293730542099,
+      "predictedKwh": 455.93673952009726,
+      "satelliteWeight": 0.44254369978007846,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-01T06:15:00.000Z",
+          "2026-10-01T06:30:00.000Z"
+        ],
+        "observedAt": "2026-10-01T06:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0661827681164184,
+        "stability": 0.999367345765247
+      }
+    },
+    {
+      "start": "2026-10-01T08:00:00.000Z",
+      "originAt": "2026-10-01T08:00:00.000Z",
+      "actualKwh": 560.97,
+      "baselineKwh": 574.5677136345579,
+      "predictedKwh": 579.6707438206081,
+      "satelliteWeight": 0.44215601829044926,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-01T07:15:00.000Z",
+          "2026-10-01T07:30:00.000Z"
+        ],
+        "observedAt": "2026-10-01T07:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0730343943561798,
+        "stability": 0.9984918701421942
+      }
+    },
+    {
+      "start": "2026-10-01T09:00:00.000Z",
+      "originAt": "2026-10-01T09:00:00.000Z",
+      "actualKwh": 640.09,
+      "baselineKwh": 653.3055145769571,
+      "predictedKwh": 657.6334406888923,
+      "satelliteWeight": 0.4424766715055885,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-01T08:15:00.000Z",
+          "2026-10-01T08:30:00.000Z"
+        ],
+        "observedAt": "2026-10-01T08:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.079643104315003,
+        "stability": 0.9992159802191968
+      }
+    },
+    {
+      "start": "2026-10-01T10:00:00.000Z",
+      "originAt": "2026-10-01T10:00:00.000Z",
+      "actualKwh": 665.28,
+      "baselineKwh": 681.6822962037647,
+      "predictedKwh": 687.8663688532315,
+      "satelliteWeight": 0.44258295668833325,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-01T09:15:00.000Z",
+          "2026-10-01T09:30:00.000Z"
+        ],
+        "observedAt": "2026-10-01T09:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0842000037322475,
+        "stability": 0.9994559970605317
+      }
+    },
+    {
+      "start": "2026-10-01T11:00:00.000Z",
+      "originAt": "2026-10-01T11:00:00.000Z",
+      "actualKwh": 637.49,
+      "baselineKwh": 640.755690822958,
+      "predictedKwh": 650.4929385769296,
+      "satelliteWeight": 0.44280366443448427,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-01T10:15:00.000Z",
+          "2026-10-01T10:30:00.000Z"
+        ],
+        "observedAt": "2026-10-01T10:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0853418709470688,
+        "stability": 0.9999544068550229
+      }
+    },
+    {
+      "start": "2026-10-01T12:00:00.000Z",
+      "originAt": "2026-10-01T12:00:00.000Z",
+      "actualKwh": 564.14,
+      "baselineKwh": 576.6969499186795,
+      "predictedKwh": 586.8487065682746,
+      "satelliteWeight": 0.4426024112840073,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-01T11:15:00.000Z",
+          "2026-10-01T11:30:00.000Z"
+        ],
+        "observedAt": "2026-10-01T11:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0840268340575978,
+        "stability": 0.9994999300950577
+      }
+    },
+    {
+      "start": "2026-10-01T13:00:00.000Z",
+      "originAt": "2026-10-01T13:00:00.000Z",
+      "actualKwh": 442.45,
+      "baselineKwh": 440.39665439741725,
+      "predictedKwh": 451.53835861876547,
+      "satelliteWeight": 0.44258064787207163,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-01T12:15:00.000Z",
+          "2026-10-01T12:30:00.000Z"
+        ],
+        "observedAt": "2026-10-01T12:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0834313918410126,
+        "stability": 0.9994507832125423
+      }
+    },
+    {
+      "start": "2026-10-01T14:00:00.000Z",
+      "originAt": "2026-10-01T14:00:00.000Z",
+      "actualKwh": 274.82,
+      "baselineKwh": 263.42007599049646,
+      "predictedKwh": 272.37880696457864,
+      "satelliteWeight": 0.44239004308763463,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-01T13:15:00.000Z",
+          "2026-10-01T13:30:00.000Z"
+        ],
+        "observedAt": "2026-10-01T13:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0781467439131411,
+        "stability": 0.9990203529576146
+      }
+    },
+    {
+      "start": "2026-10-01T15:00:00.000Z",
+      "originAt": "2026-10-01T15:00:00.000Z",
+      "actualKwh": 87.86,
+      "baselineKwh": 76.34662467373809,
+      "predictedKwh": 83.8084195876605,
+      "satelliteWeight": 0.44244950163386837,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-01T14:15:00.000Z",
+          "2026-10-01T14:30:00.000Z"
+        ],
+        "observedAt": "2026-10-01T14:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0759495683640206,
+        "stability": 0.9991546242839543
+      }
+    },
+    {
+      "start": "2026-10-01T16:00:00.000Z",
+      "originAt": "2026-10-01T16:00:00.000Z",
+      "actualKwh": 1.74,
+      "baselineKwh": 0.7950878527292434,
+      "predictedKwh": 1.0276588174361687,
+      "satelliteWeight": 0.4188632458812146,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-01T15:15:00.000Z",
+          "2026-10-01T15:30:00.000Z"
+        ],
+        "observedAt": "2026-10-01T15:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.1770183819660782,
+        "stability": 0.945891333404921
+      }
+    },
+    {
+      "start": "2026-10-02T04:00:00.000Z",
+      "originAt": "2026-10-02T04:00:00.000Z",
+      "actualKwh": 3.46,
+      "baselineKwh": 2.987487221979072,
+      "predictedKwh": 2.987487221979072,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-02T05:00:00.000Z",
+      "originAt": "2026-10-02T05:00:00.000Z",
+      "actualKwh": 79.3,
+      "baselineKwh": 83.50234586569987,
+      "predictedKwh": 83.5023458656999,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-02T06:00:00.000Z",
+      "originAt": "2026-10-02T06:00:00.000Z",
+      "actualKwh": 266.69,
+      "baselineKwh": 289.80979696195584,
+      "predictedKwh": 287.8237684599855,
+      "satelliteWeight": 0.43443212745447474,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-02T05:15:00.000Z",
+          "2026-10-02T05:30:00.000Z"
+        ],
+        "observedAt": "2026-10-02T05:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.1033074835301417,
+        "stability": 0.9810495152119029
+      }
+    },
+    {
+      "start": "2026-10-02T07:00:00.000Z",
+      "originAt": "2026-10-02T07:00:00.000Z",
+      "actualKwh": 438.53,
+      "baselineKwh": 459.4755152386432,
+      "predictedKwh": 459.8623801071606,
+      "satelliteWeight": 0.44263241094951317,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-02T06:15:00.000Z",
+          "2026-10-02T06:30:00.000Z"
+        ],
+        "observedAt": "2026-10-02T06:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0811941191656134,
+        "stability": 0.9995676763675845
+      }
+    },
+    {
+      "start": "2026-10-02T08:00:00.000Z",
+      "originAt": "2026-10-02T08:00:00.000Z",
+      "actualKwh": 560.17,
+      "baselineKwh": 580.692317968324,
+      "predictedKwh": 585.5955172083623,
+      "satelliteWeight": 0.4424566473837275,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-02T07:15:00.000Z",
+          "2026-10-02T07:30:00.000Z"
+        ],
+        "observedAt": "2026-10-02T07:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0864638918791325,
+        "stability": 0.9991707610611215
+      }
+    },
+    {
+      "start": "2026-10-02T09:00:00.000Z",
+      "originAt": "2026-10-02T09:00:00.000Z",
+      "actualKwh": 639.83,
+      "baselineKwh": 657.7976891416662,
+      "predictedKwh": 662.8050991401939,
+      "satelliteWeight": 0.4425345310222062,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-02T08:15:00.000Z",
+          "2026-10-02T08:30:00.000Z"
+        ],
+        "observedAt": "2026-10-02T08:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0920156874254814,
+        "stability": 0.9993466405620697
+      }
+    },
+    {
+      "start": "2026-10-02T10:00:00.000Z",
+      "originAt": "2026-10-02T10:00:00.000Z",
+      "actualKwh": 663.49,
+      "baselineKwh": 685.1927316351698,
+      "predictedKwh": 692.167986644945,
+      "satelliteWeight": 0.44260870470420105,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-02T09:15:00.000Z",
+          "2026-10-02T09:30:00.000Z"
+        ],
+        "observedAt": "2026-10-02T09:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.09671265519823,
+        "stability": 0.9995141421121713
+      }
+    },
+    {
+      "start": "2026-10-02T11:00:00.000Z",
+      "originAt": "2026-10-02T11:00:00.000Z",
+      "actualKwh": 636.1,
+      "baselineKwh": 643.0153174283943,
+      "predictedKwh": 653.3514878048458,
+      "satelliteWeight": 0.4428055204696326,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-02T10:15:00.000Z",
+          "2026-10-02T10:30:00.000Z"
+        ],
+        "observedAt": "2026-10-02T10:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.097503437683912,
+        "stability": 0.9999585982171882
+      }
+    },
+    {
+      "start": "2026-10-02T12:00:00.000Z",
+      "originAt": "2026-10-02T12:00:00.000Z",
+      "actualKwh": 562.34,
+      "baselineKwh": 569.5442715058547,
+      "predictedKwh": 583.3422447838741,
+      "satelliteWeight": 0.4425328109995267,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-02T11:15:00.000Z",
+          "2026-10-02T11:30:00.000Z"
+        ],
+        "observedAt": "2026-10-02T11:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0949506933519306,
+        "stability": 0.9993427563479215
+      }
+    },
+    {
+      "start": "2026-10-02T13:00:00.000Z",
+      "originAt": "2026-10-02T13:00:00.000Z",
+      "actualKwh": 440.6,
+      "baselineKwh": 431.99302000951803,
+      "predictedKwh": 444.36187852400155,
+      "satelliteWeight": 0.4423564751709386,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-02T12:15:00.000Z",
+          "2026-10-02T12:30:00.000Z"
+        ],
+        "observedAt": "2026-10-02T12:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0868777591316259,
+        "stability": 0.9989445487379908
+      }
+    },
+    {
+      "start": "2026-10-02T14:00:00.000Z",
+      "originAt": "2026-10-02T14:00:00.000Z",
+      "actualKwh": 262.84,
+      "baselineKwh": 250.5015566692677,
+      "predictedKwh": 260.7013731922668,
+      "satelliteWeight": 0.4423835056514598,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-02T13:15:00.000Z",
+          "2026-10-02T13:30:00.000Z"
+        ],
+        "observedAt": "2026-10-02T13:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0799027473294533,
+        "stability": 0.9990055898952518
+      }
+    },
+    {
+      "start": "2026-10-02T15:00:00.000Z",
+      "originAt": "2026-10-02T15:00:00.000Z",
+      "actualKwh": 87.16,
+      "baselineKwh": 76.90971307183023,
+      "predictedKwh": 77.22836658258055,
+      "satelliteWeight": 0.40694471555504597,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-02T14:15:00.000Z",
+          "2026-10-02T14:30:00.000Z"
+        ],
+        "observedAt": "2026-10-02T14:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.8864001565083406,
+        "stability": 0.9189764998564942
+      }
+    },
+    {
+      "start": "2026-10-02T16:00:00.000Z",
+      "originAt": "2026-10-02T16:00:00.000Z",
+      "actualKwh": 2.75,
+      "baselineKwh": 0.5286781173878548,
+      "predictedKwh": 0.4855540867079655,
+      "satelliteWeight": 0.4274666671825317,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-02T15:15:00.000Z",
+          "2026-10-02T15:30:00.000Z"
+        ],
+        "observedAt": "2026-10-02T15:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.5189250829936723,
+        "stability": 0.9653198741674945
+      }
+    },
+    {
+      "start": "2026-10-03T04:00:00.000Z",
+      "originAt": "2026-10-03T04:00:00.000Z",
+      "actualKwh": 3.31,
+      "baselineKwh": 2.6532075354580673,
+      "predictedKwh": 2.6532075354580673,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-03T05:00:00.000Z",
+      "originAt": "2026-10-03T05:00:00.000Z",
+      "actualKwh": 79.4,
+      "baselineKwh": 83.55679145299437,
+      "predictedKwh": 83.55679145299435,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-03T06:00:00.000Z",
+      "originAt": "2026-10-03T06:00:00.000Z",
+      "actualKwh": 267.44,
+      "baselineKwh": 288.8559018672264,
+      "predictedKwh": 287.1419968823443,
+      "satelliteWeight": 0.4340013392732666,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-03T05:15:00.000Z",
+          "2026-10-03T05:30:00.000Z"
+        ],
+        "observedAt": "2026-10-03T05:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.106181439477783,
+        "stability": 0.9800766945809575
+      }
+    },
+    {
+      "start": "2026-10-03T07:00:00.000Z",
+      "originAt": "2026-10-03T07:00:00.000Z",
+      "actualKwh": 440.25,
+      "baselineKwh": 460.2356447019076,
+      "predictedKwh": 460.6608128313729,
+      "satelliteWeight": 0.4427363056102921,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-03T06:15:00.000Z",
+          "2026-10-03T06:30:00.000Z"
+        ],
+        "observedAt": "2026-10-03T06:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.08329542523588,
+        "stability": 0.9998022948503094
+      }
+    },
+    {
+      "start": "2026-10-03T08:00:00.000Z",
+      "originAt": "2026-10-03T08:00:00.000Z",
+      "actualKwh": 561.73,
+      "baselineKwh": 585.556457320642,
+      "predictedKwh": 590.2274168196288,
+      "satelliteWeight": 0.4424798068647724,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-03T07:15:00.000Z",
+          "2026-10-03T07:30:00.000Z"
+        ],
+        "observedAt": "2026-10-03T07:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0871510327256744,
+        "stability": 0.999223060594733
+      }
+    },
+    {
+      "start": "2026-10-03T09:00:00.000Z",
+      "originAt": "2026-10-03T09:00:00.000Z",
+      "actualKwh": 638.37,
+      "baselineKwh": 671.487253785318,
+      "predictedKwh": 675.4221445340054,
+      "satelliteWeight": 0.44253526940552895,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-03T08:15:00.000Z",
+          "2026-10-03T08:30:00.000Z"
+        ],
+        "observedAt": "2026-10-03T08:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.091699413636834,
+        "stability": 0.9993483080045884
+      }
+    },
+    {
+      "start": "2026-10-03T10:00:00.000Z",
+      "originAt": "2026-10-03T10:00:00.000Z",
+      "actualKwh": 662.84,
+      "baselineKwh": 693.8547999751103,
+      "predictedKwh": 700.4995262156496,
+      "satelliteWeight": 0.4425179657488368,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-03T09:15:00.000Z",
+          "2026-10-03T09:30:00.000Z"
+        ],
+        "observedAt": "2026-10-03T09:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0948402388377736,
+        "stability": 0.9993092322941691
+      }
+    },
+    {
+      "start": "2026-10-03T11:00:00.000Z",
+      "originAt": "2026-10-03T11:00:00.000Z",
+      "actualKwh": 633.28,
+      "baselineKwh": 659.1596898278825,
+      "predictedKwh": 667.8564598743557,
+      "satelliteWeight": 0.44281023226844046,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-03T10:15:00.000Z",
+          "2026-10-03T10:30:00.000Z"
+        ],
+        "observedAt": "2026-10-03T10:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0960627922854485,
+        "stability": 0.9999692385626969
+      }
+    },
+    {
+      "start": "2026-10-03T12:00:00.000Z",
+      "originAt": "2026-10-03T12:00:00.000Z",
+      "actualKwh": 558.49,
+      "baselineKwh": 570.5392271767366,
+      "predictedKwh": 584.1670336389171,
+      "satelliteWeight": 0.44255576688382625,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-03T11:15:00.000Z",
+          "2026-10-03T11:30:00.000Z"
+        ],
+        "observedAt": "2026-10-03T11:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0942961544619054,
+        "stability": 0.9993945961123868
+      }
+    },
+    {
+      "start": "2026-10-03T13:00:00.000Z",
+      "originAt": "2026-10-03T13:00:00.000Z",
+      "actualKwh": 440.89,
+      "baselineKwh": 446.10088880004486,
+      "predictedKwh": 457.74561488297,
+      "satelliteWeight": 0.4424966553289942,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-03T12:15:00.000Z",
+          "2026-10-03T12:30:00.000Z"
+        ],
+        "observedAt": "2026-10-03T12:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0917223750037868,
+        "stability": 0.9992611083739193
+      }
+    },
+    {
+      "start": "2026-10-03T14:00:00.000Z",
+      "originAt": "2026-10-03T14:00:00.000Z",
+      "actualKwh": 270.46,
+      "baselineKwh": 253.99377194390743,
+      "predictedKwh": 264.67937696962167,
+      "satelliteWeight": 0.44242796374220966,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-03T13:15:00.000Z",
+          "2026-10-03T13:30:00.000Z"
+        ],
+        "observedAt": "2026-10-03T13:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0862926016710048,
+        "stability": 0.9991059866790551
+      }
+    },
+    {
+      "start": "2026-10-03T15:00:00.000Z",
+      "originAt": "2026-10-03T15:00:00.000Z",
+      "actualKwh": 82.75,
+      "baselineKwh": 74.82795773376512,
+      "predictedKwh": 82.45903221505245,
+      "satelliteWeight": 0.4417983478303663,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-03T14:15:00.000Z",
+          "2026-10-03T14:30:00.000Z"
+        ],
+        "observedAt": "2026-10-03T14:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0875659935151962,
+        "stability": 0.9976841664543338
+      }
+    },
+    {
+      "start": "2026-10-03T16:00:00.000Z",
+      "originAt": "2026-10-03T16:00:00.000Z",
+      "actualKwh": 1.3,
+      "baselineKwh": 0.29340815269917053,
+      "predictedKwh": 0.4343437846074628,
+      "satelliteWeight": 0.4082435909581092,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-03T15:15:00.000Z",
+          "2026-10-03T15:30:00.000Z"
+        ],
+        "observedAt": "2026-10-03T15:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.24505082641703,
+        "stability": 0.9219096647951979
+      }
+    },
+    {
+      "start": "2026-10-04T04:00:00.000Z",
+      "originAt": "2026-10-04T04:00:00.000Z",
+      "actualKwh": 3.06,
+      "baselineKwh": 2.343143958093367,
+      "predictedKwh": 2.3431439580933673,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-04T05:00:00.000Z",
+      "originAt": "2026-10-04T05:00:00.000Z",
+      "actualKwh": 78.59,
+      "baselineKwh": 83.6291881410779,
+      "predictedKwh": 83.62918814107792,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-04T06:00:00.000Z",
+      "originAt": "2026-10-04T06:00:00.000Z",
+      "actualKwh": 267.19,
+      "baselineKwh": 286.7699467411045,
+      "predictedKwh": 285.89140319840044,
+      "satelliteWeight": 0.4321091081593618,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-04T05:15:00.000Z",
+          "2026-10-04T05:30:00.000Z"
+        ],
+        "observedAt": "2026-10-04T05:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.1241146827465087,
+        "stability": 0.9758035934458218
+      }
+    },
+    {
+      "start": "2026-10-04T07:00:00.000Z",
+      "originAt": "2026-10-04T07:00:00.000Z",
+      "actualKwh": 436.18,
+      "baselineKwh": 459.6207437531624,
+      "predictedKwh": 458.9919683289032,
+      "satelliteWeight": 0.44266293941783946,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-04T06:15:00.000Z",
+          "2026-10-04T06:30:00.000Z"
+        ],
+        "observedAt": "2026-10-04T06:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.088854600451945,
+        "stability": 0.9996366168007591
+      }
+    },
+    {
+      "start": "2026-10-04T08:00:00.000Z",
+      "originAt": "2026-10-04T08:00:00.000Z",
+      "actualKwh": 555.75,
+      "baselineKwh": 587.269856345949,
+      "predictedKwh": 590.3544730941967,
+      "satelliteWeight": 0.4424734950597062,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-04T07:15:00.000Z",
+          "2026-10-04T07:30:00.000Z"
+        ],
+        "observedAt": "2026-10-04T07:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0920173198374208,
+        "stability": 0.9992088070602704
+      }
+    },
+    {
+      "start": "2026-10-04T09:00:00.000Z",
+      "originAt": "2026-10-04T09:00:00.000Z",
+      "actualKwh": 632.22,
+      "baselineKwh": 673.1663263502024,
+      "predictedKwh": 675.761112085502,
+      "satelliteWeight": 0.44259766366307185,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-04T08:15:00.000Z",
+          "2026-10-04T08:30:00.000Z"
+        ],
+        "observedAt": "2026-10-04T08:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0964638286912844,
+        "stability": 0.9994892088547931
+      }
+    },
+    {
+      "start": "2026-10-04T10:00:00.000Z",
+      "originAt": "2026-10-04T10:00:00.000Z",
+      "actualKwh": 654.06,
+      "baselineKwh": 693.9239954742528,
+      "predictedKwh": 698.9480082632607,
+      "satelliteWeight": 0.44271261514050886,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-04T09:15:00.000Z",
+          "2026-10-04T09:30:00.000Z"
+        ],
+        "observedAt": "2026-10-04T09:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0983780993058938,
+        "stability": 0.9997487962197358
+      }
+    },
+    {
+      "start": "2026-10-04T11:00:00.000Z",
+      "originAt": "2026-10-04T11:00:00.000Z",
+      "actualKwh": 625.35,
+      "baselineKwh": 659.9951713467005,
+      "predictedKwh": 666.5750341424848,
+      "satelliteWeight": 0.44274723143115224,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-04T10:15:00.000Z",
+          "2026-10-04T10:30:00.000Z"
+        ],
+        "observedAt": "2026-10-04T10:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0984686253933693,
+        "stability": 0.9998269679133283
+      }
+    },
+    {
+      "start": "2026-10-04T12:00:00.000Z",
+      "originAt": "2026-10-04T12:00:00.000Z",
+      "actualKwh": 553.96,
+      "baselineKwh": 569.7182216201255,
+      "predictedKwh": 581.3409930535693,
+      "satelliteWeight": 0.44250683280439596,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-04T11:15:00.000Z",
+          "2026-10-04T11:30:00.000Z"
+        ],
+        "observedAt": "2026-10-04T11:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0960084868891888,
+        "stability": 0.9992840914975835
+      }
+    },
+    {
+      "start": "2026-10-04T13:00:00.000Z",
+      "originAt": "2026-10-04T13:00:00.000Z",
+      "actualKwh": 432.69,
+      "baselineKwh": 445.59342277610233,
+      "predictedKwh": 456.49436994577854,
+      "satelliteWeight": 0.4425331922692586,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-04T12:15:00.000Z",
+          "2026-10-04T12:30:00.000Z"
+        ],
+        "observedAt": "2026-10-04T12:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.096275259880925,
+        "stability": 0.9993436173442936
+      }
+    },
+    {
+      "start": "2026-10-04T14:00:00.000Z",
+      "originAt": "2026-10-04T14:00:00.000Z",
+      "actualKwh": 264.55,
+      "baselineKwh": 261.2795668757854,
+      "predictedKwh": 271.3417850259443,
+      "satelliteWeight": 0.4427247278773909,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-04T13:15:00.000Z",
+          "2026-10-04T13:30:00.000Z"
+        ],
+        "observedAt": "2026-10-04T13:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0923147403674134,
+        "stability": 0.9997761496171829
+      }
+    },
+    {
+      "start": "2026-10-04T15:00:00.000Z",
+      "originAt": "2026-10-04T15:00:00.000Z",
+      "actualKwh": 79,
+      "baselineKwh": 76.38602230428388,
+      "predictedKwh": 84.08839953558514,
+      "satelliteWeight": 0.4415440201941127,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-04T14:15:00.000Z",
+          "2026-10-04T14:30:00.000Z"
+        ],
+        "observedAt": "2026-10-04T14:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0970231416665905,
+        "stability": 0.997109835072091
+      }
+    },
+    {
+      "start": "2026-10-04T16:00:00.000Z",
+      "originAt": "2026-10-04T16:00:00.000Z",
+      "actualKwh": 1.2,
+      "baselineKwh": 0.13381710501954708,
+      "predictedKwh": 0.23441667491696505,
+      "satelliteWeight": 0.40324902058169976,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-04T15:15:00.000Z",
+          "2026-10-04T15:30:00.000Z"
+        ],
+        "observedAt": "2026-10-04T15:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.262994829912368,
+        "stability": 0.9106307548416938
+      }
+    },
+    {
+      "start": "2026-10-05T04:00:00.000Z",
+      "originAt": "2026-10-05T04:00:00.000Z",
+      "actualKwh": 2.78,
+      "baselineKwh": 2.0166536122323264,
+      "predictedKwh": 2.0166536122323264,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-05T05:00:00.000Z",
+      "originAt": "2026-10-05T05:00:00.000Z",
+      "actualKwh": 76.26,
+      "baselineKwh": 82.56972541875096,
+      "predictedKwh": 82.56972541875096,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-05T06:00:00.000Z",
+      "originAt": "2026-10-05T06:00:00.000Z",
+      "actualKwh": 264.58,
+      "baselineKwh": 283.93027295878386,
+      "predictedKwh": 285.1037398048161,
+      "satelliteWeight": 0.430749378689819,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-05T05:15:00.000Z",
+          "2026-10-05T05:30:00.000Z"
+        ],
+        "observedAt": "2026-10-05T05:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.1429065989923972,
+        "stability": 0.9727330057691445
+      }
+    },
+    {
+      "start": "2026-10-05T07:00:00.000Z",
+      "originAt": "2026-10-05T07:00:00.000Z",
+      "actualKwh": 431.33,
+      "baselineKwh": 457.380853404669,
+      "predictedKwh": 457.8895417361993,
+      "satelliteWeight": 0.4424099013347254,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-05T06:15:00.000Z",
+          "2026-10-05T06:30:00.000Z"
+        ],
+        "observedAt": "2026-10-05T06:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.096658720342012,
+        "stability": 0.9990651975316004
+      }
+    },
+    {
+      "start": "2026-10-05T08:00:00.000Z",
+      "originAt": "2026-10-05T08:00:00.000Z",
+      "actualKwh": 550.05,
+      "baselineKwh": 580.9595889164326,
+      "predictedKwh": 585.2569307576208,
+      "satelliteWeight": 0.44266839064213376,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-05T07:15:00.000Z",
+          "2026-10-05T07:30:00.000Z"
+        ],
+        "observedAt": "2026-10-05T07:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0976678943819747,
+        "stability": 0.9996489269422364
+      }
+    },
+    {
+      "start": "2026-10-05T09:00:00.000Z",
+      "originAt": "2026-10-05T09:00:00.000Z",
+      "actualKwh": 617.27,
+      "baselineKwh": 664.9333194713921,
+      "predictedKwh": 668.8405126541993,
+      "satelliteWeight": 0.4425551302644786,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-05T08:15:00.000Z",
+          "2026-10-05T08:30:00.000Z"
+        ],
+        "observedAt": "2026-10-05T08:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.1005829493364532,
+        "stability": 0.9993931584767634
+      }
+    },
+    {
+      "start": "2026-10-05T10:00:00.000Z",
+      "originAt": "2026-10-05T10:00:00.000Z",
+      "actualKwh": 643.44,
+      "baselineKwh": 687.3965734067884,
+      "predictedKwh": 693.8799987829052,
+      "satelliteWeight": 0.44269542668492884,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-05T09:15:00.000Z",
+          "2026-10-05T09:30:00.000Z"
+        ],
+        "observedAt": "2026-10-05T09:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.1023383399654616,
+        "stability": 0.9997099806604152
+      }
+    },
+    {
+      "start": "2026-10-05T11:00:00.000Z",
+      "originAt": "2026-10-05T11:00:00.000Z",
+      "actualKwh": 618.74,
+      "baselineKwh": 659.3120087314668,
+      "predictedKwh": 667.4415463124024,
+      "satelliteWeight": 0.44278290601830567,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-05T10:15:00.000Z",
+          "2026-10-05T10:30:00.000Z"
+        ],
+        "observedAt": "2026-10-05T10:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.1026513801227371,
+        "stability": 0.9999075294883605
+      }
+    },
+    {
+      "start": "2026-10-05T12:00:00.000Z",
+      "originAt": "2026-10-05T12:00:00.000Z",
+      "actualKwh": 541.11,
+      "baselineKwh": 569.6374930716194,
+      "predictedKwh": 582.8296902460679,
+      "satelliteWeight": 0.44261061090661175,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-05T11:15:00.000Z",
+          "2026-10-05T11:30:00.000Z"
+        ],
+        "observedAt": "2026-10-05T11:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.100789418998483,
+        "stability": 0.9995184467637674
+      }
+    },
+    {
+      "start": "2026-10-05T13:00:00.000Z",
+      "originAt": "2026-10-05T13:00:00.000Z",
+      "actualKwh": 420.05,
+      "baselineKwh": 440.30923655492353,
+      "predictedKwh": 451.50267962320885,
+      "satelliteWeight": 0.4425206591024191,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-05T12:15:00.000Z",
+          "2026-10-05T12:30:00.000Z"
+        ],
+        "observedAt": "2026-10-05T12:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0940300957691178,
+        "stability": 0.9993153145175113
+      }
+    },
+    {
+      "start": "2026-10-05T14:00:00.000Z",
+      "originAt": "2026-10-05T14:00:00.000Z",
+      "actualKwh": 253.83,
+      "baselineKwh": 262.88181172264615,
+      "predictedKwh": 272.6779564712473,
+      "satelliteWeight": 0.4424536563531085,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-05T13:15:00.000Z",
+          "2026-10-05T13:30:00.000Z"
+        ],
+        "observedAt": "2026-10-05T13:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0891274132350088,
+        "stability": 0.999164006613296
+      }
+    },
+    {
+      "start": "2026-10-05T15:00:00.000Z",
+      "originAt": "2026-10-05T15:00:00.000Z",
+      "actualKwh": 71.66,
+      "baselineKwh": 75.74101136880175,
+      "predictedKwh": 83.46547076125266,
+      "satelliteWeight": 0.44183944776802364,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-05T14:15:00.000Z",
+          "2026-10-05T14:30:00.000Z"
+        ],
+        "observedAt": "2026-10-05T14:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0913177349455716,
+        "stability": 0.9977769797417633
+      }
+    },
+    {
+      "start": "2026-10-05T16:00:00.000Z",
+      "originAt": "2026-10-05T16:00:00.000Z",
+      "actualKwh": 0.62,
+      "baselineKwh": 0.0369976604563764,
+      "predictedKwh": 0.0369976604563764,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "low-sun",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-06T04:00:00.000Z",
+      "originAt": "2026-10-06T04:00:00.000Z",
+      "actualKwh": 4.42,
+      "baselineKwh": 1.7041762035508385,
+      "predictedKwh": 1.704176203550839,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-06T05:00:00.000Z",
+      "originAt": "2026-10-06T05:00:00.000Z",
+      "actualKwh": 75.49,
+      "baselineKwh": 81.2220925037174,
+      "predictedKwh": 81.22209250371738,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-06T06:00:00.000Z",
+      "originAt": "2026-10-06T06:00:00.000Z",
+      "actualKwh": 255.84,
+      "baselineKwh": 284.24554057985654,
+      "predictedKwh": 280.7837101521902,
+      "satelliteWeight": 0.4345723326539158,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-06T05:15:00.000Z",
+          "2026-10-06T05:30:00.000Z"
+        ],
+        "observedAt": "2026-10-06T05:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0988015514758886,
+        "stability": 0.9813661313971465
+      }
+    },
+    {
+      "start": "2026-10-06T07:00:00.000Z",
+      "originAt": "2026-10-06T07:00:00.000Z",
+      "actualKwh": 428.55,
+      "baselineKwh": 460.30453433448224,
+      "predictedKwh": 457.8645618159114,
+      "satelliteWeight": 0.4424760167517901,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-06T06:15:00.000Z",
+          "2026-10-06T06:30:00.000Z"
+        ],
+        "observedAt": "2026-10-06T06:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0805575435157837,
+        "stability": 0.9992145016317354
+      }
+    },
+    {
+      "start": "2026-10-06T08:00:00.000Z",
+      "originAt": "2026-10-06T08:00:00.000Z",
+      "actualKwh": 546.57,
+      "baselineKwh": 582.4702956984698,
+      "predictedKwh": 584.8261168684883,
+      "satelliteWeight": 0.442284760546971,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-06T07:15:00.000Z",
+          "2026-10-06T07:30:00.000Z"
+        ],
+        "observedAt": "2026-10-06T07:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0885487434300591,
+        "stability": 0.9987826003169812
+      }
+    },
+    {
+      "start": "2026-10-06T09:00:00.000Z",
+      "originAt": "2026-10-06T09:00:00.000Z",
+      "actualKwh": 619.76,
+      "baselineKwh": 667.8130563670345,
+      "predictedKwh": 669.7799772583224,
+      "satelliteWeight": 0.44249603480910027,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-06T08:15:00.000Z",
+          "2026-10-06T08:30:00.000Z"
+        ],
+        "observedAt": "2026-10-06T08:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0953777186219718,
+        "stability": 0.999259707094634
+      }
+    },
+    {
+      "start": "2026-10-06T10:00:00.000Z",
+      "originAt": "2026-10-06T10:00:00.000Z",
+      "actualKwh": 639.82,
+      "baselineKwh": 691.4698705660079,
+      "predictedKwh": 696.4253611203931,
+      "satelliteWeight": 0.4426841732800584,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-06T09:15:00.000Z",
+          "2026-10-06T09:30:00.000Z"
+        ],
+        "observedAt": "2026-10-06T09:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0989360097739505,
+        "stability": 0.9996845678359602
+      }
+    },
+    {
+      "start": "2026-10-06T11:00:00.000Z",
+      "originAt": "2026-10-06T11:00:00.000Z",
+      "actualKwh": 612.5,
+      "baselineKwh": 663.4661235776999,
+      "predictedKwh": 669.9786560780311,
+      "satelliteWeight": 0.442726032664798,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-06T10:15:00.000Z",
+          "2026-10-06T10:30:00.000Z"
+        ],
+        "observedAt": "2026-10-06T10:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.098692909119247,
+        "stability": 0.9997790961328117
+      }
+    },
+    {
+      "start": "2026-10-06T12:00:00.000Z",
+      "originAt": "2026-10-06T12:00:00.000Z",
+      "actualKwh": 538.74,
+      "baselineKwh": 575.8661114360976,
+      "predictedKwh": 586.0328069990593,
+      "satelliteWeight": 0.44255217767789584,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-06T11:15:00.000Z",
+          "2026-10-06T11:30:00.000Z"
+        ],
+        "observedAt": "2026-10-06T11:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0952691194826758,
+        "stability": 0.9993864908445772
+      }
+    },
+    {
+      "start": "2026-10-06T13:00:00.000Z",
+      "originAt": "2026-10-06T13:00:00.000Z",
+      "actualKwh": 417.08,
+      "baselineKwh": 444.49973689001524,
+      "predictedKwh": 452.7265484539515,
+      "satelliteWeight": 0.442200936847548,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-06T12:15:00.000Z",
+          "2026-10-06T12:30:00.000Z"
+        ],
+        "observedAt": "2026-10-06T12:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0850734365786177,
+        "stability": 0.9985933067668838
+      }
+    },
+    {
+      "start": "2026-10-06T14:00:00.000Z",
+      "originAt": "2026-10-06T14:00:00.000Z",
+      "actualKwh": 257.78,
+      "baselineKwh": 265.4742494562076,
+      "predictedKwh": 272.6853370247351,
+      "satelliteWeight": 0.4419608658727421,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-06T13:15:00.000Z",
+          "2026-10-06T13:30:00.000Z"
+        ],
+        "observedAt": "2026-10-06T13:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.075404665730755,
+        "stability": 0.9980511702659998
+      }
+    },
+    {
+      "start": "2026-10-06T15:00:00.000Z",
+      "originAt": "2026-10-06T15:00:00.000Z",
+      "actualKwh": 52.06,
+      "baselineKwh": 73.55218971282996,
+      "predictedKwh": 79.91448602732599,
+      "satelliteWeight": 0.4425459769956109,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-06T14:15:00.000Z",
+          "2026-10-06T14:30:00.000Z"
+        ],
+        "observedAt": "2026-10-06T14:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0695154701946565,
+        "stability": 0.9993724882513867
+      }
+    },
+    {
+      "start": "2026-10-06T16:00:00.000Z",
+      "originAt": "2026-10-06T16:00:00.000Z",
+      "actualKwh": 0.33,
+      "baselineKwh": 0.003363966514490739,
+      "predictedKwh": 0.003363966514490739,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "low-sun",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-07T04:00:00.000Z",
+      "originAt": "2026-10-07T04:00:00.000Z",
+      "actualKwh": 3.09,
+      "baselineKwh": 1.3096934303272465,
+      "predictedKwh": 1.3096934303272465,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-07T05:00:00.000Z",
+      "originAt": "2026-10-07T05:00:00.000Z",
+      "actualKwh": 68.98,
+      "baselineKwh": 73.37083365706863,
+      "predictedKwh": 73.37083365706864,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-07T06:00:00.000Z",
+      "originAt": "2026-10-07T06:00:00.000Z",
+      "actualKwh": 213.97,
+      "baselineKwh": 261.90754902868025,
+      "predictedKwh": 267.70506871463425,
+      "satelliteWeight": 0.43281176767641594,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-07T05:15:00.000Z",
+          "2026-10-07T05:30:00.000Z"
+        ],
+        "observedAt": "2026-10-07T05:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0963690074951866,
+        "stability": 0.977390363242531
+      }
+    },
+    {
+      "start": "2026-10-07T07:00:00.000Z",
+      "originAt": "2026-10-07T07:00:00.000Z",
+      "actualKwh": 382.77,
+      "baselineKwh": 427.79017551933316,
+      "predictedKwh": 439.01925135249337,
+      "satelliteWeight": 0.44234310188351444,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-07T06:15:00.000Z",
+          "2026-10-07T06:30:00.000Z"
+        ],
+        "observedAt": "2026-10-07T06:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0705633661443779,
+        "stability": 0.9989143487221191
+      }
+    },
+    {
+      "start": "2026-10-07T08:00:00.000Z",
+      "originAt": "2026-10-07T08:00:00.000Z",
+      "actualKwh": 521.21,
+      "baselineKwh": 545.6867878267822,
+      "predictedKwh": 565.156474379751,
+      "satelliteWeight": 0.4423055230835625,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-07T07:15:00.000Z",
+          "2026-10-07T07:30:00.000Z"
+        ],
+        "observedAt": "2026-10-07T07:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.078192705016021,
+        "stability": 0.9988294869885013
+      }
+    },
+    {
+      "start": "2026-10-07T09:00:00.000Z",
+      "originAt": "2026-10-07T09:00:00.000Z",
+      "actualKwh": 581.8,
+      "baselineKwh": 614.1165748897687,
+      "predictedKwh": 641.7368872607375,
+      "satelliteWeight": 0.44251368345193176,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-07T08:15:00.000Z",
+          "2026-10-07T08:30:00.000Z"
+        ],
+        "observedAt": "2026-10-07T08:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0843391622782592,
+        "stability": 0.9992995618645732
+      }
+    },
+    {
+      "start": "2026-10-07T10:00:00.000Z",
+      "originAt": "2026-10-07T10:00:00.000Z",
+      "actualKwh": 600.22,
+      "baselineKwh": 633.2520129120026,
+      "predictedKwh": 664.309826549525,
+      "satelliteWeight": 0.44231228950898127,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-07T09:15:00.000Z",
+          "2026-10-07T09:30:00.000Z"
+        ],
+        "observedAt": "2026-10-07T09:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.087157754998242,
+        "stability": 0.9988447671622206
+      }
+    },
+    {
+      "start": "2026-10-07T11:00:00.000Z",
+      "originAt": "2026-10-07T11:00:00.000Z",
+      "actualKwh": 539.66,
+      "baselineKwh": 602.4078166795712,
+      "predictedKwh": 632.6326452018665,
+      "satelliteWeight": 0.4401348114131131,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-07T10:15:00.000Z",
+          "2026-10-07T10:30:00.000Z"
+        ],
+        "observedAt": "2026-10-07T10:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0830553193330297,
+        "stability": 0.9939275115189674
+      }
+    },
+    {
+      "start": "2026-10-07T12:00:00.000Z",
+      "originAt": "2026-10-07T12:00:00.000Z",
+      "actualKwh": 455.97,
+      "baselineKwh": 521.8309414878324,
+      "predictedKwh": 537.4741329355228,
+      "satelliteWeight": 0.4372406180748925,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-07T11:15:00.000Z",
+          "2026-10-07T11:30:00.000Z"
+        ],
+        "observedAt": "2026-10-07T11:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0173488476176897,
+        "stability": 0.9873917449585431
+      }
+    },
+    {
+      "start": "2026-10-07T13:00:00.000Z",
+      "originAt": "2026-10-07T13:00:00.000Z",
+      "actualKwh": 394.1,
+      "baselineKwh": 400.2006011149614,
+      "predictedKwh": 405.13161720637646,
+      "satelliteWeight": 0.4321472320704999,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-07T12:15:00.000Z",
+          "2026-10-07T12:30:00.000Z"
+        ],
+        "observedAt": "2026-10-07T12:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.965019764332952,
+        "stability": 0.9758896861681973
+      }
+    },
+    {
+      "start": "2026-10-07T14:00:00.000Z",
+      "originAt": "2026-10-07T14:00:00.000Z",
+      "actualKwh": 235.07,
+      "baselineKwh": 235.745216306095,
+      "predictedKwh": 245.79796492127122,
+      "satelliteWeight": 0.4427812747270216,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-07T13:15:00.000Z",
+          "2026-10-07T13:30:00.000Z"
+        ],
+        "observedAt": "2026-10-07T13:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.001861375085974,
+        "stability": 0.9999038456504897
+      }
+    },
+    {
+      "start": "2026-10-07T15:00:00.000Z",
+      "originAt": "2026-10-07T15:00:00.000Z",
+      "actualKwh": 78.94,
+      "baselineKwh": 65.62441084160196,
+      "predictedKwh": 65.74676389041885,
+      "satelliteWeight": 0.4037704777841913,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-07T14:15:00.000Z",
+          "2026-10-07T14:30:00.000Z"
+        ],
+        "observedAt": "2026-10-07T14:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.8457898790355,
+        "stability": 0.9118083273631036
+      }
+    },
+    {
+      "start": "2026-10-07T16:00:00.000Z",
+      "originAt": "2026-10-07T16:00:00.000Z",
+      "actualKwh": 1.05,
+      "baselineKwh": 9.889619796564023e-7,
+      "predictedKwh": 9.889619796564023e-7,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "low-sun",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-08T04:00:00.000Z",
+      "originAt": "2026-10-08T04:00:00.000Z",
+      "actualKwh": 1.1,
+      "baselineKwh": 1.070762465158394,
+      "predictedKwh": 1.070762465158394,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-08T05:00:00.000Z",
+      "originAt": "2026-10-08T05:00:00.000Z",
+      "actualKwh": 54.68,
+      "baselineKwh": 71.10931763624855,
+      "predictedKwh": 71.10931763624855,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-08T06:00:00.000Z",
+      "originAt": "2026-10-08T06:00:00.000Z",
+      "actualKwh": 190.65,
+      "baselineKwh": 262.7956410428875,
+      "predictedKwh": 262.7956410428875,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-08T07:00:00.000Z",
+      "originAt": "2026-10-08T07:00:00.000Z",
+      "actualKwh": 406.67,
+      "baselineKwh": 431.1877211535515,
+      "predictedKwh": 308.6134428572018,
+      "satelliteWeight": 0.3972553324054207,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-08T06:15:00.000Z",
+          "2026-10-08T06:30:00.000Z"
+        ],
+        "observedAt": "2026-10-08T06:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.2806690873151165,
+        "stability": 0.8970956028396446
+      }
+    },
+    {
+      "start": "2026-10-08T08:00:00.000Z",
+      "originAt": "2026-10-08T08:00:00.000Z",
+      "actualKwh": 526.73,
+      "baselineKwh": 550.9602592598549,
+      "predictedKwh": 533.8065690653258,
+      "satelliteWeight": 0.43576547948428734,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-08T07:15:00.000Z",
+          "2026-10-08T07:30:00.000Z"
+        ],
+        "observedAt": "2026-10-08T07:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.9330779771125894,
+        "stability": 0.9840605364504081
+      }
+    },
+    {
+      "start": "2026-10-08T09:00:00.000Z",
+      "originAt": "2026-10-08T09:00:00.000Z",
+      "actualKwh": 564.09,
+      "baselineKwh": 310.3157392560131,
+      "predictedKwh": 457.2620152817012,
+      "satelliteWeight": 0.44232865505841584,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-08T08:15:00.000Z",
+          "2026-10-08T08:30:00.000Z"
+        ],
+        "observedAt": "2026-10-08T08:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0325111053530542,
+        "stability": 0.9988817244066883
+      }
+    },
+    {
+      "start": "2026-10-08T10:00:00.000Z",
+      "originAt": "2026-10-08T10:00:00.000Z",
+      "actualKwh": 581.89,
+      "baselineKwh": 320.826120351743,
+      "predictedKwh": 476.0703155726467,
+      "satelliteWeight": 0.44253359793920527,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-08T09:15:00.000Z",
+          "2026-10-08T09:30:00.000Z"
+        ],
+        "observedAt": "2026-10-08T09:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0409387221122621,
+        "stability": 0.9993445334420666
+      }
+    },
+    {
+      "start": "2026-10-08T11:00:00.000Z",
+      "originAt": "2026-10-08T11:00:00.000Z",
+      "actualKwh": 467.22,
+      "baselineKwh": 304.8716053774801,
+      "predictedKwh": 443.01869547208446,
+      "satelliteWeight": 0.42934939490142593,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-08T10:15:00.000Z",
+          "2026-10-08T10:30:00.000Z"
+        ],
+        "observedAt": "2026-10-08T10:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 1.0119555666798545,
+        "stability": 0.9695715144104018
+      }
+    },
+    {
+      "start": "2026-10-08T12:00:00.000Z",
+      "originAt": "2026-10-08T12:00:00.000Z",
+      "actualKwh": 179.34,
+      "baselineKwh": 490.72275383942167,
+      "predictedKwh": 492.94682562439834,
+      "satelliteWeight": 0.4233934081594905,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-08T11:15:00.000Z",
+          "2026-10-08T11:30:00.000Z"
+        ],
+        "observedAt": "2026-10-08T11:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.9027598637549956,
+        "stability": 0.9561215010791557
+      }
+    },
+    {
+      "start": "2026-10-08T13:00:00.000Z",
+      "originAt": "2026-10-08T13:00:00.000Z",
+      "actualKwh": 194.32,
+      "baselineKwh": 375.4535805686605,
+      "predictedKwh": 286.72728002235624,
+      "satelliteWeight": 0.41960033029354926,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-08T12:15:00.000Z",
+          "2026-10-08T12:30:00.000Z"
+        ],
+        "observedAt": "2026-10-08T12:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.37500220038100973,
+        "stability": 0.9475558426796565
+      }
+    },
+    {
+      "start": "2026-10-08T14:00:00.000Z",
+      "originAt": "2026-10-08T14:00:00.000Z",
+      "actualKwh": 134.83,
+      "baselineKwh": 220.00051912277587,
+      "predictedKwh": 198.56748126345374,
+      "satelliteWeight": 0.3651950646795331,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-08T13:15:00.000Z",
+          "2026-10-08T13:30:00.000Z"
+        ],
+        "observedAt": "2026-10-08T13:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.6241170125981628,
+        "stability": 0.8246960077766807
+      }
+    },
+    {
+      "start": "2026-10-08T15:00:00.000Z",
+      "originAt": "2026-10-08T15:00:00.000Z",
+      "actualKwh": 64.8,
+      "baselineKwh": 58.03070309794118,
+      "predictedKwh": 36.89320817837664,
+      "satelliteWeight": 0.39970837033460793,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-08T14:15:00.000Z",
+          "2026-10-08T14:30:00.000Z"
+        ],
+        "observedAt": "2026-10-08T14:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.06901417099390793,
+        "stability": 0.9026351371400347
+      }
+    },
+    {
+      "start": "2026-10-08T16:00:00.000Z",
+      "originAt": "2026-10-08T16:00:00.000Z",
+      "actualKwh": 0.2,
+      "baselineKwh": 0,
+      "predictedKwh": 0,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "missing",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-09T04:00:00.000Z",
+      "originAt": "2026-10-09T04:00:00.000Z",
+      "actualKwh": 2.25,
+      "baselineKwh": 0.44474460698443086,
+      "predictedKwh": 0.44474460698443097,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-09T05:00:00.000Z",
+      "originAt": "2026-10-09T05:00:00.000Z",
+      "actualKwh": 52.32,
+      "baselineKwh": 35.87230275557422,
+      "predictedKwh": 35.87230275557422,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-09T06:00:00.000Z",
+      "originAt": "2026-10-09T06:00:00.000Z",
+      "actualKwh": 135.44,
+      "baselineKwh": 83.71051375525698,
+      "predictedKwh": 109.83565671432775,
+      "satelliteWeight": 0.31018586949978016,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-09T05:15:00.000Z",
+          "2026-10-09T05:30:00.000Z"
+        ],
+        "observedAt": "2026-10-09T05:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.6773797873170737,
+        "stability": 0.7004723584358552
+      }
+    },
+    {
+      "start": "2026-10-09T07:00:00.000Z",
+      "originAt": "2026-10-09T07:00:00.000Z",
+      "actualKwh": 55.43,
+      "baselineKwh": 140.18320876968247,
+      "predictedKwh": 140.18320876968247,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-09T08:00:00.000Z",
+      "originAt": "2026-10-09T08:00:00.000Z",
+      "actualKwh": 235.28,
+      "baselineKwh": 181.83781290887774,
+      "predictedKwh": 181.8378129088777,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-09T09:00:00.000Z",
+      "originAt": "2026-10-09T09:00:00.000Z",
+      "actualKwh": 449.67,
+      "baselineKwh": 352.26795422253014,
+      "predictedKwh": 407.38584867783385,
+      "satelliteWeight": 0.3968161253290349,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-09T08:15:00.000Z",
+          "2026-10-09T08:30:00.000Z"
+        ],
+        "observedAt": "2026-10-09T08:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.7708282519043177,
+        "stability": 0.8961037703711511
+      }
+    },
+    {
+      "start": "2026-10-09T10:00:00.000Z",
+      "originAt": "2026-10-09T10:00:00.000Z",
+      "actualKwh": 256.39,
+      "baselineKwh": 362.5458174372258,
+      "predictedKwh": 398.8076640043395,
+      "satelliteWeight": 0.3858714578591116,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-09T09:15:00.000Z",
+          "2026-10-09T09:30:00.000Z"
+        ],
+        "observedAt": "2026-10-09T09:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.6879861773640454,
+        "stability": 0.8713881472922645
+      }
+    },
+    {
+      "start": "2026-10-09T11:00:00.000Z",
+      "originAt": "2026-10-09T11:00:00.000Z",
+      "actualKwh": 219.94,
+      "baselineKwh": 342.91757720774103,
+      "predictedKwh": 339.99927418994656,
+      "satelliteWeight": 0.4350050360231429,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-09T10:15:00.000Z",
+          "2026-10-09T10:30:00.000Z"
+        ],
+        "observedAt": "2026-10-09T10:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.5257372422165901,
+        "stability": 0.9823432769712965
+      }
+    },
+    {
+      "start": "2026-10-09T12:00:00.000Z",
+      "originAt": "2026-10-09T12:00:00.000Z",
+      "actualKwh": 155.91,
+      "baselineKwh": 313.9465255065658,
+      "predictedKwh": 316.27526004955905,
+      "satelliteWeight": 0.41608915371887156,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-09T11:15:00.000Z",
+          "2026-10-09T11:30:00.000Z"
+        ],
+        "observedAt": "2026-10-09T11:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.5740763926774317,
+        "stability": 0.939626783434903
+      }
+    },
+    {
+      "start": "2026-10-09T13:00:00.000Z",
+      "originAt": "2026-10-09T13:00:00.000Z",
+      "actualKwh": 96.36,
+      "baselineKwh": 238.23047532866337,
+      "predictedKwh": 232.13531524172575,
+      "satelliteWeight": 0.433532619226853,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-09T12:15:00.000Z",
+          "2026-10-09T12:30:00.000Z"
+        ],
+        "observedAt": "2026-10-09T12:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.5235086984348608,
+        "stability": 0.9790182149123414
+      }
+    },
+    {
+      "start": "2026-10-09T14:00:00.000Z",
+      "originAt": "2026-10-09T14:00:00.000Z",
+      "actualKwh": 48.81,
+      "baselineKwh": 137.5385189007807,
+      "predictedKwh": 111.27282723221543,
+      "satelliteWeight": 0.43857423047373906,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-09T13:15:00.000Z",
+          "2026-10-09T13:30:00.000Z"
+        ],
+        "observedAt": "2026-10-09T13:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.30343096094022837,
+        "stability": 0.9904033541713222
+      }
+    },
+    {
+      "start": "2026-10-09T15:00:00.000Z",
+      "originAt": "2026-10-09T15:00:00.000Z",
+      "actualKwh": 9.42,
+      "baselineKwh": 34.39779497704976,
+      "predictedKwh": 26.53527435679357,
+      "satelliteWeight": 0.4428045745600816,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-09T14:15:00.000Z",
+          "2026-10-09T14:30:00.000Z"
+        ],
+        "observedAt": "2026-10-09T14:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.23602766764057465,
+        "stability": 0.9999564621318304
+      }
+    },
+    {
+      "start": "2026-10-10T04:00:00.000Z",
+      "originAt": "2026-10-10T04:00:00.000Z",
+      "actualKwh": 3.77,
+      "baselineKwh": 0.6161290890829695,
+      "predictedKwh": 0.6161290890829697,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-10T05:00:00.000Z",
+      "originAt": "2026-10-10T05:00:00.000Z",
+      "actualKwh": 70.96,
+      "baselineKwh": 61.14629511727093,
+      "predictedKwh": 61.146295117270945,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-10T06:00:00.000Z",
+      "originAt": "2026-10-10T06:00:00.000Z",
+      "actualKwh": 209.18,
+      "baselineKwh": 212.55103241926483,
+      "predictedKwh": 155.45038293291853,
+      "satelliteWeight": 0.4107929417486338,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-10T05:15:00.000Z",
+          "2026-10-10T05:30:00.000Z"
+        ],
+        "observedAt": "2026-10-10T05:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.2992470453523586,
+        "stability": 0.9276666960990378
+      }
+    },
+    {
+      "start": "2026-10-10T07:00:00.000Z",
+      "originAt": "2026-10-10T07:00:00.000Z",
+      "actualKwh": 398.03,
+      "baselineKwh": 351.36154258222575,
+      "predictedKwh": 361.2437681707814,
+      "satelliteWeight": 0.44052500615176593,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-10T06:15:00.000Z",
+          "2026-10-10T06:30:00.000Z"
+        ],
+        "observedAt": "2026-10-10T06:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.9126894608351842,
+        "stability": 0.994808662647077
+      }
+    },
+    {
+      "start": "2026-10-10T08:00:00.000Z",
+      "originAt": "2026-10-10T08:00:00.000Z",
+      "actualKwh": 451.12,
+      "baselineKwh": 451.682441112102,
+      "predictedKwh": 463.35595352948985,
+      "satelliteWeight": 0.43161757324796624,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-10T07:15:00.000Z",
+          "2026-10-10T07:30:00.000Z"
+        ],
+        "observedAt": "2026-10-10T07:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.8951493174101963,
+        "stability": 0.9746935924673951
+      }
+    },
+    {
+      "start": "2026-10-10T09:00:00.000Z",
+      "originAt": "2026-10-10T09:00:00.000Z",
+      "actualKwh": 442.83,
+      "baselineKwh": 480.1487232209155,
+      "predictedKwh": 512.2879771776497,
+      "satelliteWeight": 0.43126342607814505,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-10T08:15:00.000Z",
+          "2026-10-10T08:30:00.000Z"
+        ],
+        "observedAt": "2026-10-10T08:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.9028899282080833,
+        "stability": 0.9738938451943226
+      }
+    },
+    {
+      "start": "2026-10-10T10:00:00.000Z",
+      "originAt": "2026-10-10T10:00:00.000Z",
+      "actualKwh": 525.48,
+      "baselineKwh": 497.3292204746943,
+      "predictedKwh": 522.2870071936459,
+      "satelliteWeight": 0.440276909184091,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-10T09:15:00.000Z",
+          "2026-10-10T09:30:00.000Z"
+        ],
+        "observedAt": "2026-10-10T09:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.8619089062069316,
+        "stability": 0.9942484015741008
+      }
+    },
+    {
+      "start": "2026-10-10T11:00:00.000Z",
+      "originAt": "2026-10-10T11:00:00.000Z",
+      "actualKwh": 249.02,
+      "baselineKwh": 474.0111869610321,
+      "predictedKwh": 525.165649882867,
+      "satelliteWeight": 0.43205263641136077,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-10T10:15:00.000Z",
+          "2026-10-10T10:30:00.000Z"
+        ],
+        "observedAt": "2026-10-10T10:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.9680142857561954,
+        "stability": 0.9756760670095882
+      }
+    },
+    {
+      "start": "2026-10-10T12:00:00.000Z",
+      "originAt": "2026-10-10T12:00:00.000Z",
+      "actualKwh": 161.26,
+      "baselineKwh": 182.58082559465564,
+      "predictedKwh": 229.93397643436302,
+      "satelliteWeight": 0.3980989986043603,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-10T11:15:00.000Z",
+          "2026-10-10T11:30:00.000Z"
+        ],
+        "observedAt": "2026-10-10T11:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.5450545736192228,
+        "stability": 0.8990007987567148
+      }
+    },
+    {
+      "start": "2026-10-10T13:00:00.000Z",
+      "originAt": "2026-10-10T13:00:00.000Z",
+      "actualKwh": 66.61,
+      "baselineKwh": 138.11802961628763,
+      "predictedKwh": 185.05571126992905,
+      "satelliteWeight": 0.4104795214055297,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-10T12:15:00.000Z",
+          "2026-10-10T12:30:00.000Z"
+        ],
+        "observedAt": "2026-10-10T12:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.5954724794155055,
+        "stability": 0.9269589195414857
+      }
+    },
+    {
+      "start": "2026-10-10T14:00:00.000Z",
+      "originAt": "2026-10-10T14:00:00.000Z",
+      "actualKwh": 42.64,
+      "baselineKwh": 79.13757947781666,
+      "predictedKwh": 99.73388314992653,
+      "satelliteWeight": 0.41668852069487095,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-10T13:15:00.000Z",
+          "2026-10-10T13:30:00.000Z"
+        ],
+        "observedAt": "2026-10-10T13:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.5104424725667877,
+        "stability": 0.9409802944762793
+      }
+    },
+    {
+      "start": "2026-10-10T15:00:00.000Z",
+      "originAt": "2026-10-10T15:00:00.000Z",
+      "actualKwh": 6.62,
+      "baselineKwh": 6.145587921364469,
+      "predictedKwh": 6.145587921364471,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-10T16:00:00.000Z",
+      "originAt": "2026-10-10T16:00:00.000Z",
+      "actualKwh": 0.02,
+      "baselineKwh": 0,
+      "predictedKwh": 0,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "missing",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-11T04:00:00.000Z",
+      "originAt": "2026-10-11T04:00:00.000Z",
+      "actualKwh": 0.09,
+      "baselineKwh": 0.0825685522227936,
+      "predictedKwh": 0.08256855222279359,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-11T05:00:00.000Z",
+      "originAt": "2026-10-11T05:00:00.000Z",
+      "actualKwh": 1.31,
+      "baselineKwh": 10.700602028432554,
+      "predictedKwh": 10.700602028432554,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-11T06:00:00.000Z",
+      "originAt": "2026-10-11T06:00:00.000Z",
+      "actualKwh": 20.14,
+      "baselineKwh": 85.73133277736889,
+      "predictedKwh": 85.73133277736888,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-11T07:00:00.000Z",
+      "originAt": "2026-10-11T07:00:00.000Z",
+      "actualKwh": 69.01,
+      "baselineKwh": 144.98767755919718,
+      "predictedKwh": 144.98767755919718,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-11T08:00:00.000Z",
+      "originAt": "2026-10-11T08:00:00.000Z",
+      "actualKwh": 116.83,
+      "baselineKwh": 188.83716393075093,
+      "predictedKwh": 188.8371639307509,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "quality-or-stale",
+        "slotTimes": []
+      }
+    },
+    {
+      "start": "2026-10-11T09:00:00.000Z",
+      "originAt": "2026-10-11T09:00:00.000Z",
+      "actualKwh": 274.99,
+      "baselineKwh": 206.61338142633608,
+      "predictedKwh": 165.2619122032779,
+      "satelliteWeight": 0.3977598067790623,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-11T08:15:00.000Z",
+          "2026-10-11T08:30:00.000Z"
+        ],
+        "observedAt": "2026-10-11T08:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.1563547064650071,
+        "stability": 0.8982348241550612
+      }
+    },
+    {
+      "start": "2026-10-11T10:00:00.000Z",
+      "originAt": "2026-10-11T10:00:00.000Z",
+      "actualKwh": 347.57,
+      "baselineKwh": 213.9879394052821,
+      "predictedKwh": 248.86604429958302,
+      "satelliteWeight": 0.431357049953233,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-11T09:15:00.000Z",
+          "2026-10-11T09:30:00.000Z"
+        ],
+        "observedAt": "2026-10-11T09:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.4370329954963783,
+        "stability": 0.9741052698368913
+      }
+    },
+    {
+      "start": "2026-10-11T11:00:00.000Z",
+      "originAt": "2026-10-11T11:00:00.000Z",
+      "actualKwh": 308.71,
+      "baselineKwh": 202.90540724994614,
+      "predictedKwh": 311.13674480266207,
+      "satelliteWeight": 0.34449339139068463,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-11T10:15:00.000Z",
+          "2026-10-11T10:30:00.000Z"
+        ],
+        "observedAt": "2026-10-11T10:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.823359990034121,
+        "stability": 0.7779467798521685
+      }
+    },
+    {
+      "start": "2026-10-11T12:00:00.000Z",
+      "originAt": "2026-10-11T12:00:00.000Z",
+      "actualKwh": 354.21,
+      "baselineKwh": 222.9319175302418,
+      "predictedKwh": 290.93462089410843,
+      "satelliteWeight": 0.3708632872176914,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-11T11:15:00.000Z",
+          "2026-10-11T11:30:00.000Z"
+        ],
+        "observedAt": "2026-10-11T11:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.7386023491793331,
+        "stability": 0.8374961821232619
+      }
+    },
+    {
+      "start": "2026-10-11T13:00:00.000Z",
+      "originAt": "2026-10-11T13:00:00.000Z",
+      "actualKwh": 179.15,
+      "baselineKwh": 167.1992719988573,
+      "predictedKwh": 236.3006630557375,
+      "satelliteWeight": 0.3891090284039664,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-11T12:15:00.000Z",
+          "2026-10-11T12:30:00.000Z"
+        ],
+        "observedAt": "2026-10-11T12:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.826595082842823,
+        "stability": 0.8786993400258797
+      }
+    },
+    {
+      "start": "2026-10-11T14:00:00.000Z",
+      "originAt": "2026-10-11T14:00:00.000Z",
+      "actualKwh": 79.78,
+      "baselineKwh": 94.61891628352603,
+      "predictedKwh": 115.15821795400342,
+      "satelliteWeight": 0.3847701482130985,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-11T13:15:00.000Z",
+          "2026-10-11T13:30:00.000Z"
+        ],
+        "observedAt": "2026-10-11T13:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.599640111067614,
+        "stability": 0.8689011321153481
+      }
+    },
+    {
+      "start": "2026-10-11T15:00:00.000Z",
+      "originAt": "2026-10-11T15:00:00.000Z",
+      "actualKwh": 11.25,
+      "baselineKwh": 42.13484059832705,
+      "predictedKwh": 28.04886628823499,
+      "satelliteWeight": 0.4257000868269415,
+      "state": {
+        "status": "ready",
+        "slotTimes": [
+          "2026-10-11T14:15:00.000Z",
+          "2026-10-11T14:30:00.000Z"
+        ],
+        "observedAt": "2026-10-11T14:40:51.109Z",
+        "scanOffsetSeconds": 651.1094427329082,
+        "clearSkyIndex": 0.13901522786310708,
+        "stability": 0.9613305218799701
+      }
+    },
+    {
+      "start": "2026-10-11T16:00:00.000Z",
+      "originAt": "2026-10-11T16:00:00.000Z",
+      "actualKwh": 0.01,
+      "baselineKwh": 0,
+      "predictedKwh": 0,
+      "satelliteWeight": 0,
+      "state": {
+        "status": "missing",
+        "slotTimes": []
+      }
+    }
+  ]
+}

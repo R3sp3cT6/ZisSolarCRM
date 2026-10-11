@@ -1,0 +1,11 @@
+{
+  "checkedAt": "2026-10-11T19:44:35.560Z",
+  "id": "satellite-csi-v1-7ed68a9409bc354df08b",
+  "model": "satellite-csi-v1-on-v3.2-replay",
+  "sourceSlots": 278,
+  "rawSlots": 278,
+  "pairedHours": 142,
+  "readback": "exact",
+  "v32Wape": 12.780715399594769,
+  "satelliteWape": 12.636160197394453
+}

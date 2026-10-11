@@ -1,6 +1,13 @@
 import type { ForecastConfig } from './forecast-model';
 import type { SatelliteSource } from './forecast-satellite';
-export const TRIAL_VERSION = 'weather-solar-v3.3-shadow';
+import type { SatellitePoint } from './forecast-satellite';
+import type { SolarCalibration } from './forecast-solar';
+import {
+  satelliteCorrection,
+  satellitePower,
+  type SatelliteCorrection,
+} from './forecast-satellite-nowcast';
+export const TRIAL_VERSION = 'weather-solar-v3.4-satellite';
 export type LiveObservation = {
   measuredAt: string;
   receivedAt: string;
@@ -13,6 +20,7 @@ export type TrialHour = {
   start: string;
   baselineKwh: number | null;
   iconKwh: number | null;
+  weather?: { temperature: number; windSpeed?: number | null };
 };
 export type TrialRun = {
   id: string;
@@ -29,8 +37,12 @@ export type TrialRun = {
     baselineKwh: number | null;
     predictedKwh: number | null;
     leadMinutes: number;
+    v32Kwh?: number | null;
+    withoutSatelliteKwh?: number | null;
+    satelliteWeight?: number;
   }[];
   correction?: { factor: number; measuredAt: string; observations: number };
+  satelliteCorrection?: SatelliteCorrection;
 };
 export type TrialView = {
   dayAhead: TrialRun | null;
@@ -42,8 +54,23 @@ export type TrialView = {
     hours: number;
     baselineWape: number | null;
     candidateWape: number | null;
+    v32Wape?: number | null;
+    withoutSatelliteWape?: number | null;
+    v32Intervals?: number;
+    v32CandidateWape?: number | null;
   }[];
   error?: string;
+  replay?: {
+    from: string;
+    to: string;
+    hours: number;
+    appliedHours: number;
+    v32Wape: number;
+    satelliteWape: number;
+    daysImproved: number;
+    days: number;
+    lastDay: { date: string; v32Wape: number; satelliteWape: number };
+  } | null;
 };
 
 /** Extract timestamps supplied by Huawei, not the time an HTTP call finished. */
@@ -197,6 +224,88 @@ export function makeNowcast(
       predictedKwh:
         Math.min(config.acKw, power * (1 + (factor - 1) * weight)) * 0.25,
       leadMinutes: lead,
+    });
+  }
+  result.status = result.hours.length === 4 ? 'ready' : 'missing-weather';
+  if (result.status !== 'ready') result.hours = [];
+  return result;
+}
+
+/** Satellite smart persistence affects only future quarters. The existing Huawei
+ * estimate is retained alongside it to measure satellite's incremental value. */
+export function makeSatelliteNowcast(
+  hours: TrialHour[],
+  observations: LiveObservation[],
+  config: ForecastConfig,
+  baselineId: string,
+  weatherRunAt: string | null,
+  points: SatellitePoint[],
+  calibration: SolarCalibration,
+  now = new Date(),
+): TrialRun {
+  const original = makeNowcast(
+    hours,
+    observations,
+    config,
+    baselineId,
+    weatherRunAt,
+    now,
+  );
+  const state = satelliteCorrection(points, config, now);
+  const result = { ...original, satelliteCorrection: state };
+  // A known stopped/reset inverter is not a cloud signal. Never override that guard.
+  if (['stale-weather', 'incomplete-or-stopped'].includes(original.status))
+    return result;
+  const hasHuawei = original.status === 'ready';
+  if (!hasHuawei && state.status !== 'ready') return result;
+  const first = Math.ceil(now.getTime() / 900000) * 900000;
+  result.hours = [];
+  for (let i = 0; i < 4; i++) {
+    const start = first + i * 900000,
+      end = start + 900000;
+    let base = 0,
+      withoutSatellite = 0,
+      predicted = 0,
+      v32 = 0,
+      weightSum = 0,
+      v32Complete = true,
+      complete = true;
+    for (let j = 0; j < 3; j++) {
+      const at = start + (j + 0.5) * 300000,
+        power = trialPower(hours, at);
+      const hour = hours.find(
+        (h) => Date.parse(h.start) <= at && Date.parse(h.start) + 3600000 > at,
+      );
+      if (power === null || !hour) {
+        complete = false;
+        break;
+      }
+      const lead = (at - now.getTime()) / 60000;
+      const huaweiWeight = hasHuawei ? Math.max(0, 1 - lead / 90) : 0;
+      const uncorrected =
+        power * (1 + ((original.correction?.factor ?? 1) - 1) * huaweiWeight);
+      const satellite = hour.weather
+        ? satellitePower(at, power, hour.weather, config, calibration, state)
+        : { powerKw: power, weight: 0 };
+      const corrected =
+        uncorrected + (1 - huaweiWeight) * (satellite.powerKw - power);
+      base += power / 12;
+      withoutSatellite += Math.min(config.acKw!, uncorrected) / 12;
+      predicted += Math.min(config.acKw!, Math.max(0, corrected)) / 12;
+      weightSum += ((1 - huaweiWeight) * satellite.weight) / 3;
+      if (hour.baselineKwh === null) v32Complete = false;
+      else v32 += hour.baselineKwh / 12;
+    }
+    if (!complete || (!hasHuawei && weightSum === 0)) continue;
+    result.hours.push({
+      start: new Date(start).toISOString(),
+      end: new Date(end).toISOString(),
+      baselineKwh: base,
+      withoutSatelliteKwh: withoutSatellite,
+      predictedKwh: predicted,
+      v32Kwh: v32Complete ? v32 : null,
+      satelliteWeight: weightSum,
+      leadMinutes: (start + 450000 - now.getTime()) / 60000,
     });
   }
   result.status = result.hours.length === 4 ? 'ready' : 'missing-weather';

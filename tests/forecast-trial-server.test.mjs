@@ -76,7 +76,7 @@ const req = (origin) =>
     method: 'POST',
     headers: { origin: origin ?? 'https://example.com' },
   });
-test('trial write rejects anonymous, viewers, foreign origin and rate limit before any source access', async () => {
+void test('trial write rejects anonymous, viewers, foreign origin and rate limit before any source access', async () => {
   user = null;
   assert.equal((await handleTrialGet()).status, 401);
   assert.equal((await handleTrialPost(req())).status, 401);
@@ -91,7 +91,7 @@ test('trial write rejects anonymous, viewers, foreign origin and rate limit befo
   assert.equal((await handleTrialPost(req())).status, 429);
   assert.equal(queries.length, 0);
 });
-test('warm reads are owner-bound and perform zero SQL queries', async () => {
+void test('warm reads are owner-bound and perform zero SQL queries', async () => {
   const view = {
     dayAhead: null,
     intraday: null,
@@ -99,14 +99,14 @@ test('warm reads are owner-bound and perform zero SQL queries', async () => {
     icon: { status: 'ready' },
     scores: [],
   };
-  cache.set('forecast-trial:plant', { owner: 'plant', view });
+  cache.set('forecast-trial:v34:plant', { owner: 'plant', view });
   assert.deepEqual(await readTrial('plant'), view);
   assert.equal(queries.length, 0);
-  cache.set('forecast-trial:other', { owner: 'plant', view });
+  cache.set('forecast-trial:v34:other', { owner: 'plant', view });
   assert.notDeepEqual(await readTrial('other'), view);
   assert.ok(queries.every((q) => q.args[0] === 'other'));
 });
-test('Huawei samples queue without SQL and a failed archive remains retryable', async () => {
+void test('Huawei samples queue without SQL and a failed archive remains retryable', async () => {
   const now = new Date('2026-10-11T12:01:00Z'),
     sample = {
       measuredAt: '2026-10-11T12:00:00Z',

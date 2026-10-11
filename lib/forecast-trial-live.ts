@@ -7,12 +7,14 @@ import {
   withCacheLock,
 } from './shared-cache';
 import {
-  makeNowcast,
+  makeSatelliteNowcast,
+  TRIAL_VERSION,
   type LiveObservation,
   type TrialHour,
   type TrialRun,
 } from './forecast-trial';
 import type { ForecastConfig } from './forecast-model';
+import type { SolarCalibration } from './forecast-solar';
 import type { SatellitePoint } from './forecast-satellite';
 import { fetchSatellite } from './forecast-satellite-server';
 export type TrialContext = {
@@ -21,6 +23,8 @@ export type TrialContext = {
   weatherRunAt: string | null;
   hours: TrialHour[];
   issuedAt: string;
+  version: string;
+  calibration: SolarCalibration;
 };
 type Pending = {
   observations: LiveObservation[];
@@ -59,6 +63,7 @@ export async function recordLiveTrial(
       const context = await cacheRead<TrialContext>('trial-context:' + owner);
       if (
         context &&
+        context.version === TRIAL_VERSION &&
         now.getTime() - Date.parse(context.issuedAt) < 18 * 3600000
       ) {
         const satellite = await fetchSatellite(context.config, now);
@@ -71,13 +76,15 @@ export async function recordLiveTrial(
           ).values(),
         ];
         await cacheWrite('trial-satellite:' + owner, satellite, 86400);
-        const run = makeNowcast(
+        const run = makeSatelliteNowcast(
           context.hours,
           samples,
           context.config,
           context.baselineId,
           context.weatherRunAt,
-          new Date(Math.max(now.getTime(),Date.now())),
+          satellite.points,
+          context.calibration,
+          new Date(Math.max(now.getTime(), Date.now())),
         );
         if (run.status === 'ready')
           pending.runs.push({
@@ -87,7 +94,7 @@ export async function recordLiveTrial(
               satellite,
               observations: samples.slice(-2),
               method:
-                'Two complete fresh Huawei samples; bounded 0.5–1.5 power ratio; decays over 90 minutes; 15-minute intervals; satellite saved for validation, not yet used as a gain; trial only',
+                'LSA SAF clear-sky-index persistence with MSG scan delay; bounded convex blend decays over 120 minutes of observation age; fresh Huawei power has priority and decays over 90 minutes; five-minute integration; no future observations; day-ahead unchanged',
             },
           });
         await cacheWrite('trial-intraday:' + owner, run, 86400);

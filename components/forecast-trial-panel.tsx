@@ -120,8 +120,8 @@ export function ForecastTrialPanel({ canManage }: { canManage: boolean }) {
           </h2>
           <p>
             {l(
-              'ICON-EU + свежи Huawei мерења · споредба со v3.2',
-              'ICON-EU + fresh Huawei readings · comparison with v3.2',
+              'v3.4 · ICON-EU + Huawei + сателитско зрачење',
+              'v3.4 · ICON-EU + Huawei + satellite irradiance',
             )}
           </p>
         </div>
@@ -256,7 +256,9 @@ export function ForecastTrialPanel({ canManage }: { canManage: boolean }) {
           {intra && fresh && intra.status === 'ready' ? (
             <>
               <p className="forecast-fine">
-                Huawei: {time(intra.correction!.measuredAt, true)} ·{' '}
+                {intra.correction
+                  ? 'Huawei: ' + time(intra.correction.measuredAt, true) + ' · '
+                  : ''}
                 {l('издадено', 'issued')} {time(intra.issuedAt)}
               </p>
               <div className="trial-intervals">
@@ -342,9 +344,20 @@ export function ForecastTrialPanel({ canManage }: { canManage: boolean }) {
           )}
           <p className="forecast-fine">
             {l(
-              'Зачувуваме зрачење и квалитет за валидација. Сателитот сè уште не ја коригира прогнозата и не следи сенки на поединечни панели.',
-              'Irradiance and quality are archived for validation. Satellite data does not yet adjust forecasts or track shadows on individual panels.',
+              'Два свежи дневни записа го коригираат производството за следниот час. Влијанието опаѓа со староста; свежите Huawei мерења имаат предност. Ноќни, стари и невалидни записи се прескокнуваат. Ова не е следење на сенки на поединечни панели.',
+              'Two fresh daylight observations adjust production for the next hour. Influence decays with age; fresh Huawei readings take priority. Night, stale and invalid observations are skipped. This does not track individual panel shadows.',
             )}
+          </p>
+          <p className="forecast-fine">
+            {fresh && intra?.hours.some((h) => (h.satelliteWeight ?? 0) > 0)
+              ? l(
+                  'Сателитската корекција е применета во тековната краткорочна прогноза.',
+                  'Satellite correction is applied to the current short-term forecast.',
+                )
+              : l(
+                  'Сателитската корекција моментално чека свежи валидни дневни записи.',
+                  'Satellite correction is currently waiting for fresh valid daylight observations.',
+                )}
           </p>
           <a
             className="forecast-fine"
@@ -373,8 +386,8 @@ export function ForecastTrialPanel({ canManage }: { canManage: boolean }) {
                     'Day ahead · v3.2 → ICON-EU',
                   )
                 : l(
-                    'Краткорочно · ICON-EU → Huawei корекција',
-                    'Short term · ICON-EU → Huawei correction',
+                    'Краткорочно · без → со сателит',
+                    'Short term · without → with satellite',
                   ) +
                   ' · ' +
                   Number(s.kind.slice(-1)) * 30 +
@@ -383,12 +396,28 @@ export function ForecastTrialPanel({ canManage }: { canManage: boolean }) {
                   ' min'}
               :{' '}
               <strong>
-                {n(s.baselineWape)}% → {n(s.candidateWape)}%
+                {n(
+                  s.kind === 'day-ahead'
+                    ? s.baselineWape
+                    : s.withoutSatelliteWape,
+                )}
+                % → {n(s.candidateWape)}%
               </strong>{' '}
               · {s.hours}{' '}
               {s.kind === 'day-ahead'
                 ? l('часа', 'hours')
                 : l('интервали', 'intervals')}
+              {(s.v32Intervals ?? 0) > 0 && (
+                <>
+                  <br />
+                  {l(
+                    'За истите интервали: v3.2 → комбиниран модел',
+                    'For the same intervals: v3.2 → combined model',
+                  )}
+                  : {n(s.v32Wape)}% → {n(s.v32CandidateWape)}% ·{' '}
+                  {s.v32Intervals}
+                </>
+              )}
             </p>
           ))
       ) : (
@@ -412,6 +441,39 @@ export function ForecastTrialPanel({ canManage }: { canManage: boolean }) {
           DWD ICON-EU
         </a>
       </p>
+      {view?.replay && (
+        <div className="forecast-note">
+          <h3>
+            {l(
+              'Историски тест · сателитскиот дел врз v3.2',
+              'Historical test · satellite component on v3.2',
+            )}
+          </h3>
+          <p>
+            {view.replay.from} – {view.replay.to} · {view.replay.hours}{' '}
+            {l('исти часа', 'matched hours')} · WAPE:{' '}
+            <strong>
+              {n(view.replay.v32Wape)}% → {n(view.replay.satelliteWape)}%
+            </strong>
+          </p>
+          <p>
+            {view.replay.lastDay.date}: {n(view.replay.lastDay.v32Wape)}% →{' '}
+            {n(view.replay.lastDay.satelliteWape)}% · {l('Подобри', 'Improved')}{' '}
+            {view.replay.daysImproved}/{view.replay.days} {l('дена', 'days')}.
+          </p>
+          <p className="forecast-fine">
+            {l(
+              'Накнадна симулација со архивирано зрачење и претпоставено доцнење на испораката од 2 минути по создавање на датотеката. Сателитот влијае во',
+              'Retrospective simulation with archived irradiance and assumed delivery delay of 2 minutes after file creation. Satellite data affects',
+            )}{' '}
+            {view.replay.appliedHours}/{view.replay.hours}{' '}
+            {l(
+              'часа; останатите го задржуваат v3.2. Не е тест на целиот ICON-EU/Huawei модел, ниту доказ за подобра прогноза ден однапред.',
+              'hours; the remainder retain v3.2. This is not a full ICON-EU/Huawei model test or evidence of better day-ahead forecasts.',
+            )}
+          </p>
+        </div>
+      )}
     </section>
   );
 }
