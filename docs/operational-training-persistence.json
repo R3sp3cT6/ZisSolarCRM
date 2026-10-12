@@ -1,0 +1,10 @@
+{
+  "id": "solar-operational-training-v1-beca291d8acb9bf1ad2b",
+  "savedAt": "2026-10-12T15:48:51.900Z",
+  "readback": "exact",
+  "inputBytes": 27186097,
+  "payloadBytes": 576308,
+  "officialForecastChanged": false,
+  "newLiveCandidate": false,
+  "actualsChanged": false
+}

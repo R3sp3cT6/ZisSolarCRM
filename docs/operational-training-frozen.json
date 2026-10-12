@@ -1,0 +1,18 @@
+{
+  "frozenAt": "2026-10-12T15:44:05.783Z",
+  "sourceResearchIds": [
+    "solar-full-history-v1-66acd8997e24f971babf",
+    "inverter-evidence-v1-60ce0c99f8c8a4f2e59c"
+  ],
+  "hashes": {
+    "work/forecast-research/full-history/inputs.json": "9d38f66f67e27efa0c9eb56f75013d253c752dae0032dbd5e1a8ec685a91dd9b",
+    "work/forecast-research/full-history/runs.json": "97f2166f1e5b29b5bc59a0ac228a719f3b8d6a67d8ca6c9b72a708f58ee8001d",
+    "work/forecast-research/full-history/frozen-source.json": "2c80cceca3051c7dc0e7af2cdc31ef0c1335c71dc366aa6e1fd0b27ab09df629",
+    "docs/full-history-evaluation.json": "f9e1617e21b8211d09065e7c92acb49ba5796ca98590cc698a72ec9233f68a9a",
+    "work/forecast-research/inverter-evidence/inputs.json": "74baf76bd97b03efda5478e6010f0b8b2966847e831a6413cc66dba716c0626b",
+    "scripts/evaluate-operational-training.py": "ec5da923d6b2258c3a4d209c235126c77b55a43519b93df1b87c8a93dad97791",
+    "scripts/prepare-operational-training.mjs": "95978294c5069d4226452a35da8bc5d13eb082dc6c768b6e660f6c2a848c4efa",
+    "tests/operational-training.test.py": "71372346bd0bdbe19ce6b6bfb3546d0bf64240d324151f586356d7967fa8b406",
+    "docs/operational-training-plan.md": "44199a59e7f5d93a37de8ac639b70ef1ca3b57c7ac96a69671a9c011df3ebeb7"
+  }
+}

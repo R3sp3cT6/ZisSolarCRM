@@ -1,0 +1,19 @@
+# Operational evidence and training — fixed ablation, 12 October 2026
+
+Question: do independently reported inverter interruptions contaminate the learned weather-to-production response? Use the frozen 3 April–11 October dataset and native hourly GFS weather from `solar-full-history-v1`. No new weather downloads, API calls or retrospective forecast replacements.
+
+Keep CatBoost expanding-history parameters unchanged: MAE, 160 trees, depth 4, learning rate 0.05, l2 10, border count 32, seed 42, no bootstrap/random strength, 4 threads. This is the previous full-history candidate, not a newly selected winner. Every fold uses completed days strictly before the origin's local day, at least 120 daylight rows from 10 days, 14 unchanged features, and the same 0–875 kWh/night constraints.
+
+Compare three fixed fits:
+
+1. `control`: all eligible earlier training rows, reproducing the preserved CatBoost-all control.
+2. `deviceFiltered`: omit a training hour only when one device has two adjacent five-minute samples **inside that hour** reporting shutdown 768–773 with exactly zero power, or explicit limited/derating state 513/514 with valid nonnegative power. Zero power with state 512, night, standby, missing samples and unknown codes never trigger exclusion. The two samples may carry different qualifying codes. This marks an affected training hour, not a whole-hour outage or an estimate of lost energy. Keep sample-index witnesses and real receipt timestamps. Do not propagate a status across a gap or into another day/month.
+3. `broadConfirmationSensitivity`: omit all July and 11/12 September **from training only**, based on the user's broad retrospective confirmation. This deliberately coarse sensitivity is not an exact device outage detector. It tests what cleaner operational history might change; it cannot establish which other July hours were actually off.
+
+For historical archive reconstruction, assume prior-day evidence was available then, explicitly contrary to the recorded later retrieval. Never use the target day's status in its prediction. For the strict receipt-causal replay, an exclusion is eligible only after both witness receipts. For the broad confirmation use this experiment's freeze timestamp as a conservative capture time, not a claim about when the user originally reported it. Current confirmations and newly downloaded statuses postdate every tested origin, so the causal fits should be identical to control. Verify this rather than backdating evidence. Archived raw device data already has exact SQL persistence.
+
+All three primary scores retain **all** valid measured hours, including zeros during outages. Missing outcomes remain missing. Same score mask and folds; no clipping predictions to observed availability, no removal of hard days from headline accuracy, no substituting daily net energy error for hourly WAPE. Show monthly WAPE, bounded 100−WAPE, MAE/RMSE, signed bias and MWh, plus matched v3.2 comparisons only where preserved. Report filtered-training coverage separately. April–October has already been inspected; this is an exploratory sensitivity, not an independent holdout or production accuracy claim.
+
+No new hyperparameters after seeing results and no automatic promotion. Freeze code/data hashes before scoring. Independently recompute masks, chronological training membership and every monthly metric. Persist inputs, raw-source references, code, fold predictions, verification and report append-only in SQL. Keep existing forecasts, actual readings, tariffs and physical inverter operation unchanged.
+
+Methodological reference: [RdTools availability analysis](https://rdtools.readthedocs.io/en/stable/examples/system_availability_example.html) distinguishes production outages from communications gaps using inverter/meter evidence. This ablation uses reported device states; it does **not** claim to implement the complete RdTools energy-loss estimator.

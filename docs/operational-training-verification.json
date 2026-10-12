@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-10-12T15:48:14.302Z",
+  "trainingChecks": 948498,
+  "predictedChecks": 15264,
+  "deviceAffectedHours": 29,
+  "trainingHoursExcluded": {
+    "control": 0,
+    "deviceFiltered": 28,
+    "broadConfirmationSensitivity": 430
+  },
+  "deviceTrainingHoursByDate": {
+    "2026-07-15": 15,
+    "2026-09-11": 3,
+    "2026-09-12": 10
+  },
+  "causalExclusions": 0,
+  "scoreMasksUnchanged": true,
+  "baselineReproduced": true,
+  "monthlyMetricsIndependentlyRecomputed": true,
+  "hashes": {
+    "work/forecast-research/operational-training/runs.json": "88cb72aefda7f3375db182eee8656bc53cbf919504906445f5fc35db76e4f8ce",
+    "work/forecast-research/operational-training/mask.json": "9118fa4b3a5d33521a18bfb83cde89dd4ccaab7a98f7f0d31450a7e0f0e76e5a",
+    "docs/operational-training-evaluation.json": "61e9d257f665360b50ce83d53dafb83aa1da06c4e02c9aec6ab1b8673b367186"
+  }
+}
