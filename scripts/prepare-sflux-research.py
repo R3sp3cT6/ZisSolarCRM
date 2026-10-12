@@ -54,10 +54,13 @@ def run():
               'sourceResearchId': 'solar-full-history-v1-66acd8997e24f971babf',
               'originalInputSha256': sha(original_path),
               'originalRunsSha256': sha('work/forecast-research/full-history/runs.json'),
-              'originalEvaluationSha256': sha('docs/full-history-evaluation.json')}
+              'originalEvaluationSha256': sha('docs/full-history-evaluation.json'),
+              'originalFrozenSourceSha256': sha('work/forecast-research/full-history/frozen-source.json')}
     (ROOT / 'inputs.json').write_text(json.dumps(inputs, allow_nan=False, separators=(',', ':')), encoding='utf-8')
     code_paths = ['scripts/download-sflux-research.py', 'scripts/sflux-features.py',
                   'scripts/prepare-sflux-research.py', 'scripts/evaluate-sflux-research.py',
+                  'scripts/verify-sflux-research.mjs', 'scripts/report-sflux-research.mjs',
+                  'scripts/save-sflux-research.mjs',
                   'tests/sflux-features.test.py', 'docs/sflux-research-plan.md']
     # Preserve exact source bytes/newlines on Windows for the archived code hashes.
     code = {p: pathlib.Path(p).read_bytes().decode('utf-8') for p in code_paths}

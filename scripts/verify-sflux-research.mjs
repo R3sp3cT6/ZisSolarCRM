@@ -9,10 +9,16 @@ const frozen = read('docs/sflux-research-frozen.json');
 assert.equal(hash(root + 'inputs.json'), frozen.inputSha256);
 const inputs = read(root + 'inputs.json'), data = inputs.data;
 const evaluation = read('docs/sflux-research-evaluation.json'), runs = read(root + 'runs.json');
+assert.equal(evaluation.inputSha256, frozen.inputSha256);
+const frozenSource = read(root + 'frozen-source.json');
+for (const [p, h] of Object.entries(frozen.codeHashes)) {
+  assert.equal(createHash('sha256').update(frozenSource[p]).digest('hex'), h);
+}
 const oldRuns = read('work/forecast-research/full-history/runs.json');
 const oldEvaluation = read('docs/full-history-evaluation.json');
 assert.equal(hash('work/forecast-research/full-history/runs.json'), inputs.originalRunsSha256);
 assert.equal(hash('docs/full-history-evaluation.json'), inputs.originalEvaluationSha256);
+assert.equal(hash('work/forecast-research/full-history/frozen-source.json'), inputs.originalFrozenSourceSha256);
 const methods = ['coarseGhi', 'nativeGhi', 'nativePartitionTemperature'];
 assert.deepEqual(evaluation.methods, methods);
 const close = (a, b) => {

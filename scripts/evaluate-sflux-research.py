@@ -38,6 +38,7 @@ def run():
     data = inputs['data']
     assert sha('work/forecast-research/full-history/runs.json') == inputs['originalRunsSha256']
     assert sha('docs/full-history-evaluation.json') == inputs['originalEvaluationSha256']
+    assert sha('work/forecast-research/full-history/frozen-source.json') == inputs['originalFrozenSourceSha256']
     old_runs = read('work/forecast-research/full-history/runs.json')
     old_scores = read('docs/full-history-evaluation.json')
     original_code = read('work/forecast-research/full-history/frozen-source.json')['scripts/evaluate-full-history.py']
