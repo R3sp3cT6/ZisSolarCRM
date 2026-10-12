@@ -174,6 +174,113 @@ export function ForecastModelsPanel({ canManage }: { canManage: boolean }) {
               })}
             </tbody>
           </table>
+          {view.siteLearning && (
+            <div className="forecast-site-learning">
+              <h3>
+                {l(
+                  'Нов модел за одзивот на централата',
+                  'New plant-response model',
+                )}
+              </h3>
+              <p className="forecast-fine">
+                {l(
+                  'Учи од часовното зрачење и измереното производство на ЗИС Солар.',
+                  'Learns from hourly irradiance and measured ZIS Solar production.',
+                )}{' '}
+                {view.siteLearning.trainingDays}{' '}
+                {l('дена за обука', 'training days')} ·{' '}
+                {view.siteLearning.method === 'catboost'
+                  ? 'CatBoost'
+                  : view.siteLearning.method === 'ridge'
+                    ? 'Ridge'
+                    : l('Временски аналози', 'Weather analogues')}
+              </p>
+              <table
+                className="model-comparison-table"
+                aria-label={l(
+                  'Нов модел спореден со v3.2',
+                  'New model compared with v3.2',
+                )}
+              >
+                <thead>
+                  <tr className="model-comparison-row model-comparison-head">
+                    <th scope="col">{l('Модел', 'Model')}</th>
+                    <th scope="col">MWh</th>
+                    <th scope="col">WAPE ↓</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(['candidate', 'baseline'] as const).map((key) => {
+                    const trial = view.siteLearning!;
+                    const field =
+                      key === 'candidate' ? 'productionKwh' : 'baselineKwh';
+                    const complete =
+                      trial.hours.length > 0 &&
+                      trial.hours.every(
+                        (h) => h[field] !== null && Number.isFinite(h[field]),
+                      );
+                    const total = complete
+                      ? trial.hours.reduce((s, h) => s + h[field]!, 0) / 1000
+                      : null;
+                    const wape =
+                      key === 'candidate'
+                        ? trial.score.candidateWape
+                        : trial.score.baselineWape;
+                    return (
+                      <tr className="model-comparison-row" key={key}>
+                        <td>
+                          <strong>
+                            {key === 'candidate'
+                              ? l(
+                                  'Локално научен модел · проба',
+                                  'Site-trained model · trial',
+                                )
+                              : 'v3.2'}
+                          </strong>
+                        </td>
+                        <td>
+                          <strong>{n(total, 3)}</strong>
+                        </td>
+                        <td>
+                          <strong>
+                            {wape === null ? '—' : n(wape, 1) + '%'}
+                          </strong>
+                          <small>
+                            {trial.score.hours}{' '}
+                            {l('исти споредени часа', 'same matched hours')}
+                          </small>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              <p className="forecast-fine">
+                {l(
+                  'Историскиот тест сè уште не покажа подобра вкупна точност.',
+                  'Historical testing has not yet shown better overall accuracy.',
+                )}{' '}
+                {view.siteLearning.status === 'model-unavailable'
+                  ? l(
+                      'Пробниот модел треба повторно да се обучи. Официјалната прогноза продолжува да работи.',
+                      'The trial model needs retraining. The official forecast continues to run.',
+                    )
+                  : view.siteLearning.status === 'source-unavailable'
+                    ? l(
+                        'Се чека целосна часовна GFS прогноза. Новата проба ќе се зачува со постојното освежување.',
+                        'Waiting for a complete hourly GFS forecast. The new trial will be saved by the existing refresh schedule.',
+                      )
+                    : l(
+                        'Ова е однапред зачувана проба. Грешката ќе се појави кога ќе пристигнат вистинските мерења.',
+                        'This trial was saved before observations. Error is shown once actual measurements arrive.',
+                      )}{' '}
+                {l(
+                  'Оценката е одделна од историските симулации.',
+                  'Scoring is separate from historical simulations.',
+                )}
+              </p>
+            </div>
+          )}
           <p className="forecast-fine">
             {l(
               'MWh е прогнозата за датумот прикажан погоре. WAPE е грешката на претходните однапред зачувани прогнози, за исти измерени часови. Помал процент е подобро.',

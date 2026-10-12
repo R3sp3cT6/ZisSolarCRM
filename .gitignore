@@ -38,6 +38,7 @@ next-env.d.ts
 /skills-lock.json
 /outputs/
 /work/
+__pycache__/
 *.tsbuildinfo
 zissolarpass.txt
 lsa-saf.env.local*

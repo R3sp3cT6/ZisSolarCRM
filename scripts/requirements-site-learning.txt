@@ -1,0 +1,6 @@
+# Isolated local Python3.12 environment, never an application runtime dependency.
+catboost==1.2.8
+eccodes==2.43.0
+numpy==2.5.4
+scikit-learn==1.7.2
+matplotlib==3.10.8

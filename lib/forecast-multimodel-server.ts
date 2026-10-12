@@ -10,6 +10,12 @@ import { addDays } from './forecast-model';
 import { getUser, sameOrigin, authLimit } from './auth';
 import { isAdmin } from './roles';
 import {
+  buildSiteTrial,
+  siteHistory,
+  siteArtifactHash,
+  siteModel,
+} from './forecast-site-learning-server';
+import {
   MULTIMODEL_VERSION,
   BASE_MODELS,
   MODEL_KEYS,
@@ -110,14 +116,16 @@ export async function runModels(owner: string): Promise<ModelsView> {
       const previous = await readModels(owner);
       if (
         previous?.configVersion === context.config.version &&
+        previous.siteLearning?.artifactHash === siteArtifactHash &&
         previous.date === date &&
         now.getTime() - Date.parse(previous.issuedAt) < 1800000
       )
         return previous;
-      const [arpege, gfs, history] = await Promise.all([
+      const [arpege, gfs, history, sitePairs] = await Promise.all([
         fetchModelSource('arpege', context.config, now),
         fetchModelSource('gfs', context.config, now),
         modelHistory(owner, context.config.version, now),
+        siteHistory(owner, context.config.version, now),
       ]);
       const selection = selectWeights(history, now);
       const thermal = new Map(context.hours.map((h) => [h.start, h]));
@@ -156,6 +164,14 @@ export async function runModels(owner: string): Promise<ModelsView> {
       )
         throw Error('Model day changed during collection');
       const view: ModelsView = {
+        siteLearning: buildSiteTrial(
+          gfs,
+          context.config,
+          date,
+          new Map(context.hours.map((h) => [h.start, h.baselineKwh])),
+          sitePairs,
+          new Date(issuedAt),
+        ),
         version: MULTIMODEL_VERSION,
         issuedAt,
         date,
@@ -195,7 +211,9 @@ export async function runModels(owner: string): Promise<ModelsView> {
         ':' +
         date +
         ':' +
-        Math.floor(Date.parse(issuedAt) / 1800000);
+        Math.floor(Date.parse(issuedAt) / 1800000) +
+        ':' +
+        siteArtifactHash.slice(0, 16);
       await db()
         .prepare(
           'INSERT INTO forecast_trials(id,owner,run_key,issued_at,kind,model_version,payload,inputs) VALUES(?,?,?,?,?,?,?::jsonb,?::jsonb) ON CONFLICT(owner,run_key) DO NOTHING',
@@ -212,6 +230,11 @@ export async function runModels(owner: string): Promise<ModelsView> {
             context,
             arpege,
             gfs,
+            siteLearning: {
+              artifact: siteModel,
+              artifactHash: siteArtifactHash,
+              comparisonPairs: sitePairs,
+            },
             trainingPairs: history,
             method:
               'Native hourly GHI with common MET thermal inputs/plant calibration; prospective shadow only. Each provider retains its own original run. No official forecast changes.',

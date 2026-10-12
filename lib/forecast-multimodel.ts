@@ -1,4 +1,5 @@
 import { localDate } from './energy';
+import type { SiteTrialView } from './forecast-site-trial';
 
 export const MULTIMODEL_VERSION = 'solar-multimodel-shadow-v1';
 export const BASE_MODELS = ['icon', 'gfs', 'arpege'] as const;
@@ -203,6 +204,7 @@ export function selectWeights(
   };
 }
 export type ModelsView = {
+  siteLearning?: SiteTrialView;
   version: string;
   issuedAt: string;
   date: string;

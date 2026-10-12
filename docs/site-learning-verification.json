@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-10-12T14:09:05.066Z",
+  "origins": 21,
+  "verifiedTrainingRows": 11950,
+  "portableFixtures": 504,
+  "maxPortableErrorKwh": 3.410605131648481e-13,
+  "inputSha256": "e489040eb87a9b0aadba6cf823ff23c7909de381bb05e0858a470220ffa39386",
+  "runsSha256": "64dedbdc7a7ae4880df1d1b647c9445cfe238952a3c69efe3be2757cf40df47d",
+  "modelSha256": "c7121310105d92696bb7a89af58bef73e4e283ba8edc5b87e3b867d04f7ec692",
+  "evaluationSha256": "339d57005af277f1081c9c6699b4c5712eac5307f318a30dae22440826a3760e",
+  "selected": "ridge"
+}

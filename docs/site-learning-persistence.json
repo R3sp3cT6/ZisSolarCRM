@@ -1,0 +1,8 @@
+{
+  "id": "solar-site-learning-v1-35507173b107c36ce8be",
+  "savedAt": "2026-10-12T14:10:34.056Z",
+  "readback": "exact",
+  "inputBytes": 8786524,
+  "payloadBytes": 88120,
+  "note": "Append-only research. Decoded hourly source values, metadata, hashes, causal revisions, predictions, weights and code retained. Original binary GRIB byte ranges remain in local research cache."
+}

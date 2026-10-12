@@ -1,0 +1,29 @@
+{
+  "publishedAt": "2026-10-12T14:13:07.497Z",
+  "runtimeRole": "zis_app_runtime",
+  "id": "3bce800a-9254-403b-962d-ddb6cea73d0c",
+  "artifactHash": "e49ed6b18723d4b27a4a88cf0dc34b71797f41c97daf2d84a33d5237f89b0092",
+  "method": "ridge",
+  "date": "2026-10-13",
+  "issuedAt": "2026-10-12T14:13:06.846Z",
+  "hours": 24,
+  "predictedMwh": 0.5506439681292468,
+  "baselineMwh": 0.5072713393392085,
+  "score": {
+    "days": 0,
+    "hours": 0,
+    "actualMwh": 0,
+    "baselineWape": null,
+    "candidateMwh": 0,
+    "candidateWape": null
+  },
+  "source": {
+    "runAt": "2026-10-12T06:00:00.000Z",
+    "status": "ready",
+    "fetchedAt": "2026-10-12T14:12:02.202Z"
+  },
+  "readback": "exact",
+  "warmSqlQueries": 0,
+  "officialVersion": "weather-solar-v3.2",
+  "validUntil": "2026-10-19T14:08:41.109628+00:00"
+}

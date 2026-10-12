@@ -1,0 +1,10 @@
+{
+  "frozenAt": "2026-10-12T14:08:24.900Z",
+  "inputSha256": "e489040eb87a9b0aadba6cf823ff23c7909de381bb05e0858a470220ffa39386",
+  "hashes": {
+    "scripts/prepare-site-learning.mjs": "366e8adaa748b40dba605d8fa9fd73218555d51462c3980e9423f6c67a559c27",
+    "scripts/run-site-learning.py": "5ec330d79e18c3eb080ade66df58f2178eef0b6430ba39ba60816757eaf502c9",
+    "lib/forecast-site-learning.ts": "5a23cc4be0b3b6231ce1b9c0de9ec4796acbd42fdc688125494c96d0b07bd8f1",
+    "docs/solar-learning-plan.md": "898a9189a6ad2fd2c616f82d4e1f218a749aa22e32c557ffc58afb8374394325"
+  }
+}

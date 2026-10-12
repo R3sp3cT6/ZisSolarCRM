@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-10-12T14:10:17.332Z",
+  "environment": "isolated-validation-branch",
+  "sourceDate": "2026-10-13",
+  "sourceIssuedAt": "2026-10-12T10:21:31.428Z",
+  "readback": "exact",
+  "version": "weather-solar-v3.4-satellite",
+  "artifactHash": "e49ed6b18723d4b27a4a88cf0dc34b71797f41c97daf2d84a33d5237f89b0092",
+  "method": "ridge",
+  "hours": 24,
+  "predictedMwh": 0.41242331683625993,
+  "officialReadingsAndBacktestCountsUnchanged": true
+}

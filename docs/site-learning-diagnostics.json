@@ -1,0 +1,45 @@
+{
+  "octoberPairedDayBootstrapDifferencePp95": [
+    -0.33240776015887596,
+    9.887774014303346
+  ],
+  "dailyWins": 8,
+  "days": 21,
+  "regimes": {
+    "cloudy-mixed": {
+      "days": 3,
+      "hours": 38,
+      "wape": {
+        "v32": 49.49008601703739,
+        "nativePhysics": 54.25239724561174,
+        "catboost": 73.78770764487685,
+        "ridge": 37.598916717315646,
+        "analog": 60.219415026055565
+      }
+    },
+    "sunny": {
+      "days": 10,
+      "hours": 130,
+      "wape": {
+        "v32": 7.806951314084399,
+        "nativePhysics": 7.912389142003068,
+        "catboost": 13.26717472149324,
+        "ridge": 15.55711694682916,
+        "analog": 11.902651182910684
+      }
+    },
+    "variable": {
+      "days": 8,
+      "hours": 104,
+      "wape": {
+        "v32": 38.800177402225174,
+        "nativePhysics": 41.03131568205434,
+        "catboost": 42.2760325871501,
+        "ridge": 38.20627444072006,
+        "analog": 37.548099238128785
+      }
+    }
+  },
+  "seed": 42,
+  "replicates": 5000
+}
