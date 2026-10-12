@@ -1,0 +1,12 @@
+{
+  "frozenAt": "2026-10-12T17:33:12.004Z",
+  "inputSha256": "9d38f66f67e27efa0c9eb56f75013d253c752dae0032dbd5e1a8ec685a91dd9b",
+  "runSha256": "97f2166f1e5b29b5bc59a0ac228a719f3b8d6a67d8ca6c9b72a708f58ee8001d",
+  "evaluationSha256": "f9e1617e21b8211d09065e7c92acb49ba5796ca98590cc698a72ec9233f68a9a",
+  "codeHashes": {
+    "scripts/near-zero-persistence.mjs": "ef951fcac6c94783dc6bf332d7f1bbc69d1f0ad62d40e46dda6d02a85b45929d",
+    "scripts/evaluate-availability-persistence.mjs": "f621439e30e8832a5e3481cd66dfffadf357453ed5d8170e510ca6fa40a1f01a",
+    "tests/near-zero-persistence.test.mjs": "6ae8e089997a496ad7327ace19a754c1d06af45c90fa70f4a42d78bf160e5926",
+    "docs/availability-persistence-plan.md": "a8e47df23a3435462b9816939e67f19669b6dc3794ecf590d5e3c90c911d188a"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-10-12T17:37:46.289Z",
+  "before": {
+    "count": 6499,
+    "latest": "2026-10-11 16:30:00+00"
+  },
+  "after": {
+    "count": 7663,
+    "latest": "2026-10-12 16:30:00+00",
+    "receipt": "2026-10-12 17:36:12.662+00"
+  },
+  "queuedDevices": 2319,
+  "queuedObservations": 288,
+  "verifiedArchivedDeviceKeys": 2319,
+  "remainingPending": 0,
+  "liveEligibleObservations": 0,
+  "reason": "Latest measurement 16:30 UTC is older than the 15-minute freshness limit at 17:36 UTC receipt. No invented live correction.",
+  "newHuaweiCalls": 0
+}

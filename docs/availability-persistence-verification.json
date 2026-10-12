@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-10-12T17:34:01.127840+00:00",
+  "measurementChecks": 6115,
+  "tracks": 2,
+  "predictionChecks": 2818,
+  "evaluationSha256": "46e3173d10d8549264d043e4a852a70e1dda19aa2f2f6aeeba7113239a17a1c1",
+  "verifierSha256": "cc6863f5912da06f532aa3032fbcd14ac1ab8612dffd4d31a2c1959877192f8e",
+  "note": "Independent rule, completed-hour/receipt selection, exact unchanged targets/control, all monthly metrics; no new holdout or model promotion."
+}
