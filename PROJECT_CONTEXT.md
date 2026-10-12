@@ -1,6 +1,6 @@
 # ZIS Solar — контекст за продолжување на работата
 
-Последно проверено: **12.10.2026, 16:13 Ресен** — истражен пазарот и извршен нов native-hourly GFS → локално научен одзив. CatBoost/Ridge/аналози НЕ го победуваат v3.2 во збирната проверка. Подготвена одделна Ridge проба; официјален v3.2 непроменет. Статусот на објавувањето е подолу.
+Последно проверено: **12.10.2026, 16:18 Ресен** — истражен пазарот и извршен нов native-hourly GFS → локално научен одзив. CatBoost/Ridge/аналози НЕ го победуваат v3.2 во збирната проверка. Одделната Ridge проба е објавена и проверена во production; официјален v3.2 непроменет.
 
 ## Нов локален модел и истражување на пазарот — 12.10.2026
 
@@ -15,6 +15,8 @@
 -Интеграција: optional`ModelsView.siteLearning` соcandidate+v3.2 MWh и matched prospectiveWAPE во „Прогноза“. Користи постоечки`runModels`, cron,cache,`forecast_trials`; нема новcron/keep-alive/polling. Изворниот GFS циклус се чува; live00/06/12/18 може да се разликува од12UTC воистражувањето, па liveоценките сеодделни. Новиот artifact не ги препишува оригиналнитеv3.2 forecasts/backtests/chart/revenue. Пригрешкавогранка само challenger еunavailable.
 -Проверено на постоечка изолирана Neon гранка, со вистинските зачувани forecast извори за13октомври:24часа,0,412423MWh, exactreadback, непроменети reading/official/backtest counts. [Receipt](docs/site-learning-runtime-test.json).109forecast+7site-learning тестови, build/TypeScript и насоченlint успешни. График`outputs/site-learning-comparison.png`/PDF е визуелно проверен.
 - **Production проба навистина издадена 12.10 во14:13UTC за13октомври:**24часа, Ridge **0,550644MWh**, достапенv3.2 **0,507271MWh**, GFS06UTC преземен14:12UTC. Runtimeулогата ја зачува во`forecast_trials`, ID`3bce800a-9254-403b-962d-ddb6cea73d0c`, exactreadback и0SQLзаwarmread. [Receipt](docs/site-learning-production.json). Нема вистински13октомвриски исходи: WAPE еNULL, не0%. ARPEGE download на локалното освежување го достигна85s timeout; постојната3-sourceкомбинација еincompleteзаовојissue, GFS/Ridge сеcomplete. Не измислувај ARPEGE резултат или тврдење дека сите извори успеале. Artifact expiry19.10 во14:08UTC.
+- **Објавено:** код `f3a42b4`, READY deployment `dpl_7a2uMoFYfXp6rMGT3X5ogVvHjDeq`, alias https://zissolar.vercel.app. CLI без scope врати „Not authorized“, а со `--scope ilijas-projects-526973e6` успеа; не беше потребна нова најава. Користи експлицитен scope за следни deploys. GitHub master е синхронизиран; нема автоматски GitHub deploy за оваа промена, користен е CLI.
+- Production UI е проверен во постојна најавена Chrome сесија: новиот ред покажува Ridge0,551MWh, v3.2 0,507MWh и „—“ со0спареничаса. Се гледа и јасната забелешка дека историскиот тест не покажал подобра вкупна точност. Desktop и390px mobile без хоризонтално прелевање илиconsoleerrors. Привремениот viewport е вратен и проверочниот таб затворен. Нема жив downloader/training/deploy процес. [Release receipt](docs/site-learning-release.json).
 
 ## Google TimesFM — 12.10.2026
 

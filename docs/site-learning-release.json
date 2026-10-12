@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-10-12T14:18:00Z",
+  "codeCommit": "f3a42b4f55f89b9e90e724bee0bbb3a4b24fbc32",
+  "deploymentId": "dpl_7a2uMoFYfXp6rMGT3X5ogVvHjDeq",
+  "productionUrl": "https://zissolar.vercel.app",
+  "readyState": "READY",
+  "scope": "ilijas-projects-526973e6",
+  "tests": {"forecast": 109, "siteLearning": 7, "productionBuild": "passed"},
+  "ui": {"language":"mk","desktop":"passed","mobileWidth":390,"mobileScrollWidth":375,"consoleErrors":0,"candidateMwh":"0,551","baselineMwh":"0,507","prospectiveWape":"—","matchedHours":0,"viewportReset":true,"inspectionTabClosed":true},
+  "officialModel": "weather-solar-v3.2",
+  "challenger": "solar-site-learning-v1",
+  "promotion": false,
+  "reason": "All three fixed new algorithms had worse aggregate retrospective hourly WAPE. Ridge remains a separate bounded prospective research trial."
+}
