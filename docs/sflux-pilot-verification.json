@@ -1,0 +1,70 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-10-12T16:03:20.439193+00:00",
+  "date": "2026-06-15",
+  "rawFieldsChecked": 112,
+  "rawBytesChecked": 329458583,
+  "hours": 24,
+  "radiationPointDistanceKm": 4.898484851810581,
+  "radiationPoint": [
+    41.06084994426375,
+    21.093750029306463
+  ],
+  "ghiWhM2": 8703.844000000001,
+  "diffuseWhM2": 1786.56,
+  "roundingAdjustments": [
+    {
+      "startLead": 7,
+      "rawGhi": 0.0,
+      "rawDiffuse": -0.008,
+      "ghi": 0,
+      "diffuse": 0
+    },
+    {
+      "startLead": 8,
+      "rawGhi": 0.0,
+      "rawDiffuse": 0.008000000000000007,
+      "ghi": 0,
+      "diffuse": 0
+    },
+    {
+      "startLead": 9,
+      "rawGhi": -0.039999999999999994,
+      "rawDiffuse": 0.007999999999999993,
+      "ghi": 0,
+      "diffuse": 0
+    },
+    {
+      "startLead": 10,
+      "rawGhi": 0.0,
+      "rawDiffuse": -0.008,
+      "ghi": 0,
+      "diffuse": 0
+    },
+    {
+      "startLead": 11,
+      "rawGhi": 0.016,
+      "rawDiffuse": -0.024,
+      "ghi": 0.016,
+      "diffuse": 0
+    },
+    {
+      "startLead": 31,
+      "rawGhi": -0.020000000000000018,
+      "rawDiffuse": -0.008,
+      "ghi": 0,
+      "diffuse": 0
+    },
+    {
+      "startLead": 32,
+      "rawGhi": 0.0,
+      "rawDiffuse": -0.007999999999999993,
+      "ghi": 0,
+      "diffuse": 0
+    }
+  ],
+  "sourceSha256": "e460150279ea3c191970b6cdc4f96a4cb300336573640d2311ea63823fdeb27e",
+  "featuresSha256": "9390638289a07a99623ec8839048a431fcd88556efb3da1b7477ee9f59cdec4d",
+  "forecastScored": false,
+  "productionChanged": false
+}

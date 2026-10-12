@@ -1,0 +1,9 @@
+{
+  "id": "solar-sflux-probe-v1-0a2a8ba2ae5aceb4b7de",
+  "savedAt": "2026-10-12T16:07:10.568Z",
+  "readback": "exact",
+  "inputBytes": 166612,
+  "payloadBytes": 1103,
+  "officialForecastChanged": false,
+  "forecastScored": false
+}
