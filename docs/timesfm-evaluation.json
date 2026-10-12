@@ -1,0 +1,1857 @@
+{
+  "evaluatedAt": "2026-10-12T13:35:37.245Z",
+  "method": "retrospective-day-ahead-fixed-candidates",
+  "from": "2026-09-21",
+  "to": "2026-10-11",
+  "source": "Google TimesFM 2.5 200M; causal Huawei revision context; original archived NOAA GFS forecasts",
+  "horizon": "issued previous day 18:00 UTC; target local day 00:00–24:00; 4–28h lead",
+  "independentHoldout": false,
+  "metadata": {
+    "model": "google/timesfm-2.5-200m-pytorch",
+    "revision": "1d952420fba87f3c6dee4f240de0f1a0fbc790e3",
+    "license": "apache-2.0",
+    "files": [
+      ".gitattributes",
+      "README.md",
+      "config.json",
+      "model.safetensors"
+    ],
+    "weightsSha256": "2f776efe6245e42b24bc4153ffdf61810140210e4bd3b01fb21f7aa779ab6ce8",
+    "python": "3.12.10",
+    "packages": {
+      "timesfm": "2.0.2",
+      "torch": "2.8.0+cpu",
+      "numpy": "2.5.4",
+      "jax": "0.6.2",
+      "jaxlib": "0.6.2",
+      "scikit-learn": "1.7.2",
+      "huggingface-hub": "0.35.3"
+    },
+    "device": "cpu",
+    "deviceName": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+    "torchCompile": false,
+    "forecastConfig": {
+      "max_context": 256,
+      "max_horizon": 32,
+      "normalize_inputs": true,
+      "window_size": 0,
+      "per_core_batch_size": 1,
+      "use_continuous_quantile_head": false,
+      "force_flip_invariance": true,
+      "infer_is_positive": true,
+      "fix_quantile_crossing": false,
+      "return_backcast": true
+    },
+    "effectiveForecastConfig": {
+      "max_context": 256,
+      "max_horizon": 128,
+      "normalize_inputs": true,
+      "window_size": 0,
+      "per_core_batch_size": 1,
+      "use_continuous_quantile_head": false,
+      "force_flip_invariance": true,
+      "infer_is_positive": true,
+      "fix_quantile_crossing": false,
+      "return_backcast": true
+    },
+    "xregMode": "xreg + timesfm",
+    "ridge": 1,
+    "loadSeconds": 1.2449339999584481,
+    "inputSha256": "c8c70161f13b092343f5a260b69f3f9177ba31bf50da203a04972ac9bb7cebe6",
+    "protocolSha256": "d092af0215f17a5419a2dc2028927eec006a1a83a092080601861c5ff84e084b",
+    "peakGpuBytes": null,
+    "totalInferenceSeconds": 16.222440600045957
+  },
+  "coverage": {
+    "folds": 21,
+    "excluded": [],
+    "deliveryHours": 504,
+    "pairedDaylightHours": 272,
+    "missingDaylightTargets": 0,
+    "measuredZeroDaylightHours": 0
+  },
+  "totals": {
+    "baselineKwh": {
+      "days": 21,
+      "hours": 272,
+      "actualMwh": 72.28493,
+      "predictedMwh": 82.2223629917204,
+      "absoluteErrorMwh": 14.872045730960647,
+      "differenceMwh": 9.937432991720401,
+      "wapePercent": 20.574199533651957,
+      "matchPercent": 79.42580046634805,
+      "maeKwh": 54.67663871676708,
+      "rmseKwh": 99.91199809302458
+    },
+    "persistenceKwh": {
+      "days": 21,
+      "hours": 272,
+      "actualMwh": 72.28493,
+      "predictedMwh": 74.13878999999999,
+      "absoluteErrorMwh": 21.855500000000006,
+      "differenceMwh": 1.8538599999999714,
+      "wapePercent": 30.235209468972307,
+      "matchPercent": 69.7647905310277,
+      "maeKwh": 80.35110294117649,
+      "rmseKwh": 143.46714560617124
+    },
+    "timesfmKwh": {
+      "days": 21,
+      "hours": 272,
+      "actualMwh": 72.28493,
+      "predictedMwh": 75.6502618637085,
+      "absoluteErrorMwh": 24.027759085388183,
+      "differenceMwh": 3.3653318637084886,
+      "wapePercent": 33.24034357560861,
+      "matchPercent": 66.75965642439138,
+      "maeKwh": 88.33734957863304,
+      "rmseKwh": 131.38361774792406
+    },
+    "timesfmWeatherKwh": {
+      "days": 21,
+      "hours": 272,
+      "actualMwh": 72.28493,
+      "predictedMwh": 78.34126680435341,
+      "absoluteErrorMwh": 17.835204514051206,
+      "differenceMwh": 6.056336804353399,
+      "wapePercent": 24.673475528095835,
+      "matchPercent": 75.32652447190416,
+      "maeKwh": 65.57060483107061,
+      "rmseKwh": 105.1765043385835
+    },
+    "blendKwh": {
+      "days": 21,
+      "hours": 272,
+      "actualMwh": 72.28493,
+      "predictedMwh": 80.28181489803696,
+      "absoluteErrorMwh": 15.215734331512724,
+      "differenceMwh": 7.996884898036951,
+      "wapePercent": 21.049663230652257,
+      "matchPercent": 78.95033676934774,
+      "maeKwh": 55.94019974820854,
+      "rmseKwh": 98.17245095089596
+    }
+  },
+  "months": {
+    "2026-09": {
+      "baselineKwh": {
+        "days": 10,
+        "hours": 130,
+        "actualMwh": 31.26829,
+        "predictedMwh": 39.081180183380994,
+        "absoluteErrorMwh": 9.629825706084292,
+        "differenceMwh": 7.812890183380994,
+        "wapePercent": 30.797417147161845,
+        "matchPercent": 69.20258285283816,
+        "maeKwh": 74.07558235449456,
+        "rmseKwh": 127.88227735999568
+      },
+      "persistenceKwh": {
+        "days": 10,
+        "hours": 130,
+        "actualMwh": 31.26829,
+        "predictedMwh": 31.46610999999999,
+        "absoluteErrorMwh": 14.815159999999999,
+        "differenceMwh": 0.19781999999998878,
+        "wapePercent": 47.38078097651006,
+        "matchPercent": 52.61921902348994,
+        "maeKwh": 113.96276923076921,
+        "rmseKwh": 180.01982078478088
+      },
+      "timesfmKwh": {
+        "days": 10,
+        "hours": 130,
+        "actualMwh": 31.26829,
+        "predictedMwh": 33.35035381317139,
+        "absoluteErrorMwh": 12.51272534820556,
+        "differenceMwh": 2.082063813171386,
+        "wapePercent": 40.01729978903727,
+        "matchPercent": 59.98270021096273,
+        "maeKwh": 96.25173344773508,
+        "rmseKwh": 139.7590079203194
+      },
+      "timesfmWeatherKwh": {
+        "days": 10,
+        "hours": 130,
+        "actualMwh": 31.26829,
+        "predictedMwh": 37.42022472349324,
+        "absoluteErrorMwh": 10.831712620198498,
+        "differenceMwh": 6.151934723493243,
+        "wapePercent": 34.641205579833425,
+        "matchPercent": 65.35879442016657,
+        "maeKwh": 83.32086630921921,
+        "rmseKwh": 127.89130143066123
+      },
+      "blendKwh": {
+        "days": 10,
+        "hours": 130,
+        "actualMwh": 31.26829,
+        "predictedMwh": 38.25070245343713,
+        "absoluteErrorMwh": 9.828057981256746,
+        "differenceMwh": 6.98241245343713,
+        "wapePercent": 31.431389376447346,
+        "matchPercent": 68.56861062355266,
+        "maeKwh": 75.60044600966728,
+        "rmseKwh": 124.0484975280347
+      }
+    },
+    "2026-10": {
+      "baselineKwh": {
+        "days": 11,
+        "hours": 142,
+        "actualMwh": 41.01663999999999,
+        "predictedMwh": 43.141182808339416,
+        "absoluteErrorMwh": 5.242220024876347,
+        "differenceMwh": 2.124542808339429,
+        "wapePercent": 12.780715399594769,
+        "matchPercent": 87.21928460040523,
+        "maeKwh": 36.917042428706665,
+        "rmseKwh": 64.41561848916838
+      },
+      "persistenceKwh": {
+        "days": 11,
+        "hours": 142,
+        "actualMwh": 41.01663999999999,
+        "predictedMwh": 42.67268000000001,
+        "absoluteErrorMwh": 7.040340000000002,
+        "differenceMwh": 1.6560400000000226,
+        "wapePercent": 17.16459466206887,
+        "matchPercent": 82.83540533793114,
+        "maeKwh": 49.57985915492959,
+        "rmseKwh": 98.78130220233348
+      },
+      "timesfmKwh": {
+        "days": 11,
+        "hours": 142,
+        "actualMwh": 41.01663999999999,
+        "predictedMwh": 42.29990805053711,
+        "absoluteErrorMwh": 11.515033737182618,
+        "differenceMwh": 1.2832680505371246,
+        "wapePercent": 28.07405418187014,
+        "matchPercent": 71.92594581812986,
+        "maeKwh": 81.09178688156773,
+        "rmseKwh": 123.21785142171
+      },
+      "timesfmWeatherKwh": {
+        "days": 11,
+        "hours": 142,
+        "actualMwh": 41.01663999999999,
+        "predictedMwh": 40.92104208086021,
+        "absoluteErrorMwh": 7.003491893852695,
+        "differenceMwh": -0.09559791913977096,
+        "wapePercent": 17.074757693103816,
+        "matchPercent": 82.92524230689618,
+        "maeKwh": 49.320365449666866,
+        "rmseKwh": 78.83778827068939
+      },
+      "blendKwh": {
+        "days": 11,
+        "hours": 142,
+        "actualMwh": 41.01663999999999,
+        "predictedMwh": 42.03111244459981,
+        "absoluteErrorMwh": 5.387676350255972,
+        "differenceMwh": 1.014472444599829,
+        "wapePercent": 13.135342998002697,
+        "matchPercent": 86.8646570019973,
+        "maeKwh": 37.94138274828149,
+        "rmseKwh": 66.13291823390982
+      }
+    }
+  },
+  "regimes": {
+    "sunny": {
+      "baselineKwh": {
+        "days": 10,
+        "hours": 130,
+        "actualMwh": 44.41207,
+        "predictedMwh": 47.41876930883098,
+        "absoluteErrorMwh": 3.4672286824770837,
+        "differenceMwh": 3.006699308830983,
+        "wapePercent": 7.8069513140844,
+        "matchPercent": 92.1930486859156,
+        "maeKwh": 26.670989865208334,
+        "rmseKwh": 58.55595116590719
+      },
+      "persistenceKwh": {
+        "days": 10,
+        "hours": 130,
+        "actualMwh": 44.41207,
+        "predictedMwh": 40.052670000000006,
+        "absoluteErrorMwh": 6.638020000000003,
+        "differenceMwh": -4.359399999999995,
+        "wapePercent": 14.946432354988188,
+        "matchPercent": 85.05356764501181,
+        "maeKwh": 51.061692307692326,
+        "rmseKwh": 108.22369009104743
+      },
+      "timesfmKwh": {
+        "days": 10,
+        "hours": 130,
+        "actualMwh": 44.41207,
+        "predictedMwh": 36.13226609039307,
+        "absoluteErrorMwh": 9.5952312814331,
+        "differenceMwh": -8.279803909606933,
+        "wapePercent": 21.605008011185024,
+        "matchPercent": 78.39499198881498,
+        "maeKwh": 73.80947139563924,
+        "rmseKwh": 103.73972261497109
+      },
+      "timesfmWeatherKwh": {
+        "days": 10,
+        "hours": 130,
+        "actualMwh": 44.41207,
+        "predictedMwh": 43.02427632114649,
+        "absoluteErrorMwh": 5.14141906840387,
+        "differenceMwh": -1.3877936788535152,
+        "wapePercent": 11.57662560741679,
+        "matchPercent": 88.42337439258321,
+        "maeKwh": 39.54937744926054,
+        "rmseKwh": 63.303711723120024
+      },
+      "blendKwh": {
+        "days": 10,
+        "hours": 130,
+        "actualMwh": 44.41207,
+        "predictedMwh": 45.22152281498874,
+        "absoluteErrorMwh": 3.6823940098841543,
+        "differenceMwh": 0.809452814988741,
+        "wapePercent": 8.291426204372268,
+        "matchPercent": 91.70857379562773,
+        "maeKwh": 28.32610776833965,
+        "rmseKwh": 53.069833522298744
+      }
+    },
+    "variable": {
+      "baselineKwh": {
+        "days": 8,
+        "hours": 104,
+        "actualMwh": 22.35271999999999,
+        "predictedMwh": 27.343794065093718,
+        "absoluteErrorMwh": 8.672895014222666,
+        "differenceMwh": 4.991074065093726,
+        "wapePercent": 38.80017740222519,
+        "matchPercent": 61.19982259777481,
+        "maeKwh": 83.39322129060255,
+        "rmseKwh": 134.869273454822
+      },
+      "persistenceKwh": {
+        "days": 8,
+        "hours": 104,
+        "actualMwh": 22.35271999999999,
+        "predictedMwh": 24.338469999999994,
+        "absoluteErrorMwh": 9.07591,
+        "differenceMwh": 1.9857500000000037,
+        "wapePercent": 40.60315702071159,
+        "matchPercent": 59.39684297928841,
+        "maeKwh": 87.26836538461538,
+        "rmseKwh": 138.0739470112636
+      },
+      "timesfmKwh": {
+        "days": 8,
+        "hours": 104,
+        "actualMwh": 22.35271999999999,
+        "predictedMwh": 28.457433601379396,
+        "absoluteErrorMwh": 8.282530851745602,
+        "differenceMwh": 6.104713601379404,
+        "wapePercent": 37.05379413219333,
+        "matchPercent": 62.94620586780667,
+        "maeKwh": 79.63971972832309,
+        "rmseKwh": 120.50474591741092
+      },
+      "timesfmWeatherKwh": {
+        "days": 8,
+        "hours": 104,
+        "actualMwh": 22.35271999999999,
+        "predictedMwh": 26.086308308364117,
+        "absoluteErrorMwh": 8.547789107243144,
+        "differenceMwh": 3.7335883083641273,
+        "wapePercent": 38.240487543543466,
+        "matchPercent": 61.759512456456534,
+        "maeKwh": 82.19027987733793,
+        "rmseKwh": 123.52827018224679
+      },
+      "blendKwh": {
+        "days": 8,
+        "hours": 104,
+        "actualMwh": 22.35271999999999,
+        "predictedMwh": 26.715051186728903,
+        "absoluteErrorMwh": 8.186366171718477,
+        "differenceMwh": 4.3623311867289125,
+        "wapePercent": 36.623579464684745,
+        "matchPercent": 63.376420535315255,
+        "maeKwh": 78.7150593434469,
+        "rmseKwh": 126.47449894047539
+      }
+    },
+    "cloudy-mixed": {
+      "baselineKwh": {
+        "days": 3,
+        "hours": 38,
+        "actualMwh": 5.5201400000000005,
+        "predictedMwh": 7.459799617795743,
+        "absoluteErrorMwh": 2.7319220342608874,
+        "differenceMwh": 1.9396596177957426,
+        "wapePercent": 49.49008601703738,
+        "matchPercent": 50.50991398296262,
+        "maeKwh": 71.89268511212862,
+        "rmseKwh": 99.70217526595653
+      },
+      "persistenceKwh": {
+        "days": 3,
+        "hours": 38,
+        "actualMwh": 5.5201400000000005,
+        "predictedMwh": 9.747650000000002,
+        "absoluteErrorMwh": 6.141570000000003,
+        "differenceMwh": 4.227510000000001,
+        "wapePercent": 111.25750433865814,
+        "matchPercent": 0,
+        "maeKwh": 161.6202631578948,
+        "rmseKwh": 234.70141624379286
+      },
+      "timesfmKwh": {
+        "days": 3,
+        "hours": 38,
+        "actualMwh": 5.5201400000000005,
+        "predictedMwh": 11.060562171936034,
+        "absoluteErrorMwh": 6.149996952209472,
+        "differenceMwh": 5.540422171936035,
+        "wapePercent": 111.41016264459726,
+        "matchPercent": 0,
+        "maeKwh": 161.842025058144,
+        "rmseKwh": 216.78841874791263
+      },
+      "timesfmWeatherKwh": {
+        "days": 3,
+        "hours": 38,
+        "actualMwh": 5.5201400000000005,
+        "predictedMwh": 9.230682174842874,
+        "absoluteErrorMwh": 4.1459963384041725,
+        "differenceMwh": 3.7105421748428733,
+        "wapePercent": 75.10672443822388,
+        "matchPercent": 24.89327556177612,
+        "maeKwh": 109.10516680010979,
+        "rmseKwh": 153.97994783666113
+      },
+      "blendKwh": {
+        "days": 3,
+        "hours": 38,
+        "actualMwh": 5.5201400000000005,
+        "predictedMwh": 8.345240896319309,
+        "absoluteErrorMwh": 3.346974149910089,
+        "differenceMwh": 2.825100896319308,
+        "wapePercent": 60.6320519028519,
+        "matchPercent": 39.3679480971481,
+        "maeKwh": 88.07826710289709,
+        "rmseKwh": 124.79391121783033
+      }
+    }
+  },
+  "days": [
+    {
+      "date": "2026-09-21",
+      "scores": {
+        "baselineKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 2.62792,
+          "predictedMwh": 3.5055032462835642,
+          "absoluteErrorMwh": 1.1052717738836617,
+          "differenceMwh": 0.8775832462835642,
+          "wapePercent": 42.05880597140179,
+          "matchPercent": 57.94119402859821,
+          "maeKwh": 85.0209056833586,
+          "rmseKwh": 144.1685567665011
+        },
+        "persistenceKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 2.62792,
+          "predictedMwh": 3.64958,
+          "absoluteErrorMwh": 1.48678,
+          "differenceMwh": 1.0216599999999998,
+          "wapePercent": 56.576303692654264,
+          "matchPercent": 43.423696307345736,
+          "maeKwh": 114.36769230769231,
+          "rmseKwh": 179.0011267691223
+        },
+        "timesfmKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 2.62792,
+          "predictedMwh": 4.009300483703614,
+          "absoluteErrorMwh": 1.6564405661010744,
+          "differenceMwh": 1.3813804837036132,
+          "wapePercent": 63.03238173540573,
+          "matchPercent": 36.96761826459427,
+          "maeKwh": 127.41850508469803,
+          "rmseKwh": 189.44888181385667
+        },
+        "timesfmWeatherKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 2.62792,
+          "predictedMwh": 3.7942312966112244,
+          "absoluteErrorMwh": 1.313373299727568,
+          "differenceMwh": 1.1663112966112243,
+          "wapePercent": 49.97767434806113,
+          "matchPercent": 50.02232565193887,
+          "maeKwh": 101.02871536365909,
+          "rmseKwh": 156.40270699516103
+        },
+        "blendKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 2.62792,
+          "predictedMwh": 3.6498672714473943,
+          "absoluteErrorMwh": 1.2007778634194048,
+          "differenceMwh": 1.021947271447394,
+          "wapePercent": 45.69309048294487,
+          "matchPercent": 54.30690951705513,
+          "maeKwh": 92.36752795533883,
+          "rmseKwh": 148.52994048558298
+        }
+      }
+    },
+    {
+      "date": "2026-09-22",
+      "scores": {
+        "baselineKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 3.71354,
+          "predictedMwh": 4.371295788608015,
+          "absoluteErrorMwh": 0.8861136311764386,
+          "differenceMwh": 0.6577557886080149,
+          "wapePercent": 23.86169614913098,
+          "matchPercent": 76.13830385086902,
+          "maeKwh": 68.1625870135722,
+          "rmseKwh": 95.53100515173216
+        },
+        "persistenceKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 3.71354,
+          "predictedMwh": 2.63291,
+          "absoluteErrorMwh": 2.0456900000000005,
+          "differenceMwh": -1.0806300000000002,
+          "wapePercent": 55.08732907145204,
+          "matchPercent": 44.91267092854796,
+          "maeKwh": 157.36076923076925,
+          "rmseKwh": 221.49359450713763
+        },
+        "timesfmKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 3.71354,
+          "predictedMwh": 4.074006607055664,
+          "absoluteErrorMwh": 0.8592596954345703,
+          "differenceMwh": 0.3604666070556641,
+          "wapePercent": 23.138560388054803,
+          "matchPercent": 76.8614396119452,
+          "maeKwh": 66.09689964881309,
+          "rmseKwh": 84.00901210765544
+        },
+        "timesfmWeatherKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 3.71354,
+          "predictedMwh": 5.1149703278477485,
+          "absoluteErrorMwh": 1.401430327847749,
+          "differenceMwh": 1.4014303278477482,
+          "wapePercent": 37.73839322715654,
+          "matchPercent": 62.26160677284346,
+          "maeKwh": 107.8023329113653,
+          "rmseKwh": 127.76680976856267
+        },
+        "blendKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 3.71354,
+          "predictedMwh": 4.7431330582278814,
+          "absoluteErrorMwh": 1.075261100013064,
+          "differenceMwh": 1.0295930582278816,
+          "wapePercent": 28.955150611359088,
+          "matchPercent": 71.04484938864091,
+          "maeKwh": 82.71239230869725,
+          "rmseKwh": 107.98948212189761
+        }
+      }
+    },
+    {
+      "date": "2026-09-23",
+      "scores": {
+        "baselineKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 3.8867000000000003,
+          "predictedMwh": 4.829213879973751,
+          "absoluteErrorMwh": 0.9874500297524018,
+          "differenceMwh": 0.942513879973751,
+          "wapePercent": 25.405872070198416,
+          "matchPercent": 74.59412792980159,
+          "maeKwh": 75.9576945963386,
+          "rmseKwh": 147.94037741034904
+        },
+        "persistenceKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 3.8867000000000003,
+          "predictedMwh": 3.7073599999999995,
+          "absoluteErrorMwh": 1.4503800000000004,
+          "differenceMwh": -0.1793400000000006,
+          "wapePercent": 37.31648956698485,
+          "matchPercent": 62.68351043301515,
+          "maeKwh": 111.56769230769234,
+          "rmseKwh": 157.30055278889617
+        },
+        "timesfmKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 3.8867000000000003,
+          "predictedMwh": 3.9399969177246095,
+          "absoluteErrorMwh": 0.8428599060058594,
+          "differenceMwh": 0.0532969177246091,
+          "wapePercent": 21.685746417419903,
+          "matchPercent": 78.3142535825801,
+          "maeKwh": 64.8353773850661,
+          "rmseKwh": 96.97046211526227
+        },
+        "timesfmWeatherKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 3.8867000000000003,
+          "predictedMwh": 4.692741282503148,
+          "absoluteErrorMwh": 0.894843999617884,
+          "differenceMwh": 0.8060412825031477,
+          "wapePercent": 23.023233067071907,
+          "matchPercent": 76.97676693292809,
+          "maeKwh": 68.8341538167603,
+          "rmseKwh": 124.3025910195774
+        },
+        "blendKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 3.8867000000000003,
+          "predictedMwh": 4.760977581238451,
+          "absoluteErrorMwh": 0.9279192722159805,
+          "differenceMwh": 0.8742775812384502,
+          "wapePercent": 23.874219060281998,
+          "matchPercent": 76.125780939718,
+          "maeKwh": 71.37840555507543,
+          "rmseKwh": 135.15392959089323
+        }
+      }
+    },
+    {
+      "date": "2026-09-24",
+      "scores": {
+        "baselineKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.66411,
+          "predictedMwh": 4.709717523619654,
+          "absoluteErrorMwh": 0.1892765825448092,
+          "differenceMwh": 0.045607523619653874,
+          "wapePercent": 4.05815005531193,
+          "matchPercent": 95.94184994468807,
+          "maeKwh": 14.559737118831476,
+          "rmseKwh": 24.489510779342968
+        },
+        "persistenceKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.66411,
+          "predictedMwh": 3.8831800000000003,
+          "absoluteErrorMwh": 0.84757,
+          "differenceMwh": -0.7809299999999993,
+          "wapePercent": 18.1721700388713,
+          "matchPercent": 81.8278299611287,
+          "maeKwh": 65.19769230769231,
+          "rmseKwh": 128.54092407299112
+        },
+        "timesfmKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.66411,
+          "predictedMwh": 3.9785688552856446,
+          "absoluteErrorMwh": 0.7174907943725588,
+          "differenceMwh": -0.6855411447143551,
+          "wapePercent": 15.38323054929148,
+          "matchPercent": 84.61676945070852,
+          "maeKwh": 55.1915995671199,
+          "rmseKwh": 63.82118166910796
+        },
+        "timesfmWeatherKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.66411,
+          "predictedMwh": 4.49801983600462,
+          "absoluteErrorMwh": 0.22196023884638466,
+          "differenceMwh": -0.16609016399537904,
+          "wapePercent": 4.758898028699681,
+          "matchPercent": 95.24110197130032,
+          "maeKwh": 17.073864526644975,
+          "rmseKwh": 22.13005565900681
+        },
+        "blendKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.66411,
+          "predictedMwh": 4.603868679812137,
+          "absoluteErrorMwh": 0.19212968175660927,
+          "differenceMwh": -0.06024132018786259,
+          "wapePercent": 4.119321408727695,
+          "matchPercent": 95.8806785912723,
+          "maeKwh": 14.779206288969943,
+          "rmseKwh": 17.779392880937856
+        }
+      }
+    },
+    {
+      "date": "2026-09-25",
+      "scores": {
+        "baselineKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 1.1753799999999999,
+          "predictedMwh": 2.3010777778320977,
+          "absoluteErrorMwh": 1.2997444011649664,
+          "differenceMwh": 1.1256977778320978,
+          "wapePercent": 110.58078248438517,
+          "matchPercent": 0,
+          "maeKwh": 99.98033855115126,
+          "rmseKwh": 128.08336952668344
+        },
+        "persistenceKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 1.1753799999999999,
+          "predictedMwh": 4.66411,
+          "absoluteErrorMwh": 3.48873,
+          "differenceMwh": 3.4887299999999994,
+          "wapePercent": 296.8171995439773,
+          "matchPercent": 0,
+          "maeKwh": 268.36384615384617,
+          "rmseKwh": 332.4780434508767
+        },
+        "timesfmKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 1.1753799999999999,
+          "predictedMwh": 3.6862259368896484,
+          "absoluteErrorMwh": 2.541064755249023,
+          "differenceMwh": 2.5108459368896483,
+          "wapePercent": 216.19091317267802,
+          "matchPercent": 0,
+          "maeKwh": 195.46651963454022,
+          "rmseKwh": 256.01858785750255
+        },
+        "timesfmWeatherKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 1.1753799999999999,
+          "predictedMwh": 3.162287541597973,
+          "absoluteErrorMwh": 2.093105092480064,
+          "differenceMwh": 1.9869075415979736,
+          "wapePercent": 178.0790121050268,
+          "matchPercent": 0,
+          "maeKwh": 161.00808403692798,
+          "rmseKwh": 205.04765801384653
+        },
+        "blendKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 1.1753799999999999,
+          "predictedMwh": 2.7316826597150348,
+          "absoluteErrorMwh": 1.6893862448299843,
+          "differenceMwh": 1.556302659715035,
+          "wapePercent": 143.7310695119863,
+          "matchPercent": 0,
+          "maeKwh": 129.95278806384496,
+          "rmseKwh": 166.13923499551677
+        }
+      }
+    },
+    {
+      "date": "2026-09-26",
+      "scores": {
+        "baselineKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 1.3774600000000001,
+          "predictedMwh": 2.014595355106211,
+          "absoluteErrorMwh": 1.1515665727565865,
+          "differenceMwh": 0.6371353551062109,
+          "wapePercent": 83.60072689998886,
+          "matchPercent": 16.399273100011143,
+          "maeKwh": 88.58204405819896,
+          "rmseKwh": 134.41354390203034
+        },
+        "persistenceKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 1.3774600000000001,
+          "predictedMwh": 1.17849,
+          "absoluteErrorMwh": 0.7300699999999998,
+          "differenceMwh": -0.19897000000000004,
+          "wapePercent": 53.00117607770824,
+          "matchPercent": 46.99882392229176,
+          "maeKwh": 56.15923076923075,
+          "rmseKwh": 88.1608879352883
+        },
+        "timesfmKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 1.3774600000000001,
+          "predictedMwh": 2.6110559158325195,
+          "absoluteErrorMwh": 1.2522878982543946,
+          "differenceMwh": 1.2335959158325196,
+          "wapePercent": 90.91283218782357,
+          "matchPercent": 9.087167812176432,
+          "maeKwh": 96.32983832726111,
+          "rmseKwh": 119.721117144748
+        },
+        "timesfmWeatherKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 1.3774600000000001,
+          "predictedMwh": 1.7246206165091795,
+          "absoluteErrorMwh": 0.8816405627566695,
+          "differenceMwh": 0.34716061650917956,
+          "wapePercent": 64.00480324340957,
+          "matchPercent": 35.99519675659043,
+          "maeKwh": 67.81850482743612,
+          "rmseKwh": 102.91836238145737
+        },
+        "blendKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 1.3774600000000001,
+          "predictedMwh": 1.869607985807695,
+          "absoluteErrorMwh": 1.0028816601626391,
+          "differenceMwh": 0.49214798580769503,
+          "wapePercent": 72.80659040281671,
+          "matchPercent": 27.19340959718329,
+          "maeKwh": 77.14474308943377,
+          "rmseKwh": 118.27372640355016
+        }
+      }
+    },
+    {
+      "date": "2026-09-27",
+      "scores": {
+        "baselineKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 1.96997,
+          "predictedMwh": 4.3761598409343065,
+          "absoluteErrorMwh": 2.5298148231295396,
+          "differenceMwh": 2.4061898409343065,
+          "wapePercent": 128.41895171650023,
+          "matchPercent": 0,
+          "maeKwh": 194.6011402407338,
+          "rmseKwh": 254.57581948203352
+        },
+        "persistenceKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 1.96997,
+          "predictedMwh": 1.37644,
+          "absoluteErrorMwh": 0.97869,
+          "differenceMwh": -0.59353,
+          "wapePercent": 49.680451986578475,
+          "matchPercent": 50.319548013421525,
+          "maeKwh": 75.28384615384616,
+          "rmseKwh": 111.21938870123734
+        },
+        "timesfmKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 1.96997,
+          "predictedMwh": 2.3831215362548828,
+          "absoluteErrorMwh": 1.0702379486083984,
+          "differenceMwh": 0.41315153625488277,
+          "wapePercent": 54.32762674601128,
+          "matchPercent": 45.67237325398872,
+          "maeKwh": 82.32599604679989,
+          "rmseKwh": 112.36781618260962
+        },
+        "timesfmWeatherKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 1.96997,
+          "predictedMwh": 3.7426676803049843,
+          "absoluteErrorMwh": 1.960436952957453,
+          "differenceMwh": 1.7726976803049845,
+          "wapePercent": 99.5160816132963,
+          "matchPercent": 0.48391838670370646,
+          "maeKwh": 150.8028425351887,
+          "rmseKwh": 200.72452263028154
+        },
+        "blendKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 1.96997,
+          "predictedMwh": 4.059413760619646,
+          "absoluteErrorMwh": 2.245064940297093,
+          "differenceMwh": 2.089443760619645,
+          "wapePercent": 113.96442282355027,
+          "matchPercent": 0,
+          "maeKwh": 172.69730309977638,
+          "rmseKwh": 227.33509566878593
+        }
+      }
+    },
+    {
+      "date": "2026-09-28",
+      "scores": {
+        "baselineKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.05518,
+          "predictedMwh": 4.652784921241629,
+          "absoluteErrorMwh": 0.6091828131860993,
+          "differenceMwh": 0.5976049212416297,
+          "wapePercent": 15.022337188142066,
+          "matchPercent": 84.97766281185794,
+          "maeKwh": 46.86021639893072,
+          "rmseKwh": 82.2328214083437
+        },
+        "persistenceKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.05518,
+          "predictedMwh": 1.97135,
+          "absoluteErrorMwh": 2.2231899999999998,
+          "differenceMwh": -2.08383,
+          "wapePercent": 54.82346036427482,
+          "matchPercent": 45.17653963572518,
+          "maeKwh": 171.01461538461535,
+          "rmseKwh": 233.7961009578152
+        },
+        "timesfmKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.05518,
+          "predictedMwh": 2.326401824951172,
+          "absoluteErrorMwh": 1.7331472045898435,
+          "differenceMwh": -1.728778175048828,
+          "wapePercent": 42.73909430875679,
+          "matchPercent": 57.26090569124321,
+          "maeKwh": 133.31901573768027,
+          "rmseKwh": 168.0625566009048
+        },
+        "timesfmWeatherKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.05518,
+          "predictedMwh": 3.80755022654541,
+          "absoluteErrorMwh": 0.723118339902405,
+          "differenceMwh": -0.24762977345458967,
+          "wapePercent": 17.831966519424665,
+          "matchPercent": 82.16803348057533,
+          "maeKwh": 55.62448768480039,
+          "rmseKwh": 68.01163130915316
+        },
+        "blendKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.05518,
+          "predictedMwh": 4.23016757389352,
+          "absoluteErrorMwh": 0.5630426370308462,
+          "differenceMwh": 0.1749875738935202,
+          "wapePercent": 13.884528850281521,
+          "matchPercent": 86.11547114971847,
+          "maeKwh": 43.310972079295865,
+          "rmseKwh": 62.53983866757973
+        }
+      }
+    },
+    {
+      "date": "2026-09-29",
+      "scores": {
+        "baselineKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.3406,
+          "predictedMwh": 4.605910372815366,
+          "absoluteErrorMwh": 0.32887617846433187,
+          "differenceMwh": 0.26531037281536557,
+          "wapePercent": 7.576744654295071,
+          "matchPercent": 92.42325534570493,
+          "maeKwh": 25.298167574179374,
+          "rmseKwh": 45.23906365134566
+        },
+        "persistenceKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.3406,
+          "predictedMwh": 4.05417,
+          "absoluteErrorMwh": 0.6032900000000001,
+          "differenceMwh": -0.2864300000000003,
+          "wapePercent": 13.898769755333365,
+          "matchPercent": 86.10123024466664,
+          "maeKwh": 46.406923076923086,
+          "rmseKwh": 76.87524904274858
+        },
+        "timesfmKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.3406,
+          "predictedMwh": 3.0673724517822265,
+          "absoluteErrorMwh": 1.304079146118164,
+          "differenceMwh": -1.2732275482177737,
+          "wapePercent": 30.043753078333964,
+          "matchPercent": 69.95624692166604,
+          "maeKwh": 100.313780470628,
+          "rmseKwh": 123.4919742326697
+        },
+        "timesfmWeatherKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.3406,
+          "predictedMwh": 3.9776358865886583,
+          "absoluteErrorMwh": 0.6510143476979097,
+          "differenceMwh": -0.36296411341134216,
+          "wapePercent": 14.998257100352708,
+          "matchPercent": 85.0017428996473,
+          "maeKwh": 50.07802674599305,
+          "rmseKwh": 61.47744322483608
+        },
+        "blendKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.3406,
+          "predictedMwh": 4.291773129702011,
+          "absoluteErrorMwh": 0.433335019721835,
+          "differenceMwh": -0.04882687029798945,
+          "wapePercent": 9.983297694370249,
+          "matchPercent": 90.01670230562975,
+          "maeKwh": 33.33346305552577,
+          "rmseKwh": 40.17638283054182
+        }
+      }
+    },
+    {
+      "date": "2026-09-30",
+      "scores": {
+        "baselineKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 3.4574299999999996,
+          "predictedMwh": 3.714921476966406,
+          "absoluteErrorMwh": 0.5425289000254562,
+          "differenceMwh": 0.2574914769664065,
+          "wapePercent": 15.691681394141208,
+          "matchPercent": 84.30831860585879,
+          "maeKwh": 41.73299230965048,
+          "rmseKwh": 55.24421707687153
+        },
+        "persistenceKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 3.4574299999999996,
+          "predictedMwh": 4.348520000000001,
+          "absoluteErrorMwh": 0.9607700000000001,
+          "differenceMwh": 0.891090000000001,
+          "wapePercent": 27.788559710536447,
+          "matchPercent": 72.21144028946355,
+          "maeKwh": 73.90538461538462,
+          "rmseKwh": 102.22595165762799
+        },
+        "timesfmKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 3.4574299999999996,
+          "predictedMwh": 3.274303283691406,
+          "absoluteErrorMwh": 0.5358574334716797,
+          "differenceMwh": -0.18312671630859312,
+          "wapePercent": 15.498721115732778,
+          "matchPercent": 84.50127888426722,
+          "maeKwh": 41.21980257474459,
+          "rmseKwh": 53.85644155257242
+        },
+        "timesfmWeatherKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 3.4574299999999996,
+          "predictedMwh": 2.9055000289803177,
+          "absoluteErrorMwh": 0.6907894583644084,
+          "differenceMwh": -0.5519299710196814,
+          "wapePercent": 19.979853774752016,
+          "matchPercent": 80.02014622524798,
+          "maeKwh": 53.13765064341604,
+          "rmseKwh": 74.18010857761834
+        },
+        "blendKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 3.4574299999999996,
+          "predictedMwh": 3.310210752973362,
+          "absoluteErrorMwh": 0.4982595618092862,
+          "differenceMwh": -0.14721924702663727,
+          "wapePercent": 14.411269694810489,
+          "matchPercent": 85.58873030518951,
+          "maeKwh": 38.32765860071432,
+          "rmseKwh": 52.69910608369366
+        }
+      }
+    },
+    {
+      "date": "2026-10-01",
+      "scores": {
+        "baselineKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.6572499999999994,
+          "predictedMwh": 4.73905085968786,
+          "absoluteErrorMwh": 0.13458641132024882,
+          "differenceMwh": 0.0818008596878608,
+          "wapePercent": 2.889825783890683,
+          "matchPercent": 97.11017421610931,
+          "maeKwh": 10.352800870788371,
+          "rmseKwh": 12.845051597842692
+        },
+        "persistenceKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.6572499999999994,
+          "predictedMwh": 3.4183199999999996,
+          "absoluteErrorMwh": 1.2493899999999998,
+          "differenceMwh": -1.2389299999999994,
+          "wapePercent": 26.826775457619846,
+          "matchPercent": 73.17322454238015,
+          "maeKwh": 96.10692307692307,
+          "rmseKwh": 122.96185309023532
+        },
+        "timesfmKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.6572499999999994,
+          "predictedMwh": 3.0098214111328123,
+          "absoluteErrorMwh": 1.6755353039550778,
+          "differenceMwh": -1.6474285888671867,
+          "wapePercent": 35.97692423544105,
+          "matchPercent": 64.02307576455895,
+          "maeKwh": 128.88733107346752,
+          "rmseKwh": 154.75443468395585
+        },
+        "timesfmWeatherKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.6572499999999994,
+          "predictedMwh": 3.7292650516895636,
+          "absoluteErrorMwh": 1.02332397972037,
+          "differenceMwh": -0.9279849483104353,
+          "wapePercent": 21.972708781370336,
+          "matchPercent": 78.02729121862967,
+          "maeKwh": 78.71722920925922,
+          "rmseKwh": 94.58542501725972
+        },
+        "blendKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.6572499999999994,
+          "predictedMwh": 4.234157955688712,
+          "absoluteErrorMwh": 0.48371112600729077,
+          "differenceMwh": -0.4230920443112873,
+          "wapePercent": 10.386196274782131,
+          "matchPercent": 89.61380372521786,
+          "maeKwh": 37.208548154406984,
+          "rmseKwh": 44.34464878396395
+        }
+      }
+    },
+    {
+      "date": "2026-10-02",
+      "scores": {
+        "baselineKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.643260000000001,
+          "predictedMwh": 4.731950440835691,
+          "absoluteErrorMwh": 0.15646953065572494,
+          "differenceMwh": 0.08869044083569043,
+          "wapePercent": 3.369820571230665,
+          "matchPercent": 96.63017942876934,
+          "maeKwh": 12.036117742748074,
+          "rmseKwh": 14.256382193063706
+        },
+        "persistenceKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.643260000000001,
+          "predictedMwh": 4.65832,
+          "absoluteErrorMwh": 0.028959999999999934,
+          "differenceMwh": 0.01505999999999949,
+          "wapePercent": 0.6236997282081971,
+          "matchPercent": 99.3763002717918,
+          "maeKwh": 2.2276923076923025,
+          "rmseKwh": 3.7452698372542077
+        },
+        "timesfmKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.643260000000001,
+          "predictedMwh": 3.1943854904174804,
+          "absoluteErrorMwh": 1.4676325491333009,
+          "differenceMwh": -1.4488745095825197,
+          "wapePercent": 31.607804627208058,
+          "matchPercent": 68.39219537279195,
+          "maeKwh": 112.89481147179238,
+          "rmseKwh": 135.56430401545558
+        },
+        "timesfmWeatherKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.643260000000001,
+          "predictedMwh": 3.9477983229469413,
+          "absoluteErrorMwh": 0.757710316793255,
+          "differenceMwh": -0.6954616770530588,
+          "wapePercent": 16.31849857197863,
+          "matchPercent": 83.68150142802136,
+          "maeKwh": 58.285408984096534,
+          "rmseKwh": 71.09089432596372
+        },
+        "blendKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.643260000000001,
+          "predictedMwh": 4.339874381891316,
+          "absoluteErrorMwh": 0.3430587306198507,
+          "differenceMwh": -0.303385618108684,
+          "wapePercent": 7.388316196376052,
+          "matchPercent": 92.61168380362395,
+          "maeKwh": 26.389133124603898,
+          "rmseKwh": 31.97023514946083
+        }
+      }
+    },
+    {
+      "date": "2026-10-03",
+      "scores": {
+        "baselineKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.64051,
+          "predictedMwh": 4.7911150002736935,
+          "absoluteErrorMwh": 0.2027083095420328,
+          "differenceMwh": 0.1506050002736929,
+          "wapePercent": 4.368233438609826,
+          "matchPercent": 95.63176656139018,
+          "maeKwh": 15.59294688784868,
+          "rmseKwh": 18.9719464009629
+        },
+        "persistenceKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.64051,
+          "predictedMwh": 4.643260000000001,
+          "absoluteErrorMwh": 0.026830000000000145,
+          "differenceMwh": 0.00275,
+          "wapePercent": 0.5781692098497825,
+          "matchPercent": 99.42183079015022,
+          "maeKwh": 2.063846153846165,
+          "rmseKwh": 2.922263348318071
+        },
+        "timesfmKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.64051,
+          "predictedMwh": 3.938209266662598,
+          "absoluteErrorMwh": 0.7814147512817383,
+          "differenceMwh": -0.7023007333374026,
+          "wapePercent": 16.83898432029536,
+          "matchPercent": 83.16101567970463,
+          "maeKwh": 60.10882702167218,
+          "rmseKwh": 71.5000991767438
+        },
+        "timesfmWeatherKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.64051,
+          "predictedMwh": 4.407844164797918,
+          "absoluteErrorMwh": 0.34001527743826554,
+          "differenceMwh": -0.23266583520208223,
+          "wapePercent": 7.327110111566736,
+          "matchPercent": 92.67288988843326,
+          "maeKwh": 26.15502134140504,
+          "rmseKwh": 30.041414421601
+        },
+        "blendKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.64051,
+          "predictedMwh": 4.599479582535805,
+          "absoluteErrorMwh": 0.10230281940508527,
+          "differenceMwh": -0.041030417464195126,
+          "wapePercent": 2.2045598308178467,
+          "matchPercent": 97.79544016918216,
+          "maeKwh": 7.869447646545021,
+          "rmseKwh": 8.549558657094154
+        }
+      }
+    },
+    {
+      "date": "2026-10-04",
+      "scores": {
+        "baselineKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.5838,
+          "predictedMwh": 4.799829422791859,
+          "absoluteErrorMwh": 0.23136432230549525,
+          "differenceMwh": 0.21602942279185935,
+          "wapePercent": 5.047434929654331,
+          "matchPercent": 94.95256507034567,
+          "maeKwh": 17.797255561961173,
+          "rmseKwh": 22.957761091586942
+        },
+        "persistenceKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.5838,
+          "predictedMwh": 4.64051,
+          "absoluteErrorMwh": 0.056709999999999955,
+          "differenceMwh": 0.05671000000000004,
+          "wapePercent": 1.2371831231729125,
+          "matchPercent": 98.76281687682709,
+          "maeKwh": 4.362307692307689,
+          "rmseKwh": 5.318065727021721
+        },
+        "timesfmKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.5838,
+          "predictedMwh": 4.29097607421875,
+          "absoluteErrorMwh": 0.38226139770507817,
+          "differenceMwh": -0.29282392578125016,
+          "wapePercent": 8.339399574699554,
+          "matchPercent": 91.66060042530044,
+          "maeKwh": 29.404722900390627,
+          "rmseKwh": 36.327371330018195
+        },
+        "timesfmWeatherKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.5838,
+          "predictedMwh": 4.742490862296775,
+          "absoluteErrorMwh": 0.15869086229677554,
+          "differenceMwh": 0.15869086229677487,
+          "wapePercent": 3.4619935925820395,
+          "matchPercent": 96.53800640741797,
+          "maeKwh": 12.206989407444272,
+          "rmseKwh": 15.057814741702785
+        },
+        "blendKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.5838,
+          "predictedMwh": 4.771160142544319,
+          "absoluteErrorMwh": 0.18736014254431768,
+          "differenceMwh": 0.1873601425443185,
+          "wapePercent": 4.0874414796526395,
+          "matchPercent": 95.91255852034736,
+          "maeKwh": 14.412318657255206,
+          "rmseKwh": 16.17527875911471
+        }
+      }
+    },
+    {
+      "date": "2026-10-05",
+      "scores": {
+        "baselineKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.491719999999999,
+          "predictedMwh": 4.767105546298963,
+          "absoluteErrorMwh": 0.27807824375358575,
+          "differenceMwh": 0.27538554629896406,
+          "wapePercent": 6.190907798206161,
+          "matchPercent": 93.80909220179385,
+          "maeKwh": 21.39063413489121,
+          "rmseKwh": 26.63445234909139
+        },
+        "persistenceKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.491719999999999,
+          "predictedMwh": 4.583900000000001,
+          "absoluteErrorMwh": 0.09218000000000005,
+          "differenceMwh": 0.0921800000000012,
+          "wapePercent": 2.0522205302200507,
+          "matchPercent": 97.94777946977995,
+          "maeKwh": 7.090769230769235,
+          "rmseKwh": 8.51450978759652
+        },
+        "timesfmKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.491719999999999,
+          "predictedMwh": 4.157351921081543,
+          "absoluteErrorMwh": 0.376977815246582,
+          "differenceMwh": -0.3343680789184564,
+          "wapePercent": 8.392727401676465,
+          "matchPercent": 91.60727259832353,
+          "maeKwh": 28.998293480506312,
+          "rmseKwh": 34.04179580298603
+        },
+        "timesfmWeatherKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.491719999999999,
+          "predictedMwh": 4.747321473441522,
+          "absoluteErrorMwh": 0.255601473441521,
+          "differenceMwh": 0.2556014734415221,
+          "wapePercent": 5.690503269160167,
+          "matchPercent": 94.30949673083984,
+          "maeKwh": 19.661651803193923,
+          "rmseKwh": 21.092841992235478
+        },
+        "blendKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.491719999999999,
+          "predictedMwh": 4.757213509870243,
+          "absoluteErrorMwh": 0.265493509870242,
+          "differenceMwh": 0.26549350987024356,
+          "wapePercent": 5.9107315208927105,
+          "matchPercent": 94.08926847910729,
+          "maeKwh": 20.42257768232631,
+          "rmseKwh": 21.623033010463377
+        }
+      }
+    },
+    {
+      "date": "2026-10-06",
+      "scores": {
+        "baselineKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.4489399999999995,
+          "predictedMwh": 4.792091341292484,
+          "absoluteErrorMwh": 0.34923626095235333,
+          "differenceMwh": 0.3431513412924842,
+          "wapePercent": 7.849875722135012,
+          "matchPercent": 92.15012427786499,
+          "maeKwh": 26.86432776556564,
+          "rmseKwh": 32.06969887268394
+        },
+        "persistenceKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.4489399999999995,
+          "predictedMwh": 4.492299999999999,
+          "absoluteErrorMwh": 0.05951999999999988,
+          "differenceMwh": 0.04335999999999967,
+          "wapePercent": 1.3378467679941712,
+          "matchPercent": 98.66215323200583,
+          "maeKwh": 4.578461538461529,
+          "rmseKwh": 6.637354663047382
+        },
+        "timesfmKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.4489399999999995,
+          "predictedMwh": 4.229181877136231,
+          "absoluteErrorMwh": 0.3138324130249024,
+          "differenceMwh": -0.21975812286376914,
+          "wapePercent": 7.054094076901518,
+          "matchPercent": 92.94590592309848,
+          "maeKwh": 24.140954848069416,
+          "rmseKwh": 27.022112604992536
+        },
+        "timesfmWeatherKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.4489399999999995,
+          "predictedMwh": 4.47360921433195,
+          "absoluteErrorMwh": 0.11514023264910266,
+          "differenceMwh": 0.02466921433195057,
+          "wapePercent": 2.588037434739571,
+          "matchPercent": 97.41196256526042,
+          "maeKwh": 8.856940973007896,
+          "rmseKwh": 12.37810294336043
+        },
+        "blendKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.4489399999999995,
+          "predictedMwh": 4.632850277812217,
+          "absoluteErrorMwh": 0.18404107071209505,
+          "differenceMwh": 0.18391027781221783,
+          "wapePercent": 4.136739778735947,
+          "matchPercent": 95.86326022126406,
+          "maeKwh": 14.157005439391927,
+          "rmseKwh": 16.284154378853117
+        }
+      }
+    },
+    {
+      "date": "2026-10-07",
+      "scores": {
+        "baselineKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.07683,
+          "predictedMwh": 4.383242614682986,
+          "absoluteErrorMwh": 0.3387044041612042,
+          "differenceMwh": 0.30641261468298625,
+          "wapePercent": 8.30803354962567,
+          "matchPercent": 91.69196645037434,
+          "maeKwh": 26.054184935477245,
+          "rmseKwh": 34.6109081622408
+        },
+        "persistenceKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.07683,
+          "predictedMwh": 4.449229999999999,
+          "absoluteErrorMwh": 0.42702000000000007,
+          "differenceMwh": 0.3723999999999992,
+          "wapePercent": 10.474314602276769,
+          "matchPercent": 89.52568539772324,
+          "maeKwh": 32.84769230769231,
+          "rmseKwh": 40.63759892210472
+        },
+        "timesfmKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.07683,
+          "predictedMwh": 4.406052673339844,
+          "absoluteErrorMwh": 0.3380042083740234,
+          "differenceMwh": 0.32922267333984334,
+          "wapePercent": 8.290858543869216,
+          "matchPercent": 91.70914145613078,
+          "maeKwh": 26.000323721078722,
+          "rmseKwh": 35.13901592602383
+        },
+        "timesfmWeatherKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.07683,
+          "predictedMwh": 3.6881331674931093,
+          "absoluteErrorMwh": 0.40266186508393986,
+          "differenceMwh": -0.388696832506891,
+          "wapePercent": 9.876837275136314,
+          "matchPercent": 90.12316272486369,
+          "maeKwh": 30.97398962184153,
+          "rmseKwh": 38.3480739725202
+        },
+        "blendKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 4.07683,
+          "predictedMwh": 4.035687891088048,
+          "absoluteErrorMwh": 0.17887506469599043,
+          "differenceMwh": -0.04114210891195262,
+          "wapePercent": 4.3876017566587375,
+          "matchPercent": 95.61239824334126,
+          "maeKwh": 13.759620361230033,
+          "rmseKwh": 15.454199777686913
+        }
+      }
+    },
+    {
+      "date": "2026-10-08",
+      "scores": {
+        "baselineKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 3.36652,
+          "predictedMwh": 3.397344723171736,
+          "absoluteErrorMwh": 1.3991948620750647,
+          "differenceMwh": 0.030824723171736422,
+          "wapePercent": 41.56205405210914,
+          "matchPercent": 58.43794594789086,
+          "maeKwh": 107.63037400577421,
+          "rmseKwh": 152.5789432454762
+        },
+        "persistenceKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 3.36652,
+          "predictedMwh": 4.07578,
+          "absoluteErrorMwh": 0.7685,
+          "differenceMwh": 0.7092600000000002,
+          "wapePercent": 22.827727148509442,
+          "matchPercent": 77.17227285149056,
+          "maeKwh": 59.11538461538461,
+          "rmseKwh": 101.50232358083086
+        },
+        "timesfmKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 3.36652,
+          "predictedMwh": 4.392658195495605,
+          "absoluteErrorMwh": 1.0265381954956054,
+          "differenceMwh": 1.0261381954956055,
+          "wapePercent": 30.492561918408484,
+          "matchPercent": 69.50743808159152,
+          "maeKwh": 78.96447657658503,
+          "rmseKwh": 128.62828748971066
+        },
+        "timesfmWeatherKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 3.36652,
+          "predictedMwh": 3.4092560276699397,
+          "absoluteErrorMwh": 1.1860215751917251,
+          "differenceMwh": 0.04273602766993963,
+          "wapePercent": 35.229898387406735,
+          "matchPercent": 64.77010161259327,
+          "maeKwh": 91.23242886090193,
+          "rmseKwh": 132.65491778884305
+        },
+        "blendKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 3.36652,
+          "predictedMwh": 3.403300375420838,
+          "absoluteErrorMwh": 1.2731537470063385,
+          "differenceMwh": 0.03678037542083803,
+          "wapePercent": 37.81809545187132,
+          "matchPercent": 62.18190454812868,
+          "maeKwh": 97.9349036158722,
+          "rmseKwh": 142.37986051857206
+        }
+      }
+    },
+    {
+      "date": "2026-10-09",
+      "scores": {
+        "baselineKwh": {
+          "days": 1,
+          "hours": 12,
+          "actualMwh": 1.7172200000000002,
+          "predictedMwh": 2.2238932463769325,
+          "absoluteErrorMwh": 0.9483265898784854,
+          "differenceMwh": 0.5066732463769322,
+          "wapePercent": 55.22452509745317,
+          "matchPercent": 44.77547490254683,
+          "maeKwh": 79.02721582320711,
+          "rmseKwh": 92.40671659497177
+        },
+        "persistenceKwh": {
+          "days": 1,
+          "hours": 12,
+          "actualMwh": 1.7172200000000002,
+          "predictedMwh": 3.36632,
+          "absoluteErrorMwh": 1.6514000000000002,
+          "differenceMwh": 1.6491,
+          "wapePercent": 96.1670607144105,
+          "matchPercent": 3.8329392855895037,
+          "maeKwh": 137.61666666666667,
+          "rmseKwh": 185.33050936097922
+        },
+        "timesfmKwh": {
+          "days": 1,
+          "hours": 12,
+          "actualMwh": 1.7172200000000002,
+          "predictedMwh": 4.300196357727051,
+          "absoluteErrorMwh": 2.5829763577270506,
+          "differenceMwh": 2.5829763577270506,
+          "wapePercent": 150.41615854270566,
+          "matchPercent": 0,
+          "maeKwh": 215.24802981058755,
+          "rmseKwh": 255.71392701599396
+        },
+        "timesfmWeatherKwh": {
+          "days": 1,
+          "hours": 12,
+          "actualMwh": 1.7172200000000002,
+          "predictedMwh": 3.0994334087425153,
+          "absoluteErrorMwh": 1.4172515748709773,
+          "differenceMwh": 1.382213408742515,
+          "wapePercent": 82.53174170292549,
+          "matchPercent": 17.468258297074513,
+          "maeKwh": 118.10429790591478,
+          "rmseKwh": 152.77670394047985
+        },
+        "blendKwh": {
+          "days": 1,
+          "hours": 12,
+          "actualMwh": 1.7172200000000002,
+          "predictedMwh": 2.6616633275597237,
+          "absoluteErrorMwh": 1.1017760214761896,
+          "differenceMwh": 0.9444433275597235,
+          "wapePercent": 64.16044662164366,
+          "matchPercent": 35.83955337835634,
+          "maeKwh": 91.81466845634912,
+          "rmseKwh": 117.69743064350673
+        }
+      }
+    },
+    {
+      "date": "2026-10-10",
+      "scores": {
+        "baselineKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 2.6275399999999993,
+          "predictedMwh": 2.9348285935867136,
+          "absoluteErrorMwh": 0.48385104321743583,
+          "differenceMwh": 0.3072885935867139,
+          "wapePercent": 18.41460237398616,
+          "matchPercent": 81.58539762601384,
+          "maeKwh": 37.21931101672583,
+          "rmseKwh": 69.06092249246657
+        },
+        "persistenceKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 2.6275399999999993,
+          "predictedMwh": 1.7172200000000002,
+          "absoluteErrorMwh": 1.00144,
+          "differenceMwh": -0.9103199999999992,
+          "wapePercent": 38.113216164168776,
+          "matchPercent": 61.886783835831224,
+          "maeKwh": 77.03384615384616,
+          "rmseKwh": 137.00378085743023
+        },
+        "timesfmKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 2.6275399999999993,
+          "predictedMwh": 3.074139877319336,
+          "absoluteErrorMwh": 1.0259558392333985,
+          "differenceMwh": 0.4465998773193364,
+          "wapePercent": 39.046250075485005,
+          "matchPercent": 60.953749924514995,
+          "maeKwh": 78.91967994103067,
+          "rmseKwh": 107.10427277691434
+        },
+        "timesfmWeatherKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 2.6275399999999993,
+          "predictedMwh": 2.968961224502383,
+          "absoluteErrorMwh": 0.6356396710531296,
+          "differenceMwh": 0.34142122450238366,
+          "wapePercent": 24.191436516784886,
+          "matchPercent": 75.80856348321511,
+          "maeKwh": 48.895359311779195,
+          "rmseKwh": 75.60302335028315
+        },
+        "blendKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 2.6275399999999993,
+          "predictedMwh": 2.951894909044548,
+          "absoluteErrorMwh": 0.5558118836039159,
+          "differenceMwh": 0.32435490904454856,
+          "wapePercent": 21.153317688937786,
+          "matchPercent": 78.84668231106221,
+          "maeKwh": 42.75476027722429,
+          "rmseKwh": 71.64676067776611
+        }
+      }
+    },
+    {
+      "date": "2026-10-11",
+      "scores": {
+        "baselineKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 1.7630500000000002,
+          "predictedMwh": 1.5807310193404887,
+          "absoluteErrorMwh": 0.7197000470147163,
+          "differenceMwh": -0.18231898065951146,
+          "wapePercent": 40.821306656913656,
+          "matchPercent": 59.178693343086344,
+          "maeKwh": 55.3615420780551,
+          "rmseKwh": 72.11796320617043
+        },
+        "persistenceKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 1.7630500000000002,
+          "predictedMwh": 2.6275199999999996,
+          "absoluteErrorMwh": 1.6783900000000003,
+          "differenceMwh": 0.8644699999999993,
+          "wapePercent": 95.19809421173535,
+          "matchPercent": 4.801905788264648,
+          "maeKwh": 129.1069230769231,
+          "rmseKwh": 169.9062301343348
+        },
+        "timesfmKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 1.7630500000000002,
+          "predictedMwh": 3.3069349060058593,
+          "absoluteErrorMwh": 1.5439049060058594,
+          "differenceMwh": 1.5438849060058593,
+          "wapePercent": 87.57011463122765,
+          "matchPercent": 12.429885368772347,
+          "maeKwh": 118.76191584660457,
+          "rmseKwh": 159.94556039355214
+        },
+        "timesfmWeatherKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 1.7630500000000002,
+          "predictedMwh": 1.7069291629476118,
+          "absoluteErrorMwh": 0.7114350653136319,
+          "differenceMwh": -0.05612083705238843,
+          "wapePercent": 40.35251781365428,
+          "matchPercent": 59.64748218634572,
+          "maeKwh": 54.72577425489476,
+          "rmseKwh": 76.38448821525094
+        },
+        "blendKwh": {
+          "days": 1,
+          "hours": 13,
+          "actualMwh": 1.7630500000000002,
+          "predictedMwh": 1.6438300911440507,
+          "absoluteErrorMwh": 0.7120922343146587,
+          "differenceMwh": -0.1192199088559496,
+          "wapePercent": 40.389792366334405,
+          "matchPercent": 59.610207633665595,
+          "maeKwh": 54.77632571651221,
+          "rmseKwh": 72.70176582554922
+        }
+      }
+    }
+  ],
+  "pairedBootstrap": {
+    "persistenceKwh": {
+      "replicates": 2000,
+      "lower95PercentagePoints": -0.11925103527511993,
+      "upper95PercentagePoints": 21.172610289210787,
+      "dailyWins": 8,
+      "dailyLosses": 13
+    },
+    "timesfmKwh": {
+      "replicates": 2000,
+      "lower95PercentagePoints": 3.93340801943884,
+      "upper95PercentagePoints": 22.42318704016105,
+      "dailyWins": 7,
+      "dailyLosses": 14
+    },
+    "timesfmWeatherKwh": {
+      "replicates": 2000,
+      "lower95PercentagePoints": -0.043153238155699825,
+      "upper95PercentagePoints": 8.690170978742678,
+      "dailyWins": 8,
+      "dailyLosses": 13
+    },
+    "blendKwh": {
+      "replicates": 2000,
+      "lower95PercentagePoints": -1.4738644746611378,
+      "upper95PercentagePoints": 2.6713317272076935,
+      "dailyWins": 12,
+      "dailyLosses": 9
+    }
+  },
+  "inputSha256": "c8c70161f13b092343f5a260b69f3f9177ba31bf50da203a04972ac9bb7cebe6",
+  "targetSha256": "259b48c86a265c4485102e915df824cdcb04f3aa51e0517dd17ce757914959b2",
+  "predictionsSha256": "b14cead7a34e27d8e26416fed956377cb5b2a4ea2ef9d492eafd8daa94cad394",
+  "limitations": [
+    "Dates were already used in previous model research; not independent prospective evidence.",
+    "GFS historical weather is from the original three-hour-resolution source; target scoring remains hourly.",
+    "Night input zeros and rare daylight input medians are marked inference-only imputations; target gaps are never filled.",
+    "Forecast-derived sky regimes are diagnostic labels, not observed weather.",
+    "Bootstrap is exploratory; 21 serially correlated days do not establish production superiority.",
+    "Solar DC capacity and panel orientation remain unknown; no weights or geometry were fitted on these target scores."
+  ]
+}

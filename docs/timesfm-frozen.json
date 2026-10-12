@@ -1,0 +1,166 @@
+{
+  "preparedAt": "2026-10-12T13:32:10.851Z",
+  "protocolSha256": "d092af0215f17a5419a2dc2028927eec006a1a83a092080601861c5ff84e084b",
+  "inputSha256": "c8c70161f13b092343f5a260b69f3f9177ba31bf50da203a04972ac9bb7cebe6",
+  "targetsSha256": "259b48c86a265c4485102e915df824cdcb04f3aa51e0517dd17ce757914959b2",
+  "codeHashes": {
+    "scripts/export-timesfm-inputs.mjs": "a3e8e129c1d91179df96e67c316a5284fd40db02d20022350696ef4a75e69da4",
+    "scripts/prepare-timesfm-experiment.mjs": "38948a6f49a3fae1a3f4e2756c8b44a061b3bafe357890f7b4b42a1256a4e96f",
+    "scripts/run-timesfm-experiment.py": "e323bcb93216cead21f91ae7783ec6179e31bc0e254e5a75eb6edb97ef07fc9a",
+    "scripts/score-timesfm-experiment.mjs": "1876702185152b282b3bbde4dd9675555ca90d0208fb914d360a3d624acfed8c",
+    "lib/forecast-backtest.ts": "a81f940e3352b6a19a2ec3ac8cce0b577549edd0dbfda0ff800742734f2f7955",
+    "lib/forecast-hourly-calibration.ts": "cecb53192214a9f765b9ec457646613ea1a7c7c8b9fe3ff35dd79345cce57b9a",
+    "lib/forecast-solar.ts": "fba507e21fc87ea75021258273079062d90c3b7d15009e374867aea9350843e6"
+  },
+  "folds": 21,
+  "excluded": [],
+  "quality": [
+    {
+      "date": "2026-09-21",
+      "daylight": 130,
+      "imputedDaylight": 1,
+      "nightFilled": 87,
+      "regime": "variable"
+    },
+    {
+      "date": "2026-09-22",
+      "daylight": 130,
+      "imputedDaylight": 1,
+      "nightFilled": 88,
+      "regime": "variable"
+    },
+    {
+      "date": "2026-09-23",
+      "daylight": 130,
+      "imputedDaylight": 2,
+      "nightFilled": 89,
+      "regime": "sunny"
+    },
+    {
+      "date": "2026-09-24",
+      "daylight": 130,
+      "imputedDaylight": 1,
+      "nightFilled": 90,
+      "regime": "sunny"
+    },
+    {
+      "date": "2026-09-25",
+      "daylight": 130,
+      "imputedDaylight": 0,
+      "nightFilled": 91,
+      "regime": "cloudy-mixed"
+    },
+    {
+      "date": "2026-09-26",
+      "daylight": 130,
+      "imputedDaylight": 1,
+      "nightFilled": 91,
+      "regime": "variable"
+    },
+    {
+      "date": "2026-09-27",
+      "daylight": 130,
+      "imputedDaylight": 1,
+      "nightFilled": 91,
+      "regime": "variable"
+    },
+    {
+      "date": "2026-09-28",
+      "daylight": 130,
+      "imputedDaylight": 1,
+      "nightFilled": 91,
+      "regime": "sunny"
+    },
+    {
+      "date": "2026-09-29",
+      "daylight": 130,
+      "imputedDaylight": 1,
+      "nightFilled": 92,
+      "regime": "sunny"
+    },
+    {
+      "date": "2026-09-30",
+      "daylight": 130,
+      "imputedDaylight": 2,
+      "nightFilled": 93,
+      "regime": "variable"
+    },
+    {
+      "date": "2026-10-01",
+      "daylight": 130,
+      "imputedDaylight": 2,
+      "nightFilled": 94,
+      "regime": "sunny"
+    },
+    {
+      "date": "2026-10-02",
+      "daylight": 130,
+      "imputedDaylight": 1,
+      "nightFilled": 95,
+      "regime": "sunny"
+    },
+    {
+      "date": "2026-10-03",
+      "daylight": 130,
+      "imputedDaylight": 0,
+      "nightFilled": 96,
+      "regime": "sunny"
+    },
+    {
+      "date": "2026-10-04",
+      "daylight": 130,
+      "imputedDaylight": 0,
+      "nightFilled": 97,
+      "regime": "sunny"
+    },
+    {
+      "date": "2026-10-05",
+      "daylight": 130,
+      "imputedDaylight": 1,
+      "nightFilled": 98,
+      "regime": "sunny"
+    },
+    {
+      "date": "2026-10-06",
+      "daylight": 130,
+      "imputedDaylight": 1,
+      "nightFilled": 99,
+      "regime": "sunny"
+    },
+    {
+      "date": "2026-10-07",
+      "daylight": 130,
+      "imputedDaylight": 1,
+      "nightFilled": 100,
+      "regime": "variable"
+    },
+    {
+      "date": "2026-10-08",
+      "daylight": 130,
+      "imputedDaylight": 0,
+      "nightFilled": 100,
+      "regime": "variable"
+    },
+    {
+      "date": "2026-10-09",
+      "daylight": 129,
+      "imputedDaylight": 0,
+      "nightFilled": 101,
+      "regime": "cloudy-mixed"
+    },
+    {
+      "date": "2026-10-10",
+      "daylight": 128,
+      "imputedDaylight": 0,
+      "nightFilled": 101,
+      "regime": "cloudy-mixed"
+    },
+    {
+      "date": "2026-10-11",
+      "daylight": 127,
+      "imputedDaylight": 0,
+      "nightFilled": 100,
+      "regime": "variable"
+    }
+  ]
+}

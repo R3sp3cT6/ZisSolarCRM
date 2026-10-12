@@ -1,0 +1,11 @@
+{
+  "savedAt": "2026-10-12T13:37:49.670Z",
+  "id": "timesfm-2.5-day-ahead-research-v1-a4dd8341a43511227248",
+  "table": "forecast_evaluations",
+  "modelVersion": "timesfm-2.5-day-ahead-research-v1",
+  "readback": "exact",
+  "inputBytes": 3781163,
+  "payloadBytes": 138589,
+  "unchangedOperationalTables": true,
+  "note": "This script only inserts a new research record. No operational forecast, replay, reading, revenue, cache or schedule mutation."
+}

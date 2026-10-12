@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-10-12T13:35:37.429Z",
+  "status": "passed",
+  "folds": 21,
+  "forecastHours": 588,
+  "pairedHours": 272,
+  "inputContexts": {
+    "measured": 3039,
+    "nightFilled": 1984,
+    "dayFilled": 17
+  },
+  "checks": [
+    "All input revision receipts precede issue time; all source intervals complete",
+    "Median fill uses at least three prior same-hour observations; only astronomical nights get physical zeros",
+    "Weather original run and replay issuance precede prediction cutoff",
+    "All 21 days and 28 horizons present; original model weight SHA256 matches publisher",
+    "Fixed physical constraints and 50:50 combination independently verified",
+    "WAPE recomputed independently on identical actual hours for every method"
+  ],
+  "predictionsSha256": "b14cead7a34e27d8e26416fed956377cb5b2a4ea2ef9d492eafd8daa94cad394"
+}
