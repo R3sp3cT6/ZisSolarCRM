@@ -1,0 +1,30 @@
+{
+  "status": "verified",
+  "commit": "3ec0e83",
+  "deploymentId": "dpl_DuSXVuH7SWfsjUMRFdN3JjP3PzRX",
+  "deploymentUrl": "https://zissolar-lce50xpfz-ilijas-projects-526973e6.vercel.app",
+  "productionUrl": "https://zissolar.vercel.app",
+  "checkedAt": "2026-10-12T17:28:30Z",
+  "forecastTests": { "passed": 124, "failed": 0 },
+  "build": "Local and Vercel production builds and TypeScript passed",
+  "postgresFixture": "passed read-only; single snapshot, missing-hour retention, cutoff and DST",
+  "productionUi": {
+    "dailyPrimaryAccuracy": "58,0%",
+    "dailyPrimaryWape": "42,0%",
+    "dailyPairedCoverage": "14/19",
+    "monthlyPairedCoverage": "14/283",
+    "monthlyScore": "Same one measured day only; does not include historical simulations",
+    "secondaryScores": "Separate, expandable, labelled match with plotted line",
+    "mobileViewport": { "width": 390, "height": 844 },
+    "mobileDocumentWidth": 375,
+    "mobileVisualCheck": "Readable stacked values and no horizontal overflow; viewport reset afterward",
+    "consoleErrors": [],
+    "screenshots": [
+      "outputs/day-ahead-accuracy-2026-10-12.jpg",
+      "outputs/day-ahead-accuracy-mobile-2026-10-12.jpg"
+    ]
+  },
+  "modelPromoted": false,
+  "officialModel": "v3.2",
+  "note": "The primary score is now explicitly day ahead. Different cohort selection is not model improvement. WAPE below 5% is not achieved."
+}

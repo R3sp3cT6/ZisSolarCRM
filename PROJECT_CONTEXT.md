@@ -1,14 +1,14 @@
 # ZIS Solar — контекст за продолжување на работата
 
-Последно проверено: **12.10.2026, 19:27 Ресен** — главната цел е експлицитно day-ahead; додадена одделна оценка со пресек 18 UTC претходниот ден. v3.2 останува официјален; NOAA download 43934 сè уште е жив.
+Последно проверено: **12.10.2026, 19:29 Ресен** — главната цел е експлицитно day-ahead; додадена одделна оценка со пресек 18 UTC претходниот ден. v3.2 останува официјален; NOAA download 43934 сè уште е жив.
 
 ## Главен хоризонт: ден однапред — 12 октомври 19:27
 
 - Корисникот одговори **„Ден однапред — главната цел“**. Месечниот часовен WAPE под 5% се однесува на тој хоризонт. Интрадневните Huawei/сателитски резултати остануваат одделни и не ја исполнуваат целта.
 - [Промена и правила](docs/day-ahead-comparison.md), [read-only audit](docs/day-ahead-comparison-audit.json): main strip добива посебна day-ahead оценка. Една последна верзија од претходниот локален ден до 18 UTC; нема fallback за null часови. Истиот пресек како замрзнатиот research protocol. Старата линија/споредби остануваат во посебни details; мерења, приходи и snapshots не се препишуваат.
 - Стар SQL избор: 192 часа, 0 same-day, 168 подолг хоризонт. Нов избор: 12/13 октомври по 24 часа. Само 12 октомври има реални исходи: 14 спарени / 13 score часа, WAPE 41,958986%, скала 58,041014%, нецелосен ден. Ова е промена на cohort, НЕ подобрување на моделот или месечна точност. Претходните октомвриски симулации остануваат симулации.
-- 124 forecast теста + PostgreSQL read-only fixture + build/TypeScript поминаа. Новиот насочен lint помина; energy-chart има две стари lint грешки во непроменети effect/group делови. Нема нов polling/cron. Кеш проекција v2, owner/revision bound, една SQL query по cache miss. Deployment и SQL archival следуваат откако се запише овој commit.
-- NOAA истиот session **43934** е live, последен целосен ден 26 јули, 3200/5348 задачи / 5163s. Не рестартирај/дуплирај. Подготви/оцени само по терминален исход и 192 complete/0 failures. Ова продолжување е progress, не blocked; целта не е постигната.
+- 124 forecast теста + PostgreSQL read-only fixture + build/TypeScript поминаа. Новиот насочен lint помина; energy-chart има две стари lint грешки во непроменети effect/group делови. Нема нов polling/cron. Кеш проекција v2, owner/revision bound, една SQL query по cache miss. Објавено **3ec0e83**, READY deployment **dpl_DuSXVuH7SWfsjUMRFdN3JjP3PzRX**, alias https://zissolar.vercel.app. Најавениот UI проверен: ден 14/19 спарени часа, месец 14/283, ист 58,0% score само од 12 октомври. Мобилен 390×844 визуелно проверен, без прелевање; viewport reset. 0 console errors. [Release](docs/day-ahead-comparison-release.json). SQL append-only **day-ahead-comparison-policy-v1-e37dc50b2ca0987f5e6b**, 333.142 bytes inputs, exact readback 17:28:57UTC. [Receipt](docs/day-ahead-comparison-persistence.json).
+- NOAA истиот session **43934** е live, последен целосен ден 29 јули, 3300/5348 задачи / 5317s, потврден live во 17:28:30UTC. Не рестартирај/дуплирај. Подготви/оцени само по терминален исход и 192 complete/0 failures. Ова продолжување е progress, не blocked; целта не е постигната.
 ## NOAA midpoint проверка — 12 октомври 19:11
 
 - Претходното продолжување беше **verified wait** на43934, безblockedstreak. Во ова продолжување истиот handleповторное потврденlive; немаrestart/дупликат. Последенoutput10јули,2700/5348tasks,4239s;99од192целоснидати.
