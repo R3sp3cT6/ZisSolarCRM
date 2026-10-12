@@ -78,7 +78,7 @@ export async function refreshActive(owner:string){
   const persist=()=>cacheWrite('fusion:'+owner,state);
   // Reservations are durably saved before Huawei calls, even on request failure.
   await persist();
-  const telemetry=await collectTelemetry(state,fusionClient(owner,state,persist),rows=>queueReadings(owner,rows),false,(values,ids,receivedAt)=>recordHistoricalTrial(owner,values,ids,receivedAt));
+  const telemetry=await collectTelemetry(state,fusionClient(owner,state,persist),rows=>queueReadings(owner,rows),false,(values,ids,receivedAt,source)=>recordHistoricalTrial(owner,values,ids,receivedAt,source));
   state.error=telemetry.error;await persist();
   try{await recordLiveTrial(owner,state.forecastObservation);}catch{console.warn('Trial observation deferred');}
   return {configured:true,updated:telemetry.updated,error:telemetry.error,connected:!!state.live,storage:'cache' as const};

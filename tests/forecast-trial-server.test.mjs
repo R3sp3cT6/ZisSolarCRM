@@ -319,3 +319,102 @@ void test('historical evaluation gaps queue without SQL or altering live forecas
   assert.equal(cache.has('trial-observations:plant'), false);
   assert.equal(cache.has('trial-intraday:plant'), false);
 });
+
+void test('fresh timestamped history seeds one future-only nowcast with both samples and original receipts', async () => {
+  const now = new Date('2026-10-12T12:11:00Z');
+  mock.timers.enable({ apis: ['Date'], now: now.getTime() });
+  try {
+    const { TRIAL_VERSION } = await import('../lib/forecast-trial.ts');
+    const { defaultForecastConfig } = await import('../lib/forecast-model.ts');
+    cache.set('trial-context:plant', {
+      version: TRIAL_VERSION,
+      issuedAt: '2026-10-12T11:00:00Z',
+      baselineId: 'baseline',
+      weatherRunAt: '2026-10-12T06:00:00Z',
+      config: { ...defaultForecastConfig(), acKw: 875 },
+      calibration: { days: 14, samples: 100, coefficients: [] },
+      hours: [11, 12, 13, 14].map((h) => ({
+        start: `2026-10-12T${h}:00:00.000Z`,
+        iconKwh: 200,
+        baselineKwh: 200,
+      })),
+    });
+    const rows = [0, 5, 10].flatMap((minute, index) =>
+      [1, 2].map((devId) => ({
+        devId,
+        collectTime: Date.parse('2026-10-12T12:00:00Z') + minute * 60000,
+        dataItemMap: {
+          active_power: 50,
+          total_cap: 1000 + index * 5,
+          inverter_state: 512,
+        },
+      })),
+    );
+    await recordHistoricalTrial('plant', rows, [1, 2], now);
+    const pending = structuredClone(cache.get('trial-pending:plant'));
+    assert.equal(pending.observations.length, 3);
+    assert.equal(pending.inverterSamples.length, 6);
+    assert.equal(pending.runs.length, 1);
+    assert.equal(pending.runs[0].run.status, 'ready');
+    assert.equal(pending.runs[0].run.kind, 'intraday');
+    assert.equal(pending.runs[0].run.correction.observations, 2);
+    assert.equal(pending.runs[0].run.correction.factor, 0.5);
+    assert.ok(
+      pending.runs[0].run.hours.every(
+        (h) => Date.parse(h.start) >= now.getTime(),
+      ),
+    );
+    assert.ok(
+      pending.runs[0].inputs.observations.every(
+        (s) => s.source === 'history' && s.receivedAt === now.toISOString(),
+      ),
+    );
+    assert.equal(cache.get('trial-observations:plant').length, 3);
+    await recordHistoricalTrial(
+      'plant',
+      rows,
+      [1, 2],
+      new Date(now.getTime() + 1000),
+    );
+    assert.deepEqual(
+      cache.get('trial-pending:plant'),
+      pending,
+      'repeated history cannot reissue or rewrite receipt',
+    );
+    assert.equal(queries.length, 0);
+  } finally {
+    mock.timers.reset();
+  }
+});
+
+void test('trial ingestion rejects future, backdated and expired observations and future context', async () => {
+  const now = new Date('2026-10-12T12:11:00Z');
+  const base = {
+    measuredAt: '2026-10-12T12:05:00Z',
+    receivedAt: now.toISOString(),
+    powerKw: 100,
+    totalKwh: 1000,
+    inverters: 2,
+    allProducing: true,
+  };
+  await recordLiveTrial(
+    'plant',
+    [
+      { ...base, measuredAt: 'invalid' },
+      { ...base, receivedAt: '2026-10-12T12:12:00Z' },
+      { ...base, receivedAt: '2026-10-12T12:04:00Z' },
+      { ...base, measuredAt: '2026-10-12T11:55:00Z' },
+    ],
+    now,
+  );
+  assert.equal(cache.size, 0);
+  const { TRIAL_VERSION } = await import('../lib/forecast-trial.ts');
+  cache.set('trial-context:plant', {
+    version: TRIAL_VERSION,
+    issuedAt: '2026-10-12T12:12:00Z',
+  });
+  await recordLiveTrial('plant', base, now);
+  assert.equal(cache.get('trial-pending:plant').observations.length, 1);
+  assert.equal(cache.has('trial-intraday:plant'), false);
+  assert.equal(queries.length, 0);
+});

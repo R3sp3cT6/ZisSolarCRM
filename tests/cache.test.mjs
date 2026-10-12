@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {archiveDue,ACTIVE_GAP_MS,ARCHIVE_INTERVAL_MS} from '../lib/cache-policy.ts';
 import {buildDashboard} from '../lib/dashboard.ts';
 import {localDate,slotsForDay} from '../lib/energy.ts';
-let entries=new Map(),locks=new Set(),loads=0,syncs=0,telemetryCalls=0,saves=[],failSave=false,failAck=false;
+let entries=new Map(),locks=new Set(),loads=0,syncs=0,telemetryCalls=0,saves=[],failSave=false,failAck=false,telemetryBatches=[];
 const read=async key=>structuredClone(entries.get(key)??null);
 const write=async(key,value)=>{if(failAck&&key==='pending:owner'&&value.length===0){failAck=false;throw Error('ack interrupted');}entries.set(key,structuredClone(value));};
 mock.module('../lib/forecast-comparison-server.ts',{namedExports:{readForecastComparison:async()=>({hours:[]})}});
@@ -11,17 +11,17 @@ mock.module('../lib/shared-cache.ts',{namedExports:{sharedCache:()=>({}),cacheRe
 const snapshot=()=>({owner:'owner',plant:{name:'Plant',capacity_kw:800},readings:[],prices:[],reports:[],syncs:[],fusionState:{},configured:true,savedAt:new Date().toISOString()});
 mock.module('../lib/solar-server.ts',{namedExports:{loadDashboardSnapshot:async()=>{loads++;return snapshot();},getDashboard:()=>{throw Error('Unexpected database read');},saveReadings:async(owner,rows,source,preserve,fillOnly)=>{assert.equal(owner,'owner');assert.equal(preserve,true);assert.equal(fillOnly,true);if(failSave)throw Error('database unavailable');saves.push(rows);return rows.length;}}});
 mock.module('../lib/fusionsolar-server.ts',{namedExports:{fusionConfigured:()=>true,fusionOwner:()=> 'owner',syncFusionDirect:async()=>{syncs++;return {configured:true,updated:0,error:null};}}});
-mock.module('../lib/fusion-client.ts',{namedExports:{fusionClient:()=>({}),collectTelemetry:async(state,client,save)=>{telemetryCalls++;await save([reading()]);return {updated:1,error:null};}}});
+mock.module('../lib/fusion-client.ts',{namedExports:{fusionClient:()=>({}),collectTelemetry:async(state,client,save,daily,onProduction)=>{telemetryCalls++;await save([reading()]);for(const batch of telemetryBatches)await onProduction(batch.values,state.devices,batch.receivedAt,batch.source);return {updated:1,error:null};}}});
 const {getCachedDashboard,refreshActive,flushPending,overlayPending}=await import('../lib/solar-cache.ts');
 function reading(){return {start:slotsForDay(localDate())[0].start,productionKwh:0,exportKwh:null,powerKw:null,observedAt:new Date().toISOString()};}
-beforeEach(()=>{entries=new Map();locks=new Set();loads=0;syncs=0;telemetryCalls=0;saves=[];failSave=false;failAck=false;});
-test('archive on first visit, returning after idle, or hourly activity, not every live refresh',()=>{
+beforeEach(()=>{entries=new Map();locks=new Set();loads=0;syncs=0;telemetryCalls=0;saves=[];failSave=false;failAck=false;telemetryBatches=[];});
+void test('archive on first visit, returning after idle, or hourly activity, not every live refresh',()=>{
  const now=100000000;assert.equal(archiveDue(null,now),true);
  assert.equal(archiveDue({lastActive:now-310000,lastArchived:now-310000},now),false);
  assert.equal(archiveDue({lastActive:now-ACTIVE_GAP_MS,lastArchived:now-ACTIVE_GAP_MS},now),true);
  assert.equal(archiveDue({lastActive:now,lastArchived:now-ARCHIVE_INTERVAL_MS},now),true);
 });
-test('all warm period reads avoid database, isolate owners and validate input',async()=>{
+void test('all warm period reads avoid database, isolate owners and validate input',async()=>{
  entries.set('dashboard:owner',snapshot());
  for(const period of ['day','month','year'])assert.equal((await getCachedDashboard('owner',localDate(),period)).storage,'cache');
  assert.equal(loads,0);assert.equal(syncs,0);
@@ -29,31 +29,52 @@ test('all warm period reads avoid database, isolate owners and validate input',a
  await assert.rejects(getCachedDashboard('owner','invalid','day'));
  assert.equal(loads,0);
 });
-test('simultaneous visitors share one live refresh, buffer results, and never touch Neon',async()=>{
+void test('simultaneous visitors share one live refresh, buffer results, and never touch Neon',async()=>{
  const now=Date.now();entries.set('dashboard:owner',snapshot());entries.set('activity:owner',{lastActive:now-310000,lastArchived:now-310000});entries.set('fusion:owner',{devicesAt:now,devices:[1],lastAttempt:new Date(now-320000).toISOString()});
  const responses=await Promise.all([refreshActive('owner'),refreshActive('owner')]);
  assert.equal(telemetryCalls,1);assert.ok(responses.some(r=>r.busy));assert.equal(loads,0);assert.equal(syncs,0);assert.equal(saves.length,0);
  assert.equal(entries.get('pending:owner').length,1);
  await refreshActive('owner');assert.equal(telemetryCalls,1);
 });
-test('first active visitor flushes durable records and creates a shared database snapshot',async()=>{
+void test('first active visitor flushes durable records and creates a shared database snapshot',async()=>{
  entries.set('pending:owner',[{id:'batch',rows:[reading()]}]);
  assert.equal((await refreshActive('owner')).storage,'database');
  assert.equal(syncs,1);assert.equal(loads,1);assert.equal(saves.length,1);assert.deepEqual(entries.get('pending:owner'),[]);
 });
-test('failed writes and interrupted acknowledgements retain batches for safe fill-only replay',async()=>{
+
+void test('warm refresh preserves live/history provenance and rejects stale live device evidence',async()=>{
+ const now=Date.now(),at=Math.floor(now/300000)*300000;
+ entries.set('dashboard:owner',snapshot());
+ entries.set('activity:owner',{lastActive:now-310000,lastArchived:now-310000});
+ entries.set('fusion:owner',{devicesAt:now,devices:[1,2],lastAttempt:new Date(now-320000).toISOString()});
+ const batch=(time,source)=>({source,receivedAt:new Date(now),values:[1,2].map(devId=>({devId,collectTime:time,dataItemMap:{active_power:50,total_cap:1000,inverter_state:512}}))});
+ telemetryBatches=[batch(at,'live'),batch(at-20*60000,'live'),batch(at-3600000,'history')];
+ const result=await refreshActive('owner');
+ assert.equal(result.storage,'cache');
+ const pending=entries.get('trial-pending:owner');
+ assert.equal(pending.inverterSamples.length,4);
+ assert.deepEqual(pending.inverterSamples.map(s=>s.source).sort(),['history','history','live','live']);
+ assert.ok(pending.inverterSamples.every(s=>s.measuredAt!==new Date(at-20*60000).toISOString()));
+ assert.equal(pending.observations.length,1);
+ assert.equal(pending.observations[0].measuredAt,new Date(at-3600000).toISOString());
+ assert.equal(pending.observations[0].source,'history');
+ assert.ok(pending.inverterSamples.every(s=>s.receivedAt===new Date(now).toISOString()));
+ assert.equal(entries.has('trial-observations:owner'),false);
+ assert.equal(loads,0);assert.equal(syncs,0);assert.equal(saves.length,0);
+});
+void test('failed writes and interrupted acknowledgements retain batches for safe fill-only replay',async()=>{
  const batch={id:'batch',rows:[reading()]};entries.set('pending:owner',[batch]);
  failSave=true;await assert.rejects(flushPending('owner'),/database/);assert.deepEqual(entries.get('pending:owner'),[batch]);
  failSave=false;failAck=true;await assert.rejects(flushPending('owner'),/ack/);assert.deepEqual(entries.get('pending:owner'),[batch]);
  await flushPending('owner');assert.deepEqual(entries.get('pending:owner'),[]);assert.equal(saves.length,2);
 });
-test('pending counter data fills gaps without erasing archive, turning missing values into zero, or mutating cache',()=>{
+void test('pending counter data fills gaps without erasing archive, turning missing values into zero, or mutating cache',()=>{
  const base=snapshot(),r=reading();base.readings=[{start:r.start,production_kwh:12,export_kwh:null,power_kw:null,observed_at:r.observedAt,updated_at:r.observedAt,source:'XLSX'}];
  const over=overlayPending(base,[{id:'one',rows:[{...r,productionKwh:99,exportKwh:4}]}],null);
  assert.equal(over.readings[0].production_kwh,12);assert.equal(over.readings[0].export_kwh,4);assert.equal(base.readings[0].export_kwh,null);
  const blank=overlayPending(snapshot(),[{id:'two',rows:[r]}],null);assert.equal(blank.readings[0].production_kwh,0);assert.equal(blank.readings[0].export_kwh,null);
 });
-test('cached projections calculate production, income, calendar and missing hours from the same inputs',()=>{
+void test('cached projections calculate production, income, calendar and missing hours from the same inputs',()=>{
  const base=snapshot(),day='2026-09-08',start=slotsForDay(day)[8].start,now=Date.parse('2026-09-09T08:00:00Z');
  base.readings=[{start,production_kwh:120,export_kwh:100,power_kw:90,observed_at:start,updated_at:start,source:'measured'}];
  base.prices=[{start,market_date:day,eur_cents:10000,fetched_at:start}];
@@ -63,7 +84,7 @@ test('cached projections calculate production, income, calendar and missing hour
  assert.equal(buildDashboard(base,day,'day',undefined,now).totals.missing,23);
 });
 
-test('fresh current-hour production fills an existing export row without waiting for a database flush',()=>{
+void test('fresh current-hour production fills an existing export row without waiting for a database flush',()=>{
  const base=snapshot(),day='2026-09-09',start='2026-09-09T08:00:00.000Z',now=Date.parse('2026-09-09T08:45:00Z');
  base.readings=[{start,production_kwh:null,export_kwh:10,power_kw:null,observed_at:'2026-09-09T08:10:00Z',updated_at:start,source:'earlier reading'}];
  base.prices=[{start,market_date:day,eur_cents:10000,fetched_at:start}];

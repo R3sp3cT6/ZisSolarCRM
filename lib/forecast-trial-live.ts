@@ -42,8 +42,8 @@ type Pending = {
 const pendingKey = (owner: string) => 'trial-pending:' + owner;
 
 /** Retain device evidence from existing Huawei calls, including partial device
- * coverage. History also supplies complete aggregates; it never enters the live
- * prediction input cache. Genuine first receipt timestamps remain unchanged. */
+ * coverage. Only complete, genuinely fresh historical samples may also feed the
+ * short-term trial after arrival. First receipt timestamps remain unchanged. */
 export async function recordHistoricalTrial(
   owner: string,
   input: unknown,
@@ -90,20 +90,29 @@ export async function recordHistoricalTrial(
     90,
   );
   if (queued.busy) throw Error('Trial history queue busy');
+  if (source === 'history')
+    await recordLiveTrial(owner, observations, receivedAt);
 }
 
 /** Runs only after an existing Huawei fetch. No additional polling or SQL. */
 export async function recordLiveTrial(
   owner: string,
-  sample: LiveObservation | null | undefined,
+  sample: LiveObservation | LiveObservation[] | null | undefined,
   now = new Date(),
 ) {
-  if (
-    !sample ||
-    !sharedCache() ||
-    now.getTime() - Date.parse(sample.measuredAt) > 15 * 60000
-  )
-    return;
+  if (!sample || !sharedCache()) return;
+  const candidates = (Array.isArray(sample) ? sample : [sample]).filter((s) => {
+    const measured = Date.parse(s.measuredAt),
+      received = Date.parse(s.receivedAt);
+    return (
+      Number.isFinite(measured) &&
+      Number.isFinite(received) &&
+      measured <= received &&
+      received <= now.getTime() &&
+      now.getTime() - measured <= 15 * 60000
+    );
+  });
+  if (!candidates.length) return;
   await withCacheLock(
     'trial-live:' + owner,
     async () => {
@@ -114,15 +123,30 @@ export async function recordLiveTrial(
       const recent =
         (await cacheRead<LiveObservation[]>('trial-observations:' + owner)) ??
         [];
-      if (recent.some((s) => s.measuredAt === sample.measuredAt)) return;
-      pending.observations.push(sample);
-      const samples = [...recent, sample]
+      const byTime = new Map(recent.map((s) => [s.measuredAt, s]));
+      const pendingByTime = new Map(
+        pending.observations.map((s) => [s.measuredAt, s]),
+      );
+      let added = false;
+      for (const s of candidates) {
+        if (byTime.has(s.measuredAt)) continue;
+        // History was already queued above. Preserve its genuine first receipt,
+        // and do not duplicate observations when the same batch seeds the trial.
+        const first = pendingByTime.get(s.measuredAt) ?? s;
+        byTime.set(s.measuredAt, first);
+        pendingByTime.set(s.measuredAt, first);
+        added = true;
+      }
+      if (!added) return;
+      pending.observations = [...pendingByTime.values()];
+      const samples = [...byTime.values()]
         .sort((a, b) => a.measuredAt.localeCompare(b.measuredAt))
         .slice(-48);
       const context = await cacheRead<TrialContext>('trial-context:' + owner);
       if (
         context &&
         context.version === TRIAL_VERSION &&
+        Date.parse(context.issuedAt) <= now.getTime() &&
         now.getTime() - Date.parse(context.issuedAt) < 18 * 3600000
       ) {
         const satellite = await fetchSatellite(context.config, now);
