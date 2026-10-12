@@ -1,0 +1,23 @@
+{
+  "checkedAt": "2026-10-12T17:10:20.856302+00:00",
+  "days": 96,
+  "first": "2026-04-03",
+  "last": "2026-07-07",
+  "hours": 2304,
+  "roundingAdjustments": 264,
+  "nativePoints": [
+    [
+      41.06085,
+      21.09375
+    ]
+  ],
+  "errors": [],
+  "modelFitted": false,
+  "forecastsScored": false,
+  "scope": "Arithmetic/time-interval/coordinate checks via sflux-features.prepare; full publication/header/hash validation still occurs during final preparation.",
+  "persistence": {
+    "id": "sflux-midpoint-validation-v1-0399446eb937b1676821",
+    "savedAt": "2026-10-12T17:12:25.910Z",
+    "exactReadback": true
+  }
+}

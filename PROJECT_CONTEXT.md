@@ -1,6 +1,13 @@
 # ZIS Solar — контекст за продолжување на работата
 
-Последно проверено: **12.10.2026, 18:47 Ресен** — независниот counter audit потврди63часа/петдати со0kWhразлика. NOAA downloader43934 продолжува; нема нов WAPE резултат, v3.2 останува официјален.
+Последно проверено: **12.10.2026, 19:11 Ресен** — midpoint проверка на96GFSдати/2304часа помина; download43934стигна до10јули. Нема нов WAPE резултат, v3.2 останува официјален.
+
+## NOAA midpoint проверка — 12 октомври 19:11
+
+- Претходното продолжување беше **verified wait** на43934, безblockedstreak. Во ова продолжување истиот handleповторное потврденlive; немаrestart/дупликат. Последенoutput10јули,2700/5348tasks,4239s;99од192целоснидати.
+- Проверени првите96дати(3април–7јули),2304часовнивредности,со`sflux-features.prepare`:0errors,истnativepoint41.06085/21.09375,264малиroundingadjustmentsпо веќефиксираниотпраг. [Доказ](docs/sflux-midpoint-validation.json). Ова е проверканааритметика/интервали/координати,неforecastfit/scoring и нецелосниотфиналенpublication/hashaudit.
+- Append-onlySQL **sflux-midpoint-validation-v1-0399446eb937b1676821**,exactreadback;featurecode+SHAна96целоснисуровидневниJSON. Целиотsource/runs пакетсеархивирапофинално192-dayоценување. Немаизменанаfeature/model/hyperparameter/protocol. Немаproductioncodeилиdeployвооватурна.
+- Следно: продолжиистdownload43934. Дури поterminaloutcomeи192complete/0failures:prepare-sflux→evaluate-sflux→verify→report→saveсоmaintenanceenv. Непуштајfitврзполовинадатуми. Тековниотturnеprogress(midpointsourcevalidation)+verifiedwait;под5%целтаостануваactive.
 
 ## Независна проверка на фактичките часовни таргети — 12 октомври 18:47
 
