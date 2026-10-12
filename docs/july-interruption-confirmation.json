@@ -1,0 +1,13 @@
+{
+  "recordedDate": "2026-10-12",
+  "source": "Direct user reply in this project conversation",
+  "question": "За јули архивата покажува само околу 0,80 MWh, додека мај и јуни имаат над 140 MWh месечно. Дали централата тогаш беше исклучена или имаше проблем со мерењата?",
+  "answer": "Имаше исклучување/прекин",
+  "affectedMonth": "2026-07",
+  "timezone": "Europe/Skopje",
+  "exactStart": null,
+  "exactEnd": null,
+  "primaryPolicy": "Retain all valid measured zero values; do not backdate confirmation or assume every July hour was stopped.",
+  "diagnosticPolicy": "A separately labelled sensitivity analysis may exclude the entire month; exact outage boundaries are unknown.",
+  "controlActions": "None"
+}

@@ -1,0 +1,3 @@
+# Isolated Python3.12 research environment; no CRM runtime dependency.
+-r requirements-site-learning.txt
+requests==2.34.2

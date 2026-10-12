@@ -1,0 +1,13 @@
+{
+  "id": "solar-full-history-v1-66acd8997e24f971babf",
+  "savedAt": "2026-10-12T15:09:20.990Z",
+  "readback": "exact",
+  "inputBytes": 9077925,
+  "payloadBytes": 820156,
+  "range": [
+    "2026-04-03",
+    "2026-10-11"
+  ],
+  "officialForecastChanged": false,
+  "liveCandidateActivated": false
+}

@@ -1,0 +1,14 @@
+{
+  "frozenAt": "2026-10-12T15:07:43.214Z",
+  "inputSha256": "9d38f66f67e27efa0c9eb56f75013d253c752dae0032dbd5e1a8ec685a91dd9b",
+  "codeHashes": {
+    "scripts/export-full-history.mjs": "c162fb087fa9067ec9662b4513e8676f9723615c42a36099a7003eff15c51d18",
+    "scripts/download-full-history.py": "ba4bf8f267ad15ddeaf8aca38a2049d52f9bcd2d2a8901b6688ee064270b4555",
+    "scripts/prepare-full-history.mjs": "8da8f28952ba6c86a69ca9f27a9ed3b67209d280ddec6fbf5d16e8b5ad4c3488",
+    "scripts/evaluate-full-history.py": "7180c2f9ed50c3ee75bc8438405cde76fcaebee7218a31e0c791476b5634ffa8",
+    "tests/full-history.test.py": "55f9f63697e0d53f488c841a0ac900c11926565e90cf8ed267618a1c6defeeae",
+    "docs/full-history-plan.md": "e8cdafb77b29e2ddf5710be6c4dab11266b2a94839dd5abf94451bdc2fb59962",
+    "lib/forecast-provider-hours.ts": "85d297038cbbd1ecff41744620190076456df45208db649c191b753bc8f0fb47",
+    "lib/forecast-site-learning.ts": "5a23cc4be0b3b6231ce1b9c0de9ec4796acbd42fdc688125494c96d0b07bd8f1"
+  }
+}

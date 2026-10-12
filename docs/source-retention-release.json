@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-10-12T14:54:00Z",
+  "codeCommit": "67beaf3",
+  "deploymentId": "dpl_EddufNNp4jFrxi9YwWaXNw4VACFS",
+  "readyState": "READY",
+  "productionUrl": "https://zissolar.vercel.app",
+  "ui": {
+    "retainedArpegeVisible": true,
+    "originalFetchedAtDisplayedLocal": "12/10, 12:21",
+    "consoleErrors": 0,
+    "inspectionTabClosed": true
+  },
+  "tests": {"forecast": 113, "siteLearning": 7, "productionBuild": "passed"},
+  "officialModel": "weather-solar-v3.2",
+  "accuracyPromotion": false
+}

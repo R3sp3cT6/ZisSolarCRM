@@ -1,0 +1,87 @@
+{
+  "exportedAt": "2026-10-12T14:52:34.685Z",
+  "first": "2026-04-03",
+  "last": "2026-10-11",
+  "actualHours": 4053,
+  "revisions": 9838,
+  "firstReceipt": "2026-09-08T13:21:41.333Z",
+  "months": [
+    {
+      "month": "2026-04",
+      "days": 28,
+      "expectedHours": 672,
+      "measuredHours": 578,
+      "daylightHours": 401,
+      "measuredDaylightHours": 365,
+      "completeSolarDays": 25,
+      "actualMwh": 116.37430999999998,
+      "daysWithPriorReceipts": 0
+    },
+    {
+      "month": "2026-05",
+      "days": 31,
+      "expectedHours": 744,
+      "measuredHours": 744,
+      "daylightHours": 465,
+      "measuredDaylightHours": 465,
+      "completeSolarDays": 31,
+      "actualMwh": 141.75843,
+      "daysWithPriorReceipts": 0
+    },
+    {
+      "month": "2026-06",
+      "days": 30,
+      "expectedHours": 720,
+      "measuredHours": 720,
+      "daylightHours": 471,
+      "measuredDaylightHours": 471,
+      "completeSolarDays": 30,
+      "actualMwh": 159.24806,
+      "daysWithPriorReceipts": 0
+    },
+    {
+      "month": "2026-07",
+      "days": 31,
+      "expectedHours": 744,
+      "measuredHours": 626,
+      "daylightHours": 479,
+      "measuredDaylightHours": 404,
+      "completeSolarDays": 26,
+      "actualMwh": 0.7983100000000004,
+      "daysWithPriorReceipts": 0
+    },
+    {
+      "month": "2026-08",
+      "days": 31,
+      "expectedHours": 744,
+      "measuredHours": 345,
+      "daylightHours": 456,
+      "measuredDaylightHours": 218,
+      "completeSolarDays": 15,
+      "actualMwh": 55.49157000000001,
+      "daysWithPriorReceipts": 0
+    },
+    {
+      "month": "2026-09",
+      "days": 30,
+      "expectedHours": 720,
+      "measuredHours": 520,
+      "daylightHours": 392,
+      "measuredDaylightHours": 392,
+      "completeSolarDays": 30,
+      "actualMwh": 113.63572,
+      "daysWithPriorReceipts": 22
+    },
+    {
+      "month": "2026-10",
+      "days": 11,
+      "expectedHours": 264,
+      "measuredHours": 154,
+      "daylightHours": 139,
+      "measuredDaylightHours": 139,
+      "completeSolarDays": 11,
+      "actualMwh": 41.016639999999995,
+      "daysWithPriorReceipts": 11
+    }
+  ]
+}
