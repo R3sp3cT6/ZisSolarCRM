@@ -1,0 +1,8 @@
+{
+  "id": "hourly-counter-audit-v1-e96ce3926fce0fa3906e",
+  "savedAt": "2026-10-12T16:46:48.837Z",
+  "exactReadback": true,
+  "inputBytes": 31381,
+  "comparedHours": 63,
+  "maxAbsoluteDifferenceKwh": 0
+}

@@ -1,6 +1,13 @@
 # ZIS Solar — контекст за продолжување на работата
 
-Последно проверено: **12.10.2026, 18:40 Ресен** — свежата Huawei history→intraday патека е објавена (df74028), продукциското освежување успеа. Свеж inverter-history пакет уште чека нормална quota прилика. NOAA downloader43934 е жив, стигна до26мај; нема нова оценка/промоција, v3.2 останува официјален.
+Последно проверено: **12.10.2026, 18:47 Ресен** — независниот counter audit потврди63часа/петдати со0kWhразлика. NOAA downloader43934 продолжува; нема нов WAPE резултат, v3.2 останува официјален.
+
+## Независна проверка на фактичките часовни таргети — 12 октомври 18:47
+
+- Претходниот goal turn е **progress**: објавенаfreshhistoryingestionпоправка df74028 и productionrefreshпроверен; последниотdocscommit773d7a6е синхронизиран. Овојturn потврдува counter аритметика, без повторувањеforecastfit.
+- [Проверка](docs/hourly-counter-audit.md), [сите120часа](docs/hourly-counter-audit.json). Петте веќе постојни devicehistoryдати (15јули,11/12септември,10/11октомври) споредени со замрзнатитеfullhistoryactuals. **63часа со сите8граничнибројачи:7,355220MWh,0,000kWhразлика кајсекојчас.** Другите57часа немааткомплетниграници и не се потврдуваат/пополнуваатсонулти. Немаresetкајспоредливите. Независно Σ(end−start), провереноagainstcollector. Нема часовноshift/interpolation/изменаactuals илиforecastscores. Тоа јаотфрлаtargetmisalignmentхипотезатасамозапроверените63часа;нецелатаархива.
+- Append-onlySQL **hourly-counter-audit-v1-e96ce3926fce0fa3906e**,31.381inputbytes,exactreadback16:46:48UTC. [Receipt](docs/hourly-counter-audit-persistence.json). Inputsчуваатhash/researchreferencesдоцелоснитевеќезачуванисуровиодговори;неманепотребнодуплирање нацелатаархива. Скриптаaudit-hourly-counters.mjs;насоченlintпомина. Немаruntimeизмена/deploy.
+- **Жив download43934**, повторнопотврденвоовапродолжување;последнаизлезнадата3јуни,1700/5348tasks/2683s. Продолжиистhandle;нетретирајtimeoutкакостоп. Сите192дати се потребни предprepare/evaluate/verify/report/save;немановрезултатуште. Ранготицелтапод5%monthlyhourlyWAPE се непроменети. Овојturnеprogress+verifiedwait,неblocked.
 
 ## Свежа Huawei историја во краткорочниот тест — 12 октомври 18:32
 
