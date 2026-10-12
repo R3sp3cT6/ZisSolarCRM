@@ -17,6 +17,8 @@ export type ProviderSource = {
   runAt: string | null;
   fetchedAt: string;
   nativeResolutionHours: 1;
+  /** Original run/receipt remain unchanged when a refresh fails. */
+  retainedAfterFailure?: boolean;
   hours: ProviderHour[];
   fields: SolarField[];
   files: {
@@ -100,7 +102,47 @@ export async function fetchModelSource(
   const saved = await cacheRead<{ expires: number; value: ProviderSource }>(
     key,
   );
-  if (saved && saved.expires > now.getTime()) return saved.value;
+  const retainUntil = (value: ProviderSource | null | undefined) => {
+    if (
+      !value ||
+      value.provider !== provider ||
+      value.status !== 'ready' ||
+      value.nativeResolutionHours !== 1
+    )
+      return 0;
+    const run = Date.parse(value.runAt ?? ''),
+      receipt = Date.parse(value.fetchedAt);
+    if (
+      !Number.isFinite(run) ||
+      !Number.isFinite(receipt) ||
+      run > receipt ||
+      receipt > now.getTime() ||
+      value.hours.length !== slots.length ||
+      value.hours.some(
+        (h, i) =>
+          h.start !== slots[i].start ||
+          !Number.isFinite(h.irradiance) ||
+          h.irradiance < 0 ||
+          h.irradiance > 1800,
+      ) ||
+      !value.fields.length ||
+      value.fields.some(
+        (f) =>
+          !Number.isFinite(f.latitude) ||
+          !Number.isFinite(f.longitude) ||
+          Math.abs(f.latitude - c.latitude!) > 0.26 ||
+          Math.abs(((f.longitude - c.longitude! + 540) % 360) - 180) > 0.26,
+      )
+    )
+      return 0;
+    return Math.min(run + 18 * 3600000, receipt + 6 * 3600000);
+  };
+  const usableCache = (entry: typeof saved) =>
+    entry &&
+    entry.expires > now.getTime() &&
+    (!entry.value.retainedAfterFailure ||
+      retainUntil(entry.value) > now.getTime());
+  if (usableCache(saved)) return saved!.value;
   const locked = await withCacheLock(
     key,
     async () => {
@@ -108,7 +150,7 @@ export async function fetchModelSource(
         expires: number;
         value: ProviderSource;
       }>(key);
-      if (recent && recent.expires > now.getTime()) return recent.value;
+      if (usableCache(recent)) return recent!.value;
       const abort = new AbortController();
       try {
         const signal = AbortSignal.any([
@@ -289,6 +331,8 @@ export async function fetchModelSource(
           throw Error('Incomplete model day');
         source.status = 'ready';
         source.fetchedAt = new Date().toISOString();
+        // Keep a separate good copy: a negative cache entry must not erase it.
+        await cacheWrite(key + ':last-good', source, 86400);
         await cacheWrite(
           key,
           { expires: now.getTime() + 3600000, value: source },
@@ -302,6 +346,26 @@ export async function fetchModelSource(
           provider,
           error instanceof Error ? error.message : 'source failure',
         );
+        const lastGood = await cacheRead<ProviderSource>(key + ':last-good');
+        const retained = [recent?.value, saved?.value, lastGood]
+          .filter((v): v is ProviderSource => retainUntil(v) > now.getTime())
+          .sort(
+            (a, b) =>
+              Date.parse(b.runAt!) - Date.parse(a.runAt!) ||
+              Date.parse(b.fetchedAt) - Date.parse(a.fetchedAt),
+          )[0];
+        if (retained) {
+          const value = { ...retained, retainedAfterFailure: true };
+          await cacheWrite(
+            key,
+            {
+              expires: Math.min(now.getTime() + 900000, retainUntil(value)),
+              value,
+            },
+            86400,
+          );
+          return value;
+        }
         await cacheWrite(
           key,
           { expires: now.getTime() + 900000, value: empty },

@@ -188,11 +188,15 @@ export async function runModels(owner: string): Promise<ModelsView> {
             fetchedAt: context.issuedAt,
           },
           arpege: {
+            ...(arpege.retainedAfterFailure
+              ? { retainedAfterFailure: true }
+              : {}),
             status: arpege.status,
             runAt: arpege.runAt,
             fetchedAt: arpege.fetchedAt,
           },
           gfs: {
+            ...(gfs.retainedAfterFailure ? { retainedAfterFailure: true } : {}),
             status: gfs.status,
             runAt: gfs.runAt,
             fetchedAt: gfs.fetchedAt,

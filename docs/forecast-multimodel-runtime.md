@@ -105,3 +105,12 @@ Fixture metadata: `tests/fixtures/*-solar-test.grib2` are synthetic 2×2 regular
 GRIB2 grids generated with ecCodes, 11 Oct 2026 12 UTC / lead 1, values
 100/200/300/400 W/m² (ARPEGE multiplied by 3,600 for J/m²). They are not observed
 weather or production data.
+
+
+## Failed-refresh retention — 12 October 2026
+
+A transient refresh failure previously replaced the source cache with an unavailable result, discarding the complete forecast already fetched for the same target day. A separate `:last-good` cache entry now retains successful GFS/ARPEGE inputs. On failure, reuse is allowed only for the exact next local day, same provider/site, all expected hours (including DST), finite nonnegative irradiance, a nonfuture receipt less than six hours old and initialization less than eighteen hours old. The 15-minute backoff is capped at these age boundaries. A newer successful download replaces the copy and clears the warning. Night/missing data are not fabricated.
+
+`retainedAfterFailure` is archived in both source inputs and visible source metadata. The Forecast page explicitly labels retained sources with their original retrieval time. Neither `runAt` nor `fetchedAt` is rewritten. The collector still uses its existing lock, bounds and schedule; no new SQL reads/polling or provider retries are added to normal runtime. One extra cache write per successful source and one read on failure maintain the copy.
+
+Regression tests cover repeated failures, negative-cache overwrite, original timestamps/values, age expiry, location/provider/day mismatch, incomplete input, recovery and persisted/UI metadata. A separate read-only verification simulated failure using the genuine archived 06 UTC ARPEGE input and checked exact numerical retention and expiry. This is an availability fix, not a claimed reduction in measured WAPE.

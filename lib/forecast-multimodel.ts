@@ -212,7 +212,12 @@ export type ModelsView = {
   configVersion: string;
   sources: Record<
     BaseModel,
-    { status: string; runAt: string | null; fetchedAt: string | null }
+    {
+      status: string;
+      runAt: string | null;
+      fetchedAt: string | null;
+      retainedAfterFailure?: boolean;
+    }
   >;
   hours: ModelHour[];
   selection: WeightSelection;

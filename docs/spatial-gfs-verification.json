@@ -1,0 +1,36 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-10-12T14:40:13.795565+00:00",
+  "fields": 588,
+  "hourlyConversions": 1512,
+  "maxIrradianceDifference": 0,
+  "inputSha256": "7abce31e6c7d79b6295e0e08dc515109893081ffe5b8e9cea2e2c4803a5b0444",
+  "runsSha256": "deb10464d6f98eeea6a7183a4325c65bb09953cf683948f31f4bc82d28106df0",
+  "evaluationSha256": "67cdcdc8697ea30934eade2447d7992cddc6e87b091670f45decb031d3c07a51",
+  "bootstrap": {
+    "all": {
+      "deltaPp95": [
+        -1.8830493088543958,
+        1.49438382047283
+      ],
+      "wins": 11,
+      "days": 21
+    },
+    "september": {
+      "deltaPp95": [
+        -5.09516163319597,
+        1.912111133912626
+      ],
+      "wins": 6,
+      "days": 10
+    },
+    "october": {
+      "deltaPp95": [
+        -0.6437117844327704,
+        2.7733145060461895
+      ],
+      "wins": 5,
+      "days": 11
+    }
+  }
+}

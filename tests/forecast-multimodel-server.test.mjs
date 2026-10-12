@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { localDate, slotsForDay } from '../lib/energy.ts';
 import { addDays, defaultForecastConfig } from '../lib/forecast-model.ts';
 import { TRIAL_VERSION } from '../lib/forecast-trial.ts';
-let user, cache, queries, calls, failWrite, unavailable;
+let user, cache, queries, calls, failWrite, unavailable, retained;
 mock.module('../lib/auth.ts', {
   namedExports: {
     getUser: async () => user,
@@ -25,6 +25,7 @@ mock.module('../lib/forecast-multimodel-sources.ts', {
       const missing = unavailable === provider;
       return {
         provider,
+        ...(retained === provider ? { retainedAfterFailure: true } : {}),
         status: missing ? 'unavailable' : 'ready',
         runAt: new Date(now.getTime() - 6 * 3600000).toISOString(),
         fetchedAt: now.toISOString(),
@@ -81,6 +82,7 @@ beforeEach(() => {
   cache = new Map();
   failWrite = false;
   unavailable = null;
+  retained = null;
   const now = new Date();
   const config = {
     ...defaultForecastConfig(),
@@ -108,6 +110,20 @@ beforeEach(() => {
       weather: { temperature: 20, windSpeed: 2 },
     })),
   });
+});
+void test('a retained complete source keeps its provenance in the archived inputs and visible status', async () => {
+  retained = 'arpege';
+  const view = await runModels('plant');
+  assert.equal(view.complete, true);
+  assert.equal(view.sources.arpege.retainedAfterFailure, true);
+  assert.equal(view.sources.gfs.retainedAfterFailure, undefined);
+  const write = queries.find((q) =>
+    q.sql.startsWith('INSERT INTO forecast_trials'),
+  );
+  const input = JSON.parse(write.args[7]);
+  assert.equal(input.arpege.retainedAfterFailure, true);
+  assert.equal(input.arpege.runAt, view.sources.arpege.runAt);
+  assert.equal(input.arpege.fetchedAt, view.sources.arpege.fetchedAt);
 });
 void test('all native sources and outcomes are archived; repeat and warm reads use cache', async () => {
   const view = await runModels('plant');

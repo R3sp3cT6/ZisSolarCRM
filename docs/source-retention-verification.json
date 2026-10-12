@@ -1,0 +1,11 @@
+{
+  "checkedAt": "2026-10-12T14:44:03.807Z",
+  "sourceRunId": "b32e9713-8dad-499f-8d63-5dd41fce5f36",
+  "sourceDate": "2026-10-13",
+  "sourceRunAt": "2026-10-12T06:00:00Z",
+  "sourceFetchedAt": "2026-10-12T10:21:28.794Z",
+  "hours": 24,
+  "unchangedSourceAndNumericalValues": true,
+  "expiredRejected": true,
+  "productionWrites": 0
+}

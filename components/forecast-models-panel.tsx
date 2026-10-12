@@ -157,6 +157,15 @@ export function ForecastModelsPanel({ canManage }: { canManage: boolean }) {
                             : l('Изворот е недостапен', 'Source unavailable')}
                         </small>
                       )}
+                      {source?.retainedAfterFailure && source.fetchedAt && (
+                        <small>
+                          {l(
+                            'Освежувањето не успеа · користиме зачувана прогноза од',
+                            'Refresh failed · using forecast fetched',
+                          )}{' '}
+                          {time(source.fetchedAt)}
+                        </small>
+                      )}
                     </td>
                     <td>
                       <strong>{n(total(key), 3)}</strong>

@@ -27,6 +27,16 @@ const { fetchModelSource } =
   await import('../lib/forecast-multimodel-sources.ts');
 const now = new Date('2026-10-11T20:00:00Z'),
   config = { latitude: 41.068056, longitude: 21.036111 };
+const gfsKey = 'model-source:v1:gfs:41.068056:21.036111:2026-10-12';
+async function savedGood() {
+  const source = await fetchModelSource('gfs', config, now);
+  // Freeze the receipt inside this simulated clock, without changing the run.
+  source.fetchedAt = new Date(now.getTime() - 2 * 3600000).toISOString();
+  cache.set(gfsKey, { expires: now.getTime() - 1, value: source });
+  cache.set(gfsKey + ':last-good', source);
+  failRange = true;
+  return structuredClone(source);
+}
 beforeEach(() => {
   cache = new Map();
   requests = [];
@@ -80,4 +90,59 @@ void test('catalogue resources cannot redirect collection to an arbitrary host',
   assert.ok(
     requests.every((url) => url.startsWith('https://www.data.gouv.fr/')),
   );
+});
+void test('failed refresh retains complete recent forecast and original provenance, including repeated failures', async () => {
+  const original = await savedGood();
+  const result = await fetchModelSource('gfs', config, now);
+  assert.deepEqual(result, { ...original, retainedAfterFailure: true });
+  const count = requests.length;
+  assert.deepEqual(await fetchModelSource('gfs', config, now), result);
+  assert.equal(requests.length, count);
+  cache.set(gfsKey, {
+    expires: 0,
+    value: { ...original, status: 'unavailable', hours: [] },
+  });
+  assert.deepEqual(await fetchModelSource('gfs', config, now), result);
+  assert.deepEqual(cache.get(gfsKey + ':last-good'), original);
+});
+void test('expired, future, wrong-location and incomplete retained sources fail closed', async () => {
+  const original = await savedGood();
+  for (const patch of [
+    { fetchedAt: new Date(now.getTime() - 6 * 3600000).toISOString() },
+    { runAt: new Date(now.getTime() - 18 * 3600000).toISOString() },
+    { fetchedAt: new Date(now.getTime() + 1000).toISOString() },
+    { hours: original.hours.slice(1) },
+    {
+      hours: original.hours.map((h, i) =>
+        i ? h : { ...h, start: '2026-10-10T22:00:00.000Z' },
+      ),
+    },
+    { fields: original.fields.map((f) => ({ ...f, latitude: 42 })) },
+    { provider: 'arpege' },
+  ]) {
+    const value = { ...original, ...patch, retainedAfterFailure: true };
+    cache.set(gfsKey, { expires: now.getTime() + 900000, value });
+    cache.set(gfsKey + ':last-good', value);
+    const result = await fetchModelSource('gfs', config, now);
+    assert.equal(result.status, 'unavailable');
+    assert.deepEqual(result.hours, []);
+  }
+});
+void test('retention expiry is capped by source age and a successful refresh clears the warning', async () => {
+  const original = await savedGood();
+  original.fetchedAt = new Date(
+    now.getTime() - 6 * 3600000 + 60000,
+  ).toISOString();
+  // A run cannot be after receipt; use the preceding eligible cycle.
+  original.runAt = new Date(now.getTime() - 10 * 3600000).toISOString();
+  cache.set(gfsKey, { expires: 0, value: original });
+  cache.set(gfsKey + ':last-good', original);
+  await fetchModelSource('gfs', config, now);
+  assert.equal(cache.get(gfsKey).expires, now.getTime() + 60000);
+  cache.set(gfsKey, { expires: 0, value: original });
+  failRange = false;
+  const fresh = await fetchModelSource('gfs', config, now);
+  assert.equal(fresh.status, 'ready');
+  assert.equal(fresh.retainedAfterFailure, undefined);
+  assert.deepEqual(cache.get(gfsKey + ':last-good'), fresh);
 });

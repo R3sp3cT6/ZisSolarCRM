@@ -1,0 +1,12 @@
+{
+  "frozenAt": "2026-10-12T14:38:28.267Z",
+  "inputSha256": "7abce31e6c7d79b6295e0e08dc515109893081ffe5b8e9cea2e2c4803a5b0444",
+  "codeHashes": {
+    "docs/forecast-spatial-gfs-plan.md": "7637a16a33076c0bc0eaa01d713e9e443e4c986e2796ac2c9c23e1b48b06f6a3",
+    "scripts/decode-spatial-gfs.py": "48b7ad8bdfcbb1875a678d5451b7a93aee24f9b9b5e5ddf8da7612bf8af3f35c",
+    "scripts/prepare-spatial-gfs.mjs": "3a73eeaabf15e71eb15d680327169cc62afef22a8e969c713ee47120f4accdc3",
+    "scripts/evaluate-spatial-gfs.mjs": "ece1852acda1f143b1ef614d8945ed1d9410eb246e6813ed0604ce788a7d184b",
+    "lib/forecast-provider-hours.ts": "85d297038cbbd1ecff41744620190076456df45208db649c191b753bc8f0fb47",
+    "lib/forecast-solar.ts": "fba507e21fc87ea75021258273079062d90c3b7d15009e374867aea9350843e6"
+  }
+}

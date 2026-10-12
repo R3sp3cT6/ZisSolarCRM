@@ -1,0 +1,9 @@
+{
+  "id": "solar-spatial-gfs-v1-a9b280e32ba4150c3965",
+  "savedAt": "2026-10-12T14:42:43.402Z",
+  "readback": "exact",
+  "inputBytes": 1466038,
+  "payloadBytes": 73104,
+  "officialForecastChanged": false,
+  "liveCandidateActivated": false
+}

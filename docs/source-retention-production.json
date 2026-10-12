@@ -1,0 +1,42 @@
+{
+  "checkedAt": "2026-10-12T14:45:43.977Z",
+  "restored": [
+    {
+      "provider": "arpege",
+      "sourceId": "b32e9713-8dad-499f-8d63-5dd41fce5f36",
+      "runAt": "2026-10-12T06:00:00Z",
+      "fetchedAt": "2026-10-12T10:21:28.794Z"
+    },
+    {
+      "provider": "gfs",
+      "sourceId": "3bce800a-9254-403b-962d-ddb6cea73d0c",
+      "runAt": "2026-10-12T06:00:00.000Z",
+      "fetchedAt": "2026-10-12T14:12:02.202Z"
+    }
+  ],
+  "id": "d330cbd9-89b8-4b4e-a4df-203b9867f34d",
+  "date": "2026-10-13",
+  "issuedAt": "2026-10-12T14:45:43.234Z",
+  "complete": true,
+  "sources": {
+    "gfs": {
+      "runAt": "2026-10-12T06:00:00.000Z",
+      "status": "ready",
+      "fetchedAt": "2026-10-12T14:12:02.202Z"
+    },
+    "icon": {
+      "runAt": "2026-10-12T06:00:00.000Z",
+      "status": "ready",
+      "fetchedAt": "2026-10-12T10:21:22.058Z"
+    },
+    "arpege": {
+      "runAt": "2026-10-12T06:00:00Z",
+      "status": "ready",
+      "fetchedAt": "2026-10-12T10:21:28.794Z",
+      "retainedAfterFailure": true
+    }
+  },
+  "readback": "exact",
+  "warmSqlQueries": 0,
+  "officialVersion": "weather-solar-v3.2"
+}
