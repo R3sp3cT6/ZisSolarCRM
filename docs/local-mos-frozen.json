@@ -1,0 +1,18 @@
+{
+  "frozenAt": "2026-10-12T14:27:55.972Z",
+  "inputSha256": "5ad75b5bb7fa3359c41bc5e49a7b35b1434dff4c01e4ffafad06abe0569a62b7",
+  "codeHashes": {
+    "lib/forecast-local-mos.ts": "fe6d9f633201eae196f167ab956cd080f241d6063dcd00ed955cb87f045c585d",
+    "scripts/prepare-local-mos.mjs": "b9e6d4f17f61793c7a4c9cbc9f958cc51eb71351662d3c9d31cac363b71ad49d",
+    "scripts/evaluate-local-mos.mjs": "e80c59022ff715022176484dd02bd2c0ef683cb66c3fd5bc111a7c733ea81835",
+    "docs/forecast-local-mos-plan.md": "21cd164a9328621d780efc90922e569ae1610fab1db72325bd813a0c63386a6f"
+  },
+  "preScoreCodeHashes": {
+    "lib/forecast-local-mos.ts": "fe6d9f633201eae196f167ab956cd080f241d6063dcd00ed955cb87f045c585d",
+    "scripts/prepare-local-mos.mjs": "0183f07b7db4af0b8a108a70b82bb848af40df553c5057a3efe2b4be45091a1b",
+    "scripts/evaluate-local-mos.mjs": "a66aab099910955c3935483105fa9236dd883bda25a46527a27e99fee58d74ff",
+    "docs/forecast-local-mos-plan.md": "21cd164a9328621d780efc90922e569ae1610fab1db72325bd813a0c63386a6f"
+  },
+  "maintenanceAt": "2026-10-12T14:29:08.825179+00:00",
+  "maintenanceNote": "After scoring: remove three unused imports from preparation script; prefix deliberately excluded actual/weather destructuring variables with underscore for lint. Numerical candidate module and protocol unchanged. Original source preserved; no re-preparation, parameter changes or selection."
+}

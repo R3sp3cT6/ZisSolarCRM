@@ -1,0 +1,9 @@
+{
+  "id": "solar-local-mos-v1-8b2f96d10e7f88965df1",
+  "savedAt": "2026-10-12T14:31:14.764Z",
+  "readback": "exact",
+  "inputBytes": 3055298,
+  "payloadBytes": 94107,
+  "officialForecastChanged": false,
+  "liveCandidateActivated": false
+}

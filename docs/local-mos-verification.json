@@ -1,0 +1,41 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-10-12T14:30:26.878875+00:00",
+  "origins": 24,
+  "trainingRevisionChecks": 5115,
+  "predictionChecks": 576,
+  "maxIndependentErrorKwh": 0,
+  "evaluationSha256": "ae5caa19e5c9988c859b9c41e727edd4cd4d94d6202ae125226fd04f397f7049",
+  "inputsSha256": "5ad75b5bb7fa3359c41bc5e49a7b35b1434dff4c01e4ffafad06abe0569a62b7",
+  "runsSha256": "1c205502c5048a8804d5618394b31dd3e7e53de9d865a54ec19930b0037ed802",
+  "bootstrap": {
+    "all": {
+      "pairedDayDeltaPp95": [
+        -0.4407757143255644,
+        -0.055989289125295945
+      ],
+      "wins": 11,
+      "losses": 3,
+      "days": 24
+    },
+    "september": {
+      "pairedDayDeltaPp95": [
+        -0.01707154965722317,
+        0.004695624289523539
+      ],
+      "wins": 2,
+      "losses": 1,
+      "days": 13
+    },
+    "october": {
+      "pairedDayDeltaPp95": [
+        -0.8171013832430961,
+        -0.13467988488286428
+      ],
+      "wins": 9,
+      "losses": 2,
+      "days": 11
+    }
+  },
+  "note": "Exploratory reused historical dates; bootstrap does not remove development/selection bias. No prospective promotion."
+}
