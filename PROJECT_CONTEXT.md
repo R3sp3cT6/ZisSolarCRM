@@ -1,6 +1,6 @@
 # ZIS Solar — контекст за продолжување на работата
 
-Последно проверено: **12.10.2026, 17:35 Ресен** — потврдени исклучувања/ограничување директно од Huawei inverter_state; 6.499 поединечни мерења се зачувани во production SQL. Новиот collector е проверен локално, објавувањето следи подолу. Целта под 5% месечен часовен WAPE е незавршена.
+Последно проверено: **12.10.2026, 17:37 Ресен** — потврдени исклучувања/ограничување директно од Huawei inverter_state; 6.499 поединечни мерења се зачувани во production SQL. Collector промената е објавена. Целта под 5% месечен часовен WAPE е незавршена.
 
 ## Директен доказ од инвертерите — 12.10.2026
 
@@ -15,6 +15,7 @@
 - Проверки:114forecastтестови+6новиdeviceтестови+3fusion-clientтестови успешни;7од нив се нови вклучувајќи queue/retry тестот. Nextproductionbuild/TypeScript успешен, по дополнувањето на gapполето повторенtsc и6deviceтестови. Новите/променети test/helper/queue датотеки поминуваат насоченlint; во старите `fusion-client.ts`/`fusionsolar-server.ts` остануваат претходни explicit-any/unused-reserve дијагностики. Новитеdeviceтестови се вклучени во `test:forecast`.
 - Huawei APIкорисничкото име е обезбедено повторно од корисникот и зачувано **шифрирано локално** во `%LOCALAPPDATA%/ZisSolar/fusionsolar-username.dpapi`; лозинката останува во `fusionsolar-api.dpapi`. При `ConvertTo-SecureString` користи `.Trim()`заDPAPIтекстот. Не ставај вредности воGit/context/logs. Vercelenvpullвраќа[SENSITIVE] и не е извор за овие две вредности.
 - Ова е **progress**со новпроверендоказ, зачувување иruntimeпоправка. Не е доказ за95%точност. Следниот MLтест мора да ги раздвои оперативните ограничувања од временскиот одзив и да ги задржи прекините во примарниотWAPE. Строгораздвои currentarchiveпретпоставка од стварниhistoricalreceipts/новиprospectiveиздавања; не прикажувај подобрување само со бришење лоши денови.
+- **Објавено:** `0edf736`, READY deployment `dpl_6GGVDrUADbX7yaJfces9QrtYAqqA`, alias https://zissolar.vercel.app, Vercel build/TypeScript успешен. [Release](docs/inverter-evidence-release.json). Нема UI промена или промоција на нов прогнозен модел. GitHub master е синхронизиран. Привремениот `inverter-research.env.local` од env pull е избришан; остануваат само намерните локални шифрирани credentials. Нема жив download/build процес.
 
 ## Проширување на целата историја — 12.10.2026, завршен тест
 

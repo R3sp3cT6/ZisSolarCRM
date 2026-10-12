@@ -1,0 +1,17 @@
+{
+  "codeCommit": "0edf736",
+  "deploymentId": "dpl_6GGVDrUADbX7yaJfces9QrtYAqqA",
+  "deploymentUrl": "https://zissolar-5gzmerd3l-ilijas-projects-526973e6.vercel.app",
+  "alias": "https://zissolar.vercel.app",
+  "state": "READY",
+  "localBuild": "passed",
+  "deploymentBuild": "passed",
+  "forecastTests": 114,
+  "additionalDeviceTests": 6,
+  "fusionClientTests": 3,
+  "productionStoredInverterSamples": 6499,
+  "researchId": "inverter-evidence-v1-60ce0c99f8c8a4f2e59c",
+  "officialModel": "weather-solar-v3.2",
+  "modelPromotion": false,
+  "controlCommands": false
+}
