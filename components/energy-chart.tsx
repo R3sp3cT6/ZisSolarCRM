@@ -214,6 +214,9 @@ export function EnergyChart({
         {comparison && (
           <p className="forecast-comparison-note">
             {t(
+              'Главната оценка е за ден однапред. Оваа линија има одделна споредба според изворот подолу.',
+            )}{' '}
+            {t(
               comparison.status === 'unavailable'
                 ? 'Споредбата со прогнозата моментално не е достапна.'
                 : hasBacktest

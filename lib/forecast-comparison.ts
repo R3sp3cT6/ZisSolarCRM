@@ -1,6 +1,10 @@
 import { hourLabel, localDate } from './energy';
 import type { buildDashboard } from './dashboard';
-import { backtestScores, type BacktestPayload } from './forecast-backtest';
+import {
+  backtestOrigin,
+  backtestScores,
+  type BacktestPayload,
+} from './forecast-backtest';
 
 export type ForecastComparisonHour = {
   start: string;
@@ -10,9 +14,27 @@ export type ForecastComparisonHour = {
 };
 export type ForecastComparison = {
   hours: ForecastComparisonHour[];
+  dayAheadHours?: ForecastComparisonHour[];
   backtest?: BacktestPayload;
   unavailable?: boolean;
 };
+
+export function dayAheadForecasts(hours: ForecastComparisonHour[]) {
+  // Defence in depth for cached/server-supplied values. SQL selects the single
+  // latest previous-day snapshot; no same-day or longer-horizon fallback here.
+  return firstForecasts(
+    hours.filter((hour) => {
+      const start = Date.parse(hour.start),
+        issued = Date.parse(hour.issuedAt);
+      if (!Number.isFinite(start) || !Number.isFinite(issued)) return false;
+      const cutoff = backtestOrigin(localDate(hour.start)).originAt;
+      return (
+        localDate(hour.issuedAt) === localDate(cutoff) &&
+        issued <= Date.parse(cutoff)
+      );
+    }),
+  );
+}
 
 // Frozen, prospective predictions only. UTC keys keep the repeated DST hour distinct.
 export function firstForecasts(hours: ForecastComparisonHour[]) {
@@ -179,6 +201,32 @@ export function attachForecastComparison(
       ...backtestScores(completedRows, hours),
     };
   });
+  const dayAheadHours = [
+    ...dayAheadForecasts(comparison.dayAheadHours ?? []).values(),
+  ].filter((h) => h.start >= data.range.from && h.start < data.range.to);
+  const dayAheadScore = {
+    kind: 'day-ahead' as const,
+    availableHours: dayAheadHours.length,
+    satelliteAppliedHours: 0,
+    baselineScore: null,
+    completedHours: Math.max(
+      0,
+      Math.floor(
+        (Math.min(Date.parse(data.range.to), Date.parse(data.generatedAt)) -
+          Date.parse(data.range.from)) /
+          3600000,
+      ),
+    ),
+    pairedHours: completedRows.filter(
+      (r) =>
+        !r.partial &&
+        r.productionKwh !== null &&
+        Number.isFinite(r.productionKwh) &&
+        r.productionKwh >= 0 &&
+        dayAheadHours.some((h) => h.start === r.start),
+    ).length,
+    ...backtestScores(completedRows, dayAheadHours),
+  };
   return {
     ...data,
     chart,
@@ -199,6 +247,7 @@ export function attachForecastComparison(
       backtestMethod: comparison.backtest?.method ?? null,
       backtestModelVersion: comparison.backtest?.modelVersion ?? null,
       backtestScore: evaluations[1],
+      dayAheadScore,
       evaluations: evaluations.filter(
         (evaluation) => evaluation.availableHours > 0,
       ),

@@ -22,10 +22,10 @@ export function ForecastAccuracy({ comparison }: { comparison: Comparison }) {
     formatNumber(value, digits, getLanguage());
   const mwh = (value: number | null) =>
     number(value === null ? null : value / 1000, 3);
-  if (comparison.status === 'unavailable' || !comparison.evaluations?.length)
+  if (comparison.status === 'unavailable')
     return (
       <span className="forecast-match-empty">
-        {t('Точност на моделот')} <strong>—</strong>
+        {t('Точност · ден однапред')} <strong>—</strong>
         <small>
           {t(
             comparison.status === 'unavailable'
@@ -36,7 +36,10 @@ export function ForecastAccuracy({ comparison }: { comparison: Comparison }) {
       </span>
     );
 
-  return comparison.evaluations.map((score) => {
+  const renderScore = (
+    score: Comparison['dayAheadScore'] | Comparison['evaluations'][number],
+  ) => {
+    const dayAhead = score.kind === 'day-ahead';
     const satellite =
       score.kind === 'backtest' &&
       comparison.backtestMethod === 'satellite-hour-ahead';
@@ -45,17 +48,21 @@ export function ForecastAccuracy({ comparison }: { comparison: Comparison }) {
         ? Math.max(0, Math.min(100, score.matchPercent))
         : null;
     const source = t(
-      satellite
-        ? 'Сателитска симулација · 1 час'
-        : score.kind === 'backtest'
-          ? 'Историска симулација'
-          : 'Зачувана прогноза',
+      dayAhead
+        ? 'Прогноза ден однапред'
+        : satellite
+          ? 'Сателитска симулација · 1 час'
+          : score.kind === 'backtest'
+            ? 'Историска симулација'
+            : 'Зачувана прогноза',
     );
     return (
       <div className="forecast-comparison-item" key={score.kind}>
         <div className="forecast-accuracy-summary">
           <div className="forecast-accuracy-heading">
-            <span>{t('Точност на моделот')}</span>
+            <span>
+              {t(dayAhead ? 'Точност · ден однапред' : 'Совпаѓање со линијата')}
+            </span>
             <strong>
               {number(match)}
               {match !== null && '%'}
@@ -92,6 +99,12 @@ export function ForecastAccuracy({ comparison }: { comparison: Comparison }) {
               match === null ? 'Нема споредливи мерења.' : 'Часовно совпаѓање',
             )}
           </span>
+          {dayAhead && (
+            <span className="forecast-accuracy-source">
+              {score.pairedHours}/{score.completedHours}{' '}
+              {t('завршени часа со прогноза и мерење')}
+            </span>
+          )}
         </div>
         <Popover>
           <PopoverTrigger className="forecast-match-trigger">
@@ -144,11 +157,13 @@ export function ForecastAccuracy({ comparison }: { comparison: Comparison }) {
             </PopoverTitle>
             <p>
               {t(
-                satellite
-                  ? 'v3.2 + LSA SAF: историска симулација за следниот час, со претходни сателитски набљудувања. Не е прогноза издадена ден однапред.'
-                  : score.kind === 'backtest'
-                    ? 'Историска симулација со NOAA/GFS, пресметана накнадно.'
-                    : 'Првата зачувана прогноза пред почетокот на секој час.',
+                dayAhead
+                  ? 'Последната зачувана прогноза од претходниот ден, издадена до 18:00 UTC (20:00 летно / 19:00 зимско време во Ресен). Се користи една верзија за целиот ден. Подоцнежните корекции и симулации не влегуваат во оваа оценка.'
+                  : satellite
+                    ? 'v3.2 + LSA SAF: историска симулација за следниот час, со претходни сателитски набљудувања. Не е прогноза издадена ден однапред.'
+                    : score.kind === 'backtest'
+                      ? 'Историска симулација со NOAA/GFS, пресметана накнадно.'
+                      : 'Првата зачувана прогноза пред почетокот на секој час.',
               )}
             </p>
             {satellite && (
@@ -226,5 +241,16 @@ export function ForecastAccuracy({ comparison }: { comparison: Comparison }) {
         </Popover>
       </div>
     );
-  });
+  };
+  return (
+    <>
+      {renderScore(comparison.dayAheadScore)}
+      {comparison.evaluations.length > 0 && (
+        <details className="forecast-secondary-scores">
+          <summary>{t('Други споредби · прикажаната линија')}</summary>
+          {comparison.evaluations.map(renderScore)}
+        </details>
+      )}
+    </>
+  );
 }

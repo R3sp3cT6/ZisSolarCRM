@@ -2,6 +2,7 @@ import { test, mock, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   firstForecasts,
+  dayAheadForecasts,
   attachForecastComparison,
 } from '../lib/forecast-comparison.ts';
 import { buildDashboard } from '../lib/dashboard.ts';
@@ -67,7 +68,7 @@ function dashboard(date = day, period = 'day') {
 beforeEach(() => {
   entries = new Map();
   calls = [];
-  rows = [prediction()];
+  rows = [{ ...prediction(), cohort: 'first' }];
   busy = false;
   failed = false;
   view = { id: 'run-1', issuedAt: '2026-10-11T12:00:00Z' };
@@ -207,7 +208,10 @@ void test('monthly points require a complete calendar month and never sum incomp
 });
 
 void test('warm shared comparison reads use zero SQL, new saved runs invalidate by revision, and owner data is isolated', async () => {
-  assert.deepEqual((await readForecastComparison('owner')).hours, rows);
+  rows.push({ ...prediction(undefined, 450), cohort: 'day-ahead' });
+  const read = await readForecastComparison('owner');
+  assert.deepEqual(read.hours, [prediction()]);
+  assert.deepEqual(read.dayAheadHours, [prediction(undefined, 450)]);
   assert.equal(calls.length, 1);
   await readForecastComparison('owner');
   assert.equal(calls.length, 1);
@@ -215,10 +219,12 @@ void test('warm shared comparison reads use zero SQL, new saved runs invalidate 
   assert.match(calls[0].sql, /r\.issued_at < \(h.value->>'start'\)/);
   assert.match(calls[0].sql, /productionSource.*weather.*weather-history/);
   assert.match(calls[0].sql, /r\.issued_at ASC/);
+  assert.match(calls[0].sql, /interval '18 hours'/);
+  assert.match(calls[0].sql, /ORDER BY d.value->>'date', r.issued_at DESC/);
   view = { ...view, id: 'run-2' };
   await readForecastComparison('owner');
   assert.equal(calls.length, 2);
-  entries.set('forecast-comparison:v1:other:run-2', {
+  entries.set('forecast-comparison:v2:other:run-2', {
     owner: 'owner',
     revision: 'run-2',
     hours: rows,
@@ -230,7 +236,10 @@ void test('warm shared comparison reads use zero SQL, new saved runs invalidate 
 
 void test('no saved run avoids SQL; a busy cache or failed storage does not hide measured data', async () => {
   view = null;
-  assert.deepEqual(await readForecastComparison('owner'), { hours: [] });
+  assert.deepEqual(await readForecastComparison('owner'), {
+    hours: [],
+    dayAheadHours: [],
+  });
   assert.equal(calls.length, 0);
   view = { id: 'run-1', issuedAt: '2026-10-11T12:00:00Z' };
   busy = true;
@@ -242,5 +251,52 @@ void test('no saved run avoids SQL; a busy cache or failed storage does not hide
   assert.equal(
     attachForecastComparison(dashboard(), result).forecastComparison.status,
     'unavailable',
+  );
+});
+
+void test('day-ahead cutoff rejects same-day, too-early and after-cutoff runs across local midnight and DST', () => {
+  for (const date of ['2026-03-29', '2026-10-25']) {
+    const previous = date === '2026-03-29' ? '2026-03-28' : '2026-10-24';
+    const start = slotsForDay(date)[0].start;
+    const eligible = prediction(start, 100, previous + 'T18:00:00Z');
+    assert.equal(dayAheadForecasts([eligible]).size, 1);
+    for (const issuedAt of [
+      previous + 'T18:00:00.001Z',
+      previous + 'T23:00:00Z', // next local day even though UTC date is unchanged
+      new Date(Date.parse(previous + 'T12:00:00Z') - 86400000).toISOString(),
+      'invalid',
+    ])
+      assert.equal(dayAheadForecasts([{ ...eligible, issuedAt }]).size, 0);
+  }
+});
+
+void test('primary day-ahead score cannot borrow perfect same-day predictions or simulations; outages remain errors', () => {
+  const base = dashboard();
+  const slots = slotsForDay(day);
+  const [a, b, c] = slots.slice(10, 13).map((s) => s.start);
+  base.generatedAt = '2026-10-13T00:00:00Z';
+  base.rows = [
+    { start: a, productionKwh: 100 },
+    { start: b, productionKwh: 0 },
+    { start: c, productionKwh: 100 },
+  ];
+  const hours = [
+    prediction(a, 100, '2026-10-12T06:00:00Z'),
+    prediction(b, 0, '2026-10-12T06:00:00Z'),
+    prediction(c, 100, '2026-10-12T06:00:00Z'),
+  ];
+  const result = attachForecastComparison(base, {
+    hours,
+    dayAheadHours: [prediction(a, 90), prediction(b, 50)],
+  });
+  assert.equal(result.forecastComparison.dayAheadScore.wapePercent, 60);
+  assert.equal(result.forecastComparison.dayAheadScore.matchPercent, 40);
+  assert.equal(result.forecastComparison.dayAheadScore.pairedHours, 2);
+  assert.equal(result.forecastComparison.dayAheadScore.completedHours, 24);
+  assert.equal(result.forecastComparison.evaluations[0].wapePercent, 0);
+  assert.equal(
+    attachForecastComparison(base, { hours }).forecastComparison.dayAheadScore
+      .matchPercent,
+    null,
   );
 });

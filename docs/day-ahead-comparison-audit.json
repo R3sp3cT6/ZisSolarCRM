@@ -1,0 +1,45 @@
+{
+  "checkedAt": "2026-10-12T17:24:39.945Z",
+  "policy": "Latest previous-local-day snapshot by 18:00 UTC, no gap fallback; one snapshot/day.",
+  "sqlFixture": "passed; rejects older, after-cutoff and same-day runs; preserves null selected hours; DST day",
+  "oldHours": 192,
+  "oldSameDayHours": 0,
+  "oldLongerHorizonHours": 168,
+  "dayAheadHours": 48,
+  "days": [
+    {
+      "date": "2026-10-12",
+      "issuedAt": "2026-10-11T16:06:06.781Z",
+      "availableHours": 24,
+      "pairedHours": 14,
+      "hours": 13,
+      "actualKwh": 2886.84,
+      "predictedKwh": 3125.3109064387836,
+      "totalDifferenceKwh": 238.4709064387833,
+      "totalDifferencePercent": 8.260620832425188,
+      "matchPercent": 58.041013517038685,
+      "maeKwh": 93.1760619526708,
+      "rmseKwh": 126.17575334938668,
+      "biasKwh": 18.343915879906408,
+      "wapePercent": 41.958986482961315
+    },
+    {
+      "date": "2026-10-13",
+      "issuedAt": "2026-10-12T16:20:45.644Z",
+      "availableHours": 24,
+      "pairedHours": 0,
+      "hours": 0,
+      "actualKwh": null,
+      "predictedKwh": null,
+      "totalDifferenceKwh": null,
+      "totalDifferencePercent": null,
+      "matchPercent": null,
+      "maeKwh": null,
+      "rmseKwh": null,
+      "biasKwh": null,
+      "wapePercent": null
+    }
+  ],
+  "note": "A change in cohort is not a model improvement. Scores include outages and exclude only unpaired/unfinished hours and double zeros.",
+  "inputSha256": "cc171cd8e4c1fec55cb749230f0a5372c91bd42508b98400044f6380acd72fe2"
+}
