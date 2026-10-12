@@ -1,0 +1,30 @@
+{
+  "checkedAt": "2026-10-12T16:39:02.757Z",
+  "lastSuccess": "2026-10-12T16:38:16.345Z",
+  "lastAttempt": "2026-10-12T16:38:14.154Z",
+  "error": null,
+  "historyAt": {
+    "export": 1791823094208,
+    "production": 1791818007939
+  },
+  "forecastObservation": null,
+  "pending": {
+    "observations": 0,
+    "inverterSamples": 0,
+    "runs": 0
+  },
+  "recent": {
+    "count": 0,
+    "latest": null
+  },
+  "intraday": {
+    "status": "insufficient-observations",
+    "issuedAt": "2026-10-12T16:21:19.760Z",
+    "correction": null
+  },
+  "sql": {
+    "count": 6499,
+    "latest_measurement": "2026-10-11T16:30:00.000Z",
+    "latest_receipt": "2026-10-12T15:28:02.818Z"
+  }
+}

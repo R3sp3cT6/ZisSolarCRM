@@ -1,0 +1,18 @@
+{
+  "codeCommit": "df74028",
+  "deploymentId": "dpl_DDkkb1ffrrqqHPyLfek8PVX5N6y9",
+  "deploymentUrl": "https://zissolar-3wyf3w7do-ilijas-projects-526973e6.vercel.app",
+  "alias": "https://zissolar.vercel.app",
+  "state": "READY",
+  "localBuild": "passed",
+  "deploymentBuild": "passed",
+  "forecastTests": 122,
+  "cacheTests": "passed",
+  "officialModel": "weather-solar-v3.2",
+  "modelPromotion": false,
+  "liveEndToEnd": "Production refresh passed; fresh historical trial ingestion awaits next eligible inverter-history batch",
+  "persistenceId": "huawei-fresh-history-ingestion-v1-8b2e5c9d8295fb8e06bf",
+  "productionRefreshAt": "2026-10-12T16:38:16.345Z",
+  "uiErrors": [],
+  "screenshot": "outputs/huawei-refresh-2026-10-12.jpg"
+}

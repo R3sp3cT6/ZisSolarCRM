@@ -1,14 +1,16 @@
 # ZIS Solar — контекст за продолжување на работата
 
-Последно проверено: **12.10.2026, 18:32 Ресен** — поправена е патеката за свежи Huawei историски мерења во краткорочниот тест; build и тестовите поминаа. Живиот API probe беше одбиен со 20400. NOAA surface-flux downloader session43934 продолжува; нема нова оценка/промоција, v3.2 останува официјален.
+Последно проверено: **12.10.2026, 18:40 Ресен** — свежата Huawei history→intraday патека е објавена (df74028), продукциското освежување успеа. Свеж inverter-history пакет уште чека нормална quota прилика. NOAA downloader43934 е жив, стигна до26мај; нема нова оценка/промоција, v3.2 останува официјален.
 
 ## Свежа Huawei историја во краткорочниот тест — 12 октомври 18:32
 
 - [Наод и поправка](docs/huawei-fresh-history.md), [проверки](docs/huawei-fresh-history-verification.json). Поправен `source` callback во `solar-cache.ts`. `recordHistoricalTrial` подава само целосни, измерени во последните15мин записи на batch ingestion во `recordLiveTrial`; вистинскиот receipt и извор остануваат. Нема нов Huawei повик/cron/SQL polling; старите записи не влегуваат во прогнозата. Пакет со две валидни мерења може да издаде еден future-only intraday trial, со постојната v3.4 логика, не нов модел.
 - Стариот вистински `work/huawei-live.json` има8уреди безcollectTime, но непознат receipt; не се користи за прогнозирање. Новиот read-only probe преку sharedlock/session/quota беше одбиен при login со20400. Нема нов payload, нема retry loop. Не заклучувај дека е докажана денешната API шема или дека живиот проблем е целосно решен. `scripts/check-huawei-live-shape.mjs` е подготвен за идно еднократно проверување со валидна Northbound сметка. Не печати credentials.
 - SQL во16:23UTC имаше6499историски записи, latestmeasured11октомври16:30UTC; Redis во16:24UTC немашеqueued/recentobservations, forecastObservationnull и lastSuccess15:45UTC. Ова е состојба пред поправката, не доказ за end-to-end работа.
-- 122forecastтеста + cacheтестови, насоченoxlint и productionbuild/TypeScript поминаа. Три нови regression теста; futurecontext/receiptbackdating се одбиваат. Нема новaccuracyresult. Production release се запишува посебно откако ќе заврши.
-- NOAA downloader43934 сè уште е жив, последно целосно преземен15мај,1200/5348leadзадачи во1911s. Не рестартирај/дуплирај. Продолжи со истиот handle; prepare/evaluate само по192complete/0failures. Ова продолжување е progress; целта под5%monthlyhourlyWAPE не е постигната.
+- 122forecastтеста + cacheтестови, насоченoxlint и productionbuild/TypeScript поминаа. Три нови regression теста; futurecontext/receiptbackdating се одбиваат. **Објавено df74028**, READY `dpl_DDkkb1ffrrqqHPyLfek8PVX5N6y9`, aliashttps://zissolar.vercel.app. [Release](docs/huawei-fresh-history-release.json). Продукциското adminrefresh во16:38UTC успеа преку постојнитеproductioncredentials; Huawei/MEMO12/13октомври потврдени,0consoleerrors. Локалниотprobe20400не значи декаproductionauthе расипана.
+- [Readback16:39UTC](docs/huawei-fresh-history-production.json): свежаmeter-history, но productionhistoryстара;forecastObservationnull,0pending/recenttrialнабљудувања,6499SQLdeviceзаписи. Не тврдиend-to-endnowcastуспех. Inverter-historyрезервирана16:36:40UTCприlogincooldown,59минguardзначиследнаприлика≥17:35:40UTC;sharedhistory25/26повици, најстаризлегува16:42UTC. Не бришиquota/не заобиколувај. Нема APIновretryсоодбиенитлокалниcredentials.
+- Првата проверка/код/тестови зачуваниappend-onlySQL `huawei-fresh-history-ingestion-v1-8b2e5c9d8295fb8e06bf`,48710inputbytes,exactreadback16:35UTC. Финалниотproductionдоказ се архивираодделно. Нема новaccuracyresult.
+- NOAA downloader43934 сè уште е жив, последно целосно преземен26мај,1500/5348leadзадачи во2375s. Не рестартирај/дуплирај. Продолжи со истиот handle; prepare/evaluate само по192complete/0failures. Ова продолжување е progress; целта под5%monthlyhourlyWAPE не е постигната.
 
 ### Најново продолжување: извештај и зачувување, 12 октомври 18:18
 
