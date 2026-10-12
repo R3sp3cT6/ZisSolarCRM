@@ -82,6 +82,47 @@ const { readTrial, handleTrialGet, handleTrialPost, runTrial } =
   await import('../lib/forecast-trial-server.ts');
 const { recordLiveTrial, recordHistoricalTrial, flushTrialPending } =
   await import('../lib/forecast-trial-live.ts');
+void test('partial inverter statuses are queued without SQL and preserved across failed flushes', async () => {
+  const at = Date.parse('2026-09-12T10:00Z'),
+    now = new Date('2026-10-12T12:00Z');
+  const raw = [
+    {
+      devId: 1,
+      collectTime: at,
+      dataItemMap: { active_power: 0, inverter_state: 768, total_cap: 1000 },
+    },
+  ];
+  await recordHistoricalTrial('plant', raw, [1, 2], now);
+  const first = structuredClone(cache.get('trial-pending:plant'));
+  assert.equal(first.observations.length, 0);
+  assert.equal(first.inverterSamples.length, 1);
+  assert.equal(queries.length, 0);
+  await recordHistoricalTrial(
+    'plant',
+    raw,
+    [1, 2],
+    new Date(now.getTime() + 10000),
+  );
+  assert.deepEqual(cache.get('trial-pending:plant'), first);
+  failWrite = true;
+  await assert.rejects(flushTrialPending('plant'));
+  assert.deepEqual(cache.get('trial-pending:plant'), first);
+  failWrite = false;
+  await flushTrialPending('plant');
+  const insert = queries.find((q) =>
+    q.sql.includes('INSERT INTO forecast_inverter_samples'),
+  );
+  assert.deepEqual(JSON.parse(insert.args[1]), first.inverterSamples);
+  assert.match(
+    insert.sql,
+    /ON CONFLICT\(owner,device_id,measured_at\) DO NOTHING/,
+  );
+  assert.deepEqual(cache.get('trial-pending:plant'), {
+    observations: [],
+    runs: [],
+  });
+  assert.equal(cache.has('trial-observations:plant'), false);
+});
 beforeEach(() => {
   user = { userId: 'admin', plantOwner: 'plant', role: 'admin' };
   queries = [];

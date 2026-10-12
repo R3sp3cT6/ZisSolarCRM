@@ -41,7 +41,7 @@ export function fusionClient(owner:string,state:FusionState,persist:()=>Promise<
 
  return {available,reserve,call};
 }
-export async function collectTelemetry(state:FusionState,api:ReturnType<typeof fusionClient>,save:(rows:ReadingInput[])=>Promise<number>,daily=false,onProductionHistory?:(values:unknown,ids:number[],receivedAt:Date)=>Promise<void>){
+export async function collectTelemetry(state:FusionState,api:ReturnType<typeof fusionClient>,save:(rows:ReadingInput[])=>Promise<number>,daily=false,onProductionHistory?:(values:unknown,ids:number[],receivedAt:Date,source:'history'|'live')=>Promise<void>){
  const {available,reserve,call}=api;let updated=0;const errors:string[]=[];
  async function attempt(work:()=>Promise<void>){try{await work();}catch(error){errors.push(error instanceof Error?error.message:'Неуспешно Huawei преземање.');}}
   // Both series need a boundary for the current hour. Share the 26/day quota
@@ -63,7 +63,7 @@ export async function collectTelemetry(state:FusionState,api:ReturnType<typeof f
    await reserve(kind==='export'?'meter-history':'inverter-history',HOUR-60000,13);
    const values=await call(path,{devIds:ids.join(','),devTypeId:kind==='export'?17:1,startTime:from,endTime:now},60000,26);
    const samples=parseCounterHistory(values,ids,kind==='export'?GRID_EXPORT_COUNTER:'total_cap',from,now);
-   if(kind==='production'&&onProductionHistory){try{await onProductionHistory(values,ids,new Date());}catch{console.warn('Historical trial observations deferred');}}
+   if(kind==='production'&&onProductionHistory){try{await onProductionHistory(values,ids,new Date(),'history');}catch{console.warn('Historical trial observations deferred');}}
    const rows=[previous,localDate()].flatMap(day=>counterHours(samples,ids,day,kind));
    if(rows.length)updated+=await save(rows);
    state.anchors??={};const anchor=counterAnchor(samples,ids,start);if(anchor)state.anchors[kind]=anchor;
@@ -76,6 +76,7 @@ export async function collectTelemetry(state:FusionState,api:ReturnType<typeof f
    if(!state.devices||!available('/thirdData/getStationRealKpi',LIVE_REFRESH_MS,288)||!available(key,LIVE_REFRESH_MS,288)||!available('/thirdData/getDevRealKpi',LIVE_REFRESH_MS,288))return;
    const plant=await call('/thirdData/getStationRealKpi',{stationCodes:FUSION_STATION},LIVE_REFRESH_MS,288);
    const devices=await call('/thirdData/getDevRealKpi',{devIds:state.devices.join(','),devTypeId:1},LIVE_REFRESH_MS,288,key);
+   if(onProductionHistory){try{await onProductionHistory(devices,state.devices,new Date(),'live');}catch{console.warn('Inverter status observations deferred');}}
    state.live=parseFusionLive(plant,devices,state.devices);state.lastSuccess=new Date().toISOString();
    state.forecastObservation=liveObservation(devices,state.devices);
    const productionKwh=liveCounterDelta(devices,state.anchors?.production,'total_cap');

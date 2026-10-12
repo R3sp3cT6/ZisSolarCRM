@@ -1,0 +1,13 @@
+{
+  "mode": "--publish",
+  "savedAt": "2026-10-12T15:33:50.311Z",
+  "exactReadback": true,
+  "rows": 6499,
+  "duplicateInsertTest": false,
+  "before": {
+    "readings": "4070"
+  },
+  "after": {
+    "readings": "4070"
+  }
+}

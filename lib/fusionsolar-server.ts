@@ -51,7 +51,7 @@ export async function syncFusionDirect(owner:string,requestedDay=localDate(),opt
    const ids=devices.filter(d=>d.devTypeId===1).map(d=>d.id);if(!ids.length||ids.length>100||ids.some(id=>!Number.isSafeInteger(id)))throw new Error('Не е достапна целосна листа на инвертери.');state.devices=ids;state.meters=devices.filter(d=>d.devTypeId===17).map(d=>d.id);if(state.meters.some(id=>!Number.isSafeInteger(id)))throw new Error('Невалидна листа на броила.');state.devicesAt=Date.now();
    await connection.prepare('UPDATE plants SET name=? WHERE owner=? AND name=?').bind('ZIS Solar',owner,'Мојата централа').run();
   });
-  const telemetry=await collectTelemetry(state,api,rows=>saveReadings(owner,rows,'Huawei FusionSolar · device counters',true,true),options.daily,(values,ids,receivedAt)=>recordHistoricalTrial(owner,values,ids,receivedAt));
+  const telemetry=await collectTelemetry(state,api,rows=>saveReadings(owner,rows,'Huawei FusionSolar · device counters',true,true),options.daily,(values,ids,receivedAt,source)=>recordHistoricalTrial(owner,values,ids,receivedAt,source));
   updated+=telemetry.updated;if(telemetry.error)errors.push(telemetry.error);
   try{await recordLiveTrial(owner,state.forecastObservation);}catch{console.warn('Trial observation deferred');}
   // The daily pass closes yesterday first; active visits refresh today's report.

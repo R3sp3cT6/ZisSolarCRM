@@ -18,6 +18,7 @@ import type { ForecastConfig } from './forecast-model';
 import type { SolarCalibration } from './forecast-solar';
 import type { SatellitePoint } from './forecast-satellite';
 import { fetchSatellite } from './forecast-satellite-server';
+import { inverterSamples, type InverterSample } from './inverter-availability';
 export type TrialContext = {
   config: ForecastConfig;
   baselineId: string;
@@ -33,23 +34,28 @@ export type TrialContext = {
   }[];
 };
 type Pending = {
+  inverterSamples?: InverterSample[];
   observations: LiveObservation[];
   runs: { run: TrialRun; inputs: unknown }[];
   satellites?: SatellitePoint[];
 };
 const pendingKey = (owner: string) => 'trial-pending:' + owner;
 
-/** Reuse an already requested Huawei history response. Keep genuine receipt
- * timestamps and do not feed old samples into the live-prediction input cache. */
+/** Retain device evidence from existing Huawei calls, including partial device
+ * coverage. History also supplies complete aggregates; it never enters the live
+ * prediction input cache. Genuine first receipt timestamps remain unchanged. */
 export async function recordHistoricalTrial(
   owner: string,
   input: unknown,
   ids: number[],
   receivedAt = new Date(),
+  source: InverterSample['source'] = 'history',
 ) {
   if (!sharedCache()) return;
-  const observations = historicalObservations(input, ids, receivedAt);
-  if (!observations.length) return;
+  const observations =
+    source === 'history' ? historicalObservations(input, ids, receivedAt) : [];
+  const devices = inverterSamples(input, ids, receivedAt, source);
+  if (!observations.length && !devices.length) return;
   const queued = await withCacheLock(
     'trial-live:' + owner,
     async () => {
@@ -68,6 +74,17 @@ export async function recordHistoricalTrial(
       pending.observations = [...byTime.values()].sort((a, b) =>
         a.measuredAt.localeCompare(b.measuredAt),
       );
+      const deviceTimes = new Map(
+        (pending.inverterSamples ?? []).map((s) => [
+          s.deviceId + ':' + s.measuredAt,
+          s,
+        ]),
+      );
+      for (const sample of devices) {
+        const key = sample.deviceId + ':' + sample.measuredAt;
+        if (!deviceTimes.has(key)) deviceTimes.set(key, sample);
+      }
+      pending.inverterSamples = [...deviceTimes.values()];
       await cacheWrite(pendingKey(owner), pending);
     },
     90,
@@ -158,7 +175,8 @@ export async function flushTrialPending(owner: string) {
       if (
         !pending?.observations.length &&
         !pending?.runs.length &&
-        !pending?.satellites?.length
+        !pending?.satellites?.length &&
+        !pending?.inverterSamples?.length
       )
         return;
       await db()
@@ -174,6 +192,14 @@ export async function flushTrialPending(owner: string) {
         .bind(owner, JSON.stringify(pending.runs))
         .run();
       await saveSatellitePoints(owner, pending.satellites ?? []);
+      if (pending.inverterSamples?.length)
+        await db()
+          .prepare(`INSERT INTO forecast_inverter_samples(owner,device_id,measured_at,received_at,payload)
+          SELECT ?,(value->>'deviceId')::bigint,(value->>'measuredAt')::timestamptz,
+          (value->>'receivedAt')::timestamptz,value FROM jsonb_array_elements(?::jsonb)
+          ON CONFLICT(owner,device_id,measured_at) DO NOTHING`)
+          .bind(owner, JSON.stringify(pending.inverterSamples))
+          .run();
       await cacheWrite(pendingKey(owner), { observations: [], runs: [] });
     },
     45,
