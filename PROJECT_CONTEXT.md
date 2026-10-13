@@ -1,6 +1,55 @@
 # ZIS Solar — контекст за продолжување на работата
 
-Последно проверено: **12.10.2026, 19:49 Ресен** — verified wait на живиот NOAA download43934;143/192дати се преземени до23август. Нема нова оценка или промоција.
+Последно проверено: **12.10.2026, 20:06 Ресен (18:06 UTC)** — корисникот експлицитно побара „zacuvaj se vo kontes file i prekini tuka“. Работата е паузирана. NOAA процесот е запрен по барањето, кешот е зачуван; 157/192 целосни дена до 6 септември. Следните секции имаат предност над постарите белешки за активни процеси, неодговорени прашања и чист Git.
+
+## Пауза по барање на корисникот — 12 октомври 20:06
+
+- Целта останува **под 5% месечен часовен WAPE, ден однапред**, но НЕ е постигната. Goal треба да биде `paused`, по експлицитното барање; нема автоматско продолжување до ново барање. Нема нов резултат од целосниот sflux или MEMO-policy експеримент.
+- Запрен е само точно проверениот NOAA downloader tree: launcher PID63452, child69820 и нивните 16 worker процеси. Проверка: **0 преостанати downloader процеси**, `write_stdin` session43934 врати terminal exit1 по намерното запирање. **Не полирај го овој стар handle како жив.** Последен целосен output: `2026-09-06`,112fields;157 дневни JSON. Прекинот е по барање, не мрежен неуспех.
+- Сите преземени дневни JSON остануваат во `work/forecast-research/sflux/`; raw GRIB/index/header кешот останува во `%LOCALAPPDATA%/ZisSolar/gfs-sflux-research/`. Ништо не е избришано. По барање за продолжување може да се пушти **истиот** `scripts/download-sflux-research.py --workers 16` во нов exec session, со истиот Python/cache. Тој треба да го реупотреби кешот; провери нецелосни byte-range записи со постојната валидација. Не прави нова паралелна копија или partial-range fit.
+- По вистинско довршување провери `download-status.json`:192 complete/0 failures. Потоа `prepare-sflux-research.py` → `evaluate-sflux-research.py` → `verify-sflux-research.mjs` → `report-sflux-research.mjs` → `save-sflux-research.mjs`. Овие целосни чекори **сè уште не се извршени**.
+- Git има незачувани во commit локални измени наведени подолу. Последен претходен commit е `767c821`, branch `codex/energy-forecast`; НЕ е направен нов commit/push/deploy во ова продолжување. Production останува `3ec0e83`, официјален `weather-solar-v3.2`, со главна day-ahead оценка. Не тврди дека новите EVN/MEMO функции веќе работат на сајтот.
+
+## Нови одговори: MEMO и планирани прекини
+
+- Корисникот објасни дека негативните MEMO цени се познати ден однапред, а планираните прекини ги следат на Електродистрибуција.
+- Потоа експлицитно го избра правилото **MEMO < 0 EUR/MWh → очекувано исклучување**, со одговор **„1 bez upravuvane na invertori“**. Тоа НЕ е правило за негативна нето продажна цена и НЕ е овластување за физичко управување. MEMO=0 или позитивна MEMO со негативна нето цена не активираат правило.
+- Не го знае изводот/трафостаницата. Не поставувај повторно исто прашање како да не одговорил. Точната врска меѓу електричниот приклучок и регионална најава останува непотврдена. Координатите41.068056/21.036111 сами не ја докажуваат.
+- Достави screenshot од официјалната страница: **12.09.2026, 07:00–12:00**, населено место **РЕСЕН**, локација **„ОПШТИНА РЕСЕН И НАСЕЛЕНИ МЕСТА НА ПРАВЦИТЕ КОН С.ДОЛНО ДУПЕНИ, С.КОЊСКО, С.КРУШЈЕ.“**. Зачувана локална копија `outputs/evn-notice-2026-09-12.png` (outputs е ignored); оригинал `C:/Users/todor/AppData/Local/Temp/codex-clipboard-6cb09e2d-290c-427b-8241-cc59a99482ee.png`.
+- Screenshot е примен **денес**, без докажан датум на првична објава/снимање. Не враќај receipt во септември. Тој докажува содржина на планирана најава, не точен реален прекин. Претходно проверените Huawei samples за12септември покажуваат нула07:20–16:50 и рестарт околу16:55/17:00; планираниот крај12:00 се разликува од реалниот.
+
+## EVN јавен извор — имплементација локално, сè уште необјавена
+
+- Официјални извори проверени преку web и реален HTTP GET:
+  - `https://www.evn.mk/faq-qa.aspx?cat=9` — планирани интервенции најмалку24часа однапред.
+  - `https://elektrodistribucija.mk/Grid/OutagesMap.aspx` — табела/мапа и предупредување за можни отстапувања од планираното време.
+  - Во source на таа страница е експлицитно користен јавниот JSON endpoint `https://portal-api.elektrodistribucija.mk/DSO/Prekini/ZemiPrekini`.
+- Реален одговор **12октомври17:57:11.426932UTC**,HTTP200,71најави. Дати12октомври–6ноември. Поле `prekinID,kecId,tipPrekin,nasMesto,adresa,pocetok,kraj,napNivo`. Сите71се парсирани успешно. Нема текстуален погодок„Ресен“/„Resen“ во тековната листа; тоа НЕ е доказ за достапност на централата.
+- Одговорот НЕ има publication timestamp, offset во pocetok/kraj, coordinates, cancellation flag/revisionID; HTTPLast-Modified/ETagсе null. Задржани оригинални wall-clock strings со секунди. Не претпоставувај UTC/local конверзија или одредена DST граница без дополнителна проверка.
+- Локални изворни датотеки: `work/forecast-research/grid-notices/outages.json`, `outages-receipt.json`, `outages-page.html` (ignored). Точен raw JSON SHA256 `62c9060edae28a8e77929986f00c90bf1ff2ded7dfb289c241bb9134a9bc7dfc`.
+- Нови `lib/grid-outages.ts` и `lib/grid-outages-server.ts`: строг parser, max2MiB,8stimeout, fixed public URL/no credentials/redirecterror, вистински requestedAt/receivedAt/raw/SHA. Разликува available empty list од unavailable. `publishedAt=null`, `applicability=unconfirmed`, `appliedToForecast=false`. `gridSnapshotAtOrigin` одбива подоцнежни receipts.
+- `lib/forecast-server.ts`: во постојниот run Promise.all се собира EVN еднаш и се архивира во **истиот** `forecast_runs.inputs.gridOutages`. Нема нов cron/poller/SQL write за ова, ниту fetch при cache read/deduplicated run. Feed failure не ја запира прогнозата. Нема EVN adjustment или промена на production/revenue/score.
+- `docs/grid-notices-integration.md`, `scripts/save-grid-notices-probe.mjs`, `tests/grid-outages.test.mjs`, изменети `tests/forecast-server.test.mjs` и `package.json`.
+- Првиот probe е **веќе зачуван во SQL**: `elektrodistribucija-notices-v1-416ca3079afe6c8f822d`,exactreadback **18:01:10UTC**,114259inputbytes/606payloadbytes. `docs/grid-notices-persistence.json`. Inputs содржат целосен raw одговор/parser/code/report како што биле тогаш; подоцнежните MEMO измени/сликата не се дел од тој стар запис. Не препишувај го.
+- Верификација ПРЕД додавање на MEMO candidate:127 forecast tests поминаа; targetedlint и productionbuild/TypeScript поминаа. По додавање `await test` повторно поминаа9насочени grid/server tests. Нема deployment/end-to-end production проверка на новиот collector.
+
+## MEMO правило — подготвено, тестирање/историска оценка недовршени
+
+- `lib/forecast-availability.ts` има policy `negative-memo-availability-v1`, запис на потврда **12.10.2026 18:02:31UTC**,thresholdstrict<0,physicalControl=false. `negativeMemoDecision` избира последна ценовна верзија received≤origin, неодредени/конфликтни цени се unknown.
+- `makeAvailabilityCandidate` прави одделна **next-local-day** серија со unchanged controlKwh и predictionKwh=0 само за позната негативна официјална MEMO цена што се совпаѓа со часот. Missingproductionостануваnull; прогнозирана цена не предизвикува прекин; нема backdatingпредpolicyrecordedAt. Officialpayloadне се менува. Gridadjustmentне е активен.
+- Hookво `forecast-server.ts` го зачувува кандидатот во **истиот forecast INSERT**, `inputs.availabilityCandidate`, само кога owner===`FUSIONSOLAR_OWNER`. Нема нова DBтабела/cron/invertercommand. Кандидатот е **локален, необјавен** и нема проспективни исходи. Не го претставувај како веќе докажано подобар модел или изменета главна линија.
+- `tests/forecast-availability.test.mjs` е напишан и targetedlint помина, но **новите2теста уште не се извршени**, ниту fulltests/build откако е додаден MEMO hook. Пред нов commit/deploy изврши ги. `package.json` веќе ги вклучува во `test:forecast`.
+- Пред scoring е напишан `docs/memo-availability-plan.md`: без refit/threshold sweep, original full-historyCatBoost-all cohorts + matchedOctv3.2, сите measuredzeros/restarts. Две priceпатеки: historicalreconstruction (explicitavailabilityassumption) и receipt-causal. И двете мора да кажат дека политиката е потврдена денес, па историската важност е претпоставка. Не користи screenshotкако причински септемврискивлез.
+- `scripts/export-memo-availability.mjs` **извршен успешно** со maintenanceenv. Read-only `prices UNION ALL price_revisions`, range2април–14октомври. Локален `work/forecast-research/memo-availability/prices.json`: **9576records,4656uniquehours**,најран вистински receipt **08.09.2026 12:35:53.148UTC**. Нема нов MEMO fetch/измислена првична објава. Овој export засега НЕ е архивиран во нов SQLresearchrecord.
+- `scripts/evaluate-memo-availability.mjs` и независен `scripts/verify-memo-availability.py` се **напишани, неизвршени**. Evalќе замрзне изворни hashes/code, користи fixedpolicyнаoriginalrows, ќе зачува `docs/memo-availability-{frozen,evaluation}.json`;verifyќе провериselector/unchangedtargets/месечниметрики. Нема тие generatedрезултатиуште. Пред извршување провери syntax/tests, зачувај protocolвоcommit,потоа изврши eval/verify. Не измислувај score.
+- ИзвршувањеNode: `node --experimental-transform-types --import ./tests/register-ts.mjs scripts/evaluate-memo-availability.mjs`;Pythonverifierсо `%LOCALAPPDATA%/ZisSolar/timesfm-venv/Scripts/python.exe`. Потоа треба да се довршат читлив report и append-onlySQLsaveсоцелиinputs/rawprices/code/evidence,exactreadback; овие report/saveскрипти уште НЕ се напишани. Зачувај ја и новата корисничка потврда/screenshotprovenance. Нема потреба од нови прашања за веќе потврденото MEMOправило.
+
+## Локална состојба при паузата
+
+Modified: `lib/forecast-server.ts`, `package.json`, `tests/forecast-server.test.mjs`, овој `PROJECT_CONTEXT.md`.
+Нови untracked: `lib/grid-outages.ts`, `lib/grid-outages-server.ts`, `lib/forecast-availability.ts`; `tests/grid-outages.test.mjs`, `tests/forecast-availability.test.mjs`; `scripts/save-grid-notices-probe.mjs`, `scripts/export-memo-availability.mjs`, `scripts/evaluate-memo-availability.mjs`, `scripts/verify-memo-availability.py`; `docs/grid-notices-integration.md`, `docs/grid-notices-persistence.json`, `docs/memo-availability-plan.md`. Rawwork/outputsостануваатignored. Не бриши/ресетирај ги.
+
+Нема нови credential/sessiontokenвоовиезаписи. Приватните env/DPAPIдатотеки остануваат на претходните патеки; локалниот Huawei20400не е повторуван. Не користи паузата како овластување за нови DB/providerповици, тестови, commits или deployment.
 
 ## Проверено чекање на NOAA — 12 октомври 19:49
 

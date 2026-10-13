@@ -18,6 +18,8 @@ import {
   type ForecastReading,
 } from './forecast-model';
 import { fetchForecastWeather } from './forecast-weather';
+import { fetchGridOutages } from './grid-outages-server';
+import { makeAvailabilityCandidate } from './forecast-availability';
 import { readContracts } from './contracts-server';
 import { contractFor, contractScheduleVersion } from './contracts';
 import { revalueForecast } from './forecast-model';
@@ -179,6 +181,7 @@ export async function runForecast(owner: string, now = new Date()) {
         weather,
         measuredScore,
         hourly,
+        gridOutages,
       ] = await Promise.all([
         db()
           .prepare(
@@ -203,6 +206,7 @@ export async function runForecast(owner: string, now = new Date()) {
         fetchForecastWeather(config, now),
         productionScore(owner, now, config.version),
         loadHourlyCalibration(owner, config, now),
+        fetchGridOutages(),
       ]);
       const prices = priceResult.results,
         readings = readingResult.results;
@@ -289,6 +293,12 @@ export async function runForecast(owner: string, now = new Date()) {
         calibration: calculated.calibration,
         hourlyCalibration: hourly.calibration,
         hourlyCalibrationInputs: hourly.inputs,
+        // Archive only until this plant's feeder and operating policy are confirmed.
+        gridOutages,
+        availabilityCandidate:
+          owner === process.env.FUSIONSOLAR_OWNER
+            ? makeAvailabilityCandidate(payload, prices)
+            : null,
         weatherModel:
           weather.provider === 'met-norway'
             ? 'MET Norway complete; NOAA GFS surface DSWRF preferred (CF interval bounds, de-averaged 3h, clear-sky hourly allocation); fallback Haurwitz + Kasten-Czeplak cloud/fog + FMI SILAM relative Solis; no repeated atmospheric attenuation on GFS; NOCT + Faiman; 14 recent complete daylight days for solar calibration'

@@ -1,7 +1,9 @@
 import { test, mock, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
-import {CONTRACT_SCHEDULE} from '../lib/contracts.ts';
-mock.module('../lib/contracts-server.ts',{namedExports:{readContracts:async()=>CONTRACT_SCHEDULE}});
+import { CONTRACT_SCHEDULE } from '../lib/contracts.ts';
+mock.module('../lib/contracts-server.ts', {
+  namedExports: { readContracts: async () => CONTRACT_SCHEDULE },
+});
 let user,
   cache,
   queries,
@@ -40,6 +42,23 @@ mock.module('../lib/forecast-weather.ts', {
       fetchedAt: null,
       raw: null,
     }),
+  },
+});
+let gridCalls = 0;
+const gridSnapshot = {
+  status: 'available',
+  receivedAt: '2026-10-12T17:57:11.427Z',
+  notices: [],
+  publishedAt: null,
+  applicability: 'unconfirmed',
+  appliedToForecast: false,
+};
+mock.module('../lib/grid-outages-server.ts', {
+  namedExports: {
+    fetchGridOutages: async () => {
+      gridCalls++;
+      return gridSnapshot;
+    },
   },
 });
 mock.module('../db/index.ts', {
@@ -96,8 +115,9 @@ beforeEach(() => {
   locked = false;
   records = [];
   config = null;
+  gridCalls = 0;
 });
-test('anonymous, viewer and foreign-origin writes fail before source or SQL reads', async () => {
+await test('anonymous, viewer and foreign-origin writes fail before source or SQL reads', async () => {
   user = null;
   assert.equal((await handleForecastPost(req())).status, 401);
   user = { role: 'viewer' };
@@ -109,7 +129,7 @@ test('anonymous, viewer and foreign-origin writes fail before source or SQL read
   );
   assert.ok(queries.every((q) => q[0] === 'auth-fresh'));
 });
-test('a warm cache read does not wake SQL and another owner cache is never exposed', async () => {
+await test('a warm cache read does not wake SQL and another owner cache is never exposed', async () => {
   cache = {
     owner: 'assigned',
     config: defaultForecastConfig(),
@@ -127,18 +147,24 @@ test('a warm cache read does not wake SQL and another owner cache is never expos
   assert.ok(!('owner' in result));
   assert.ok(queries.length > 0);
 });
-test('request owner is ignored, SQL binds assigned plant, and repeated runs deduplicate', async () => {
+await test('request owner is ignored, SQL binds assigned plant, and repeated runs deduplicate', async () => {
   const result = await handleForecastPost(
     req({ action: 'refresh', owner: 'foreign' }),
   );
   assert.equal(result.status, 200);
   assert.equal(records.length, 1);
+  const inserted = queries.find((q) =>
+    q[0].startsWith('INSERT INTO forecast_runs'),
+  );
+  assert.deepEqual(JSON.parse(inserted[7]).gridOutages, gridSnapshot);
+  assert.equal('gridOutages' in records[0], false);
   assert.ok(!JSON.stringify(queries).includes('foreign'));
   await handleForecastPost(req());
   assert.equal(records.length, 1);
   assert.equal(cache.owner, 'assigned');
+  assert.equal(gridCalls, 1);
 });
-test('invalid settings, limits and locks return actionable status codes', async () => {
+await test('invalid settings, limits and locks return actionable status codes', async () => {
   assert.equal(
     (await handleForecastPost(req({ action: 'configure', config: {} }))).status,
     400,
@@ -149,7 +175,7 @@ test('invalid settings, limits and locks return actionable status codes', async 
   locked = true;
   assert.equal((await handleForecastPost(req())).status, 409);
 });
-test('failed cache publication never reports success and persistence remains retryable', async () => {
+await test('failed cache publication never reports success and persistence remains retryable', async () => {
   cacheFailure = true;
   const result = await handleForecastPost(req());
   assert.equal(result.status, 503);
@@ -160,7 +186,7 @@ test('failed cache publication never reports success and persistence remains ret
   assert.equal(records.length, 1);
   assert.equal(cache.forecast.id, records[0].id);
 });
-test('cron is authenticated and exits before SQL outside local schedule in both seasons', async () => {
+await test('cron is authenticated and exits before SQL outside local schedule in both seasons', async () => {
   process.env.CRON_SECRET = 'test-cron';
   process.env.FUSIONSOLAR_OWNER = 'assigned';
   assert.equal(

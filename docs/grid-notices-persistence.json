@@ -1,0 +1,11 @@
+{
+  "id": "elektrodistribucija-notices-v1-416ca3079afe6c8f822d",
+  "savedAt": "2026-10-12T18:01:10.740Z",
+  "readback": "exact",
+  "firstReceipt": "2026-10-12T17:57:11.426932+00:00",
+  "count": 71,
+  "appliesToPlant": "unknown",
+  "inputBytes": 114259,
+  "payloadBytes": 606,
+  "officialForecastChanged": false
+}
