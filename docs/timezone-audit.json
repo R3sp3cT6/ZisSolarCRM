@@ -1,0 +1,133 @@
+{
+  "auditedAt": "2026-10-13T08:59:42.017Z",
+  "clock": {
+    "session_zone": "GMT",
+    "database_now": "2026-10-13T08:59:41.814Z"
+  },
+  "runtime": {
+    "node": "v24.19.0",
+    "icu": "78.3",
+    "tz": "2026b"
+  },
+  "readings": {
+    "count": 4087,
+    "first": "2026-04-03T15:00:00.000Z",
+    "last": "2026-10-13T07:00:00.000Z",
+    "invalidUtcKeysOrReceipts": 0
+  },
+  "prices": {
+    "count": 4848,
+    "first": "2025-09-01T22:00:00.000Z",
+    "last": "2026-10-14T21:00:00.000Z",
+    "invalidUtcKeysReceiptsOrMarketDay": 0
+  },
+  "inverterSamples": {
+    "count": "8070",
+    "first": "2026-07-14T22:00:00.000Z",
+    "last": "2026-10-13T08:35:00.000Z",
+    "receipt_before_measurement": "0"
+  },
+  "postgresIntlAgreement": [
+    {
+      "instant": "2026-03-29T00:59:00Z",
+      "local_day": "2026-03-29",
+      "local_hour": 1
+    },
+    {
+      "instant": "2026-03-29T01:00:00Z",
+      "local_day": "2026-03-29",
+      "local_hour": 3
+    },
+    {
+      "instant": "2026-10-25T00:59:00Z",
+      "local_day": "2026-10-25",
+      "local_hour": 2
+    },
+    {
+      "instant": "2026-10-25T01:00:00Z",
+      "local_day": "2026-10-25",
+      "local_hour": 2
+    },
+    {
+      "instant": "2027-03-28T00:59:00Z",
+      "local_day": "2027-03-28",
+      "local_hour": 1
+    },
+    {
+      "instant": "2027-03-28T01:00:00Z",
+      "local_day": "2027-03-28",
+      "local_hour": 3
+    },
+    {
+      "instant": "2027-10-31T00:59:00Z",
+      "local_day": "2027-10-31",
+      "local_hour": 2
+    },
+    {
+      "instant": "2027-10-31T01:00:00Z",
+      "local_day": "2027-10-31",
+      "local_hour": 2
+    }
+  ],
+  "collectors": [
+    {
+      "started_at": "2026-10-13T04:15:46.297Z",
+      "completed_at": "2026-10-13T04:15:51.615Z",
+      "status": "success"
+    },
+    {
+      "started_at": "2026-10-12T04:15:45.966Z",
+      "completed_at": "2026-10-12T04:15:51.562Z",
+      "status": "success"
+    },
+    {
+      "started_at": "2026-10-11T04:15:45.857Z",
+      "completed_at": "2026-10-11T04:15:50.334Z",
+      "status": "success"
+    }
+  ],
+  "deliveryDays": [
+    {
+      "day": "2026-03-29",
+      "hours": 23,
+      "first": "2026-03-28T23:00:00.000Z",
+      "end": "2026-03-29T22:00:00.000Z"
+    },
+    {
+      "day": "2026-10-25",
+      "hours": 25,
+      "first": "2026-10-24T22:00:00.000Z",
+      "end": "2026-10-25T23:00:00.000Z"
+    },
+    {
+      "day": "2027-03-28",
+      "hours": 23,
+      "first": "2027-03-27T23:00:00.000Z",
+      "end": "2027-03-28T22:00:00.000Z"
+    },
+    {
+      "day": "2027-10-31",
+      "hours": 25,
+      "first": "2027-10-30T22:00:00.000Z",
+      "end": "2027-10-31T23:00:00.000Z"
+    }
+  ],
+  "memoProbes": [
+    {
+      "day": "2026-03-29",
+      "status": 200,
+      "bytes": 14462,
+      "hours": 23,
+      "expected": 23,
+      "parseError": null
+    },
+    {
+      "day": "2025-10-26",
+      "status": 200,
+      "bytes": 14753,
+      "hours": 25,
+      "expected": 25,
+      "parseError": null
+    }
+  ]
+}

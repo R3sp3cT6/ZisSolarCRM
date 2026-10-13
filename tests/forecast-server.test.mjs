@@ -1,5 +1,7 @@
 import { test, mock, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { localHour } from '../lib/energy.ts';
 import { CONTRACT_SCHEDULE } from '../lib/contracts.ts';
 mock.module('../lib/contracts-server.ts', {
   namedExports: { readContracts: async () => CONTRACT_SCHEDULE },
@@ -105,6 +107,32 @@ const req = (body = { action: 'refresh' }, origin = 'https://example.com') =>
     headers: { origin, 'content-type': 'application/json' },
     body: JSON.stringify(body),
   });
+await test('deployed forecast cron keeps 08:20, 12:20 and 18:20 local across both clock changes', () => {
+  const { crons } = JSON.parse(
+    fs.readFileSync(new URL('../vercel.json', import.meta.url)),
+  );
+  const [minute, hours] = crons
+    .find((c) => c.path === '/api/forecast-sync')
+    .schedule.split(' ');
+  assert.equal(minute, '20');
+  for (const day of [
+    '2026-01-15',
+    '2026-07-15',
+    '2026-03-29',
+    '2026-10-25',
+    '2027-03-28',
+    '2027-10-31',
+  ]) {
+    const accepted = hours
+      .split(',')
+      .map((h) => new Date(`${day}T${h.padStart(2, '0')}:20:00Z`))
+      .filter(forecastCronTime);
+    assert.deepEqual(
+      accepted.map((d) => localHour(d.toISOString())),
+      [8, 12, 18],
+    );
+  }
+});
 beforeEach(() => {
   user = { userId: 'user', plantOwner: 'assigned', role: 'admin' };
   cache = null;

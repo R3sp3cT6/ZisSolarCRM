@@ -37,6 +37,7 @@ export function validateReadings(input:unknown,now=new Date()):ReadingInput[]{
  const start=new Date(ms).toISOString();if(seen.has(start))return fail('часот се повторува во внесот.');seen.add(start);
  const number=(value:unknown,optional=false):number|null=>{if(optional&&(value===null||value===undefined||value===''))return null;if(typeof value!=='number'||!Number.isFinite(value)||value<0||value>100000000)return fail('енергијата/моќноста мора да биде ненегативен број.');return value;};
  const productionKwh=number(r.productionKwh)!;const exportKwh=number(r.exportKwh,true);const powerKw=number(r.powerKw,true);
+ if(r.observedAt!==undefined&&(typeof r.observedAt!=='string'||!/(Z|[+-]\d{2}:\d{2})$/.test(r.observedAt)))return fail('времето на мерење мора да содржи временска зона.');
  const observedAt=typeof r.observedAt==='string'?new Date(r.observedAt):now;if(!Number.isFinite(observedAt.getTime())||observedAt.getTime()<ms||observedAt.getTime()>now.getTime()+60000)return fail('невалидно време на мерење.');
  return {start,productionKwh,exportKwh,powerKw,observedAt:observedAt.toISOString()};
  });
@@ -47,17 +48,39 @@ export function parseMemo(html:string):PricePoint[]{
  const tables=[...html.matchAll(/<table\b[^>]*>([\s\S]*?)<\/table>/gi)].map(m=>m[1]);
  const table=tables.find(t=>/<td[^>]*>\s*00\s*-\s*01\s*<\/td>/i.test(t));if(!table)throw new Error('MEMO: часовната табела не е пронајдена.');
  const dates=[...table.matchAll(/<th\b[^>]*>([\s\S]*?)<\/th>/gi)].map(m=>strip(m[1]).match(/(\d{2})\.(\d{2})\.(\d{4})/)).filter(Boolean).map(m=>`${m![3]}-${m![2]}-${m![1]}`);
- if(!dates.length||new Set(dates).size!==dates.length)throw new Error('MEMO: невалидни датуми.');
+ if(!dates.length||dates.some(d=>!validDate(d))||new Set(dates).size!==dates.length)throw new Error('MEMO: невалидни датуми.');
  const rows=[...table.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)].map(m=>[...m[1].matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/gi)].map(c=>strip(c[1]))).filter(c=>/^\d{2}/.test(c[0]??''));
  if(rows.some(c=>!['€/MWh','EUR/MWh','&euro;/MWh'].includes(c[1])))throw new Error('MEMO: очекувани се цени во EUR/MWh.');
  const result:PricePoint[]=[];
  for(const [column,day] of dates.entries()){
-   const slots=slotsForDay(day);const values=new Map<number,number[]>();let invalid=false;
-   for(const cells of rows){const h=Number(cells[0].slice(0,2));const cell=(cells[column+2]??'').replace(/[\s\u00a0]/g,'');if(!cell||cell==='-')continue;
-    if(!/^-?\d+,\d{2}$/.test(cell)){invalid=true;break;}const cents=Math.round(Number(cell.replace(',','.'))*100);if(!Number.isSafeInteger(cents)){invalid=true;break;}values.set(h,[...(values.get(h)??[]),cents]);}
-   // Refuse ambiguous/misaligned DST rows; never shift a price into another hour.
+   const slots=slotsForDay(day);
+   const values=new Map<number,{cents:number;extra:boolean}[]>();let invalid=false;
+   for(const cells of rows){
+    const interval=cells[0].match(/^(\d{2})(x?)\s*-\s*(\d{2})(x?)$/i);
+    if(!interval){invalid=true;break;}
+    const h=Number(interval[1]),extra=!!interval[2],count=slots.filter(s=>s.hour===h).length;
+    if(h>23||Number(interval[3])!==h+1||interval[2].toLowerCase()!==interval[4].toLowerCase()||extra&&h!==2){invalid=true;break;}
+    const cell=(cells[column+2]??'').replace(/[\s\u00a0]/g,'');if(!cell||cell==='-')continue;
+    if(!/^-?\d+,\d{2}$/.test(cell)){invalid=true;break;}
+    const cents=Math.round(Number(cell.replace(',','.'))*100);if(!Number.isSafeInteger(cents)){invalid=true;break;}
+    // MEMO's weekly table writes zero in the nonexistent spring 02:00 slot,
+    // and in the 02x column on ordinary days of the autumn transition week.
+    // Ignore only those proven non-delivery placeholders; real zero prices stay.
+    if((count===0&&h===2&&slots.length===23)||(extra&&count===1)){
+     if(cents!==0){invalid=true;break;}
+     continue;
+    }
+    values.set(h,[...(values.get(h)??[]),{cents,extra}]);
+   }
    if(invalid||slots.some(s=>values.get(s.hour)?.length!==slots.filter(t=>t.hour===s.hour).length)||[...values].some(([h])=>!slots.some(s=>s.hour===h)))continue;
-   const counts=new Map<number,number>();for(const slot of slots){const idx=counts.get(slot.hour)??0;counts.set(slot.hour,idx+1);result.push({start:slot.start,marketDate:day,eurCents:values.get(slot.hour)![idx]});}
+   // The web table puts 02x BEFORE 02. MEMO Trader Manual Appendix G (p.161)
+   // defines 02X as the SECOND delivery interval; HTML order is not time order.
+   const repeated=values.get(2);
+   if(repeated?.some(v=>v.extra)){
+    if(repeated.length!==2||repeated.filter(v=>v.extra).length!==1)continue;
+    repeated.sort((a,b)=>Number(a.extra)-Number(b.extra));
+   }
+   const counts=new Map<number,number>();for(const slot of slots){const idx=counts.get(slot.hour)??0;counts.set(slot.hour,idx+1);result.push({start:slot.start,marketDate:day,eurCents:values.get(slot.hour)![idx].cents});}
  }
  if(!result.length)throw new Error('MEMO: нема целосни и недвосмислени часовни цени.');return result;
 }

@@ -1,0 +1,22 @@
+[
+  {
+    "date": "2026-03-29",
+    "source": "https://dam-data.memo.mk/index.php?action=auction-by-hour&lang=en",
+    "method": "POST",
+    "body": {
+      "date": "2026-03-29"
+    },
+    "rawSha256": "dee0a41da0ab9dbd41febce71a4873aa34da426af9d15715137a4849d2564c8c",
+    "fixture": "price table only; cells and source row order unchanged"
+  },
+  {
+    "date": "2025-10-26",
+    "source": "https://dam-data.memo.mk/index.php?action=auction-by-hour&lang=en",
+    "method": "POST",
+    "body": {
+      "date": "2025-10-26"
+    },
+    "rawSha256": "3c375bf64e07da2adc17a9d1e6281ad1c048e028ee9c85e492dbac4c5b228c4f",
+    "fixture": "price table only; cells and source row order unchanged"
+  }
+]

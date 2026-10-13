@@ -1,4 +1,5 @@
 'use client';
+import { formatPlantTime } from '@/lib/plant-time';
 import { convertMoney, getCurrency } from '@/lib/currency';
 import { useCurrency } from '@/components/currency-switch';
 import { t, getLocale } from '@/lib/language';
@@ -280,6 +281,7 @@ export function EnergyChart({
                 <ComposedChart
                   data={data.chart.map((point) => ({
                     ...point,
+                    label: period === 'day' || period === 'hour' ? formatPlantTime(point.key) : point.label,
                     revenue: convertMoney(point.revenue),
                     productionMwh: toMwh(point.productionKwh),
                     forecastMwh: toMwh(point.forecastProductionKwh ?? null),
@@ -333,7 +335,7 @@ export function EnergyChart({
                   />
                   <XAxis
                     dataKey="label"
-                    tickFormatter={(value) => String(value).split(' ')[0]}
+                    tickFormatter={(value) => String(value)}
                     tick={{ fontSize: 12, fill: 'var(--chart-label)' }}
                     axisLine={false}
                     tickLine={false}
@@ -358,7 +360,7 @@ export function EnergyChart({
                   />
                   <Tooltip
                     labelFormatter={(label, items) =>
-                      `${String(label).split(' GMT')[0]}${items[0]?.payload?.partial ? ' · ' + t(period === 'day' || period === 'hour' ? 'Делумен час' : 'Делумен период') : ''}`
+                      `${String(label)}${items[0]?.payload?.partial ? ' · ' + t(period === 'day' || period === 'hour' ? 'Делумен час' : 'Делумен период') : ''}`
                     }
                     formatter={(value, name, item) => [
                       formatValue(Number(value)),

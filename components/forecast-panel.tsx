@@ -27,6 +27,7 @@ import { convertMoney, getCurrency } from '@/lib/currency';
 import { salePrice, contractFor } from '@/lib/energy';
 import type { ForecastConfig, ForecastPayload } from '@/lib/forecast-model';
 import { formatNumber } from '@/lib/number-format';
+import { formatPlantTime } from '@/lib/plant-time';
 import { ForecastConditions } from './forecast-conditions';
 import { ForecastTrialPanel } from './forecast-trial-panel';
 import { ForecastModelsPanel } from './forecast-models-panel';
@@ -85,13 +86,7 @@ const time = (value: string) =>
     minute: '2-digit',
     hourCycle: 'h23',
   }).format(new Date(value));
-const hour = (value: string) =>
-  new Intl.DateTimeFormat(getLocale(), {
-    timeZone: 'Europe/Skopje',
-    hour: '2-digit',
-    minute: '2-digit',
-    hourCycle: 'h23',
-  }).format(new Date(value));
+const hour = (value: string) => formatPlantTime(value, getLocale());
 function SettingsForm({
   config,
   busy,
