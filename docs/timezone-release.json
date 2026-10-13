@@ -1,0 +1,12 @@
+{
+  "checkedAt": "2026-10-13T09:04:40Z",
+  "commit": "28b7012",
+  "deploymentId": "dpl_9SGv987yXifTPJQqHFVPVomrB365",
+  "status": "READY",
+  "url": "https://zissolar.vercel.app",
+  "tests": 227,
+  "build": "passed",
+  "consoleErrors": 0,
+  "ui": "Production current-day rows display Resen time without permanent GMT suffix; retained partial remains visible. Repeated autumn hour tested with real historical MEMO fixtures and synthetic counter regression, not a future live transition.",
+  "screenshot": "outputs/timezone-release-2026-10-13.png"
+}

@@ -49,4 +49,6 @@ EVN notice strings still lack an offset and a verified publication timestamp. Th
 - Upcoming 25 October Huawei responses have not occurred yet. Transition behavior is regression-tested, not claimed as an already observed live transition.
 - The earlier lag in current production was a history-fetch/partial-retention issue (previous release), not evidence of a two-hour timezone shift. This audit does not improve or re-score the forecast model; official `weather-solar-v3.2` remains unchanged.
 
-Deployment/readback receipt is recorded in project context after release.
+Production commit **28b7012** is READY (`dpl_9SGv987yXifTPJQqHFVPVomrB365`). UI reload showed local hourly rows and the retained current partial, with zero console errors. See `docs/timezone-release.json`.
+
+Audit/source/test/build evidence was saved append-only to SQL as **timezone-dst-audit-v1-6d9b8fcc3df8eb85e1f2** with exact readback at **2026-10-13 09:05:01 UTC**; see `docs/timezone-persistence.json`. The physical inverter clock and the future live Huawei transition were not inspected.

@@ -1,15 +1,16 @@
 # ZIS Solar — project continuity
 
-Last verified: **13 October 2026, 11:01 Resen (09:01 UTC)**. New timezone/DST audit completed locally; release pending. This section supersedes older release/timestamp notes where they differ. Credentials and sessions must never be recorded here.
+Last verified: **13 October 2026, 11:05 Resen (09:05 UTC)**. Timezone/DST fixes deployed and verified; evidence saved to SQL with exact readback. This section supersedes older release/timestamp notes where they differ. Credentials and sessions must never be recorded here.
 
-## Timezone audit — ready to release
+## Timezone audit — deployed and verified
 
-- See `docs/timezone-audit.md` and sanitized production `docs/timezone-audit.json`. UTC storage + `Europe/Skopje` plant calendar are correct. Postgres and Node/Intl agree at all 2026/2027 clock transitions. Read-only audit:4,087 hourly readings and4,848 prices have canonical UTC keys/receipts and correct market dates;8,070 inverter samples have no receipt before measurement.
-- Found/fixed real MEMO DST cases: spring nonexistent02–03 haszero placeholder and previously invalidatedSunday; autumn webpage02x comes before02 but official manual says02X is SECOND hour. New parser skips only non-delivery zero placeholders and mapsordinary02→firstUTCslot,02x→second. Other weekdays in transition week remain complete. Real public fixtures andsourcehashes arecheckedin.
-- Repeated autumn hour getsUTC+2/UTC+1 suffix onlywhenambiguous, in mainproduction/market tables/charts andforecast hourlylabels. Ordinarytimesremainplain. Manualimport observedAtnowrequiresoffsetif supplied.
-- Full227testspass, productionbuild/TypeScriptpass, targetedlintpass. HostUTC/Skopje/NewYorkproducesidenticalboundaries. No source/SQLmeasurements shifted or overwritten; noSmartLogger/invertercommands. Upcoming25October live transition isnotyetobserved.
-- Existing schedulesunchanged:push21:00local;MEMO11:05+12:05fallbacklocal;forecast08:20/12:20/18:20local. Dailyarchivefixed04:15UTC=06:15summer/05:15winter intentionallyperREADME. Day-aheadscoringcutoffremainsfixed18UTC. EVN wallclocktimezone/unconfirmedfeeder stillnotapplied.
-- Priorproductionde82993 remainsuntilnewreleaseverificationbelow. Officialmodelv3.2 unchanged; <5%day-aheadmonthlyWAPE notachieved. Noactiveforecastexperiment/downloadprocess.
+- See `docs/timezone-audit.md` and sanitized production `docs/timezone-audit.json`. UTC storage + `Europe/Skopje` plant calendar are correct. Postgres and Node/Intl agree at all 2026/2027 clock transitions. Read-only audit: 4,087 hourly readings and 4,848 prices have canonical UTC keys/receipts and correct market dates; 8,070 inverter samples have no receipt before measurement.
+- Found/fixed real MEMO DST cases: spring nonexistent 02–03 has a zero placeholder and previously invalidated Sunday; autumn webpage 02x comes before 02 but the official manual says 02X is the SECOND hour. New parser skips only non-delivery zero placeholders and maps ordinary 02 to the first UTC slot, 02x to the second. Other weekdays in the transition week remain complete. Real public fixtures and source hashes are checked in.
+- Repeated autumn hour gets UTC+2/UTC+1 suffix only when ambiguous, in main production/market tables/charts and forecast hourly labels. Ordinary times remain plain. Manual import observedAt now requires an offset if supplied.
+- Full 227 tests pass, production build/TypeScript pass, targeted lint passes. Host UTC/Skopje/New York produces identical boundaries. No source/SQL measurements shifted or overwritten; no SmartLogger/inverter commands. Upcoming 25 October live transition is not yet observed; the physical inverter clock was not inspected.
+- Existing schedules unchanged: push 21:00 local; MEMO 11:05 + 12:05 fallback local; forecast 08:20/12:20/18:20 local. Daily archive fixed 04:15 UTC = 06:15 summer / 05:15 winter intentionally per README. Day-ahead scoring cutoff remains fixed 18 UTC. EVN wall-clock timezone/unconfirmed feeder still not applied.
+- Production **28b7012**, **READY dpl_9SGv987yXifTPJQqHFVPVomrB365**, https://zissolar.vercel.app. UI reload verified local hourly rows and retained current partial; zero console errors. Release proof: `docs/timezone-release.json`, ignored screenshot `outputs/timezone-release-2026-10-13.png`.
+- Source/test/build evidence saved append-only to SQL **timezone-dst-audit-v1-6d9b8fcc3df8eb85e1f2**, exact readback **09:05:01 UTC**, 214,618 input bytes. Receipt: `docs/timezone-persistence.json`. Official model v3.2 unchanged; <5% day-ahead monthly WAPE not achieved. No active forecast experiment/download process.
 
 ## Previous completed work — 13 October 10:44
 
