@@ -94,8 +94,33 @@ void test('fresh current-hour production fills an existing export row without wa
  assert.equal(data.chart[0].productionKwh,35);assert.equal(data.chart[0].partial,true);
  assert.equal(data.totals.partial,true);
  assert.equal(base.readings[0].production_kwh,null,'overlay does not mutate archive');
- for(const invalid of [{...base.fusionState.liveHour,observedAt:'2026-09-09T08:05:00Z'},{...base.fusionState.liveHour,start:'2026-09-09T07:00:00.000Z'}]){
+ for(const invalid of [{...base.fusionState.liveHour,observedAt:'2026-09-09T08:55:00Z'},{...base.fusionState.liveHour,start:'2026-09-09T07:00:00.000Z'}]){
   const result=buildDashboard({...base,fusionState:{liveHour:invalid}},day,'day',undefined,now);
   assert.equal(result.rows[0].productionKwh,null);assert.equal(result.rows[0].exportKwh,10);
  }
+});
+
+void test('retained cumulative energy survives stale refresh and rollover, stays partial, and yields to final archived fields',()=>{
+ const base=snapshot(),day='2026-09-09',start='2026-09-09T08:00:00.000Z';
+ base.prices=[{start,market_date:day,eur_cents:10000,fetched_at:start}];
+ base.fusionState={partialHours:[{start,productionKwh:35,exportKwh:30,observedAt:'2026-09-09T08:20:00.000Z'}]};
+ for(const at of ['2026-09-09T08:50:00Z','2026-09-09T11:00:00Z']){
+  const data=buildDashboard(base,day,'day',undefined,Date.parse(at));
+  assert.equal(data.rows[0].productionKwh,35);assert.equal(data.rows[0].exportKwh,30);assert.equal(data.rows[0].partial,true);
+  assert.equal(data.totals.missing,data.totals.expected,'a retained fragment does not close a missing finished hour');
+ }
+ base.readings=[{start,production_kwh:34,export_kwh:29,power_kw:null,observed_at:'2026-09-09T09:15:00Z',updated_at:start,source:'final hourly report'}];
+ const final=buildDashboard(base,day,'day',undefined,Date.parse('2026-09-09T11:00:00Z'));
+ assert.equal(final.rows[0].productionKwh,34);assert.equal(final.rows[0].exportKwh,29);assert.equal(final.rows[0].partial,false);
+ assert.equal(final.totals.missing,final.totals.expected-1);
+});
+
+void test('pending acknowledgement keeps confirmed rows in the warm snapshot before a later refresh can fail',async()=>{
+ const base=snapshot(),r=reading();entries.set('dashboard:owner',base);
+ entries.set('pending:owner',[{id:'batch',rows:[r]}]);
+ await flushPending('owner');
+ assert.deepEqual(entries.get('pending:owner'),[]);
+ assert.equal(entries.get('dashboard:owner').readings.find(x=>x.start===r.start).production_kwh,0);
+ const visible=await getCachedDashboard('owner',localDate(),'day');
+ assert.equal(visible.rows.find(x=>x.start===r.start).productionKwh,0);assert.equal(loads,0);
 });

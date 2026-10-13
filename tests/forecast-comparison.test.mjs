@@ -300,3 +300,13 @@ void test('primary day-ahead score cannot borrow perfect same-day predictions or
     null,
   );
 });
+
+void test('retained incomplete past hours stay visible but never enter day-ahead accuracy', () => {
+  const base=dashboard(),[a,b]=slotsForDay(day).slice(10,12).map(s=>s.start);
+  base.generatedAt='2026-10-13T00:00:00Z';
+  base.rows=[{start:a,productionKwh:100,partial:true},{start:b,productionKwh:100,partial:false}];
+  const result=attachForecastComparison(base,{hours:[],dayAheadHours:[prediction(a,100),prediction(b,80)]});
+  assert.equal(result.rows[0].productionKwh,100);
+  assert.equal(result.forecastComparison.dayAheadScore.pairedHours,1);
+  assert.equal(result.forecastComparison.dayAheadScore.wapePercent,20);
+});

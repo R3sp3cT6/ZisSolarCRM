@@ -1,10 +1,10 @@
 import 'server-only';
 import {localDate,slotsForDay,type ReadingInput} from './energy';
 import {FUSION_ORIGIN,FUSION_STATION,parseFusionLive} from './fusionsolar';
-import {LIVE_REFRESH_MS,GRID_EXPORT_COUNTER,parseCounterHistory,counterAnchor,counterHours,liveCounterDelta,type CounterAnchor,type LiveHour} from './fusion-telemetry';
+import {LIVE_REFRESH_MS,GRID_EXPORT_COUNTER,parseCounterHistory,counterAnchor,counterHours,liveCounterDelta,retainLiveHours,type CounterAnchor,type LiveHour} from './fusion-telemetry';
 import {liveObservation,type LiveObservation} from './forecast-trial';
 const env=process.env,HOUR=3600000,DAY=24*HOUR;
-export type FusionState={forecastObservation?:LiveObservation|null;calls?:Record<string,number[]>;session?:string;expires?:number;devices?:number[];meters?:number[];devicesAt?:number;live?:ReturnType<typeof parseFusionLive>;liveHour?:LiveHour;anchors?:{production?:CounterAnchor;export?:CounterAnchor};historyAt?:{production?:number;export?:number};lastSuccess?:string;error?:string|null;lastHour?:number;lastBackfill?:number;lastAttempt?:string};
+export type FusionState={forecastObservation?:LiveObservation|null;calls?:Record<string,number[]>;session?:string;expires?:number;devices?:number[];meters?:number[];devicesAt?:number;live?:ReturnType<typeof parseFusionLive>;liveHour?:LiveHour;partialHours?:LiveHour[];anchors?:{production?:CounterAnchor;export?:CounterAnchor};historyAt?:{production?:number;export?:number};lastSuccess?:string;error?:string|null;lastHour?:number;lastBackfill?:number;lastAttempt?:string};
 type Envelope={success:boolean;failCode:number;data:any;params?:Record<string,unknown>};
 async function seal(value:string,owner:string){
  const key=await secretKey(owner);const iv=crypto.getRandomValues(new Uint8Array(12));const encrypted=await crypto.subtle.encrypt({name:'AES-GCM',iv,additionalData:new TextEncoder().encode(owner)},key,new TextEncoder().encode(value));
@@ -43,6 +43,8 @@ export function fusionClient(owner:string,state:FusionState,persist:()=>Promise<
 }
 export async function collectTelemetry(state:FusionState,api:ReturnType<typeof fusionClient>,save:(rows:ReadingInput[])=>Promise<number>,daily=false,onProductionHistory?:(values:unknown,ids:number[],receivedAt:Date,source:'history'|'live')=>Promise<void>){
  const {available,reserve,call}=api;let updated=0;const errors:string[]=[];
+ state.partialHours=retainLiveHours(state.partialHours??[],state.liveHour?[state.liveHour]:[]);
+ function remember(hour:LiveHour){state.partialHours=retainLiveHours(state.partialHours??[],[hour]);state.liveHour=state.partialHours.find(r=>r.start===hour.start)??hour;}
  async function attempt(work:()=>Promise<void>){try{await work();}catch(error){errors.push(error instanceof Error?error.message:'Неуспешно Huawei преземање.');}}
   // Both series need a boundary for the current hour. Share the 26/day quota
   // equally and fetch the oldest eligible series, one batch per refresh.
@@ -77,16 +79,20 @@ export async function collectTelemetry(state:FusionState,api:ReturnType<typeof f
    const plant=await call('/thirdData/getStationRealKpi',{stationCodes:FUSION_STATION},LIVE_REFRESH_MS,288);
    const devices=await call('/thirdData/getDevRealKpi',{devIds:state.devices.join(','),devTypeId:1},LIVE_REFRESH_MS,288,key);
    if(onProductionHistory){try{await onProductionHistory(devices,state.devices,new Date(),'live');}catch{console.warn('Inverter status observations deferred');}}
-   state.live=parseFusionLive(plant,devices,state.devices);state.lastSuccess=new Date().toISOString();
+   const next=parseFusionLive(plant,devices,state.devices),prior=state.live;
+   if(prior?.day===next.day){next.dayProductionKwh??=prior.dayProductionKwh;next.dayExportKwh??=prior.dayExportKwh;}
+   if(prior?.day.slice(0,7)===next.day.slice(0,7))next.monthProductionKwh??=prior.monthProductionKwh;
+   next.totalProductionKwh??=prior?.totalProductionKwh??null;
+   state.live=next;state.lastSuccess=new Date().toISOString();
    state.forecastObservation=liveObservation(devices,state.devices);
    const productionKwh=liveCounterDelta(devices,state.anchors?.production,'total_cap');
-   state.liveHour={start:liveStart,productionKwh,exportKwh:null,observedAt:new Date().toISOString()};
+   remember({start:liveStart,productionKwh,exportKwh:null,observedAt:new Date().toISOString()});
   });
   await attempt(async()=>{
    const key='/thirdData/getDevRealKpi:17';if(state.meters?.length!==1||!available(key,LIVE_REFRESH_MS,288))return;
    const meter=await call('/thirdData/getDevRealKpi',{devIds:state.meters.join(','),devTypeId:17},LIVE_REFRESH_MS,288,key);
    const exportKwh=liveCounterDelta(meter,state.anchors?.export,GRID_EXPORT_COUNTER);
-   state.liveHour={start:liveStart,productionKwh:state.liveHour?.productionKwh??null,exportKwh,observedAt:new Date().toISOString()};
+   remember({start:liveStart,productionKwh:null,exportKwh,observedAt:new Date().toISOString()});
   });
 
  return {updated,error:errors[0]??null};

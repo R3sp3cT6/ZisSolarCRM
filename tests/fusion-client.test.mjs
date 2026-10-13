@@ -75,3 +75,32 @@ void test('a missing hourly boundary stays unknown even with fresh realtime powe
   assert.equal(saved.length,0);
  }finally{mock.timers.reset();}
 });
+
+void test('null production and failed meter refresh preserve both partial counters and their real receipt times',async()=>{
+ mock.timers.enable({apis:['Date'],now});
+ try{
+  const prior={start:'2026-09-09T08:00:00.000Z',productionKwh:10,exportKwh:5,observedAt:'2026-09-09T08:30:00.000Z'};
+  const state={devices:[1],meters:[17],liveHour:prior,live:{day:'2026-09-09',dayProductionKwh:70,dayExportKwh:65,monthProductionKwh:500,totalProductionKwh:900}};
+  const api={available:key=>key!=='/thirdData/getDevHistoryKpi',reserve:async()=>{},call:async(path,body)=>{
+   if(path.endsWith('getStationRealKpi'))return [{stationCode:FUSION_STATION,dataItemMap:{}}];
+   if(body.devTypeId===17)throw Error('meter temporarily unavailable');
+   return [{devId:1,dataItemMap:{active_power:40}}];
+  }};
+  await collectTelemetry(state,api,async()=>0);
+  assert.equal(state.liveHour.productionKwh,10);assert.equal(state.liveHour.exportKwh,5);
+  assert.equal(state.liveHour.observedAt,prior.observedAt);
+  assert.equal(state.partialHours.length,1);
+  assert.equal(state.live.dayProductionKwh,70);assert.equal(state.live.dayExportKwh,65);
+ }finally{mock.timers.reset();}
+});
+
+void test('hour rollover retains the previous partial without publishing it as a completed measurement',async()=>{
+ mock.timers.enable({apis:['Date'],now:Date.parse('2026-09-09T09:02:00Z')});
+ try{
+  const prior={start:'2026-09-09T08:00:00.000Z',productionKwh:100,exportKwh:95,observedAt:'2026-09-09T08:58:00.000Z'};
+  const state={liveHour:prior},saved=[];
+  await collectTelemetry(state,{available:()=>false,reserve:async()=>{},call:async()=>{throw Error('unexpected call');}},async rows=>{saved.push(...rows);return rows.length;});
+  assert.equal(state.liveHour,undefined);assert.equal(state.partialHours[0].productionKwh,100);
+  assert.equal(state.partialHours[0].exportKwh,95);assert.equal(saved.length,0);
+ }finally{mock.timers.reset();}
+});

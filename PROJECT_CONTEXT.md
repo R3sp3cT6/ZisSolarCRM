@@ -1,5 +1,17 @@
 # ZIS Solar — контекст за продолжување на работата
 
+Последно проверено: **13.10.2026, 10:27 Ресен (08:27 UTC)**. Корисникот експлицитно ја продолжи работата: доврши ги преземањата/day-ahead тестовите и поправи исчезнување на Huawei мерења. Ова продолжување има предност над старата пауза подолу. Целта под 5% месечен часовен WAPE ден однапред не е постигната.
+
+## Активно продолжување — 13 октомври
+
+- NOAA sflux downloader е продолжен од кеш со истиот frozen протокол, Python `scripts/download-sflux-research.py --workers 16`, **жив session51403**. Стар43934 останува запрен. Последно 400/980 преостанати задачи; целосни JSON до20септември. Не прави дупликат. По terminal192complete/0failures: prepare → evaluate → verify → report → save. Нема нов sflux резултат уште.
+- MEMO diagnostic завршен и независно проверен2818редови. **0 негативни цени во scored часовите, 0 променети прогнози, 0 подобрување.** Archive WAPE24.967974%,receipt24.336398%; matchedOctober142часа v3.2=12.780715%,CatBoost15.880539%archive/15.866401%receipt. Не е промовиран модел. `docs/memo-availability-results.md`, evaluation/frozen/verification/persistence JSON. Целосни inputs/prices/runs/code во append-only SQL `negative-memo-availability-diagnostic-v1-099d37a20b4dc19ab458`,exactreadback08:25:19UTC,11,003,397inputbytes/1,271,217payloadbytes.
+- Commit31121e3 ги зачува EVN collector/MEMO candidate и замрзнатиот diagnostic протокол ПРЕД scoring. Новата локална поправка на Huawei е опишана во `docs/telemetry-retention.md`. Причини: rollover брише partial,15min view expiry,missing counters overwrite,queue ACK пред snapshot publish. Поправени: per-hour/per-field retained partials,≈partial status,no final coverage/score/CSV,known null daily fallback,cache handoff. 215fulltests и build/TypeScript поминаа; targetedlint на новите helper/test/evidence делови помина.
+- Production сè уште3ec0e83 додека не се потврди release подолу. Следно commit/push/deploy и live UI проверка, потоа fullsflux резултати. Вистински measurements/старите forecasts не се препишуваат. Нема inverter commands. Raw screenshots се доказ за содржина, не proof за историско receipt време.
+
+## Претходен зачуван контекст (историски)
+
+
 Последно проверено: **12.10.2026, 20:06 Ресен (18:06 UTC)** — корисникот експлицитно побара „zacuvaj se vo kontes file i prekini tuka“. Работата е паузирана. NOAA процесот е запрен по барањето, кешот е зачуван; 157/192 целосни дена до 6 септември. Следните секции имаат предност над постарите белешки за активни процеси, неодговорени прашања и чист Git.
 
 ## Пауза по барање на корисникот — 12 октомври 20:06

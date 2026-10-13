@@ -1,10 +1,10 @@
 import {summarizeHistory,type DayCoverage} from './history-coverage';
 import {contractFor,CONTRACT_SCHEDULE,type ContractTerms,rangeFor,slotsForDay,localDate,hourLabel,salePrice,revenue,type Period} from './energy';
 import {FUSION_GRID_DATE,type parseFusionLive} from './fusionsolar';
-import {readingCoverage,type LiveHour} from './fusion-telemetry';
+import {readingCoverage,retainLiveHours,type LiveHour} from './fusion-telemetry';
 export type DbReading={start:string;production_kwh:number|null;export_kwh:number|null;power_kw:number|null;observed_at:string;source:string;updated_at:string};
 export type DbPrice={start:string;market_date:string;eur_cents:number;fetched_at:string};
-export type DashboardSnapshot={contracts?:ContractTerms[];owner:string;plant:{name:string;capacity_kw:number|null}|null;readings:DbReading[];prices:DbPrice[];reports:{kind:string;period:string;payload:string;updated_at:string}[];syncs:{market_date:string;attempted_at:string;succeeded_at:string|null;error:string|null}[];fusionState:{live?:ReturnType<typeof parseFusionLive>;liveHour?:LiveHour;lastSuccess?:string;error?:string|null};configured:boolean;savedAt:string};
+export type DashboardSnapshot={contracts?:ContractTerms[];owner:string;plant:{name:string;capacity_kw:number|null}|null;readings:DbReading[];prices:DbPrice[];reports:{kind:string;period:string;payload:string;updated_at:string}[];syncs:{market_date:string;attempted_at:string;succeeded_at:string|null;error:string|null}[];fusionState:{live?:ReturnType<typeof parseFusionLive>;liveHour?:LiveHour;partialHours?:LiveHour[];lastSuccess?:string;error?:string|null};configured:boolean;savedAt:string};
 
 export function buildDashboard(snapshot:DashboardSnapshot,day:string,period:Period,hour?:string,now=Date.now()){
  const {from,to}=rangeFor(day,period,hour);
@@ -44,23 +44,31 @@ export function buildDashboard(snapshot:DashboardSnapshot,day:string,period:Peri
   ...dailyReports.results.flatMap(r=>(JSON.parse(r.payload) as {key:string;productionKwh:number|null}[]).filter(v=>v.productionKwh!==null&&v.productionKwh>0).map(v=>v.key)),
   ...(live&&live.dayProductionKwh!==null&&live.dayProductionKwh>0?[live.day]:[])
  ])].sort();
- if(live&&period==='year'&&day.slice(0,4)===live.day.slice(0,4)){const month=report.find(r=>r.key===live.day.slice(0,7));if(month)month.productionKwh=live.monthProductionKwh;}
- if(live&&['day','month'].includes(period)&&day.slice(0,7)===live.day.slice(0,7)){const today=report.find(r=>r.key===live.day);if(today){today.productionKwh=live.dayProductionKwh;today.exportKwh=live.dayExportKwh;}}
+ if(live&&period==='year'&&day.slice(0,4)===live.day.slice(0,4)){const month=report.find(r=>r.key===live.day.slice(0,7));if(month)month.productionKwh=live.monthProductionKwh??month.productionKwh;}
+ if(live&&['day','month'].includes(period)&&day.slice(0,7)===live.day.slice(0,7)){const today=report.find(r=>r.key===live.day);if(today){today.productionKwh=live.dayProductionKwh??today.productionKwh;today.exportKwh=live.dayExportKwh??today.exportKwh;}}
  const readingMap=new Map(readingsResult.results.map(r=>[r.start,r]));const priceMap=new Map(pricesResult.results.map(r=>[r.start,r]));
- // The unfinished hour is an ephemeral view, never an archived full-hour reading.
- const liveHour=fusionState.liveHour;
- if(liveHour?.start===currentStart&&currentStart>=from&&currentStart<to&&now-Date.parse(liveHour.observedAt)<900000&&(liveHour.exportKwh!==null||liveHour.productionKwh!==null)){
-  const prior=readingMap.get(currentStart);
-  if(!prior||Date.parse(liveHour.observedAt)>=Date.parse(prior.observed_at))readingMap.set(currentStart,{start:currentStart,production_kwh:liveHour.productionKwh??prior?.production_kwh??null,export_kwh:liveHour.exportKwh??prior?.export_kwh??null,power_kw:prior?.power_kw??null,observed_at:liveHour.observedAt,source:'Huawei FusionSolar · live counters',updated_at:liveHour.observedAt});
+ // Retained partial energy does not expire like instantaneous power. Completed
+ // archive fields always supersede it, and it never becomes a final reading.
+ const partialStarts=new Set<string>();
+ const partialHours=retainLiveHours(fusionState.partialHours??[],fusionState.liveHour?[fusionState.liveHour]:[],now);
+ for(const liveHour of partialHours){
+  const start=liveHour.start;if(start<from||start>=to)continue;
+  const prior=readingMap.get(start);
+  const acceptPartial=(value:number|null,field:number|null|undefined,at:string)=>value!==null&&(field==null||start===currentStart&&Date.parse(at)>=Date.parse(prior!.observed_at));
+  const production=acceptPartial(liveHour.productionKwh,prior?.production_kwh,liveHour.productionObservedAt??liveHour.observedAt);
+  const exported=acceptPartial(liveHour.exportKwh,prior?.export_kwh,liveHour.exportObservedAt??liveHour.observedAt);
+  if(!production&&!exported)continue;
+  partialStarts.add(start);
+  readingMap.set(start,{start,production_kwh:production?liveHour.productionKwh:prior?.production_kwh??null,export_kwh:exported?liveHour.exportKwh:prior?.export_kwh??null,power_kw:prior?.power_kw??null,observed_at:liveHour.observedAt,source:'Huawei FusionSolar · partial counters',updated_at:liveHour.observedAt});
  }
  const allStarts=[...new Set([...readingMap.keys(),...priceMap.keys()])].sort();
- const rows=allStarts.map(start=>{const r=readingMap.get(start);const p=priceMap.get(start);const memo=p?p.eur_cents/100:null;return {start,contractVersion:contractFor(start,contracts).version,productionKwh:r?.production_kwh??null,exportKwh:r?.export_kwh??null,memo,sale:memo===null?null:salePrice(memo,start,contracts),revenue:r?.export_kwh!=null&&memo!==null?revenue(r.export_kwh,memo,start,contracts):null,estimate:r&&r.production_kwh!==null&&r.export_kwh===null&&memo!==null?revenue(r.production_kwh,memo,start,contracts):null,source:r?.source??null,observedAt:r?.observed_at??null,priceFetchedAt:p?.fetched_at??null,partial:start===currentStart};});
- const actual=rows.filter(r=>r.source!==null);const priced=actual.filter(r=>r.revenue!==null);const expectedFrom=fusion.configured?Math.max(Date.parse(from),Date.parse(slotsForDay(FUSION_GRID_DATE)[0].start)):Date.parse(from);const coverage=readingCoverage(actual.map(r=>r.start),new Date(expectedFrom).toISOString(),to,now);const expected=coverage.expected;
+ const rows=allStarts.map(start=>{const r=readingMap.get(start);const p=priceMap.get(start);const memo=p?p.eur_cents/100:null;return {start,contractVersion:contractFor(start,contracts).version,productionKwh:r?.production_kwh??null,exportKwh:r?.export_kwh??null,memo,sale:memo===null?null:salePrice(memo,start,contracts),revenue:r?.export_kwh!=null&&memo!==null?revenue(r.export_kwh,memo,start,contracts):null,estimate:r&&r.production_kwh!==null&&r.export_kwh===null&&memo!==null?revenue(r.production_kwh,memo,start,contracts):null,source:r?.source??null,observedAt:r?.observed_at??null,priceFetchedAt:p?.fetched_at??null,partial:start===currentStart||partialStarts.has(start)};});
+ const actual=rows.filter(r=>r.source!==null);const priced=actual.filter(r=>r.revenue!==null);const expectedFrom=fusion.configured?Math.max(Date.parse(from),Date.parse(slotsForDay(FUSION_GRID_DATE)[0].start)):Date.parse(from);const coverage=readingCoverage(actual.filter(r=>!r.partial).map(r=>r.start),new Date(expectedFrom).toISOString(),to,now);const expected=coverage.expected;
  const totals={productionKwh:actual.some(r=>r.productionKwh!==null)?actual.reduce((s,r)=>s+(r.productionKwh??0),0):null,exportKwh:actual.some(r=>r.exportKwh!==null)?actual.reduce((s,r)=>s+(r.exportKwh??0),0):null,revenue:priced.length?priced.reduce((s,r)=>s+r.revenue!,0):null,estimate:actual.some(r=>r.estimate!==null)?actual.reduce((s,r)=>s+(r.estimate??0),0):null,readings:actual.length,priced:priced.length,expected,missing:coverage.missing,partial:actual.some(r=>r.partial),unpriced:actual.filter(r=>r.exportKwh!==null&&r.memo===null).length,unmetered:actual.filter(r=>r.exportKwh===null).length};
  let productionSource='Часовна архива';
  const periodReport=report.filter(r=>period==='day'?r.key===day:period==='hour'?false:true);
  if(periodReport.some(r=>r.productionKwh!==null)){totals.productionKwh=periodReport.reduce((s,r)=>s+(r.productionKwh??0),0);if(periodReport.some(r=>r.exportKwh!==null))totals.exportKwh=periodReport.reduce((s,r)=>s+(r.exportKwh??0),0);productionSource='Huawei извештај';}
- if(period==='day'&&live?.day===day){totals.productionKwh=live.dayProductionKwh;totals.exportKwh=live.dayExportKwh;productionSource='Huawei · тековен ден';}
+ if(period==='day'&&live?.day===day){totals.productionKwh=live.dayProductionKwh??totals.productionKwh;totals.exportKwh=live.dayExportKwh??totals.exportKwh;productionSource='Huawei · тековен ден';}
  const groups=new Map<string,{label:string;productionKwh:number|null;exportKwh:number|null;revenue:number|null;missingPrice:boolean;partial:boolean}>();
  for(const row of rows){const date=localDate(row.start);const key=period==='year'?date.slice(0,7):period==='month'?date:row.start;const label=period==='year'?date.slice(5,7):period==='month'?date.slice(8,10):hourLabel(row.start);const g=groups.get(key)??{label,productionKwh:null,exportKwh:null,revenue:null,missingPrice:false,partial:false};
  if(row.partial&&row.source!==null)g.partial=true;

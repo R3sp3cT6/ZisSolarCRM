@@ -1,0 +1,9 @@
+{
+  "id": "negative-memo-availability-diagnostic-v1-099d37a20b4dc19ab458",
+  "savedAt": "2026-10-13T08:25:19.838Z",
+  "readback": "exact",
+  "inputBytes": 11003397,
+  "payloadBytes": 1271217,
+  "officialForecastChanged": false,
+  "actualsChanged": false
+}

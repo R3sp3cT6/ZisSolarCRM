@@ -59,7 +59,7 @@ export async function loadDashboardSnapshot(owner:string):Promise<DashboardSnaps
  ]);
  const state=fusion?JSON.parse(fusion.state):{};
  return {owner,plant,contracts,readings:readings.results,prices:prices.results,reports:reports.results,syncs:syncs.results,
-  fusionState:{live:state.live,liveHour:state.liveHour,lastSuccess:state.lastSuccess,error:state.error},
+  fusionState:{live:state.live,liveHour:state.liveHour,partialHours:state.partialHours,lastSuccess:state.lastSuccess,error:state.error},
   configured:!!(env.FUSIONSOLAR_PASSWORD&&env.FUSIONSOLAR_OWNER===owner),savedAt:new Date().toISOString()};
 }
 export async function getDashboard(owner:string,day:string,period:Period,hour?:string){

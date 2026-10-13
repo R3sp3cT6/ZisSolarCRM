@@ -9,6 +9,7 @@ import {syncFusionDirect,fusionConfigured,fusionOwner} from './fusionsolar-serve
 import {collectTelemetry,fusionClient,type FusionState} from './fusion-client';
 import {localDate,rangeFor,type Period,type ReadingInput} from './energy';
 import {recordLiveTrial,recordHistoricalTrial,flushTrialPending} from './forecast-trial-live';
+import {retainLiveHours} from './fusion-telemetry';
 
 export type PendingBatch={id:string;rows:ReadingInput[]};
 const pendingKey=(owner:string)=>'pending:'+owner;
@@ -20,6 +21,10 @@ export async function flushPending(owner:string){
  let written=0;
  for(let i=0;i<batches.length;i++){
   written+=await saveReadings(owner,batches[i].rows,'Huawei FusionSolar · device counters',true,true);
+  // Publish the SQL-confirmed rows before acknowledging their pending overlay.
+  // Readers fetch pending first, then the snapshot, so either copy remains visible.
+  const snapshot=await cacheRead<DashboardSnapshot>('dashboard:'+owner);
+  if(snapshot?.owner===owner)await cacheWrite('dashboard:'+owner,overlayPending(snapshot,[batches[i]],null),7*86400);
   await cacheWrite(pendingKey(owner),batches.slice(i+1));
  }
  return written;
@@ -36,7 +41,7 @@ export function overlayPending(snapshot:DashboardSnapshot,batches:PendingBatch[]
   if(prior){prior.production_kwh??=r.productionKwh;prior.export_kwh??=r.exportKwh;prior.power_kw??=r.powerKw;}
   else rows.set(r.start,{start:r.start,production_kwh:r.productionKwh,export_kwh:r.exportKwh,power_kw:r.powerKw,observed_at:r.observedAt,updated_at:r.observedAt,source:'Huawei FusionSolar · device counters'});
  }
- return {...snapshot,readings:[...rows.values()].sort((a,b)=>a.start.localeCompare(b.start)),fusionState:state?{live:state.live,liveHour:state.liveHour,lastSuccess:state.lastSuccess,error:state.error}:snapshot.fusionState};
+ return {...snapshot,readings:[...rows.values()].sort((a,b)=>a.start.localeCompare(b.start)),fusionState:state?{live:state.live??snapshot.fusionState.live,liveHour:state.liveHour,partialHours:retainLiveHours(snapshot.fusionState.partialHours??[],[...(snapshot.fusionState.liveHour?[snapshot.fusionState.liveHour]:[]),...(state.partialHours??[]),...(state.liveHour?[state.liveHour]:[])]),lastSuccess:state.lastSuccess,error:state.error}:snapshot.fusionState};
 }
 export async function rebuildSnapshot(owner:string){
  const snapshot=await loadDashboardSnapshot(owner);
@@ -88,6 +93,7 @@ export async function refreshActive(owner:string){
 export async function getCachedDashboard(owner:string,day:string,period:Period,hour?:string){
  rangeFor(day,period,hour);
  if(!sharedCache())return {...await getDashboard(owner,day,period,hour),storage:'database' as const};
+ const [state,batches,forecast]=await Promise.all([cacheRead<FusionState>('fusion:'+owner),cacheRead<PendingBatch[]>(pendingKey(owner)),readForecastComparison(owner)]);
  let snapshot=await cacheRead<DashboardSnapshot>('dashboard:'+owner);
  if(!snapshot){
   const loaded=await withCacheLock('plant:'+owner,()=>rebuildSnapshot(owner));
@@ -98,6 +104,5 @@ export async function getCachedDashboard(owner:string,day:string,period:Period,h
   }else snapshot=loaded.value;
  }
  if(snapshot.owner!==owner)throw Error('Невалиден кеш за централата.');
- const [state,batches,forecast]=await Promise.all([cacheRead<FusionState>('fusion:'+owner),cacheRead<PendingBatch[]>(pendingKey(owner)),readForecastComparison(owner)]);
  return {...attachForecastComparison(buildDashboard(overlayPending(snapshot,batches??[],state),day,period,hour),forecast),storage:'cache' as const,archivedAt:snapshot.savedAt};
 }

@@ -358,7 +358,7 @@ export function EnergyChart({
                   />
                   <Tooltip
                     labelFormatter={(label, items) =>
-                      `${String(label).split(' GMT')[0]}${items[0]?.payload?.partial ? ' · ' + t(period === 'day' || period === 'hour' ? 'Тековен час' : 'Делумен период') : ''}`
+                      `${String(label).split(' GMT')[0]}${items[0]?.payload?.partial ? ' · ' + t(period === 'day' || period === 'hour' ? 'Делумен час' : 'Делумен период') : ''}`
                     }
                     formatter={(value, name, item) => [
                       formatValue(Number(value)),

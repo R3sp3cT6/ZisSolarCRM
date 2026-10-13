@@ -1,0 +1,14 @@
+{
+  "frozenAt": "2026-10-13T08:16:57.256Z",
+  "hashes": {
+    "work/forecast-research/memo-availability/prices.json": "b8d4cedb8ff748fc51d3687cc9de7158d0b7f0163a357828ff228fe2c511ccdb",
+    "docs/full-history-evaluation.json": "f9e1617e21b8211d09065e7c92acb49ba5796ca98590cc698a72ec9233f68a9a",
+    "work/forecast-research/full-history/inputs.json": "9d38f66f67e27efa0c9eb56f75013d253c752dae0032dbd5e1a8ec685a91dd9b",
+    "scripts/evaluate-memo-availability.mjs": "5e4b250bea1f8807277b68f36e6ebab4295dcae7cf5548dc75467bde30b06a12",
+    "scripts/verify-memo-availability.py": "13ce5ea935c981aad5a13650f38eadf5314442530598593c41ca5aebf3a501ca",
+    "scripts/export-memo-availability.mjs": "c9dc791c523eb8278e405dd26941be6b2d517e48fd8fb382091b960c0fc55136",
+    "lib/forecast-availability.ts": "70861df3c17e077225a2efe6e3044c161b417286c0cd71ee0fb1bbc286183a00",
+    "docs/memo-availability-plan.md": "5c940058dbfb938229a77aff0f8fd8fc1d11279b88c072c808811415f77dcc37",
+    "tests/forecast-availability.test.mjs": "00136c13200cf403d176c85445f6ec26e303f20eba9d712736aad25cfa24bdd3"
+  }
+}

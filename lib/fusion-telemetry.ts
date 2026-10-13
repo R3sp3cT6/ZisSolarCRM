@@ -8,7 +8,28 @@ export const HOUR_MS=3600000;
 export const GRID_EXPORT_COUNTER='active_cap';
 export type CounterSample={at:number;id:number;counter:number|null};
 export type CounterAnchor={start:string;values:{id:number;counter:number}[]};
-export type LiveHour={start:string;productionKwh:number|null;exportKwh:number|null;observedAt:string};
+export type LiveHour={start:string;productionKwh:number|null;exportKwh:number|null;observedAt:string;productionObservedAt?:string;exportObservedAt?:string};
+
+// These are cumulative, unfinished-hour values, not final hourly readings.
+// Keep the last valid value per field through missing responses and rollovers.
+export function retainLiveHours(hours:LiveHour[],updates:LiveHour[],now=Date.now()):LiveHour[]{
+ const result=new Map<string,LiveHour>();
+ for(const row of [...hours,...updates]){
+  const start=Date.parse(row.start),observed=Date.parse(row.observedAt);
+  if(!Number.isFinite(start)||start%HOUR_MS!==0||!Number.isFinite(observed)||observed<start||observed>=start+HOUR_MS||observed>now)continue;
+  const prior=result.get(row.start)??{start:row.start,productionKwh:null,exportKwh:null,observedAt:row.observedAt};
+  for(const [valueKey,timeKey] of [['productionKwh','productionObservedAt'],['exportKwh','exportObservedAt']] as const){
+   const value=row[valueKey],at=row[timeKey]??row.observedAt,ms=Date.parse(at);
+   if(value===null||!Number.isFinite(value)||value<0||!Number.isFinite(ms)||ms<start||ms>=start+HOUR_MS||ms>now)continue;
+   const previous=prior[valueKey],previousAt=prior[timeKey];
+   if(previous===null||value>=previous&&(!previousAt||ms>=Date.parse(previousAt))){prior[valueKey]=value;prior[timeKey]=at;}
+  }
+  if(prior.productionKwh===null&&prior.exportKwh===null)continue;
+  prior.observedAt=[prior.productionObservedAt,prior.exportObservedAt].filter((at):at is string=>!!at).sort((a,b)=>Date.parse(a)-Date.parse(b)).at(-1)!;
+  result.set(row.start,prior);
+ }
+ return [...result.values()].sort((a,b)=>a.start.localeCompare(b.start));
+}
 
 export function parseCounterHistory(input:unknown,ids:number[],field:'total_cap'|'active_cap',from:number,to:number,now=Date.now()):CounterSample[]{
  if(!Array.isArray(input)||!ids.length||new Set(ids).size!==ids.length)throw Error('Невалидна историја на бројачи.');
