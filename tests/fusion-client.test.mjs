@@ -45,6 +45,21 @@ void test('missing current production is collected hourly while warm meter data 
  }finally{mock.timers.reset();}
 });
 
+void test('a new calendar hour does not wait 59 minutes after the previous-hour download',async()=>{
+ mock.timers.enable({apis:['Date'],now});
+ try{
+  const last=Date.parse('2026-09-09T07:55:00Z');
+  const state={devices:[1],historyAt:{production:last},calls:{'inverter-history':[last]}};
+  const {api,requests}=apiFor(state),saved=[];
+  await collectTelemetry(state,api,async rows=>{saved.push(...rows);return rows.length;});
+  assert.equal(requests.filter(r=>r.path.endsWith('getDevHistoryKpi')).length,1);
+  assert.equal(saved.find(r=>r.start==='2026-09-09T07:00:00.000Z').productionKwh,10);
+  assert.equal(state.liveHour.productionKwh,5);
+  await collectTelemetry(state,api,async()=>0);
+  assert.equal(requests.filter(r=>r.path.endsWith('getDevHistoryKpi')).length,1,'no repeat within the same hour');
+ }finally{mock.timers.reset();}
+});
+
 void test('both stale series receive turns; neither type can consume the other quota',async()=>{
  mock.timers.enable({apis:['Date'],now});
  try{

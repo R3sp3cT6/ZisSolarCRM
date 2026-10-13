@@ -48,21 +48,23 @@ export async function collectTelemetry(state:FusionState,api:ReturnType<typeof f
  async function attempt(work:()=>Promise<void>){try{await work();}catch(error){errors.push(error instanceof Error?error.message:'Неуспешно Huawei преземање.');}}
   // Both series need a boundary for the current hour. Share the 26/day quota
   // equally and fetch the oldest eligible series, one batch per refresh.
-  // An arbitrary two-hour inverter delay leaves production blank on alternate hours.
+  // Align to calendar hours rather than a rolling 59-minute delay. A 15-minute
+  // collection window allows the new boundary to reach the upstream history.
+  // Per-series and shared daily budgets remain unchanged.
   await attempt(async()=>{
    const now=Date.now(),start=new Date(Math.floor(now/HOUR)*HOUR).toISOString();
    const localHour=Number(new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Skopje',hour:'2-digit',hourCycle:'h23'}).format(now));
-   if(!daily&&(localHour<6||localHour>21||now%HOUR<300000))return;
+   if(!daily&&(localHour<6||localHour>21||now%HOUR<900000))return;
    const path='/thirdData/getDevHistoryKpi';if(!available(path,60000,26))return;
    const kind=(['production','export'] as const).filter(kind=>{
     const supported=kind==='export'?state.meters?.length===1:!!state.devices?.length&&state.devices.length<=10;
-    return supported&&(!state.historyAt?.[kind]||state.historyAt[kind]!<Date.parse(start))&&available(kind==='export'?'meter-history':'inverter-history',HOUR-60000,13);
+    return supported&&(!state.historyAt?.[kind]||state.historyAt[kind]!<Date.parse(start))&&available(kind==='export'?'meter-history':'inverter-history',LIVE_REFRESH_MS,13);
    }).sort((a,b)=>(state.historyAt?.[a]??0)-(state.historyAt?.[b]??0))[0];
    if(!kind)return;
    const ids=kind==='export'?state.meters!:state.devices!;
    const previous=localDate(new Date(Date.parse(slotsForDay(localDate())[0].start)-HOUR));
    const from=Date.parse(slotsForDay(previous)[0].start);
-   await reserve(kind==='export'?'meter-history':'inverter-history',HOUR-60000,13);
+   await reserve(kind==='export'?'meter-history':'inverter-history',LIVE_REFRESH_MS,13);
    const values=await call(path,{devIds:ids.join(','),devTypeId:kind==='export'?17:1,startTime:from,endTime:now},60000,26);
    const samples=parseCounterHistory(values,ids,kind==='export'?GRID_EXPORT_COUNTER:'total_cap',from,now);
    if(kind==='production'&&onProductionHistory){try{await onProductionHistory(values,ids,new Date(),'history');}catch{console.warn('Historical trial observations deferred');}}

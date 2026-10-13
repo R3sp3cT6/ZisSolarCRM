@@ -53,6 +53,16 @@ test('market refresh avoids Huawei and deduplicates a selected tomorrow',async()
  assert.equal((await response.json()).items.length,1);
  assert.deepEqual(calls,[['lock','assigned-plant'],['MEMO','2026-09-11',true],['publish','assigned-plant']]);
 });
+
+void test('fresh power or re-saved old rows never claim that a delayed hourly chart is up to date',async()=>{
+ fusion={configured:true,updated:9,error:null,liveUpdated:true,productionThrough:'2026-09-10T05:00:00.000Z'};
+ let result=await (await handleManualRefresh(request(),now)).json();
+ assert.equal(result.items[0].status,'partial');assert.equal(result.items[0].productionThrough,fusion.productionThrough);
+ fusion.productionThrough='2026-09-10T06:00:00.000Z';
+ result=await (await handleManualRefresh(request(),now)).json();assert.equal(result.items[0].status,'updated');
+ fusion.productionThrough=null;
+ result=await (await handleManualRefresh(request(),now)).json();assert.equal(result.items[0].status,'partial');
+});
 test('tomorrow follows the local calendar across midnight and DST',async()=>{
  await handleManualRefresh(request({source:'market',date:'2026-10-25'}),new Date('2026-10-24T22:30:00Z'));
  assert.deepEqual(calls.filter(c=>c[0]==='MEMO').map(c=>c[1]),['2026-10-25','2026-10-26']);

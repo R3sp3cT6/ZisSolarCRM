@@ -1,0 +1,25 @@
+{
+  "id": "huawei-partial-retention-v1-90701bb2333cb9d06f54",
+  "savedAt": "2026-10-13T08:30:10.870Z",
+  "readback": "exact",
+  "inputBytes": 126686,
+  "payload": {
+    "version": "huawei-partial-retention-v1",
+    "checkedAt": "2026-10-13T08:30:09.747Z",
+    "commit": "b99346c",
+    "deploymentId": "dpl_CP2bNN9y4rjekL3Bbinm3oZSzYyX",
+    "status": "READY",
+    "url": "https://zissolar.vercel.app",
+    "tests": 215,
+    "build": "passed",
+    "unchangedExistingRows": 9,
+    "afterCacheRows": 9,
+    "afterSqlRows": 9,
+    "observedPartials": 0,
+    "consoleErrors": 0,
+    "ui": "Admin refresh reported success; prior values remained. Current-hour anchors were still from the preceding hour, so no valid partial was available for a live rollover observation.",
+    "limitation": "Rollover retention and final replacement verified by regression tests; no synthetic production partials inserted.",
+    "officialModel": "weather-solar-v3.2",
+    "physicalControl": false
+  }
+}

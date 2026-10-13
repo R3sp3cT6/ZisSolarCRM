@@ -56,7 +56,15 @@ export async function syncFusionDirect(owner:string,requestedDay=localDate(),opt
   try{await recordLiveTrial(owner,state.forecastObservation);}catch{console.warn('Trial observation deferred');}
   // The daily pass closes yesterday first; active visits refresh today's report.
   await attempt(async()=>{await hours(options.daily?localDate(new Date(Date.parse(slotsForDay(localDate())[0].start)-HOUR)):localDate());});
-  if(options.evening){state.error=errors[0]??null;return {configured:true,updated,error:state.error,connected:!!state.live,liveUpdated:state.lastSuccess!==previousSuccess,lastSuccess:state.lastSuccess??null};}
+  if(options.evening){
+   state.error=errors[0]??null;
+   let productionThrough:string|null|undefined;
+   if(options.manual){
+    const latest=await connection.prepare('SELECT MAX(start) AS start FROM readings WHERE owner=? AND start>=? AND start<? AND production_kwh IS NOT NULL').bind(owner,slotsForDay(localDate())[0].start,new Date(Math.floor(Date.now()/HOUR)*HOUR).toISOString()).first<{start:string|null}>();
+    productionThrough=latest?.start?new Date(Date.parse(latest.start)+HOUR).toISOString():null;
+   }
+   return {configured:true,updated,error:state.error,connected:!!state.live,liveUpdated:state.lastSuccess!==previousSuccess,lastSuccess:state.lastSuccess??null,...(options.manual?{productionThrough}:{})};
+  }
   await attempt(async()=>{
    const period=requestedDay.slice(0,7);const stored=await connection.prepare("SELECT updated_at FROM fusion_reports WHERE owner=? AND kind='day' AND period=?").bind(owner,period).first<{updated_at:string}>();
    if(!stored||Date.now()-Date.parse(stored.updated_at)>(period===localDate().slice(0,7)?6*HOUR:30*DAY)){

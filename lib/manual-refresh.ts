@@ -19,8 +19,11 @@ export async function runManualRefresh(owner:string,source:RefreshSource,day:str
    // Same collector and plant lease as cron; provider quotas remain in force.
    // The short pass refreshes current measurements without starting history backfill.
    const result=await syncFusion(owner,today,{manual:true,evening:true});
+   const productionThrough='productionThrough' in result?result.productionThrough:undefined;
+   const delayed=productionThrough!==undefined&&(productionThrough===null||Date.parse(productionThrough)<Math.floor(now.getTime()/3600000)*3600000);
    items.push({source:'Huawei',day:today,updated:result.updated,
-    status:!result.configured?'unconfigured':'busy' in result&&result.busy?'busy':result.error?'error':('liveUpdated' in result&&result.liveUpdated)||result.updated>0?'updated':'cached',
+    status:!result.configured?'unconfigured':'busy' in result&&result.busy?'busy':result.error?'error':delayed?'partial':('liveUpdated' in result&&result.liveUpdated)||result.updated>0?'updated':'cached',
+    ...(productionThrough!==undefined?{productionThrough}:{}),
     lastSuccess:'lastSuccess' in result?result.lastSuccess:null});
   }catch{items.push({source:'Huawei',day:today,status:'error',updated:0});}
  }

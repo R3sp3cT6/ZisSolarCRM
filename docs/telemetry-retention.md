@@ -13,3 +13,11 @@ Read-only production audit at 08:16:56 UTC found 9 current-day cache rows and th
 Validation: 215 tests passed across the full test command; production build/TypeScript passed. New regressions cover hour rollover, null/failed meter responses, per-field monotonic counters, completed replacements, cache acknowledgement, and exclusion of retained partials from day-ahead scoring. Targeted lint passed for changed data/cache helpers, tests and evidence scripts. Existing unrelated lint violations remain in the legacy `Envelope.data:any` and chart effects.
 
 Source audit: `work/telemetry-retention/audit-2026-10-13T08-16-56.551Z.json` (sanitized; no credentials or session tokens). No plant-control calls were made.
+
+## Follow-up: delayed hourly graph despite fresh power
+
+The user reported at 10:30 local that the graph ended at the 08:00 interval while power was refreshed at 10:27. Production audit confirmed last archived interval 08:00–09:00, with current-hour anchors still at 09:00. A rolling 59-minute internal guard could defer the next hour's history request even after a new hour started. The existing `historyAt < currentHourStart` guard already permits only one history request per series per calendar hour.
+
+The rolling guard is now five minutes, with the once-per-calendar-hour guard, 13 requests per series and 26 shared requests per rolling day unchanged. Automatic history starts after minute 15 of the hour to leave time for upstream publication; this is a collection policy, not a guarantee that Huawei publishes by that time. Both manual and active collectors share it. One series is collected per refresh so neither monopolizes the shared request budget.
+
+Manual feedback now separately reports the end of the latest completed production interval. A fresh power response or repeated old rows cannot report an up-to-date hourly graph when the archive still trails the previous completed hour. The archive delay is shown explicitly. Two additional regression tests passed (217 total), as did the production build.
