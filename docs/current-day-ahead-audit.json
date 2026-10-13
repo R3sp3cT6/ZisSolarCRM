@@ -1,0 +1,27 @@
+{
+  "auditedAt": "2026-10-13T08:36:00.060Z",
+  "day": "2026-10-13",
+  "range": {
+    "from": "2026-09-30T22:00:00.000Z",
+    "to": "2026-10-31T23:00:00.000Z"
+  },
+  "score": {
+    "kind": "day-ahead",
+    "availableHours": 72,
+    "satelliteAppliedHours": 0,
+    "baselineScore": null,
+    "completedHours": 298,
+    "pairedHours": 18,
+    "hours": 16,
+    "actualKwh": 3035.58,
+    "predictedKwh": 3182.3934607381284,
+    "totalDifferenceKwh": 146.81346073812801,
+    "totalDifferencePercent": 4.8364220589847084,
+    "matchPercent": 57.077518922730555,
+    "maeKwh": 81.43414069283598,
+    "rmseKwh": 115.39114751133017,
+    "biasKwh": 9.175841296133001,
+    "wapePercent": 42.922481077269445
+  },
+  "note": "Current prospectively issued day-ahead dashboard cohort; not the frozen April–October historical experiment. Partial hours excluded. Current day and month incomplete."
+}

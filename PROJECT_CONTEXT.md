@@ -1,4 +1,46 @@
-# ZIS Solar — контекст за продолжување на работата
+# ZIS Solar — project continuity
+
+Last verified: **13 October 2026, 10:44 Resen (08:44 UTC)**. The user resumed work and asked to finish the day-ahead experiment and fix disappearing/delayed Huawei data. Both requested checks and the telemetry fix are complete. No downloader or evaluator is still running. The broader goal of **monthly hourly day-ahead WAPE below 5% is NOT achieved**. Official model remains `weather-solar-v3.2`.
+
+This section supersedes all older progress and pause notes below. Never store credentials or session tokens here.
+
+## Completed native GFS experiment
+
+- Downloader session **51403** exited 0 at 08:39:41 UTC: **192/192 complete days, 0 failures**, 1500.49 seconds for the 35 resumed days. Old session43934 was deliberately stopped on 12 October. Do not poll either handle. Raw and decoded caches remain preserved. Status: `work/forecast-research/sflux/download-status.json`.
+- The complete **prepare → evaluate → verify → report → save** pipeline finished. Frozen at 08:39:59 UTC: 21,504 source fields, 4,608 hourly feature rows, 410 declared quantization adjustments. Evaluator36931 exited0 in37.77s. Independent verification checked316,166 training memberships and15,264 predictions; original baseline and score masks reproduced. No partial-range fitting, target-day training or parameter sweep.
+- Read `docs/sflux-research-results.md` and the adjacent evaluation, frozen, verification, target-audit and persistence JSON files.
+- Archive reconstruction:159 days /2388 scored hours /585.74385MWh. WAPE: coarseGhi **24.967974%**, nativeGhi **24.573161%**, nativePartitionTemperature **24.572582%**.
+- Receipt-causal replay:33 days /430 hours. WAPE **24.336398% →24.145081%** with nativeGhi; partition+temperature **24.412417%** is worse. All original valid outage zeros remain. No evaluated month reached below5%.
+- October1–11, identical142 hours /41.01664MWh: saved **v3.2=12.780715%**. CatBoost control15.880539% archive /15.866401% receipt. New nativeGhi14.29% archive /14.58% receipt; partition+temperature14.40% archive /14.53% receipt. Modest gain over the experimental CatBoost control, **not better than v3.2 in October**. No model promotion, new live candidate or runtime weather-source replacement.
+- These are retrospective replays, not as-issued CRM accuracy or proof of future95% accuracy. The archive track assumes older measurements available despite later imports; receipt-causal training uses actual receipt cutoffs. Weather is the original previous-day run published before cutoff, with its real retrieval time preserved.
+- Full source fields, HTTP evidence, actual receipts, code, original inputs/runs, new predictions/report and verification are append-only in SQL: **solar-sflux-features-v1-e645b69b531859135ce1**. Exact readback08:41:29 UTC;31,397,439 input bytes /731,554 payload bytes. No actuals or old forecasts overwritten.
+- Negative-MEMO diagnostic also completed: **0 negative prices in scored hours, 0 changed predictions, 0 gain**. SQL **negative-memo-availability-diagnostic-v1-099d37a20b4dc19ab458**, exact readback08:25:19 UTC. EVN observation collector and separate next-day MEMO candidate shipped with the telemetry release; they do not command inverters or alter official scores.
+
+## Huawei retention and refresh fix — deployed and verified
+
+- First release **b99346c** preserves cumulative partial production/export per hour and per field through rollover. Energy no longer disappears after15 minutes. Null, older or regressing counters cannot erase accepted partials. Complete archive fields supersede partial fields. Instantaneous power keeps its existing freshness rules.
+- Partials display `≈` / `Делумен час`, do not close final coverage gaps, and stay out of final CSV and forecast scores. They are stored in durable Redis state, then existing SQL `fusion_state` archive passes; not in final `readings`. Currently no age pruning of retained partial state. Final archive values always win.
+- Pending completed rows publish to the warm dashboard cache after SQL save and before acknowledgement. Readers fetch pending before snapshot so either copy remains available. Failed publication preserves the queue for idempotent retry. No new polling or SQL wake-up on the warm live path.
+- User then reported at10:30 local that the chart ended at08:00 while power was fresh at10:27. The last archive interval was08:00–09:00 and counter boundaries remained09:00. A rolling59-minute internal history guard delayed the new hour even after the hour changed.
+- Follow-up **de82993** uses a five-minute guard plus one history request per series per calendar hour, starting after minute15. Existing13-per-series /26-shared rolling daily budgets remain unchanged; one series per refresh. Minute15 is a collection policy, not a Huawei publication SLA. Both admin and active collectors share it.
+- Manual refresh feedback now shows the end of the latest completed production interval. Fresh power or repeated old rows cannot claim the hourly chart is current while its completed production interval lags. Delayed archive gets an explicit partial status.
+- Current production release: **READY dpl_G2un2gCWi5n3AExQmTeSu463aX7J**, code **de82993**, alias https://zissolar.vercel.app. CLI succeeded with explicit IDs: `node <known-vc.js> deploy --prod --yes --scope team_YfHSq2iIxjf7ulvhFQXMaZEy --project prj_cfNtIJ2Zpem7AZjdkZoYaIcTFKgo`. Scope-slug-only first returned Not authorized; explicit team/project IDs resolved it.
+- Live UI refresh at10:36 recovered09:00–10:00:10 final rows in cache/SQL instead of9, with all9 older known values unchanged. Next allowed refresh at **10:40** displayed current10:00 partial **37.27kWh production /37kWh export**, both approximately0.04MWh and approximately6.59EUR. Both chart series extended to10:00. SQL state and Redis partials matched exactly; partial absent from final readings. Zero console errors.
+- Full suite **217 tests passed**; production build/TypeScript passed. New tests cover per-field retention, rollover, null/failed responses, final replacements, queue publication, scoring exclusion, calendar-hour refresh and honest feedback. Targeted new-helper/test lint passed; legacy file lint issues remain (`Envelope.data:any`, existing section role=status, older chart effects). Do not claim full-repo lint green.
+- Evidence: `docs/telemetry-retention.md`, `docs/telemetry-retention-release.json`, `docs/telemetry-hourly-followup-release.json`. SQL first proof **huawei-partial-retention-v1-90701bb2333cb9d06f54**; final proof **huawei-hourly-refresh-followup-v1-0abe74004d8944aa9ff5**, exact08:42:21 UTC,99,215 input bytes.
+- Ignored screenshots: `outputs/telemetry-current-hour-2026-10-13.png` (chart), `outputs/telemetry-current-hour-rows-2026-10-13.png` (09:00/10:00 rows). Sanitized readback: `work/telemetry-retention/audit-2026-10-13T08-41-33.808Z.json`. Real rollover not yet witnessed after release; regression tests cover it. No synthetic production data inserted.
+- `docs/current-day-ahead-audit.json` is a read-only **08:36 UTC** as-issued monthly UI snapshot:16 scored hours /42.922481%WAPE, before09:00 recovery. It is incomplete and must not be confused with the retrospective142-hour October comparison or a final monthly score.
+
+## Future work and constraints
+
+- Under5% is not achieved. Added sflux variables alone are insufficient. Do not promote a worse October candidate based solely on0.4 percentage-point aggregate gain. A further experiment needs a predeclared hypothesis and prospective validation.
+- Continue retaining original day-ahead issues and genuine receipt times through existing collectors. Upstream latency and quotas can still delay new measurements, but known partials should remain visible.
+- DC capacity, tilt/azimuth and exact EVN feeder are still unknown; the user already answered that they do not know them. Do not ask the same questions as unanswered.
+- Shutdown rule: **MEMO<0 EUR/MWh**, forecasting only, no physical inverter control. The12September EVN screenshot arrived12October and is not proof of pre-origin receipt. Planned end12:00 differed from actual resumption around17:00. Do not retrospectively turn it into advance knowledge.
+
+## Older notes (historical; completed status above takes precedence)
+
+
 
 Последно проверено: **13.10.2026, 10:27 Ресен (08:27 UTC)**. Корисникот експлицитно ја продолжи работата: доврши ги преземањата/day-ahead тестовите и поправи исчезнување на Huawei мерења. Ова продолжување има предност над старата пауза подолу. Целта под 5% месечен часовен WAPE ден однапред не е постигната.
 

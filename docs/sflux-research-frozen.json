@@ -1,0 +1,25 @@
+{
+  "frozenAt": "2026-10-13T08:39:59.566500+00:00",
+  "inputSha256": "58e2bed9459af453970cf46d24ad99980acbd86bc865cf2d425fc5c775f90533",
+  "codeHashes": {
+    "scripts/download-sflux-research.py": "4a6b870f2475e7a438823bdbee8734e36897f15bc3ccf9a35c3651b0ce72a1e7",
+    "scripts/sflux-features.py": "8a32bad5b166f252bc3047a2739cdff9d6b6b455849c039f348c6e32b5f321f0",
+    "scripts/prepare-sflux-research.py": "3e34c467cf04dacf4c39768e246b72ca9848bbf21350656538f0c48a1e520ef5",
+    "scripts/evaluate-sflux-research.py": "87e253aa7d61c8730604b62018661b1dc9e847ad6f7597e0159d6d5ecf307bcb",
+    "scripts/verify-sflux-research.mjs": "7eb172d1c48804807d2be73485cac5029568d9539f76c6e400ae0d6e80cc1d0f",
+    "scripts/report-sflux-research.mjs": "d21da83658086b259e8af117ac483eba0eebe16fd18f6f57991579d228b541f9",
+    "scripts/save-sflux-research.mjs": "aa9fde9a02e9b1f282f209af540062d345a7e48e24dd3a6c78304834bc4430ad",
+    "tests/sflux-features.test.py": "8dabf357d92fbfcc68b9d0fc590a6b726335ee3048a596a324547f87eec35c3c",
+    "docs/sflux-research-plan.md": "cbb506c3f628675eba05c191a8f62734817510044dea219f74743b89d4bdfef4"
+  },
+  "days": 192,
+  "fields": 21504,
+  "hourlyValues": 4608,
+  "roundingAdjustments": 410,
+  "nativePoint": [
+    [
+      41.06085,
+      21.09375
+    ]
+  ]
+}

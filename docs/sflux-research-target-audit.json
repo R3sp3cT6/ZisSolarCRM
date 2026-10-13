@@ -1,0 +1,134 @@
+{
+  "version": "solar-sflux-features-v1",
+  "createdAt": "2026-10-13T08:41:13.924Z",
+  "targets": {
+    "archiveReconstruction": {
+      "coarseGhi": {
+        "evaluatedMonths": [
+          "2026-04",
+          "2026-05",
+          "2026-06",
+          "2026-07",
+          "2026-08",
+          "2026-09",
+          "2026-10"
+        ],
+        "belowFivePercent": [],
+        "atOrAboveFivePercent": [
+          "2026-04",
+          "2026-05",
+          "2026-06",
+          "2026-07",
+          "2026-08",
+          "2026-09",
+          "2026-10"
+        ],
+        "unavailableMonths": []
+      },
+      "nativeGhi": {
+        "evaluatedMonths": [
+          "2026-04",
+          "2026-05",
+          "2026-06",
+          "2026-07",
+          "2026-08",
+          "2026-09",
+          "2026-10"
+        ],
+        "belowFivePercent": [],
+        "atOrAboveFivePercent": [
+          "2026-04",
+          "2026-05",
+          "2026-06",
+          "2026-07",
+          "2026-08",
+          "2026-09",
+          "2026-10"
+        ],
+        "unavailableMonths": []
+      },
+      "nativePartitionTemperature": {
+        "evaluatedMonths": [
+          "2026-04",
+          "2026-05",
+          "2026-06",
+          "2026-07",
+          "2026-08",
+          "2026-09",
+          "2026-10"
+        ],
+        "belowFivePercent": [],
+        "atOrAboveFivePercent": [
+          "2026-04",
+          "2026-05",
+          "2026-06",
+          "2026-07",
+          "2026-08",
+          "2026-09",
+          "2026-10"
+        ],
+        "unavailableMonths": []
+      }
+    },
+    "receiptCausal": {
+      "coarseGhi": {
+        "evaluatedMonths": [
+          "2026-09",
+          "2026-10"
+        ],
+        "belowFivePercent": [],
+        "atOrAboveFivePercent": [
+          "2026-09",
+          "2026-10"
+        ],
+        "unavailableMonths": [
+          "2026-04",
+          "2026-05",
+          "2026-06",
+          "2026-07",
+          "2026-08"
+        ]
+      },
+      "nativeGhi": {
+        "evaluatedMonths": [
+          "2026-09",
+          "2026-10"
+        ],
+        "belowFivePercent": [],
+        "atOrAboveFivePercent": [
+          "2026-09",
+          "2026-10"
+        ],
+        "unavailableMonths": [
+          "2026-04",
+          "2026-05",
+          "2026-06",
+          "2026-07",
+          "2026-08"
+        ]
+      },
+      "nativePartitionTemperature": {
+        "evaluatedMonths": [
+          "2026-09",
+          "2026-10"
+        ],
+        "belowFivePercent": [],
+        "atOrAboveFivePercent": [
+          "2026-09",
+          "2026-10"
+        ],
+        "unavailableMonths": [
+          "2026-04",
+          "2026-05",
+          "2026-06",
+          "2026-07",
+          "2026-08"
+        ]
+      }
+    }
+  },
+  "prospectivelyValidated": false,
+  "goalComplete": false,
+  "promotion": false,
+  "reason": "Retrospective monthly diagnostics do not by themselves prove the requested future accuracy."
+}

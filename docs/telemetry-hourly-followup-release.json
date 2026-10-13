@@ -1,0 +1,38 @@
+{
+  "id": "huawei-hourly-refresh-followup-v1-0abe74004d8944aa9ff5",
+  "savedAt": "2026-10-13T08:42:21.112Z",
+  "readback": "exact",
+  "inputBytes": 99215,
+  "payload": {
+    "version": "huawei-hourly-refresh-followup-v1",
+    "checkedAt": "2026-10-13T08:42:20.566Z",
+    "commit": "de82993",
+    "deploymentId": "dpl_G2un2gCWi5n3AExQmTeSu463aX7J",
+    "status": "READY",
+    "url": "https://zissolar.vercel.app",
+    "fullTests": 217,
+    "build": "passed",
+    "unchangedPreviousRows": 9,
+    "finalRows": 10,
+    "partial": {
+      "start": "2026-10-13T08:00:00.000Z",
+      "productionKwh": 37.27,
+      "exportKwh": 37,
+      "observedAt": "2026-10-13T08:40:18.316Z",
+      "productionObservedAt": "2026-10-13T08:40:18.047Z",
+      "exportObservedAt": "2026-10-13T08:40:18.316Z"
+    },
+    "partialPersistedInSqlState": true,
+    "partialNotInsertedIntoFinalReadings": true,
+    "ui": {
+      "lastCompletedProductionEndLocal": "10:00",
+      "currentLocalHour": "10:00",
+      "productionMwh": "≈ 0.04",
+      "exportMwh": "≈ 0.04",
+      "status": "Делумен час",
+      "consoleErrors": 0
+    },
+    "sourcePolicy": "One history request per series per calendar hour after minute 15; five-minute guard, unchanged 13/26 daily budgets. Existing live refresh remains five minutes. No physical control.",
+    "limitation": "Upstream latency and request quotas can still delay new data. Actual hour rollover covered by tests, not a fabricated production observation."
+  }
+}

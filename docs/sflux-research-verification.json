@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-10-13T08:41:13.775Z",
+  "featuresChecked": 4608,
+  "trainingChecks": 316166,
+  "predictionsChecked": 15264,
+  "sourceDays": 192,
+  "baselineReproduced": true,
+  "scoreMasksUnchanged": true,
+  "hashes": {
+    "work/forecast-research/sflux/inputs.json": "58e2bed9459af453970cf46d24ad99980acbd86bc865cf2d425fc5c775f90533",
+    "work/forecast-research/sflux/runs.json": "117092025d4158b68c2fb960760f4022e249aed6de0bb56f5fb80863e5977780",
+    "docs/sflux-research-evaluation.json": "6056495d46542e3bf5e91d6d5a95e0e30c05027ec956321a7f47802544c3991a"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "id": "solar-sflux-features-v1-e645b69b531859135ce1",
+  "savedAt": "2026-10-13T08:41:29.878Z",
+  "readback": "exact",
+  "inputBytes": 31397439,
+  "payloadBytes": 731554,
+  "officialForecastChanged": false,
+  "newLiveCandidate": false,
+  "actualsChanged": false
+}
