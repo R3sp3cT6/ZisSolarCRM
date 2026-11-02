@@ -5,6 +5,7 @@ import { useCurrency } from '@/components/currency-switch';
 import { t, getLocale } from '@/lib/language';
 import { useLanguage } from '@/components/language-switch';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { chartTopMargin, tooltipPlacement } from '@/lib/chart-tooltip';
 
 import { useEffect, useId, useState } from 'react';
 import { Activity, ArrowUpRight, ChartColumn, ChartLine } from 'lucide-react';
@@ -285,7 +286,12 @@ export function EnergyChart({
                     productionMwh: toMwh(point.productionKwh),
                     forecastMwh: toMwh(point.forecastProductionKwh ?? null),
                   }))}
-                  margin={{ top: 24, right: 0, bottom: 10, left: 0 }}
+                  margin={{
+                    top: chartTopMargin(24, mobile),
+                    right: 0,
+                    bottom: 10,
+                    left: 0,
+                  }}
                   barGap={2}
                   barCategoryGap="20%"
                 >
@@ -358,7 +364,7 @@ export function EnergyChart({
                     tickCount={mobile ? 4 : 5}
                   />
                   <Tooltip
-                    offset={24}
+                    {...tooltipPlacement(mobile)}
                     labelFormatter={(label, items) =>
                       `${String(label)}${items[0]?.payload?.partial ? ' · ' + t(period === 'day' || period === 'hour' ? 'Делумен час' : 'Делумен период') : ''}`
                     }
