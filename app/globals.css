@@ -51,8 +51,8 @@
 :root{--candle-up:#11926e;--candle-down:#d35c67}
 :root.dark{--candle-up:#43e3b5;--candle-down:#ff8e9b}
 .candle-up{background:var(--candle-up)}.candle-down{background:var(--candle-down)}
-/* Chart tooltips are translucent glass so the lines underneath stay readable; Recharts sets an inline white background, hence !important. */
-.recharts-default-tooltip{background:color-mix(in srgb,var(--card) 60%,transparent)!important;backdrop-filter:blur(8px) saturate(1.2);-webkit-backdrop-filter:blur(8px) saturate(1.2);box-shadow:0 8px 24px #0713222e}
+/* Chart tooltips are translucent glass so the lines underneath stay readable; Recharts sets an inline white background, hence !important. The build adds the -webkit- prefix; writing both makes it keep only one. */
+.recharts-default-tooltip{background:color-mix(in srgb,var(--card) 60%,transparent)!important;backdrop-filter:blur(8px) saturate(1.2);box-shadow:0 8px 24px #0713222e}
 .candle-tooltip{min-width:195px;padding:14px 16px;background:var(--card);border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 26px #07132220;font-size:12px;color:var(--foreground)}
 .candle-tooltip strong{display:block;margin-bottom:12px;font-size:13px}.candle-tooltip dl{display:grid;gap:7px;margin:0}.candle-tooltip dl>div{display:flex;justify-content:space-between;gap:24px}.candle-tooltip dt{color:var(--muted-foreground)}.candle-tooltip dd{margin:0;font-variant-numeric:tabular-nums;font-weight:600}.candle-tooltip small{display:block;border-top:1px solid var(--border);padding-top:10px;margin-top:12px;color:var(--muted-foreground);font-size:11px}
 .candle-note{display:flex;align-items:flex-start;gap:8px;margin-top:15px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;line-height:1.65;color:var(--muted-foreground)}.candle-note svg{flex-shrink:0;margin-top:2px}.candle-note strong{font-weight:600;color:var(--foreground)}
