@@ -208,8 +208,8 @@ export function ForecastTrialPanel({ canManage }: { canManage: boolean }) {
                   tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }}
                 />
                 <Tooltip
+                  offset={24}
                   contentStyle={{
-                    background: 'var(--card)',
                     border: '1px solid var(--border)',
                     borderRadius: 10,
                   }}

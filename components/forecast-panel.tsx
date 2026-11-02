@@ -331,7 +331,6 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
       estimate: h.priceSource === 'forecast' ? convertMoney(h.memo) : null,
     })) ?? [];
   const tooltip = {
-    background: 'var(--card)',
     border: '1px solid var(--border)',
     borderRadius: 12,
     color: 'var(--foreground)',
@@ -659,6 +658,7 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
                         }}
                       />
                       <Tooltip
+                        offset={24}
                         contentStyle={tooltip}
                         formatter={(value, name) => [
                           number(typeof value === 'number' ? value : null),
@@ -723,6 +723,7 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
                         axisLine={false}
                       />
                       <Tooltip
+                        offset={24}
                         contentStyle={tooltip}
                         formatter={(value, name) => [
                           number(typeof value === 'number' ? value : null) +
@@ -887,6 +888,7 @@ export function ForecastPanel({ canManage }: { canManage: boolean }) {
                         axisLine={false}
                       />
                       <Tooltip
+                        offset={24}
                         contentStyle={tooltip}
                         formatter={(value, name) => [
                           number(typeof value === 'number' ? value : null, 1) +

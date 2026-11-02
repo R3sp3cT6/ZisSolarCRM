@@ -35,7 +35,6 @@ const preferenceKey = 'zis-solar-energy-chart';
 const tooltipStyle = {
   borderRadius: 10,
   borderColor: 'var(--border)',
-  backgroundColor: 'var(--card)',
   color: 'var(--foreground)',
   fontSize: 14,
 };
@@ -359,6 +358,7 @@ export function EnergyChart({
                     tickCount={mobile ? 4 : 5}
                   />
                   <Tooltip
+                    offset={24}
                     labelFormatter={(label, items) =>
                       `${String(label)}${items[0]?.payload?.partial ? ' · ' + t(period === 'day' || period === 'hour' ? 'Делумен час' : 'Делумен период') : ''}`
                     }
